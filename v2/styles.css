@@ -14,7 +14,9 @@
   --arc-accent: #710f11;
   --arc-high: #ac0c0f;
 
-  --font-ui: "Onest", "Inter", system-ui, sans-serif;
+  /* Вариант 2: SF Pro Text во всей типографике, кроме логотипа и цифр */
+  --font-ui: -apple-system, "SF Pro Text", "Onest", system-ui, sans-serif;
+  --font-logo: "Onest", system-ui, sans-serif;
   --font-num: "Manrope", "Onest", system-ui, sans-serif;
 
   /* Макет 1440×810. Размеры задаём через clamp(min, Nvw, max), где
@@ -94,6 +96,7 @@ body {
 .nav__logo {
   flex-shrink: 0;
   color: var(--text);
+  font-family: var(--font-logo);
   font-size: clamp(9.92px, 1.1111vw, 16.0px);
   font-weight: 800;
   line-height: 1.2;
@@ -112,8 +115,8 @@ body {
 .nav__menu a {
   position: relative;
   color: var(--text);
-  font-size: clamp(8.68px, 0.9722vw, 14.0px);
-  font-weight: 300;
+  font-size: clamp(8.06px, 0.9028vw, 13.0px);
+  font-weight: 400;
   line-height: 1.35;
   text-decoration: none;
   white-space: nowrap;
@@ -160,12 +163,20 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: clamp(21.08px, 2.3611vw, 34.0px);
+  gap: clamp(24.8px, 2.7778vw, 40.0px);
   width: 100%;
-  max-width: clamp(628.06px, 70.3472vw, 1013.0px);
+  max-width: clamp(371.38px, 41.5972vw, 599.0px);
   margin: 0 auto;
   padding: clamp(14.88px, 1.6667vw, 24.0px) 20px;
   text-align: center;
+}
+
+/* Заголовок и подзаголовок — своя группа с gap 30 */
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(18.6px, 2.0833vw, 30.0px);
 }
 
 /* Заголовок: 77px, tracking -4.62px, line-height 0.87.
@@ -179,19 +190,19 @@ body {
   font-size: clamp(47.74px, 5.3472vw, 77.0px);
   font-weight: 400;
   line-height: 0.87;
-  letter-spacing: clamp(-4.62px, -0.3208vw, -2.86px);
+  letter-spacing: clamp(-3.85px, -0.2674vw, -2.39px);
   white-space: nowrap;
 }
 .hero__title span { display: block; }
 
 .hero__lead {
-  /* Узкая колонка — текст ложится в три строки, как просили.
-     Кегль на 10% крупнее макетного (16 → 17.6px). */
-  max-width: clamp(264px, 25.2vw, 363px);
+  /* Макет v2: SF 17px, трекинг -0.17, ширина 509, две строки */
+  max-width: clamp(315.58px, 35.3472vw, 509.0px);
   margin: 0;
-  font-size: clamp(10.91px, 1.2222vw, 17.6px);
-  font-weight: 300;
-  line-height: 1.29;
+  font-size: clamp(10.54px, 1.1806vw, 17.0px);
+  font-weight: 400;
+  line-height: 1.25;
+  letter-spacing: -0.17px;
 }
 
 /* Кнопка: белая пилюля + отдельный круг со стрелкой (как в макете) */
@@ -209,10 +220,9 @@ body {
   background: #fff;
   border-radius: 68.75px;
   color: #0e0404;
-  font-family: var(--font-num);
-  font-size: clamp(10.5px, 0.9vw, 13px);
-  font-weight: 700;
-  letter-spacing: 0.2px;
+  font-family: var(--font-ui);
+  font-size: clamp(9.3px, 1.0417vw, 15px);
+  font-weight: 500;
   text-transform: uppercase;
   white-space: nowrap;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
@@ -246,15 +256,15 @@ body {
   flex-shrink: 0;
   display: flex;
   justify-content: center;
-  padding: 0 20px clamp(35.5px, 3.125vw, 45.0px);
+  padding: 0 20px clamp(37.82px, 4.2361vw, 61.0px);
 }
 
 .stats__inner {
   position: relative;
   display: flex;
-  gap: clamp(55.8px, 6.25vw, 90.0px);
+  gap: clamp(86.8px, 9.7222vw, 140.0px);
   padding: clamp(12.4px, 1.3889vw, 20.0px) clamp(24.8px, 2.7778vw, 40.0px);
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 10px;
@@ -333,76 +343,118 @@ body {
 /* ---------- Мобильные ---------- */
 
 @media (max-width: 720px) {
-  /* На мобильных меню и CTA скрыты — трёхколоночная сетка не нужна,
-     возвращаем flex, иначе бургер уезжает в среднюю колонку. */
+  /* Макет мобильной версии: 391×844, node 2051:2446 */
+
   .nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 16px;
-    padding: 22px 20px 0;
+    padding: 24px 20px 0;
   }
   .nav__menu, .nav__cta { display: none; }
-  .nav__logo { font-size: 15px; }
+  .nav__logo { font-size: 15px; letter-spacing: -0.9px; }
 
+  /* Бургер из макета: три полосы, последняя короче */
   .nav__burger {
-    display: grid;
-    place-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
     gap: 5px;
-    width: 42px;
-    height: 42px;
+    width: 26px;
+    height: 26px;
     padding: 0;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.45);
-    border-radius: 50%;
+    border: 0;
+    border-radius: 0;
     cursor: pointer;
   }
   .nav__burger span {
     display: block;
-    width: 16px;
+    width: 22px;
     height: 1.5px;
     background: #fff;
-    transition: transform 0.28s ease, opacity 0.2s ease;
+    transition: transform 0.28s ease, opacity 0.2s ease, width 0.28s ease;
   }
-  .nav__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.5px) rotate(45deg); }
-  .nav__burger[aria-expanded="true"] span:nth-child(2) { transform: translateY(-3.5px) rotate(-45deg); }
+  .nav__burger span:nth-child(2) { width: 14px; }
+  .nav__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+  .nav__burger[aria-expanded="true"] span:nth-child(2) { width: 22px; transform: translateY(-3.25px) rotate(-45deg); }
 
-  .hero__body { gap: 22px; padding: 20px; }
+  /* Центральный блок: top 178, ширина 350, gap 24 */
+  .hero__body {
+    flex: 0 1 auto;
+    gap: 24px;
+    max-width: 350px;
+    margin-top: clamp(90px, 21vh, 178px);
+    margin-bottom: auto;
+    padding: 0 20px;
+  }
+  .hero__text { gap: 24px; }
 
   .hero__title {
-    font-size: clamp(34px, 9.4vw, 54px);
-    letter-spacing: -0.055em;
-    line-height: 0.92;
+    font-size: clamp(32px, 10.2vw, 40px);
+    letter-spacing: -2px;
+    line-height: 0.87;
   }
-  .hero__lead { max-width: 340px; font-size: 14px; line-height: 1.45; }
 
-  /* Цифры: колонкой, подложка на всю ширину */
-  .stats { padding-bottom: 20px; }
+  .hero__lead {
+    max-width: 296px;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.29;
+    letter-spacing: 0;
+  }
+
+  .hero__cta-label {
+    padding: 13.98px 18.64px;
+    font-size: 11.18px;
+    border-radius: 64.06px;
+  }
+  .hero__cta-icon {
+    width: 51.25px;
+    height: 41px;
+    border-radius: 102.5px;
+  }
+  .hero__cta-icon svg { width: 11px; height: 11px; }
+
+  /* Цифры: узкая колонка 194px, всё по центру */
+  .stats { padding: 0 20px 28px; }
   .stats__inner {
     flex-direction: column;
-    gap: 18px;
-    width: 100%;
-    max-width: 420px;
-    padding: 20px 22px;
+    gap: 30px;
+    width: 194px;
+    padding: 22px 24px;
+    background: rgba(0, 0, 0, 0.1);
   }
   .stat {
-    display: grid;
-    grid-template-columns: minmax(96px, auto) minmax(0, 1fr);
-    align-items: baseline;
-    gap: 6px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
     padding-top: 0;
   }
-  .stat__value { font-size: 30px; }
-  .stat__label { max-width: none; font-size: 13px; }
+  .stat__value {
+    font-family: var(--font-ui);
+    font-size: 34px;
+    letter-spacing: 0.34px;
+    text-transform: none;
+  }
+  .stat__label {
+    max-width: none;
+    width: 100%;
+    font-family: var(--font-ui);
+    font-size: 13px;
+    line-height: 1.35;
+    letter-spacing: -0.052px;
+    text-align: center;
+  }
 
   body.menu-open { overflow: hidden; }
 }
 
-@media (max-width: 420px) {
-  .hero__title { font-size: clamp(30px, 10.5vw, 44px); }
-  .stat { grid-template-columns: minmax(84px, auto) minmax(0, 1fr); }
-  .stat__value { font-size: 26px; }
-}
 
 /* Низкие экраны: поджимаем вертикальные отступы */
 @media (max-height: 700px) {
