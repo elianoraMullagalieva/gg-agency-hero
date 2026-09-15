@@ -81,11 +81,13 @@ body {
    Макет: логотип x=80 y=38, gap до меню 136, gap между пунктами 30,
    кнопка справа, паддинг 20/12, радиус 68.75. */
 
+/* Три равные колонки: логотип слева, меню строго по центру экрана,
+   кнопка справа. При flex-раскладке меню смещалось на 162px влево. */
 .nav {
   flex-shrink: 0;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: clamp(84.32px, 9.4444vw, 136.0px);
   padding: clamp(23.56px, 2.6389vw, 38.0px) clamp(49.6px, 5.5556vw, 80.0px) 0;
 }
 
@@ -102,7 +104,8 @@ body {
 
 .nav__menu {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   gap: clamp(18.6px, 2.0833vw, 30.0px);
 }
 
@@ -134,8 +137,7 @@ body {
 .nav__menu a:hover::after { transform: scaleX(1); }
 
 .nav__cta {
-  flex-shrink: 0;
-  margin-left: auto;
+  justify-self: end;
   padding: clamp(7.44px, 0.8333vw, 12.0px) clamp(12.4px, 1.3889vw, 20.0px);
   border: 1px solid var(--text);
   border-radius: 68.75px;
@@ -190,7 +192,8 @@ body {
 .hero__title span { display: block; }
 
 .hero__lead {
-  max-width: clamp(275.28px, 30.8333vw, 444.0px);
+  /* Узкая колонка — текст ложится в три строки, как просили */
+  max-width: clamp(240px, 22.9vw, 330px);
   margin: 0;
   font-size: clamp(9.92px, 1.1111vw, 16.0px);
   font-weight: 300;
@@ -208,12 +211,12 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(9.3px, 1.0417vw, 15.0px) clamp(12.4px, 1.3889vw, 20.0px);
+  padding: clamp(13px, 1.32vw, 19px) clamp(20px, 2.15vw, 31px);
   background: #fff;
   border-radius: 68.75px;
   color: #0e0404;
   font-family: var(--font-num);
-  font-size: clamp(6.2px, 0.6944vw, 10.0px);
+  font-size: clamp(10.5px, 0.9vw, 13px);
   font-weight: 700;
   letter-spacing: 0.2px;
   text-transform: uppercase;
@@ -224,22 +227,20 @@ body {
 .hero__cta-icon {
   display: grid;
   place-items: center;
-  width: clamp(34.1px, 3.8194vw, 55.0px);
-  height: clamp(27.28px, 3.0556vw, 44.0px);
-  margin-left: clamp(2.48px, 0.2778vw, 4.0px);
+  width: clamp(44px, 4.24vw, 61px);
+  height: clamp(40px, 3.68vw, 53px);
+  margin-left: 0;
   background: #fff;
   border-radius: 110px;
   color: #0e0404;
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .hero__cta-icon svg {
-  width: clamp(7.44px, 0.8333vw, 12.0px);
-  height: clamp(7.44px, 0.8333vw, 12.0px);
+  width: clamp(10px, 0.97vw, 14px);
+  height: clamp(10px, 0.97vw, 14px);
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hero__cta:hover .hero__cta-label { transform: translateX(-2px); }
-.hero__cta:hover .hero__cta-icon { transform: translateX(2px); }
 .hero__cta:hover .hero__cta-icon svg { transform: translate(2px, -2px); }
 
 /* ---------- Цифры ----------
@@ -251,7 +252,7 @@ body {
   flex-shrink: 0;
   display: flex;
   justify-content: center;
-  padding: 0 20px clamp(15.5px, 1.7361vw, 25.0px);
+  padding: 0 20px clamp(35.5px, 3.125vw, 45.0px);
 }
 
 .stats__inner {
@@ -338,10 +339,12 @@ body {
 /* ---------- Мобильные ---------- */
 
 @media (max-width: 720px) {
-  :root { --k: 1; }
-
+  /* На мобильных меню и CTA скрыты — трёхколоночная сетка не нужна,
+     возвращаем flex, иначе бургер уезжает в среднюю колонку. */
   .nav {
+    display: flex;
     justify-content: space-between;
+    align-items: center;
     gap: 16px;
     padding: 22px 20px 0;
   }
