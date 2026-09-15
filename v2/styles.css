@@ -291,7 +291,7 @@ body {
 }
 
 .stat__label {
-  max-width: clamp(89.9px, 10.0694vw, 145.0px);
+  max-width: clamp(102px, 11.4583vw, 165.0px);
   color: var(--text-dim);
   font-size: clamp(8.68px, 0.9722vw, 14.0px);
   font-weight: 300;
