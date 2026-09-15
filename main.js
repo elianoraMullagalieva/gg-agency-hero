@@ -383,7 +383,279 @@
     });
   }
 
+
+  /* ============================================================
+     ПРЕЛОАДЕР — OrbConverge (Originkit), портирован с React.
+     Сфера из точек ритмично схлопывается в кольцо и обратно.
+     Пресет: dotColor #AC0C0F, dotSize 150, speed 34,
+     spread 100, turn 0, tilt 0, drag 100, damping 20.
+     ============================================================ */
+
+  function initOrb(canvas) {
+    var ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+
+    var TAU = Math.PI * 2;
+    var PERIOD = 4.8;
+    var BASE_SPREAD = 0.3;
+    var PERSPECTIVE = 3.5;
+    var MIN_RADIUS = 0.6;
+    var MAX_DOTS = 1024;
+
+    var P = {
+      dot: "#AC0C0F",
+      density: 300 / 100,
+      dotSize: 150 / 100,
+      speed: 34 / 50,
+      spinTurns: 1,
+      spread: 100 / 100,
+      turn: 0,
+      tilt: 0,
+      drag: 100 / 100,
+      damping: 20
+    };
+
+    function clamp01(x) { return x < 0 ? 0 : (x > 1 ? 1 : x); }
+    function clampN(v, lo, hi) { return v < lo ? lo : (v > hi ? hi : v); }
+    function bump(x) { return 0.5 - 0.5 * Math.cos(TAU * clamp01(x)); }
+
+    // Точки распределяются по сфере спиралью Фибоначчи — ложатся равномерно
+    function fib(i, n) {
+      var y = 1 - (i / Math.max(1, n - 1)) * 2;
+      var r = Math.sqrt(Math.max(0, 1 - y * y));
+      var th = 2.399963 * i;
+      return [Math.cos(th) * r, y, Math.sin(th) * r];
+    }
+
+    function polar(p) {
+      return [Math.acos(Math.max(-1, Math.min(1, p[1]))), Math.atan2(p[2], p[0])];
+    }
+
+    function spin(p, yaw, pitch) {
+      var ca = Math.cos(yaw), sa = Math.sin(yaw);
+      var rx = p[0] * ca - p[2] * sa;
+      var rz = p[0] * sa + p[2] * ca;
+      var co = Math.cos(pitch), so = Math.sin(pitch);
+      var ry = p[1] * co - rz * so;
+      rz = p[1] * so + rz * co;
+      return [rx, ry, rz, p[3], p[4]];
+    }
+
+    // t = 0…1 — фаза схлопывания: сфера → кольцо → сфера
+    function buildFrame(t, out) {
+      var n = Math.max(1, Math.round(150 * P.density));
+      var k = bump(t);
+      for (var i = 0; i < n; i++) {
+        var p = polar(fib(i, n));
+        var th = p[0] + (Math.PI / 2 - p[0]) * k;
+        var sr = Math.sin(th);
+        out.push(spin(
+          [Math.cos(p[1]) * sr, Math.cos(th), Math.sin(p[1]) * sr, 0.8 + 0.5 * k, 0.9],
+          TAU * t, 0.4
+        ));
+      }
+    }
+
+    function project(pts, size, yaw, pitch, phase, emit) {
+      var c = size / 2;
+      var R = size * BASE_SPREAD * P.spread;
+      var pv = PERSPECTIVE;
+      var ds = dotScaleFor(size) * P.dotSize;
+      var y2 = yaw + TAU * P.spinTurns * phase;
+      var list = [];
+      for (var i = 0; i < pts.length; i++) {
+        var q = spin(pts[i], y2, pitch);
+        var z = q[2];
+        var s = pv / (pv - z);
+        var f = clamp01((z + 1.1) / 2.2);
+        list.push([
+          c + q[0] * R * s,
+          c + q[1] * R * s,
+          ds * (0.4 + 1.6 * f) * s * (q[3] === undefined ? 1 : q[3]),
+          (0.07 + 0.93 * Math.pow(f, 1.55)) * (q[4] === undefined ? 1 : q[4]),
+          z
+        ]);
+      }
+      // дальние точки рисуем первыми
+      list.sort(function (a, b) { return a[4] - b[4]; });
+      for (var j = 0; j < list.length; j++) emit(list[j][0], list[j][1], list[j][2], list[j][3]);
+    }
+
+    function dotScaleFor(size) {
+      if (size <= 46) return 0.4;
+      if (size <= 190) return 0.4 + ((size - 46) / 144) * 0.6;
+      if (size <= 340) return 1 + ((size - 190) / 150) * 0.55;
+      return 1.55;
+    }
+
+    // Подгоняем масштаб, чтобы сфера не вылезала за холст ни в одной фазе
+    var fitCache = null;
+    function autoFit(size) {
+      if (fitCache && fitCache.size === size) return fitCache.fit;
+      var half = size / 2, ext = 0;
+      for (var k = 0; k < 20; k++) {
+        var t = k / 20;
+        var out = [];
+        buildFrame(t, out);
+        project(out, size, P.turn, P.tilt, t, function (x, y, r, a) {
+          if (a <= 0.05 || r <= 0.15) return;
+          ext = Math.max(ext, Math.abs(x - half) + 0.5 * r, Math.abs(y - half) + 0.5 * r);
+        });
+      }
+      var fit = ext > 1 ? Math.max(0.55, Math.min(1.7, (0.415 * size) / ext)) : 1;
+      fitCache = { size: size, fit: fit };
+      return fit;
+    }
+
+    var drag = { active: false, lx: 0, ly: 0, lt: 0, yaw: 0, pitch: 0, vx: 0, vy: 0 };
+    var phase = 0, last = performance.now(), raf = 0, alive = true;
+
+    function render(now) {
+      if (!alive) return;
+      var dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var cw = canvas.clientWidth || 300;
+      var ch = canvas.clientHeight || 300;
+      var bw = Math.max(1, Math.round(cw * dpr));
+      var bh = Math.max(1, Math.round(ch * dpr));
+      if (canvas.width !== bw || canvas.height !== bh) {
+        canvas.width = bw;
+        canvas.height = bh;
+        fitCache = null;
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, cw, ch);
+
+      phase = (phase + (dt * P.speed) / PERIOD) % 1;
+      if (phase < 0) phase += 1;
+
+      var size = Math.max(4, Math.min(cw, ch));
+      var bx = (cw - size) / 2, by = (ch - size) / 2;
+
+      if (!drag.active) {
+        var decay = Math.exp(-P.damping * 0.12 * dt);
+        drag.yaw += drag.vx * dt;
+        drag.pitch += drag.vy * dt;
+        drag.vx *= decay;
+        drag.vy *= decay;
+      }
+      drag.pitch = clampN(drag.pitch, -Math.PI / 2 - P.tilt, Math.PI / 2 - P.tilt);
+
+      var fit = autoFit(size);
+      var half = size / 2;
+      var out = [];
+      buildFrame(phase, out);
+
+      var drawn = 0;
+      ctx.fillStyle = P.dot;
+      project(out, size, P.turn + drag.yaw, P.tilt + drag.pitch, phase,
+        function (x, y, r, a) {
+          if (drawn >= MAX_DOTS) return;
+          var rr = r * (0.55 + 0.45 * fit);
+          if (rr <= 0.05 || a <= 0.004) return;
+          var cx = bx + half + (x - half) * fit;
+          var cy = by + half + (y - half) * fit;
+          var dr = rr, da = Math.min(1, a);
+          if (dr < MIN_RADIUS) {
+            da *= (dr / MIN_RADIUS) * (dr / MIN_RADIUS);
+            dr = MIN_RADIUS;
+          }
+          ctx.globalAlpha = da;
+          ctx.beginPath();
+          ctx.arc(cx, cy, dr, 0, TAU);
+          ctx.fill();
+          drawn++;
+        });
+      ctx.globalAlpha = 1;
+
+      raf = requestAnimationFrame(render);
+    }
+
+    // Сферу можно крутить мышью
+    function onDown(e) {
+      if (P.drag <= 0) return;
+      drag.active = true;
+      drag.lx = e.clientX; drag.ly = e.clientY;
+      drag.lt = performance.now();
+      drag.vx = 0; drag.vy = 0;
+      try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+    }
+    function onMove(e) {
+      if (!drag.active) return;
+      var k = (P.drag * TAU) / Math.max(1, canvas.clientWidth || 300);
+      var dx = (e.clientX - drag.lx) * k;
+      var dy = (e.clientY - drag.ly) * k;
+      var now2 = performance.now();
+      var span = Math.max(1, now2 - drag.lt);
+      drag.lx = e.clientX; drag.ly = e.clientY; drag.lt = now2;
+      drag.yaw -= dx;
+      drag.pitch += dy;
+      drag.vx = (-dx / span) * 1000;
+      drag.vy = (dy / span) * 1000;
+    }
+    function onUp() { drag.active = false; }
+
+    canvas.addEventListener("pointerdown", onDown);
+    canvas.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+    window.addEventListener("pointercancel", onUp);
+
+    raf = requestAnimationFrame(render);
+
+    return function stop() {
+      alive = false;
+      cancelAnimationFrame(raf);
+      canvas.removeEventListener("pointerdown", onDown);
+      canvas.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      window.removeEventListener("pointercancel", onUp);
+    };
+  }
+
+  /* ---------- Логика ухода прелоадера ---------- */
+
+  function initPreloader() {
+    var node = document.getElementById("preloader");
+    if (!node) return;
+
+    var canvas = node.querySelector(".preloader__canvas");
+    var stop = canvas ? initOrb(canvas) : null;
+
+    var MIN_SHOW = 1400;   // сфера должна успеть отыграть фазу
+    var MAX_WAIT = 6000;   // страховка: не держим дольше
+    var began = performance.now();
+    var finished = false;
+
+    function finish() {
+      if (finished) return;
+      finished = true;
+
+      var wait = Math.max(0, MIN_SHOW - (performance.now() - began));
+      setTimeout(function () {
+        node.classList.add("is-done");
+        // герой стартует только теперь — иначе анимация отыграет под прелоадером
+        document.body.classList.remove("is-loading");
+        setTimeout(function () {
+          if (stop) stop();
+          if (node.parentNode) node.parentNode.removeChild(node);
+        }, 700);
+      }, wait);
+    }
+
+    var ready = document.fonts && document.fonts.ready
+      ? document.fonts.ready
+      : Promise.resolve();
+
+    ready.then(finish);
+    window.addEventListener("load", finish);
+    setTimeout(finish, MAX_WAIT);
+  }
+
   /* ---------- Старт ---------- */
+
+  initPreloader();
 
   var glyphCanvas = document.querySelector(".hero__glyphs");
   if (glyphCanvas) initGlyphs(glyphCanvas);

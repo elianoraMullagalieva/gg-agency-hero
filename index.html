@@ -11,7 +11,13 @@
 
 <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
+<body class="is-loading">
+
+<!-- Прелоадер: сфера из точек, схлопывается в кольцо и обратно -->
+<div class="preloader" id="preloader">
+  <canvas class="preloader__canvas" aria-hidden="true"></canvas>
+  <p class="preloader__label">GG AGENCY</p>
+</div>
 
 <section class="hero">
   <!-- Слой 1: сетка глифов Sales — тусклая, с бегущей волной -->
@@ -46,8 +52,8 @@
     </h1>
 
     <p class="hero__lead">
-      Строим систему постоянных продаж — то, что каждый день доводит
-      человека от интереса до оплаты.
+      Строим систему постоянных продаж —&nbsp;то,&nbsp;что каждый день
+      доводит человека от&nbsp;интереса до&nbsp;оплаты.
     </p>
 
     <a class="hero__cta" href="#">

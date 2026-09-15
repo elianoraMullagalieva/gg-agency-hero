@@ -192,10 +192,11 @@ body {
 .hero__title span { display: block; }
 
 .hero__lead {
-  /* Узкая колонка — текст ложится в три строки, как просили */
-  max-width: clamp(240px, 22.9vw, 330px);
+  /* Узкая колонка — текст ложится в три строки, как просили.
+     Кегль на 10% крупнее макетного (16 → 17.6px). */
+  max-width: clamp(264px, 25.2vw, 363px);
   margin: 0;
-  font-size: clamp(9.92px, 1.1111vw, 16.0px);
+  font-size: clamp(10.91px, 1.2222vw, 17.6px);
   font-weight: 300;
   line-height: 1.29;
 }
@@ -471,4 +472,68 @@ body {
     opacity: 1 !important;
     transform: none !important;
   }
+}
+
+/* ============================================================
+   ПРЕЛОАДЕР
+   Сфера из точек (OrbConverge, Originkit) на чёрном фоне.
+   Держится, пока грузятся шрифты, затем уходит — и только после
+   этого стартует анимация появления героя.
+   ============================================================ */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader__canvas {
+  width: min(42vmin, 340px);
+  height: min(42vmin, 340px);
+  display: block;
+  touch-action: none;
+}
+
+.preloader__label {
+  position: absolute;
+  bottom: clamp(32px, 6vh, 64px);
+  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-ui);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.75; }
+}
+
+/* Прелоадер отработал — убираем его из потока */
+.preloader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Пока висит прелоадер, герой ждёт: иначе анимация появления
+   отыграет под ним и пользователь её не увидит. */
+body.is-loading .nav,
+body.is-loading .hero__title span,
+body.is-loading .hero__lead,
+body.is-loading .hero__cta,
+body.is-loading .stats__inner {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preloader { transition: none; }
+  .preloader__label { animation: none; }
 }
