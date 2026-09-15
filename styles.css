@@ -308,7 +308,7 @@ body {
 
 /* ---------- Планшет ---------- */
 
-@media (max-width: 1100px) {
+@media (min-width: 721px) and (max-width: 1100px) {
   .nav {
     gap: clamp(24px, 3.3vw, 48px);
     padding: clamp(26px, 3.4vw, 38px) clamp(24px, 3.4vw, 48px) 0;
@@ -318,12 +318,22 @@ body {
   .nav__menu a { font-size: clamp(12px, 1.35vw, 14px); }
   .nav__cta { font-size: clamp(8.5px, 0.95vw, 10px); }
 
-  /* На высоких экранах остаток высоты огромный и блок проваливался
-     вниз — держим его в верхней трети, как в макете (top 207/810). */
+  /* Планшет: экран высокий, содержимого мало. Любой auto-марджин
+     сгонял весь остаток в одно место (дыра 300-600px). Делим запас
+     поровну между тремя зонами — над блоком, под ним и под цифрами. */
+  .hero {
+    justify-content: space-evenly;
+  }
   .hero__body {
     flex: 0 1 auto;
-    margin-top: clamp(40px, 12vh, 120px);
-    margin-bottom: auto;
+    margin: 0 auto;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .stats {
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: clamp(16px, 2.5vh, 32px);
   }
 
   .stats__inner { gap: clamp(28px, 4vw, 48px); }
