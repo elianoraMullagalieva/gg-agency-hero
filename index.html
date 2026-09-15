@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GG Agency — Строим продажи под ключ</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<section class="hero">
+  <!-- Слой 1: сетка глифов Sales — тусклая, с бегущей волной -->
+  <canvas class="hero__glyphs" aria-hidden="true"></canvas>
+
+  <!-- Слой 2: WebGL-поле квадратных точек, изгибающееся по параболе -->
+  <canvas class="hero__bg" aria-hidden="true"></canvas>
+
+  <header class="nav">
+    <a class="nav__logo" href="#">GG AGENCY</a>
+
+    <nav class="nav__menu" aria-label="Основная навигация">
+      <a href="#">Построение продаж</a>
+      <a href="#">С кем работаем</a>
+      <a href="#">Кейсы</a>
+      <a href="#">Услуги</a>
+      <a href="#">Команда</a>
+    </nav>
+
+    <a class="nav__cta" href="#">получить консультацию</a>
+
+    <button class="nav__burger" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main class="hero__body">
+    <h1 class="hero__title">
+      <span>Строим продажи</span>
+      <span>под ключ</span>
+    </h1>
+
+    <p class="hero__lead">
+      Строим систему постоянных продаж — то, что каждый день доводит
+      человека от интереса до оплаты.
+    </p>
+
+    <a class="hero__cta" href="#">
+      <span class="hero__cta-label">Узнать, где вы теряете деньги</span>
+      <span class="hero__cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.378 0H2.5v1.25h6.74L.44 10.05l.884.884L10.75 2.51v6.74H12V.624A.624.624 0 0 0 11.378 0Z"
+                fill="currentColor"/>
+        </svg>
+      </span>
+    </a>
+  </main>
+
+  <footer class="stats">
+    <div class="stats__inner">
+      <div class="stat">
+        <span class="stat__value">130+</span>
+        <span class="stat__label">отделов продаж построено за 4 года</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">×4-8</span>
+        <span class="stat__label">рост выручки в долгосрочной работе</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">15-20%</span>
+        <span class="stat__label">выручки ежемесячно приносит база</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sheet" id="mobile-menu" hidden>
+    <a href="#">Построение продаж</a>
+    <a href="#">С кем работаем</a>
+    <a href="#">Кейсы</a>
+    <a href="#">Услуги</a>
+    <a href="#">Команда</a>
+    <a class="sheet__cta" href="#">получить консультацию</a>
+  </div>
+</section>
+
+<script src="main.js"></script>
+</body>
+</html>
