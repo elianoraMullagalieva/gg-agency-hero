@@ -537,3 +537,8 @@ body.is-loading .stats__inner {
   }
   .preloader__label { animation: none; }
 }
+
+/* Переносы подзаголовка заданы неразрывными пробелами в разметке.
+   text-wrap: pretty из общего правила p,li переставлял строки
+   по своему алгоритму — здесь отключаем адресно. */
+p.hero__lead { text-wrap: normal; }

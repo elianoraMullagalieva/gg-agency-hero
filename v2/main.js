@@ -174,11 +174,23 @@
     gl.uniform3fv(U.uHigh, high);
 
     // Плотность 0…100 → размер ячейки в пикселях (больше плотность — мельче ячейка)
-    var cell = 26 - (clampN(OPTS.density, 0, 100) / 100) * 18;
-    var dot  = cell * (clampN(OPTS.dotSize, 10, 300) / 100);
+    var baseCell = 26 - (clampN(OPTS.density, 0, 100) / 100) * 18;
 
-    gl.uniform1f(U.uCell, cell);
-    gl.uniform1f(U.uDot, dot);
+    /* Ячейка задана под макет 1440. Без пересчёта на телефоне в кадр
+       попадает втрое меньше колонок и сетка выглядит «отзумленной» —
+       масштабируем её пропорционально ширине вьюпорта. */
+    function cellFor(cssWidth) {
+      var k = clampN(cssWidth / 1440, 0.42, 1.25);
+      return Math.max(3, baseCell * k);
+    }
+
+    function applyCell() {
+      var cssW = canvas.getBoundingClientRect().width || 1440;
+      var cell = cellFor(cssW);
+      gl.uniform1f(U.uCell, cell);
+      gl.uniform1f(U.uDot, cell * (clampN(OPTS.dotSize, 10, 300) / 100));
+    }
+    applyCell();
     gl.uniform1f(U.uPeak,   clampN(OPTS.arch.peak, 0, 200) / 100);
     gl.uniform1f(U.uHeight, clampN(OPTS.arch.archHeight, -200, 200) / 100);
     gl.uniform1f(U.uThick,  clampN(OPTS.arch.thickness, 1, 400) / 100);
@@ -201,6 +213,7 @@
       gl.viewport(0, 0, W, H);
       gl.uniform2f(U.uRes, W, H);
       gl.uniform1f(U.uDpr, dpr);
+      applyCell();
     }
 
     if (OPTS.pointer.enabled) {
