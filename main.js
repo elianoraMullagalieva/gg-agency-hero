@@ -387,7 +387,7 @@
   /* ============================================================
      ПРЕЛОАДЕР — OrbConverge (Originkit), портирован с React.
      Сфера из точек ритмично схлопывается в кольцо и обратно.
-     Пресет: dotColor #AC0C0F, dotSize 90, speed 34,
+     Пресет: dotColor #FFFFFF (белые, тонкие), dotSize 52, speed 34,
      spread 100, turn 0, tilt 0, drag 100, damping 20.
      ============================================================ */
 
@@ -403,9 +403,9 @@
     var MAX_DOTS = 1024;
 
     var P = {
-      dot: "#AC0C0F",
+      dot: "#FFFFFF",
       density: 300 / 100,
-      dotSize: 90 / 100,
+      dotSize: 52 / 100,
       speed: 34 / 50,
       spinTurns: 1,
       spread: 100 / 100,
