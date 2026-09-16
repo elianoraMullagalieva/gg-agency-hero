@@ -1,0 +1,869 @@
+/* ============================================================
+   GG Agency — hero «Строим отделы продаж под ключ» (вариант 2)
+   Макет Figma 1440×810 (node 2046:2382) + мобильный 391 (2051:2446).
+
+   Адаптация по «📐 Правила адаптации под все экраны»:
+   §02 — в каждом clamp() средняя часть содержит rem, иначе размеры
+         не реагируют на зум и системный шрифт. Коэффициенты по формуле
+         B = (s2−s1)/((W2−W1)/100), A = (s1 − B×W1/100)/16
+   §03 — оболочка растёт ступенями: --shell и --up
+   §04 — первый экран не привязан к 100vh жёстко, есть правила по высоте
+   §05 — низ прибит к низу (margin-top:auto), а не отсчитан от верха
+   §10 — text-wrap, ширина текста в ch
+   §11 — overflow-x: clip, [hidden] !important, max-content в сетке шапки
+   ============================================================ */
+
+:root {
+  --bg: #030303;
+  --text: #ffffff;
+  --text-dim: #f2f2f2;
+
+  /* Оттенки шейдера — из панели Originkit */
+  --arc-base: #7d0510;
+  --arc-accent: #710f11;
+  --arc-high: #ac0c0f;
+
+  --font-ui: -apple-system, "SF Pro Text", "Onest", system-ui, sans-serif;
+  --font-logo: "Onest", system-ui, sans-serif;
+  --font-num: "Manrope", "Onest", system-ui, sans-serif;
+
+  /* §03 · Оболочка и множитель для того, что не масштабируется само */
+  --shell: 1280px;
+  --up: 1;
+
+  --gutter: clamp(1.25rem, 0.7143rem + 2.2857vw, 5rem);
+}
+
+/* §03 · Ступени для больших мониторов */
+@media (min-width: 1600px) { :root { --shell: 1440px; --up: 1.06; } }
+@media (min-width: 1920px) { :root { --shell: 1640px; --up: 1.18; } }
+@media (min-width: 2400px) { :root { --shell: 1960px; --up: 1.42; } }
+@media (min-width: 3000px) { :root { --shell: 2340px; --up: 1.70; } }
+@media (min-width: 3600px) { :root { --shell: 2720px; --up: 2.00; } }
+
+* { box-sizing: border-box; }
+
+/* §11 · clip, а не hidden: hidden ломает sticky у вложенных элементов */
+html, body {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: clip;
+  background: var(--bg);
+}
+
+body {
+  color: var(--text);
+  font-family: var(--font-ui);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* §11 · атрибут hidden проигрывает display — нужен !important */
+[hidden] { display: none !important; }
+
+/* §10 · типографика без висячих слов */
+h1, h2, h3 { text-wrap: balance; }
+p, li { text-wrap: pretty; }
+
+/* ---------- Каркас ----------
+   §04+§05: высота по svh (гарантированно видимая зона в Safari),
+   верх и низ прибиты к краям, тянется только середина. */
+
+.hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: clip;
+  background: var(--bg);
+}
+
+.hero__glyphs,
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.hero__glyphs { z-index: 0; }
+
+.hero__bg {
+  z-index: 1;
+  mix-blend-mode: lighten;
+}
+
+.nav, .hero__body, .stats { position: relative; z-index: 2; }
+
+/* ---------- Хедер · прибит к верху ---------- */
+
+.nav {
+  flex: 0 0 auto;
+  display: grid;
+  /* §11 · max-content вместо жёсткой колонки — логотип не наезжает */
+  grid-template-columns: max-content 1fr max-content;
+  align-items: center;
+  gap: clamp(0.625rem, 0.2679rem + 1.5238vw, 3rem);
+  padding: clamp(1.375rem, 1.1607rem + 0.9143vw, 2.375rem) var(--gutter) 0;
+}
+
+.nav__logo {
+  color: var(--text);
+  font-family: var(--font-logo);
+  font-size: clamp(0.9375rem, 0.9155rem + 0.0939vw, 1.25rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.0625em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.nav__menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.875rem, 0.6071rem + 1.1429vw, 2.6rem);
+}
+
+.nav__menu a {
+  position: relative;
+  color: var(--text);
+  font-size: clamp(0.75rem, 0.7115rem + 0.1643vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.35;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0.92;
+  transition: opacity 0.3s ease, text-shadow 0.35s ease;
+}
+
+.nav__menu a:hover {
+  opacity: 1;
+  /* мягкое свечение вместо подчёркивания */
+  text-shadow: 0 0 calc(12px * var(--up)) rgba(255, 255, 255, 0.55),
+               0 0 calc(28px * var(--up)) rgba(255, 255, 255, 0.25);
+}
+
+.nav__cta {
+  justify-self: end;
+  padding: clamp(0.6875rem, 0.6215rem + 0.2816vw, 1.125rem)
+           clamp(1.125rem, 1.0149rem + 0.4695vw, 1.875rem);
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  color: var(--text);
+  font-family: var(--font-num);
+  font-size: clamp(0.625rem, 0.5965rem + 0.1216vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.26s ease, color 0.26s ease;
+}
+.nav__cta:hover {
+  background: var(--text);
+  color: #0e0404;
+}
+
+.nav__burger { display: none; }
+
+/* ---------- Середина · единственная тянущаяся зона ---------- */
+
+.hero__body {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1.125rem, 0.8571rem + 1.1429vw, 2.75rem);
+  width: 100%;
+  max-width: min(var(--shell), 100% - var(--gutter) * 2);
+  margin: 0 auto;
+  padding: clamp(1.25rem, 1rem + 1.0667vw, 2.5rem) 0;
+  text-align: center;
+}
+
+.hero__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.875rem, 0.6607rem + 0.9143vw, 1.875rem);
+}
+
+/* §02 · Заголовок: 40@375 → 77@1440, потолок 108 на 4K */
+.hero__title {
+  margin: 0;
+  font-family: -apple-system, "SF Pro Text", "Onest", system-ui, sans-serif;
+  font-size: clamp(2.5rem, 1.6857rem + 3.4742vw, 6.75rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+}
+.hero__title span { display: block; }
+
+/* §10 · ширину ограничиваем у текста, в ch */
+.hero__lead {
+  max-width: 52ch;
+  margin: 0;
+  color: var(--text);
+  font-size: clamp(0.875rem, 0.7958rem + 0.338vw, 1.375rem);
+  font-weight: 300;
+  line-height: 1.4;
+}
+
+/* Кнопка: плашка и круг вплотную */
+.hero__cta {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  /* Круг со стрелкой висит справа и утягивал оптический центр влево
+     на свою половину. margin сдвигал бы контейнер, но центрирование
+     пересчиталось бы с учётом отступа и съело половину эффекта —
+     поэтому transform: он не влияет на раскладку. */
+  --cta-shift: clamp(1.375rem, 1.2321rem + 0.6095vw, 2.25rem);
+  transform: translateX(var(--cta-shift));
+
+  /* §04 · воздух перед кнопкой сверх общего gap блока */
+  margin-top: clamp(0.5rem, 0.3214rem + 0.7619vw, 1.5rem);
+}
+
+.hero__cta-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.8125rem, 0.7245rem + 0.3756vw, 1.375rem)
+           clamp(1.25rem, 1.0714rem + 0.7619vw, 2.375rem);
+  background: #fff;
+  border-radius: 999px;
+  color: #0e0404;
+  font-family: var(--font-ui);
+  font-size: clamp(0.6875rem, 0.6193rem + 0.291vw, 1.0625rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.hero__cta-icon {
+  display: grid;
+  place-items: center;
+  width: clamp(2.75rem, 2.4643rem + 1.219vw, 4.5rem);
+  height: clamp(2.5rem, 2.2857rem + 0.9143vw, 3.875rem);
+  background: #fff;
+  border-radius: 999px;
+  color: #0e0404;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.hero__cta-icon svg {
+  width: clamp(0.625rem, 0.5714rem + 0.2286vw, 1rem);
+  height: clamp(0.625rem, 0.5714rem + 0.2286vw, 1rem);
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__cta:hover .hero__cta-icon svg { transform: translate(2px, -2px); }
+
+/* ---------- Цифры · прибиты к низу (§05) ---------- */
+
+.stats {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  /* margin-top:auto прижимает к низу, а не отсчитывает от верха */
+  margin-top: auto;
+  padding: 0 var(--gutter)
+           calc(clamp(1.25rem, 1.0714rem + 0.7619vw, 2.75rem)
+                + env(safe-area-inset-bottom, 0px));
+}
+
+.stats__inner {
+  position: relative;
+  display: flex;
+  gap: clamp(1.75rem, 0.1429rem + 6.8571vw, 13.125rem);
+  padding: clamp(0.875rem, 0.7857rem + 0.381vw, 1.5rem)
+           clamp(1.25rem, 1.0714rem + 0.7619vw, 2.5rem);
+  background: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: calc(10px * var(--up));
+  box-shadow: inset 0 0 calc(68px * var(--up)) 0 rgba(255, 255, 255, 0.05);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.375rem, 0.3304rem + 0.1905vw, 0.75rem);
+}
+
+.stat__value {
+  color: var(--text);
+  font-family: var(--font-num);
+  font-size: clamp(1.625rem, 1.3169rem + 1.3146vw, 3.25rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* §10 · подпись всегда в две строки: ширина в ch, не в px */
+.stat__label {
+  max-width: 19ch;
+  color: var(--text-dim);
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.35;
+}
+
+/* ---------- Появление ---------- */
+
+.nav, .hero__title span, .hero__lead, .hero__cta, .stats__inner {
+  opacity: 0;
+  animation: rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+.nav               { animation-delay: 0.05s; }
+.hero__title span:nth-child(1) { animation-delay: 0.18s; }
+.hero__title span:nth-child(2) { animation-delay: 0.30s; }
+.hero__lead        { animation-delay: 0.42s; }
+.hero__cta         { animation-name: riseCta; animation-delay: 0.52s; }
+.stats__inner      { animation-delay: 0.62s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(1rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* У кнопки свой сдвиг по X — обычный rise его стирал,
+   поэтому отдельная анимация с сохранением translateX. */
+@keyframes riseCta {
+  from { opacity: 0; transform: translate(var(--cta-shift), 1rem); }
+  to   { opacity: 1; transform: translate(var(--cta-shift), 0); }
+}
+
+/* ============================================================
+   §04 · Низкие экраны: vw не знает про высоту
+   ============================================================ */
+
+@media (min-width: 901px) and (max-height: 820px) {
+  .hero__body { gap: clamp(0.875rem, 2vh, 1.75rem); }
+  .hero__title { font-size: clamp(2.5rem, 1.5rem + 3vw, 4.5rem); }
+}
+
+@media (min-width: 901px) and (max-height: 700px) {
+  .hero__title { font-size: clamp(2.25rem, 1.25rem + 2.6vw, 3.75rem); }
+  .hero__text { gap: 0.75rem; }
+  .stats { padding-bottom: 1rem; }
+}
+
+@media (min-width: 901px) and (max-height: 620px) {
+  .hero__title { font-size: clamp(2rem, 1rem + 2.2vw, 3rem); }
+  .hero__lead { display: none; }
+}
+
+/* ============================================================
+   Мобильные · до 720px
+   ============================================================ */
+
+@media (max-width: 720px) {
+  .nav {
+    grid-template-columns: max-content max-content;
+    justify-content: space-between;
+    padding: 1.375rem var(--gutter) 0;
+  }
+  .nav__menu, .nav__cta { display: none; }
+
+  .nav__burger {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 5px;
+    width: 1.625rem;
+    height: 1.625rem;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .nav__burger span {
+    display: block;
+    width: 1.375rem;
+    height: 1.5px;
+    background: #fff;
+    transition: transform 0.28s ease, width 0.28s ease;
+  }
+  .nav__burger span:nth-child(2) { width: 0.875rem; }
+  .nav__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
+  .nav__burger[aria-expanded="true"] span:nth-child(2) { width: 1.375rem; transform: translateY(-3.25px) rotate(-45deg); }
+
+  .hero__lead { max-width: 33ch; }
+
+  /* Цифры по макету: узкая подложка, каждый блок колонкой по центру —
+     значение сверху, подпись под ним. */
+  .stats__inner {
+    flex-direction: column;
+    gap: 1.875rem;
+    width: min(12.125rem, 100%);
+    padding: 1.375rem 1.5rem;
+  }
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  .stat__value { font-family: var(--font-ui); }
+  .stat__label {
+    max-width: none;
+    font-family: var(--font-ui);
+    text-align: center;
+  }
+
+  body.menu-open { overflow: hidden; }
+}
+
+/* §04 · мобильные низкие экраны */
+@media (max-width: 600px) and (max-height: 760px) {
+  .hero__body { gap: 1rem; }
+  .hero__text { gap: 0.75rem; }
+  .stats { padding-bottom: 0.875rem; }
+}
+
+/* ============================================================
+   §08 · Производительность: дорогие статичные эффекты
+   ============================================================ */
+
+@media (max-width: 1200px) {
+  .stats__inner {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(0, 0, 0, 0.28);
+  }
+}
+
+/* ---------- Мобильное меню ---------- */
+
+@media (min-width: 721px) {
+  .sheet { display: none !important; }
+}
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1.5rem;
+  background: rgba(3, 3, 3, 0.94);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: fade 0.26s ease both;
+}
+
+.sheet a {
+  padding: 0.875rem;
+  color: #fff;
+  font-size: 1.125rem;
+  font-weight: 300;
+  text-decoration: none;
+}
+
+.sheet__cta {
+  margin-top: 0.875rem;
+  padding: 0.875rem 1.625rem !important;
+  border: 1px solid #fff;
+  border-radius: 999px;
+  font-family: var(--font-num);
+  font-size: 0.6875rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ============================================================
+   ПРЕЛОАДЕР
+   ============================================================ */
+
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.preloader__canvas {
+  width: min(42vmin, calc(340px * var(--up)));
+  height: min(42vmin, calc(340px * var(--up)));
+  display: block;
+  touch-action: none;
+}
+
+.preloader__label {
+  position: absolute;
+  bottom: clamp(2rem, 6vh, 4rem);
+  margin: 0;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; }
+  50%      { opacity: 0.75; }
+}
+
+.preloader.is-done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Пока висит прелоадер, герой ждёт */
+body.is-loading .nav,
+body.is-loading .hero__title span,
+body.is-loading .hero__lead,
+body.is-loading .hero__cta,
+body.is-loading .stats__inner {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .nav, .hero__title span, .hero__lead, .stats__inner {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .hero__cta {
+    opacity: 1 !important;
+    transform: translateX(var(--cta-shift)) !important;
+  }
+  .preloader__label { animation: none; }
+}
+
+/* Переносы подзаголовка заданы неразрывными пробелами в разметке.
+   text-wrap: pretty из общего правила p,li переставлял строки
+   по своему алгоритму — здесь отключаем адресно. */
+p.hero__lead { text-wrap: normal; }
+
+/* ============================================================
+   CTA · разбор
+   Фирменная палитра: бордовый #8a0c10, белый текст, кнопки —
+   белая заливка и контурная, как в первом экране.
+   ============================================================ */
+
+.band {
+  background: var(--arc-base);
+  color: var(--text);
+  padding: clamp(3.5rem, 2.3214rem + 5.0286vw, 9.5rem) var(--gutter);
+}
+
+.band__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: start;
+  gap: clamp(2rem, 0.5714rem + 6.0952vw, 9rem);
+  width: 100%;
+  max-width: min(var(--shell), 100%);
+  margin: 0 auto;
+}
+
+.band__kicker {
+  margin: 0 0 clamp(1rem, 0.7857rem + 0.9143vw, 2rem);
+  font-size: clamp(0.625rem, 0.5965rem + 0.1216vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  opacity: 0.85;
+}
+
+/* Заголовок блока: тот же приём, что в первом экране — HeadingNow,
+   узкое плотное начертание, две строки. */
+.band__title {
+  margin: 0 0 clamp(1.25rem, 1rem + 1.0667vw, 2.5rem);
+  font-family: "HeadingNow Var", -apple-system, sans-serif;
+  font-variation-settings: "wght" 1000, "wdth" 320;
+  font-size: clamp(2.5rem, 1.4286rem + 4.5714vw, 8rem);
+  line-height: 0.86;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+.band__title span { display: block; }
+
+.band__lead {
+  max-width: 46ch;
+  margin: 0;
+  font-size: clamp(0.9375rem, 0.8583rem + 0.338vw, 1.4375rem);
+  font-weight: 300;
+  line-height: 1.55;
+}
+
+.band__actions {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.625rem, 0.5357rem + 0.381vw, 1.25rem);
+  padding-top: clamp(1.5rem, 1.0714rem + 1.8286vw, 3.9rem);
+}
+
+/* Кнопки — те же, что в первом экране */
+.btn {
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 0.8571rem + 0.6095vw, 1.875rem)
+           clamp(1.25rem, 1.0714rem + 0.7619vw, 2.375rem);
+  font-family: var(--font-num);
+  font-size: clamp(0.75rem, 0.7115rem + 0.1643vw, 1.0625rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.26s ease, color 0.26s ease,
+              transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn--solid {
+  background: #fff;
+  color: var(--arc-base);
+}
+.btn--solid:hover { transform: translateY(-2px); }
+
+.btn--ghost {
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #fff;
+}
+.btn--ghost:hover {
+  background: #fff;
+  color: var(--arc-base);
+  transform: translateY(-2px);
+}
+
+/* ============================================================
+   FAQ · аккордеон
+   Механика из проекта Кэмпа: grid-template-rows 0fr → 1fr.
+   Палитра наша: чёрный фон, белый текст, бордовый плюс.
+   ============================================================ */
+
+.faq {
+  background: var(--bg);
+  color: var(--text);
+  padding: clamp(3.5rem, 2.3214rem + 5.0286vw, 9.5rem) 0;
+}
+
+.faq__head {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: clamp(1rem, 0.2857rem + 3.0476vw, 4.5rem);
+  align-items: start;
+  width: 100%;
+  max-width: min(var(--shell), 100%);
+  margin: 0 auto clamp(2rem, 1.2857rem + 3.0476vw, 5.5rem);
+  padding: 0 var(--gutter);
+}
+
+.faq__num {
+  margin: clamp(0.5rem, 0.4107rem + 0.381vw, 1.125rem) 0 0;
+  color: var(--arc-high);
+  font-size: clamp(0.625rem, 0.5965rem + 0.1216vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.faq__title {
+  margin: 0;
+  font-family: "HeadingNow Var", -apple-system, sans-serif;
+  font-variation-settings: "wght" 1000, "wdth" 320;
+  font-size: clamp(2.25rem, 1.3571rem + 3.8095vw, 6.875rem);
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.faq__list {
+  width: 100%;
+  max-width: min(var(--shell), 100%);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.faq__item { border-bottom: 1px solid rgba(255, 255, 255, 0.16); }
+
+.faq__trigger {
+  width: 100%;
+  min-height: clamp(4.25rem, 3.6607rem + 2.5143vw, 7.25rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) max-content;
+  align-items: center;
+  gap: clamp(1rem, 0.8571rem + 0.6095vw, 1.875rem);
+  padding: clamp(1rem, 0.8571rem + 0.6095vw, 1.875rem) 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.faq__trigger h3 {
+  margin: 0;
+  font-size: clamp(0.9375rem, 0.8583rem + 0.338vw, 1.4375rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.faq__plus {
+  display: grid;
+  width: clamp(1.75rem, 1.6071rem + 0.6095vw, 2.625rem);
+  height: clamp(1.75rem, 1.6071rem + 0.6095vw, 2.625rem);
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  color: var(--arc-high);
+  font-size: clamp(1.0625rem, 0.9833rem + 0.338vw, 1.5625rem);
+  font-weight: 300;
+  line-height: 1;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.faq__trigger:hover .faq__plus {
+  background: var(--arc-high);
+  border-color: var(--arc-high);
+  color: #fff;
+}
+
+/* Раскрытие без фиксированной высоты: 0fr → 1fr */
+.faq__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq__panel > div {
+  min-height: 0;
+  overflow: hidden;
+  max-width: 76ch;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.24s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.faq__item.is-open .faq__plus { transform: rotate(45deg); }
+.faq__item.is-open .faq__panel { grid-template-rows: 1fr; }
+.faq__item.is-open .faq__panel > div {
+  padding-bottom: clamp(1.25rem, 1.0714rem + 0.7619vw, 2.375rem);
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.faq__answer p {
+  margin: 0 0 0.75rem;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(0.875rem, 0.8183rem + 0.2416vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.6;
+}
+.faq__answer p:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   Футер
+   ============================================================ */
+
+.footer {
+  background: #0a0908;
+  color: var(--text);
+  padding: clamp(3rem, 2.2857rem + 3.0476vw, 6.5rem) var(--gutter)
+           calc(clamp(2rem, 1.6429rem + 1.5238vw, 3.75rem)
+                + env(safe-area-inset-bottom, 0px));
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 0.9286rem + 4.5714vw, 7.25rem);
+  width: 100%;
+  max-width: min(var(--shell), 100%);
+  margin: 0 auto;
+}
+
+.footer__logo {
+  display: inline-block;
+  color: var(--text);
+  font-family: var(--font-logo, var(--font-ui));
+  font-size: clamp(1.125rem, 1.0179rem + 0.4571vw, 1.75rem);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.footer__tagline {
+  margin: clamp(0.875rem, 0.7857rem + 0.381vw, 1.5rem) 0 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.75rem, 0.6607rem + 0.381vw, 1.375rem);
+}
+
+.footer__label {
+  margin: 0 0 clamp(0.25rem, 0.2054rem + 0.1905vw, 0.625rem);
+  color: rgba(255, 255, 255, 0.45);
+  font-size: clamp(0.625rem, 0.5965rem + 0.1216vw, 0.875rem);
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.footer__col a {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  text-decoration: none;
+  transition: color 0.24s ease, text-shadow 0.35s ease;
+}
+.footer__col a:hover {
+  color: #fff;
+  text-shadow: 0 0 calc(12px * var(--up)) rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- Мобильные ---------- */
+
+@media (max-width: 860px) {
+  .band__inner { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .band__actions { padding-top: 0; }
+  .band__lead { max-width: none; }
+
+  .faq__head { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+
+  .footer__inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2.25rem;
+  }
+}

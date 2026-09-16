@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GG Agency — версия 3</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+
+<!-- Прелоадер: сфера из точек, схлопывается в кольцо и обратно -->
+<div class="preloader" id="preloader">
+  <canvas class="preloader__canvas" aria-hidden="true"></canvas>
+  <p class="preloader__label">GG AGENCY</p>
+</div>
+
+<section class="hero">
+  <!-- Слой 1: сетка глифов Sales — тусклая, с бегущей волной -->
+  <canvas class="hero__glyphs" aria-hidden="true"></canvas>
+
+  <!-- Слой 2: WebGL-поле квадратных точек, изгибающееся по параболе -->
+  <canvas class="hero__bg" aria-hidden="true"></canvas>
+
+  <header class="nav">
+    <a class="nav__logo" href="#">GG AGENCY</a>
+
+    <nav class="nav__menu" aria-label="Основная навигация">
+      <a href="#">Построение продаж</a>
+      <a href="#">С кем работаем</a>
+      <a href="#">Кейсы</a>
+      <a href="#">Услуги</a>
+      <a href="#">Команда</a>
+    </nav>
+
+    <a class="nav__cta" href="#">получить консультацию</a>
+
+    <button class="nav__burger" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main class="hero__body">
+    <div class="hero__text">
+      <h1 class="hero__title">
+        <span>Строим отделы</span>
+        <span>продаж под ключ</span>
+      </h1>
+
+      <p class="hero__lead">
+      Строим систему постоянных&nbsp;продаж&nbsp;—
+      то, что каждый день доводит&nbsp;человека
+      от&nbsp;интереса до&nbsp;оплаты.
+    </p>
+    </div>
+
+    <a class="hero__cta" href="#">
+      <span class="hero__cta-label">Узнать, где вы теряете деньги</span>
+      <span class="hero__cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.378 0H2.5v1.25h6.74L.44 10.05l.884.884L10.75 2.51v6.74H12V.624A.624.624 0 0 0 11.378 0Z"
+                fill="currentColor"/>
+        </svg>
+      </span>
+    </a>
+  </main>
+
+  <footer class="stats">
+    <div class="stats__inner">
+      <div class="stat">
+        <span class="stat__value">130+</span>
+        <span class="stat__label">отделов продаж построено за 4 года</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">×4-8</span>
+        <span class="stat__label">рост выручки в долгосрочной работе</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">15-20%</span>
+        <span class="stat__label">выручки ежемесячно приносит база</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sheet" id="mobile-menu" hidden>
+    <a href="#">Построение продаж</a>
+    <a href="#">С кем работаем</a>
+    <a href="#">Кейсы</a>
+    <a href="#">Услуги</a>
+    <a href="#">Команда</a>
+    <a class="sheet__cta" href="#">получить консультацию</a>
+  </div>
+</section>
+
+<!-- ===== CTA · разбор ===== -->
+<section class="band">
+  <div class="band__inner">
+    <div class="band__text">
+      <p class="band__kicker">Начните с разбора</p>
+      <h2 class="band__title">
+        <span>Увидьте, где</span>
+        <span>утекают деньги</span>
+      </h2>
+      <p class="band__lead">
+        Ответьте на несколько вопросов в&nbsp;боте&nbsp;— и получите разбор
+        того, где именно вы теряете деньги. Без созвона, без обязательств
+        и без «оставьте заявку, мы&nbsp;перезвоним».
+      </p>
+    </div>
+
+    <div class="band__actions">
+      <a class="btn btn--solid" href="#">Узнать, где вы теряете деньги</a>
+      <a class="btn btn--ghost" href="#">Получить консультацию</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="faq" id="faq" aria-labelledby="faq-title">
+  <div class="faq__head">
+    <p class="faq__num">14 / Вопросы</p>
+    <h2 class="faq__title" id="faq-title">Частые вопросы</h2>
+  </div>
+
+  <div class="faq__list">
+    <article class="faq__item">
+      <button class="faq__trigger" type="button" aria-expanded="false">
+        <h3>Сколько это стоит?</h3>
+        <span class="faq__plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__panel"><div class="faq__answer">
+        <p>Стоимость зависит от задачи: построение отдела с нуля, оптимизация
+        действующего или сопровождение. На разборе считаем под ваши цифры —
+        выручку, средний чек и объём базы.</p>
+      </div></div>
+    </article>
+
+    <article class="faq__item">
+      <button class="faq__trigger" type="button" aria-expanded="false">
+        <h3>Сколько времени занимает?</h3>
+        <span class="faq__plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__panel"><div class="faq__answer">
+        <p>Отдел под запуск&nbsp;— подготовка 5–7 дней, весь цикл около месяца.
+        Построение и оптимизация&nbsp;— 2–3 месяца до системной работы,
+        дальше сопровождение с планом на полгода.</p>
+      </div></div>
+    </article>
+
+    <article class="faq__item">
+      <button class="faq__trigger" type="button" aria-expanded="false">
+        <h3>У нас уже есть менеджеры. Их придётся уволить?</h3>
+        <span class="faq__plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__panel"><div class="faq__answer">
+        <p>Нет. Сначала смотрим, кто и как продаёт: разбираем звонки, переписки
+        и конверсию каждого. Чаще проблема не в людях, а в отсутствии системы —
+        скриптов, регламентов и контроля.</p>
+      </div></div>
+    </article>
+
+    <article class="faq__item">
+      <button class="faq__trigger" type="button" aria-expanded="false">
+        <h3>Мы обжигались на подрядчиках. Чем вы отличаетесь?</h3>
+        <span class="faq__plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__panel"><div class="faq__answer">
+        <p>Мы не сдаём «отдел под ключ» и не исчезаем. Выстраиваем систему,
+        обучаем руководителя и передаём управление с планом на полгода вперёд.
+        За 4 года — 130+ отделов, метрики открыты на разборе.</p>
+      </div></div>
+    </article>
+
+    <article class="faq__item">
+      <button class="faq__trigger" type="button" aria-expanded="false">
+        <h3>Работаете с зарубежной аудиторией?</h3>
+        <span class="faq__plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__panel"><div class="faq__answer">
+        <p>Да. Работали с проектами на русскоязычную аудиторию за рубежом
+        и со смешанными рынками. Разница в каналах и часовых поясах —
+        система продаж остаётся той же.</p>
+      </div></div>
+    </article>
+
+    <article class="faq__item">
+      <button class="faq__trigger" type="button" aria-expanded="false">
+        <h3>Мы не онлайн-школа. Подойдёт?</h3>
+        <span class="faq__plus" aria-hidden="true">+</span>
+      </button>
+      <div class="faq__panel"><div class="faq__answer">
+        <p>Подойдёт, если продаёте через личный контакт: консалтинг, услуги,
+        экспертные продукты. Не подойдёт для розницы и маркетплейсов —
+        там другая механика.</p>
+      </div></div>
+    </article>
+  </div>
+</section>
+
+<!-- ===== Футер ===== -->
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <a class="footer__logo" href="#">GG AGENCY</a>
+      <p class="footer__tagline">
+        Системные продажи для онлайн-школ<br />и экспертных проектов
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label="Разделы">
+      <p class="footer__label">Разделы</p>
+      <a href="#">Построение постоянных продаж</a>
+      <a href="#">Кейсы</a>
+      <a href="#">С кем мы работаем</a>
+      <a href="#">Другие услуги</a>
+      <a href="#">Команда</a>
+    </nav>
+
+    <div class="footer__col">
+      <p class="footer__label">Связаться</p>
+      <a href="#">Telegram</a>
+      <a href="#">Instagram</a>
+      <a href="mailto:hello@ggagency.ru">hello@ggagency.ru</a>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
