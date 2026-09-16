@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GG Agency — Строим продажи под ключ</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preload" as="style"
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&family=Inter:wght@400;500&display=swap" />
+<link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&family=Inter:wght@400;500&display=swap"
+      media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&family=Inter:wght@400;500&display=swap" /></noscript>
+
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+
+<!-- Прелоадер: сфера из точек -->
+<div class="preloader" id="preloader">
+  <canvas class="preloader__canvas" aria-hidden="true"></canvas>
+  <p class="preloader__label">GG AGENCY</p>
+</div>
+
+<section class="hero">
+  <canvas class="hero__glyphs" aria-hidden="true"></canvas>
+  <canvas class="hero__bg" aria-hidden="true"></canvas>
+
+  <header class="nav" data-anim="nav">
+    <a class="nav__logo" href="#">GG AGENCY</a>
+
+    <nav class="nav__menu" aria-label="Основная навигация">
+      <a href="#">Построение продаж</a>
+      <a href="#">С кем работаем</a>
+      <a href="#">Кейсы</a>
+      <a href="#">Услуги</a>
+      <a href="#">Команда</a>
+    </nav>
+
+    <a class="nav__cta" href="#">получить консультацию</a>
+
+    <button class="nav__burger" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <div class="stage">
+    <!-- Левая колонка: заголовок, подзаголовок, кнопка -->
+    <div class="lede">
+      <h1 class="lede__title">
+        <span class="line"><i>Строим</i></span>
+        <span class="line"><i>продажи</i></span>
+        <span class="line"><i>под ключ</i></span>
+      </h1>
+
+      <p class="lede__text" data-anim="lead">
+        Самостоятельные команды и системы для онлайн-школ, которые
+        каждый день доводят людей от интереса до оплаты без вашего контроля
+      </p>
+
+      <a class="cta" href="#" data-anim="cta">
+        <span class="cta__label">Получить консультацию</span>
+        <span class="cta__icon" aria-hidden="true">
+          <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.378 0H2.5v1.25h6.74L.44 10.05l.884.884L10.75 2.51v6.74H12V.624A.624.624 0 0 0 11.378 0Z"
+                  fill="currentColor"/>
+          </svg>
+        </span>
+      </a>
+    </div>
+
+    <!-- Центр: телефон и всплывающие плашки -->
+    <div class="shot" data-anim="shot">
+      <picture>
+        <source media="(max-width: 820px)" srcset="assets/phone-mobile.png" />
+        <img class="shot__phone" src="assets/phone.png" alt=""
+             width="1069" height="1068" decoding="async" />
+      </picture>
+
+      <span class="pill pill--1" data-anim="pill" style="--i:0">
+        <img class="pill__ava" src="assets/badge-avatar.svg" alt="" width="32" height="32" />
+        <span class="pill__text">
+          <b>Новая продажа</b>
+          <i>70 000 ₽</i>
+        </span>
+      </span>
+
+      <span class="pill pill--2" data-anim="pill" style="--i:1">
+        <img class="pill__ava" src="assets/badge-avatar.svg" alt="" width="32" height="32" />
+        <span class="pill__text">
+          <b>Новая продажа</b>
+          <i>70 000 ₽</i>
+        </span>
+      </span>
+
+      <span class="pill pill--3" data-anim="pill" style="--i:2">
+        <img class="pill__ava" src="assets/badge-avatar.svg" alt="" width="32" height="32" />
+        <span class="pill__text">
+          <b>Новая продажа</b>
+          <i>70 000 ₽</i>
+        </span>
+      </span>
+    </div>
+
+    <!-- Правая колонка: цифры -->
+    <aside class="figures" data-anim="figures">
+      <div class="figure" style="--i:0">
+        <span class="figure__value" data-count="1" data-suffix="%">1%</span>
+        <span class="figure__label">наши проекты входят в Топ 1% Геткурса</span>
+      </div>
+      <div class="figure" style="--i:1">
+        <span class="figure__value" data-count="130" data-suffix="+">130+</span>
+        <span class="figure__label">отделов продаж построено за 4 года</span>
+      </div>
+      <div class="figure" style="--i:2">
+        <span class="figure__value">×4-8</span>
+        <span class="figure__label">рост выручки в долгосрочной работе</span>
+      </div>
+    </aside>
+  </div>
+
+  <div class="sheet" id="mobile-menu" hidden>
+    <a href="#">Построение продаж</a>
+    <a href="#">С кем работаем</a>
+    <a href="#">Кейсы</a>
+    <a href="#">Услуги</a>
+    <a href="#">Команда</a>
+    <a class="sheet__cta" href="#">получить консультацию</a>
+  </div>
+</section>
+
+<script src="main.js"></script>
+</body>
+</html>
