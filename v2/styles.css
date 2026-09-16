@@ -384,13 +384,13 @@ p, li { text-wrap: pretty; }
 
   .hero__lead { max-width: 33ch; }
 
-  /* Цифры колонкой в узкой подложке */
+  /* Цифры по макету: узкая подложка, каждый блок колонкой по центру —
+     значение сверху, подпись под ним. */
   .stats__inner {
     flex-direction: column;
-    gap: 1.25rem;
+    gap: 1.875rem;
     width: min(12.125rem, 100%);
     padding: 1.375rem 1.5rem;
-    gap: 1.875rem;
   }
   .stat {
     display: flex;
@@ -400,8 +400,11 @@ p, li { text-wrap: pretty; }
     gap: 0.5rem;
   }
   .stat__value { font-family: var(--font-ui); }
-  .stat__label { font-family: var(--font-ui); text-align: center; }
-  .stat__label { max-width: none; }
+  .stat__label {
+    max-width: none;
+    font-family: var(--font-ui);
+    text-align: center;
+  }
 
   body.menu-open { overflow: hidden; }
 }
