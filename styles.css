@@ -217,6 +217,15 @@ p, li { text-wrap: pretty; }
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+  /* Круг со стрелкой висит справа и утягивал оптический центр влево
+     на свою половину. margin сдвигал бы контейнер, но центрирование
+     пересчиталось бы с учётом отступа и съело половину эффекта —
+     поэтому transform: он не влияет на раскладку. */
+  --cta-shift: clamp(1.375rem, 1.2321rem + 0.6095vw, 2.25rem);
+  transform: translateX(var(--cta-shift));
+
+  /* §04 · воздух перед кнопкой сверх общего gap блока */
+  margin-top: clamp(0.5rem, 0.3214rem + 0.7619vw, 1.5rem);
 }
 
 .hero__cta-label {
@@ -316,12 +325,19 @@ p, li { text-wrap: pretty; }
 .hero__title span:nth-child(1) { animation-delay: 0.18s; }
 .hero__title span:nth-child(2) { animation-delay: 0.30s; }
 .hero__lead        { animation-delay: 0.42s; }
-.hero__cta         { animation-delay: 0.52s; }
+.hero__cta         { animation-name: riseCta; animation-delay: 0.52s; }
 .stats__inner      { animation-delay: 0.62s; }
 
 @keyframes rise {
   from { opacity: 0; transform: translateY(1rem); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* У кнопки свой сдвиг по X — обычный rise его стирал,
+   поэтому отдельная анимация с сохранением translateX. */
+@keyframes riseCta {
+  from { opacity: 0; transform: translate(var(--cta-shift), 1rem); }
+  to   { opacity: 1; transform: translate(var(--cta-shift), 0); }
 }
 
 /* ============================================================
@@ -527,9 +543,13 @@ body.is-loading .stats__inner {
     animation: none !important;
     transition: none !important;
   }
-  .nav, .hero__title span, .hero__lead, .hero__cta, .stats__inner {
+  .nav, .hero__title span, .hero__lead, .stats__inner {
     opacity: 1 !important;
     transform: none !important;
+  }
+  .hero__cta {
+    opacity: 1 !important;
+    transform: translateX(var(--cta-shift)) !important;
   }
   .preloader__label { animation: none; }
 }
