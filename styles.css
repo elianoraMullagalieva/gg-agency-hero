@@ -364,7 +364,7 @@ p, li { text-wrap: pretty; }
    Мобильные · до 720px
    ============================================================ */
 
-@media (max-width: 720px) {
+@media (max-width: 820px) {
   .nav {
     grid-template-columns: max-content max-content;
     justify-content: space-between;
@@ -442,7 +442,7 @@ p, li { text-wrap: pretty; }
 
 /* ---------- Мобильное меню ---------- */
 
-@media (min-width: 721px) {
+@media (min-width: 821px) {
   .sheet { display: none !important; }
 }
 

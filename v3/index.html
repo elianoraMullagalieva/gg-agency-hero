@@ -53,9 +53,9 @@
       </h1>
 
       <p class="hero__lead">
-      Строим систему постоянных&nbsp;продаж&nbsp;—
-      то, что каждый день доводит&nbsp;человека
-      от&nbsp;интереса до&nbsp;оплаты.
+      Строим самостоятельные команды и системы, которые каждый день
+      доводят людей&nbsp;от&nbsp;интереса&nbsp;до&nbsp;оплаты
+      без вашего контроля
     </p>
     </div>
 
@@ -97,108 +97,55 @@
   </div>
 </section>
 
-<!-- ===== CTA · разбор ===== -->
-<section class="band">
-  <div class="band__inner">
-    <div class="band__text">
-      <p class="band__kicker">Начните с разбора</p>
-      <h2 class="band__title">
-        <span>Увидьте, где</span>
-        <span>утекают деньги</span>
-      </h2>
-      <p class="band__lead">
-        Ответьте на несколько вопросов в&nbsp;боте&nbsp;— и получите разбор
-        того, где именно вы теряете деньги. Без созвона, без обязательств
-        и без «оставьте заявку, мы&nbsp;перезвоним».
-      </p>
-    </div>
-
-    <div class="band__actions">
-      <a class="btn btn--solid" href="#">Узнать, где вы теряете деньги</a>
-      <a class="btn btn--ghost" href="#">Получить консультацию</a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== FAQ ===== -->
-<section class="faq" id="faq" aria-labelledby="faq-title">
-  <div class="faq__head">
-    <p class="faq__num">14 / Вопросы</p>
-    <h2 class="faq__title" id="faq-title">Частые вопросы</h2>
+<!-- ===== Частые вопросы · структура из проекта Кэмпа ===== -->
+<section class="questions-section" id="questions" aria-labelledby="questions-title">
+  <div class="questions-head">
+    <h2 id="questions-title">Частые<br /><span>вопросы</span></h2>
   </div>
 
-  <div class="faq__list">
-    <article class="faq__item">
-      <button class="faq__trigger" type="button" aria-expanded="false">
-        <h3>Сколько это стоит?</h3>
-        <span class="faq__plus" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__panel"><div class="faq__answer">
-        <p>Стоимость зависит от задачи: построение отдела с нуля, оптимизация
-        действующего или сопровождение. На разборе считаем под ваши цифры —
-        выручку, средний чек и объём базы.</p>
-      </div></div>
-    </article>
-
-    <article class="faq__item">
-      <button class="faq__trigger" type="button" aria-expanded="false">
-        <h3>Сколько времени занимает?</h3>
-        <span class="faq__plus" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__panel"><div class="faq__answer">
-        <p>Отдел под запуск&nbsp;— подготовка 5–7 дней, весь цикл около месяца.
-        Построение и оптимизация&nbsp;— 2–3 месяца до системной работы,
-        дальше сопровождение с планом на полгода.</p>
-      </div></div>
-    </article>
-
-    <article class="faq__item">
-      <button class="faq__trigger" type="button" aria-expanded="false">
-        <h3>У нас уже есть менеджеры. Их придётся уволить?</h3>
-        <span class="faq__plus" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__panel"><div class="faq__answer">
-        <p>Нет. Сначала смотрим, кто и как продаёт: разбираем звонки, переписки
-        и конверсию каждого. Чаще проблема не в людях, а в отсутствии системы —
-        скриптов, регламентов и контроля.</p>
-      </div></div>
-    </article>
-
-    <article class="faq__item">
-      <button class="faq__trigger" type="button" aria-expanded="false">
-        <h3>Мы обжигались на подрядчиках. Чем вы отличаетесь?</h3>
-        <span class="faq__plus" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__panel"><div class="faq__answer">
-        <p>Мы не сдаём «отдел под ключ» и не исчезаем. Выстраиваем систему,
-        обучаем руководителя и передаём управление с планом на полгода вперёд.
-        За 4 года — 130+ отделов, метрики открыты на разборе.</p>
-      </div></div>
-    </article>
-
-    <article class="faq__item">
-      <button class="faq__trigger" type="button" aria-expanded="false">
-        <h3>Работаете с зарубежной аудиторией?</h3>
-        <span class="faq__plus" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__panel"><div class="faq__answer">
-        <p>Да. Работали с проектами на русскоязычную аудиторию за рубежом
-        и со смешанными рынками. Разница в каналах и часовых поясах —
-        система продаж остаётся той же.</p>
-      </div></div>
-    </article>
-
-    <article class="faq__item">
-      <button class="faq__trigger" type="button" aria-expanded="false">
-        <h3>Мы не онлайн-школа. Подойдёт?</h3>
-        <span class="faq__plus" aria-hidden="true">+</span>
-      </button>
-      <div class="faq__panel"><div class="faq__answer">
-        <p>Подойдёт, если продаёте через личный контакт: консалтинг, услуги,
-        экспертные продукты. Не подойдёт для розницы и маркетплейсов —
-        там другая механика.</p>
-      </div></div>
-    </article>
+  <div class="questions-list" aria-label="Частые вопросы">
+          <article class="questions-item">
+            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">01</span><h3>Сколько это стоит?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel"><div class="questions-answer">
+              <p>Стоимость зависит от задачи: построение отдела с нуля, оптимизация действующего или сопровождение.</p>
+              <p>На разборе считаем под ваши цифры — выручку, средний чек и объём базы. Без созвона и обязательств.</p>
+            </div></div>
+          </article>
+          <article class="questions-item">
+            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">02</span><h3>Сколько времени занимает?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel"><div class="questions-answer">
+              <p>Отдел под запуск — подготовка 5–7 дней, весь цикл около месяца.</p>
+              <p>Построение и оптимизация — 2–3 месяца до системной работы, дальше сопровождение с планом на полгода.</p>
+            </div></div>
+          </article>
+          <article class="questions-item">
+            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">03</span><h3>У нас уже есть менеджеры. Их придётся уволить?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel"><div class="questions-answer">
+              <p>Нет. Сначала смотрим, кто и как продаёт: разбираем звонки, переписки и конверсию каждого.</p>
+              <p>Чаще проблема не в людях, а в отсутствии системы — скриптов, регламентов и контроля.</p>
+            </div></div>
+          </article>
+          <article class="questions-item">
+            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">04</span><h3>Мы обжигались на подрядчиках. Чем вы отличаетесь?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel"><div class="questions-answer">
+              <p>Мы не сдаём «отдел под ключ» и не исчезаем. Выстраиваем систему, обучаем руководителя и передаём управление с планом на полгода вперёд.</p>
+              <p>За 4 года — 130+ отделов продаж. Метрики открываем на разборе.</p>
+            </div></div>
+          </article>
+          <article class="questions-item">
+            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">05</span><h3>Работаете с зарубежной аудиторией?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel"><div class="questions-answer">
+              <p>Да. Работали с проектами на русскоязычную аудиторию за рубежом и со смешанными рынками.</p>
+              <p>Разница в каналах и часовых поясах — система продаж остаётся той же.</p>
+            </div></div>
+          </article>
+          <article class="questions-item">
+            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">06</span><h3>Мы не онлайн-школа. Подойдёт?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel"><div class="questions-answer">
+              <p>Подойдёт, если продаёте через личный контакт: консалтинг, услуги, экспертные продукты.</p>
+              <p>Не подойдёт для розницы и маркетплейсов — там другая механика.</p>
+            </div></div>
+          </article>
   </div>
 </section>
 

@@ -671,18 +671,18 @@
      Механика из проекта Кэмпа: открыт только один пункт,
      раскрытие через grid-template-rows без фиксированной высоты. */
 
-  function initFaq() {
-    var triggers = document.querySelectorAll(".faq__trigger");
+  function initQuestions() {
+    var triggers = document.querySelectorAll(".questions-trigger");
     if (!triggers.length) return;
 
     triggers.forEach(function (trigger) {
       trigger.addEventListener("click", function () {
-        var item = trigger.closest(".faq__item");
+        var item = trigger.closest(".questions-item");
         var isOpen = item.classList.contains("is-open");
 
-        document.querySelectorAll(".faq__item").forEach(function (el) {
+        document.querySelectorAll(".questions-item").forEach(function (el) {
           el.classList.remove("is-open");
-          var t = el.querySelector(".faq__trigger");
+          var t = el.querySelector(".questions-trigger");
           if (t) t.setAttribute("aria-expanded", "false");
         });
 
@@ -697,7 +697,7 @@
   /* ---------- Старт ---------- */
 
   initPreloader();
-  initFaq();
+  initQuestions();
 
   var glyphCanvas = document.querySelector(".hero__glyphs");
   if (glyphCanvas) initGlyphs(glyphCanvas);
