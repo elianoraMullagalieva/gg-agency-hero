@@ -263,12 +263,12 @@ p { text-wrap: pretty; }
   z-index: 0;
   /* Опорная точка — низ экрана: рука начинается внизу и уходит
      за край, а не висит в середине. */
-  bottom: var(--shot-drop, -30%);
-  left: var(--shot-x, 21%);
+  bottom: var(--shot-drop, -23%);
+  left: var(--shot-x, 18%);
   transform: translateX(-50%);
   /* Ведём от высоты экрана, а не от колонки: на широких экранах
      телефон иначе мельчает. */
-  width: var(--shot-w, min(126svh, 63vw, calc(1609px * var(--up))));
+  width: var(--shot-w, min(135svh, 67vw, calc(1722px * var(--up))));
   max-width: none;
   aspect-ratio: 1069 / 1068;
   pointer-events: none;
