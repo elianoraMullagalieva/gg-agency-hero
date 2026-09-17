@@ -68,6 +68,9 @@ body {
 
 h1, h2, h3 { text-wrap: balance; }
 p { text-wrap: pretty; }
+/* У подзаголовка переносы расставлены вручную неразрывными
+   пробелами: pretty их перебивал и оставлял висячие предлоги. */
+.lede__text { text-wrap: normal; }
 
 /* ---------- Каркас ---------- */
 
@@ -182,7 +185,7 @@ p { text-wrap: pretty; }
 .lede__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.875rem, 1.4196rem + 6.2095vw, 8.35rem);
+  font-size: clamp(2.5875rem, 0.9450rem + 7.3000vw, 7.5150rem);
   line-height: 0.87;
   letter-spacing: 0.005em;
   text-transform: uppercase;
@@ -252,25 +255,23 @@ p { text-wrap: pretty; }
 /* ---------- Центр: телефон и плашки ---------- */
 
 .shot {
-  position: relative;
+  /* Телефон вынут из потока сетки: иначе его размер растягивал
+     .stage и вместе с ней всю секцию — появлялась прокрутка.
+     Теперь он свободно уходит за нижний край, а .hero { overflow:
+     clip } аккуратно срезает лишнее. */
+  position: absolute;
   z-index: 0;
-  justify-self: center;
-  /* Пропорции макета: картинка 1069×1068 на экране 1440×810 —
-     занимает почти всю высоту. Ведём от высоты, а не от ширины,
-     иначе на широких экранах телефон мельчает. */
-  /* Телефон крупнее колонки, но в разумных пределах: при 150%
-     он наезжал на цифры справа. 122% — заметно крупнее и без
-     перекрытия соседних блоков. */
-  width: min(80svh, 138%, calc(972px * var(--up)));
+  /* Опорная точка — низ экрана: рука начинается внизу и уходит
+     за край, а не висит в середине. */
+  bottom: var(--shot-drop, -12%);
+  left: var(--shot-x, 37%);
+  transform: translateX(-50%);
+  /* Ведём от высоты экрана, а не от колонки: на широких экранах
+     телефон иначе мельчает. */
+  width: var(--shot-w, min(104svh, 52vw, calc(1330px * var(--up))));
   max-width: none;
-  /* Картинка шире колонки: растёт симметрично, но справа стоят
-     цифры — сдвигаем влево, в свободную зону. */
-  margin-right: auto;
-  margin-left: -13%;
   aspect-ratio: 1069 / 1068;
-  margin-inline: auto;
-  /* в макете телефон опущен относительно центра колонки */
-
+  pointer-events: none;
 }
 
 .shot picture {
@@ -321,8 +322,8 @@ p { text-wrap: pretty; }
    половина снаружи — как всплывающие уведомления. */
 /* Прижаты к корпусу: верхние заезжают на пальцы — так и задумано */
 .pill--1 { left: 9%;   top: 44%; }
-.pill--2 { right: 26%; top: 26%; }
-.pill--3 { right: 21%; top: 61%; }
+.pill--2 { right: 36%; top: 26%; }
+.pill--3 { right: 31%; top: 61%; }
 
 .pill__ava {
   width: calc(31.5px * var(--up));
@@ -511,7 +512,20 @@ body:not(.is-loading) .figure {
     gap: clamp(1rem, 3vw, 2.5rem);
   }
   .lede { grid-area: lede; }
-  .shot { grid-area: shot; width: min(104svh, 100%); }
+  /* Телефон и здесь вне потока: в сетке он ужимался до ширины
+     колонки и выглядел крошечным. Держим его крупным и уводим
+     вниз, как на широких экранах. */
+  .shot {
+    grid-area: auto;
+    --shot-w: min(92svh, 62vw);
+    --shot-x: 62%;
+    --shot-drop: -10%;
+  }
+  /* Плашки держим в пределах экрана: блок телефона частично
+     уходит за правый край, проценты от него выносили их наружу. */
+  .pill--1 { left: 2%;  top: 50%; }
+  .pill--2 { right: 8%; top: 22%; }
+  .pill--3 { right: 2%; top: 68%; }
   .figures {
     grid-area: figures;
     flex-direction: row;
@@ -525,13 +539,13 @@ body:not(.is-loading) .figure {
 
 @media (min-width: 901px) and (max-height: 820px) {
   .stage { gap: clamp(1rem, 4vw, 5rem); }
-  .lede__title { font-size: clamp(2.75rem, 1.5rem + 4.4vw, 6rem); }
+  .lede__title { font-size: clamp(2.4750rem, 1.5000rem + 4.3333vw, 5.4000rem); }
   .figure__value { font-size: calc(48px * var(--up)); }
   .figures { gap: calc(28px * var(--up)); }
 }
 
 @media (min-width: 901px) and (max-height: 700px) {
-  .lede__title { font-size: clamp(2.5rem, 1.25rem + 3.8vw, 5rem); }
+  .lede__title { font-size: clamp(2.2500rem, 1.5000rem + 3.3333vw, 4.5000rem); }
   .lede { gap: 1rem; }
   .figure__value { font-size: calc(42px * var(--up)); }
   .figures { gap: calc(20px * var(--up)); padding: calc(20px * var(--up)) calc(28px * var(--up)); }
@@ -603,6 +617,13 @@ body:not(.is-loading) .figure {
   }
 
   .shot {
+    /* На мобильной раскладке телефон возвращается в поток: он идёт
+       между текстом и цифрами, а не висит абсолютом у низа экрана. */
+    position: static;
+    transform: none;
+    bottom: auto;
+    left: auto;
+    pointer-events: auto;
     /* Телефон забирает остаток высоты: аспект 1:1, поэтому ширина
        равна доступной высоте. Так контент влезает на любом экране
        без подгонки процентов под каждую модель. */
