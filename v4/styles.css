@@ -32,7 +32,10 @@
 
   --shell: 1280px;
   --up: 1;
-  --gutter: clamp(1.25rem, 0.7143rem + 2.2857vw, 5rem);
+  /* Поля по краям: 80px на 1440, плавно от 20px на мобильном
+     до 120px на больших мониторах. Одно число на весь макет —
+     по нему выравниваются хедер, заголовок и цифры. */
+  --gutter: clamp(1.25rem, 0.0301rem + 5.6338vw, 7.5rem);
 
   /* Такт оркестровки: все задержки кратны ему */
   --beat: 90ms;
@@ -152,19 +155,23 @@ p { text-wrap: pretty; }
 .stage {
   flex: 1 1 auto;
   display: grid;
-  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.9fr) max-content;
+  /* Крайние колонки по содержимому: левая начинается там же, где
+     логотип, правая заканчивается там же, где кнопка хедера.
+     Телефон забирает всё, что между ними. */
+  grid-template-columns: max-content minmax(0, 1fr) max-content;
   align-items: center;
-  gap: clamp(1rem, -0.4286rem + 6.0952vw, 8rem);
+  gap: clamp(0.75rem, -0.6071rem + 5.7143vw, 4rem);
   width: 100%;
-  max-width: min(var(--shell), 100% - var(--gutter) * 2);
-  margin: 0 auto;
-  padding: clamp(1rem, 0.6429rem + 1.5238vw, 2.75rem) 0
+  margin: 0;
+  padding: clamp(0.5rem, 0.2143rem + 1.219vw, 1.5rem) var(--gutter)
            clamp(1.5rem, 1.1429rem + 1.5238vw, 3.25rem);
 }
 
 /* ---------- Левая колонка ---------- */
 
 .lede {
+  position: relative;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -175,16 +182,20 @@ p { text-wrap: pretty; }
 .lede__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(3.25rem, 1.9643rem + 5.4857vw, 8rem);
+  font-size: clamp(3.25rem, 1.6071rem + 7.0095vw, 9.5rem);
   line-height: 0.87;
   letter-spacing: 0.005em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
-/* Каждая строка — маска, из-под которой выезжает текст */
+/* Маска для выезда строк. Bebas имеет высокие выносные элементы —
+   у строки свой внутренний запас сверху, иначе буквы срезаются. */
 .lede__title .line {
   display: block;
   overflow: hidden;
+  padding-top: 0.12em;
+  margin-top: -0.12em;
 }
 .lede__title .line i { display: block; font-style: normal; }
 
@@ -242,14 +253,22 @@ p { text-wrap: pretty; }
 
 .shot {
   position: relative;
+  z-index: 0;
   justify-self: center;
   /* Пропорции макета: картинка 1069×1068 на экране 1440×810 —
      занимает почти всю высоту. Ведём от высоты, а не от ширины,
      иначе на широких экранах телефон мельчает. */
-  width: min(132svh, 100%);
-  max-width: 100%;
+  /* Телефон крупнее колонки, но в разумных пределах: при 150%
+     он наезжал на цифры справа. 122% — заметно крупнее и без
+     перекрытия соседних блоков. */
+  width: min(92svh, 108%, calc(760px * var(--up)));
+  max-width: none;
+  /* Ровно по центру своей колонки */
+  margin-inline: auto;
   aspect-ratio: 1069 / 1068;
   margin-inline: auto;
+  /* в макете телефон опущен относительно центра колонки */
+  margin-top: clamp(0.5rem, 0.1429rem + 1.5238vw, 2.25rem);
 }
 
 .shot picture {
@@ -296,9 +315,11 @@ p { text-wrap: pretty; }
 }
 
 /* Позиции из макета, в долях — держатся на любой ширине */
-.pill--1 { left: -6%;  top: 34%; }
-.pill--2 { left: 62%;  top: 20%; }
-.pill--3 { left: 68%;  top: 52%; }
+/* Плашки «наклеены» на края телефона: половина на корпусе,
+   половина снаружи — как всплывающие уведомления. */
+.pill--1 { left: 1%;   top: 42%; }
+.pill--2 { right: 11%; top: 22%; }
+.pill--3 { right: 6%;  top: 60%; }
 
 .pill__ava {
   width: calc(31.5px * var(--up));
@@ -332,6 +353,8 @@ p { text-wrap: pretty; }
 
 .figures {
   position: relative;
+  z-index: 1;
+  justify-self: end;
   display: flex;
   flex-direction: column;
   gap: calc(40px * var(--up));
@@ -417,8 +440,8 @@ body:not(.is-loading) [data-anim="shot"] {
 
 /* 6 · Плашки — по одной с пружиной, после телефона */
 body:not(.is-loading) [data-anim="pill"] {
-  animation: popIn 0.72s cubic-bezier(0.34, 1.56, 0.64, 1)
-             calc(var(--beat) * 8 + var(--i) * var(--beat) * 1.4) both;
+  animation: notify 0.92s cubic-bezier(0.22, 1, 0.36, 1)
+             calc(var(--beat) * 9 + var(--i) * var(--beat) * 3.2) both;
 }
 
 /* 7 · Цифры — блок целиком, затем строки каскадом */
@@ -450,9 +473,20 @@ body:not(.is-loading) .figure {
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes popIn {
-  from { opacity: 0; transform: translateY(0.75rem) scale(0.9); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+/* Всплытие уведомления: снизу, из размытия, с мягкой посадкой */
+@keyframes notify {
+  0% {
+    opacity: 0;
+    transform: translateY(1.75rem) scale(0.86);
+    filter: blur(6px);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(-0.22rem) scale(1.035);
+    filter: blur(0);
+  }
+  78% { transform: translateY(0.06rem) scale(0.996); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
 @keyframes float {
