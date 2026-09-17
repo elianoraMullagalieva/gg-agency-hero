@@ -182,7 +182,7 @@ p { text-wrap: pretty; }
 .lede__title {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(3.25rem, 1.6071rem + 7.0095vw, 9.5rem);
+  font-size: clamp(2.875rem, 1.4196rem + 6.2095vw, 8.35rem);
   line-height: 0.87;
   letter-spacing: 0.005em;
   text-transform: uppercase;
@@ -261,14 +261,16 @@ p { text-wrap: pretty; }
   /* Телефон крупнее колонки, но в разумных пределах: при 150%
      он наезжал на цифры справа. 122% — заметно крупнее и без
      перекрытия соседних блоков. */
-  width: min(92svh, 108%, calc(760px * var(--up)));
+  width: min(80svh, 138%, calc(972px * var(--up)));
   max-width: none;
-  /* Ровно по центру своей колонки */
-  margin-inline: auto;
+  /* Картинка шире колонки: растёт симметрично, но справа стоят
+     цифры — сдвигаем влево, в свободную зону. */
+  margin-right: auto;
+  margin-left: -13%;
   aspect-ratio: 1069 / 1068;
   margin-inline: auto;
   /* в макете телефон опущен относительно центра колонки */
-  margin-top: clamp(0.5rem, 0.1429rem + 1.5238vw, 2.25rem);
+
 }
 
 .shot picture {
@@ -317,9 +319,10 @@ p { text-wrap: pretty; }
 /* Позиции из макета, в долях — держатся на любой ширине */
 /* Плашки «наклеены» на края телефона: половина на корпусе,
    половина снаружи — как всплывающие уведомления. */
-.pill--1 { left: 1%;   top: 42%; }
-.pill--2 { right: 11%; top: 22%; }
-.pill--3 { right: 6%;  top: 60%; }
+/* Прижаты к корпусу: верхние заезжают на пальцы — так и задумано */
+.pill--1 { left: 9%;   top: 44%; }
+.pill--2 { right: 26%; top: 26%; }
+.pill--3 { right: 21%; top: 61%; }
 
 .pill__ava {
   width: calc(31.5px * var(--up));
