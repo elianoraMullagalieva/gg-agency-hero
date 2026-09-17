@@ -263,12 +263,12 @@ p { text-wrap: pretty; }
   z-index: 0;
   /* Опорная точка — низ экрана: рука начинается внизу и уходит
      за край, а не висит в середине. */
-  bottom: var(--shot-drop, -12%);
-  left: var(--shot-x, 37%);
+  bottom: var(--shot-drop, -30%);
+  left: var(--shot-x, 21%);
   transform: translateX(-50%);
   /* Ведём от высоты экрана, а не от колонки: на широких экранах
      телефон иначе мельчает. */
-  width: var(--shot-w, min(104svh, 52vw, calc(1330px * var(--up))));
+  width: var(--shot-w, min(126svh, 63vw, calc(1609px * var(--up))));
   max-width: none;
   aspect-ratio: 1069 / 1068;
   pointer-events: none;
@@ -321,7 +321,7 @@ p { text-wrap: pretty; }
 /* Плашки «наклеены» на края телефона: половина на корпусе,
    половина снаружи — как всплывающие уведомления. */
 /* Прижаты к корпусу: верхние заезжают на пальцы — так и задумано */
-.pill--1 { left: 9%;   top: 44%; }
+.pill--1 { left: 19%;  top: 40%; }
 .pill--2 { right: 36%; top: 26%; }
 .pill--3 { right: 31%; top: 61%; }
 
@@ -517,15 +517,15 @@ body:not(.is-loading) .figure {
      вниз, как на широких экранах. */
   .shot {
     grid-area: auto;
-    --shot-w: min(92svh, 62vw);
-    --shot-x: 62%;
-    --shot-drop: -10%;
+    --shot-w: min(104svh, 64vw);
+    --shot-x: 46%;
+    --shot-drop: -26%;
   }
-  /* Плашки держим в пределах экрана: блок телефона частично
-     уходит за правый край, проценты от него выносили их наружу. */
-  .pill--1 { left: 2%;  top: 50%; }
-  .pill--2 { right: 8%; top: 22%; }
-  .pill--3 { right: 2%; top: 68%; }
+  /* Плашки держим в пределах экрана: блок телефона шире вьюпорта,
+     проценты от него выносили их наружу. */
+  .pill--1 { left: 4%;   top: 40%; }
+  .pill--2 { right: 22%; top: 22%; }
+  .pill--3 { right: 16%; top: 64%; }
   .figures {
     grid-area: figures;
     flex-direction: row;
