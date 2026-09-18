@@ -426,6 +426,10 @@ body:not(.is-loading) .lede__title .line i {
 body:not(.is-loading) .lede__title .line:nth-child(1) i { animation-delay: calc(var(--beat) * 2); }
 body:not(.is-loading) .lede__title .line:nth-child(2) i { animation-delay: calc(var(--beat) * 3); }
 body:not(.is-loading) .lede__title .line:nth-child(3) i { animation-delay: calc(var(--beat) * 4); }
+/* Мобильный двухстрочный вариант заголовка: на десктопе скрыт. */
+.lede__title .line--m { display: none; }
+body:not(.is-loading) .lede__title .line--m:nth-child(4) i { animation-delay: calc(var(--beat) * 2); }
+body:not(.is-loading) .lede__title .line--m:nth-child(5) i { animation-delay: calc(var(--beat) * 3); }
 
 /* 3 · Подзаголовок — вступает, пока третья строка ещё едет */
 body:not(.is-loading) [data-anim="lead"] {
@@ -588,13 +592,19 @@ body:not(.is-loading) .figure {
   .nav__burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(3.25px) rotate(45deg); }
   .nav__burger[aria-expanded="true"] span:nth-child(2) { width: 1.375rem; transform: translateY(-3.25px) rotate(-45deg); }
 
+  /* Заголовок по макету — две строки вместо трёх. */
+  .lede__title .line:nth-child(-n+3) { display: none; }
+  .lede__title .line--m { display: block; }
+
   .stage {
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: clamp(0.75rem, 3vw, 1.5rem);
-    padding-top: clamp(1rem, 4vw, 2rem);
-    padding-bottom: clamp(0.5rem, 2vw, 1rem);
+    /* Верхний блок опущен: в макете заголовок начинается на ~15%
+       высоты экрана, а не сразу под шапкой. */
+    padding-top: clamp(2.5rem, 9vw, 4.5rem);
+    padding-bottom: clamp(2.5rem, 13vh, 6.5rem);
     min-height: 0;
   }
   .lede { flex: 0 0 auto; }
@@ -603,12 +613,12 @@ body:not(.is-loading) .figure {
   /* Текст по центру, как в мобильном макете */
   .lede {
     align-items: center;
-    gap: 0.75rem;
+    gap: clamp(0.75rem, 2.4vh, 1.5rem);
     text-align: center;
   }
   .lede__title {
-    font-size: clamp(2.25rem, 13.3vw, 3.5rem);
-    line-height: 0.87;
+    font-size: clamp(2.5rem, 10.2vw, 3.75rem);
+    line-height: 0.88;
   }
   .lede__text {
     max-width: 19rem;
@@ -627,14 +637,17 @@ body:not(.is-loading) .figure {
     /* Телефон забирает остаток высоты: аспект 1:1, поэтому ширина
        равна доступной высоте. Так контент влезает на любом экране
        без подгонки процентов под каждую модель. */
-    flex: 1 1 auto;
-    width: auto;
-    /* потолок: иначе на 820×900 телефон раздувается до 760px
-       и выдавливает цифры за экран */
-    max-width: min(100%, 52svh);
+    /* Телефон забирает ровно остаток высоты и ужимается первым:
+       ширина ведётся от фактической высоты блока, поэтому сумма
+       блоков никогда не перерастает экран. */
+    flex: 1 1 0;
+    /* Картинка шире колонки и ныряет под карточку цифр, как в макете:
+       нижний отрицательный отступ позволяет ей выйти за свой блок,
+       не увеличивая высоту секции. */
+    width: min(126%, 32rem);
     min-height: 0;
     aspect-ratio: auto;
-    margin: clamp(-1.5rem, -4vw, -0.5rem) auto 0;
+    margin: clamp(-1.5rem, -4vw, -0.5rem) auto clamp(-5rem, -13vh, -2rem);
     align-self: center;
   }
   .shot picture { height: 100%; }
@@ -650,11 +663,15 @@ body:not(.is-loading) .figure {
   .pill__text b { font-size: calc(6.5px * var(--up)); }
   .pill__text i { font-size: calc(11.5px * var(--up)); }
 
+  .cta { transform: none; }
+
   .pill--1 { left: 4%;  top: 52%; }
   .pill--2 { left: 55%; top: 36%; }
   .pill--3 { display: none; }
 
-  /* Цифры в строку, прибиты к низу экрана */
+  /* Цифры в строку. От низа отрываем: в макете карточка заканчивается
+     на ~85% высоты, а прижатая к краю она уходила под нижнюю панель
+     браузера в мессенджерах. */
   .figures {
     flex-direction: row;
     gap: calc(20px * var(--up));
@@ -672,7 +689,7 @@ body:not(.is-loading) .figure {
 
 /* Планшетная полоса 700-1180 по высоте при узкой ширине: колонка
    широкая, кегли крупные — текст съедал высоту и цифры уезжали. */
-@media (max-width: 820px) and (min-width: 430px) and (max-height: 1100px) {
+@media (max-width: 820px) and (min-width: 481px) and (max-height: 1100px) {
   .lede__title { font-size: clamp(2rem, 6.5vw, 2.75rem); }
   .lede__text { font-size: clamp(0.8125rem, 2vw, 0.9375rem); max-width: 30rem; }
   .lede { gap: 0.625rem; }
@@ -687,7 +704,7 @@ body:not(.is-loading) .figure {
 /* Одна колонка на большой высоте (820×900, 768×1024): телефон
    занимал слишком много и выдавливал цифры за экран. */
 @media (max-width: 820px) and (max-height: 880px) {
-  .stage { gap: 0.75rem; padding-top: 1.25rem; }
+  .stage { gap: 0.75rem; padding-top: clamp(2rem, 7vh, 3.5rem); }
   .lede { gap: 0.625rem; }
   .lede__title { font-size: clamp(2rem, 11vw, 2.75rem); }
   .figures { padding: calc(11px * var(--up)) calc(12px * var(--up)); }
@@ -695,7 +712,7 @@ body:not(.is-loading) .figure {
 }
 
 @media (max-width: 820px) and (max-height: 700px) {
-  .stage { gap: 0.375rem; padding-top: 0.625rem; padding-bottom: 0.375rem; }
+  .stage { gap: 0.375rem; padding-top: clamp(1.25rem, 5vh, 2.25rem); padding-bottom: clamp(2rem, 11vh, 4rem); }
   .lede__title { font-size: clamp(1.75rem, 9.5vw, 2.25rem); }
   .lede__text { font-size: 0.75rem; }
   .cta__label { padding: 0.625rem 1rem; }
@@ -704,12 +721,16 @@ body:not(.is-loading) .figure {
   .figure__label { font-size: 0.5rem; }
 }
 
-/* §08 · дорогие статичные эффекты на слабых экранах */
+/* §08 · стекло карточки цифр — по макету: заливка #000 12% + блюр.
+   Раньше блюр здесь отключался «ради слабых экранов», но в макете
+   карточка лежит поверх фото руки, и без размытия эффект пропадал.
+   Параметры взяты из Figma: fill 000000 12%, radius 6.66. */
 @media (max-width: 1200px) {
   .figures {
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
-    background: rgba(0, 0, 0, 0.32);
+    background: rgba(0, 0, 0, 0.12);
+    backdrop-filter: blur(calc(18px * var(--up)));
+    -webkit-backdrop-filter: blur(calc(18px * var(--up)));
+    border-radius: 6.66px;
   }
 }
 
