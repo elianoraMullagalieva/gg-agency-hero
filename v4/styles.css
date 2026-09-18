@@ -600,6 +600,9 @@ body:not(.is-loading) .figure {
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    /* Поля по макету: карточка цифр должна быть 371 из 392, иначе
+       колонки сужаются и подписи ломаются на лишнюю строку. */
+    padding-inline: clamp(0.5rem, 2.4vw, 0.875rem);
     gap: clamp(0.75rem, 3vw, 1.5rem);
     /* Верхний блок опущен: в макете заголовок начинается на ~15%
        высоты экрана, а не сразу под шапкой. */
@@ -663,7 +666,10 @@ body:not(.is-loading) .figure {
   .pill__text b { font-size: calc(6.5px * var(--up)); }
   .pill__text i { font-size: calc(11.5px * var(--up)); }
 
-  .cta { transform: none; }
+  /* Круг со стрелкой утягивает оптический центр влево. Полная
+     компенсация (половина круга) уводила пару слишком вправо —
+     берём около трети, на глаз ровно по центру. */
+  .cta { transform: translateX(0.75rem); }
 
   .pill--1 { left: 4%;  top: 52%; }
   .pill--2 { left: 55%; top: 36%; }
@@ -674,9 +680,11 @@ body:not(.is-loading) .figure {
      браузера в мессенджерах. */
   .figures {
     flex-direction: row;
-    gap: calc(20px * var(--up));
+    /* Узкие колонки ломали подписи на три строки вместо двух:
+       ужимаем зазор и боковые поля, чтобы текст дышал. */
+    gap: calc(12px * var(--up));
     margin-top: auto;
-    padding: calc(20px * var(--up)) calc(16px * var(--up));
+    padding: calc(20px * var(--up)) calc(12px * var(--up));
     border-radius: 6.66px;
   }
   .figure { gap: calc(6.66px * var(--up)); flex: 1 1 0; }
@@ -829,4 +837,15 @@ body:not(.is-loading) .figure {
   }
   [data-anim], .lede__title .line i, .figure { opacity: 1 !important; transform: none !important; }
   .preloader__label { animation: none; }
+}
+
+/* На самых узких экранах (320px) правая плашка выходила за край:
+   ведём её от правого края, а не от левого. */
+@media (max-width: 340px) {
+  /* Плашки позиционируются от блока телефона. На 320px он был
+     383px — шире экрана, поэтому правая плашка оказывалась за
+     краем. Ужимаем картинку до ширины экрана и ведём плашку
+     от её правого края. */
+  .shot { width: 100% !important; }
+  .pill--2 { left: auto !important; right: 1%; }
 }
