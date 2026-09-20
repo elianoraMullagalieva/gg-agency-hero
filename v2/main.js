@@ -254,6 +254,28 @@
       }
     });
 
+    // iOS Safari выгружает WebGL-контекст при нехватке памяти или
+    // возврате из фона: без этого фон навсегда застывал ровной
+    // заливкой, хотя страница выглядела рабочей.
+    canvas.addEventListener("webglcontextlost", function (e) {
+      e.preventDefault();
+      running = false;
+    }, false);
+
+    canvas.addEventListener("webglcontextrestored", function () {
+      initArc(canvas);
+    }, false);
+
+    // Возврат на вкладку из фона на мобильных не всегда шлёт
+    // visibilitychange — подстраховываемся pageshow.
+    window.addEventListener("pageshow", function () {
+      if (!running && !document.hidden) {
+        running = true;
+        start = performance.now() - 1;
+        requestAnimationFrame(frame);
+      }
+    });
+
     resize();
     requestAnimationFrame(frame);
   }
@@ -357,6 +379,15 @@
       if (document.hidden) {
         running = false;
       } else if (!running) {
+        running = true;
+        requestAnimationFrame(frame);
+      }
+    });
+
+    // Мобильный Safari при возврате из фона не всегда шлёт
+    // visibilitychange — иначе волна оставалась застывшей.
+    window.addEventListener("pageshow", function () {
+      if (!running && !document.hidden) {
         running = true;
         requestAnimationFrame(frame);
       }
