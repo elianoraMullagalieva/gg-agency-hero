@@ -710,6 +710,30 @@
 
   var canvas = document.querySelector(".hero__bg");
   if (canvas) initArc(canvas);
+/* Аккордеон услуг — та же механика, что у вопросов. */
+  function initServices() {
+    var triggers = document.querySelectorAll(".services-trigger");
+    if (!triggers.length) return;
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
+        var item = trigger.closest(".services-item");
+        var isOpen = item.classList.contains("is-open");
+
+        document.querySelectorAll(".services-item").forEach(function (el) {
+          el.classList.remove("is-open");
+          var t = el.querySelector(".services-trigger");
+          if (t) t.setAttribute("aria-expanded", "false");
+        });
+
+        if (!isOpen) {
+          item.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  }
+
   function initQuestions() {
     var triggers = document.querySelectorAll(".questions-trigger");
     if (!triggers.length) return;
@@ -850,5 +874,6 @@
   initMenu();
   initVenn();
   initQuestions();
+  initServices();
   initShots();
 })();

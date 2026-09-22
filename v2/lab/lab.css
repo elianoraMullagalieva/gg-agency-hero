@@ -6,28 +6,28 @@
 body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);
   -webkit-font-smoothing:antialiased}
 
-.lab-top{padding:clamp(3rem,8vw,6rem) clamp(1.25rem,5vw,5rem) clamp(1.5rem,4vw,3rem)}
+.lab-top{padding:clamp(3rem, 2rem + 4.4444vw, 6rem) clamp(1.25rem, 0rem + 5.5556vw, 5rem) clamp(1.5rem, 1rem + 2.2222vw, 3rem)}
 .lab-kicker{margin:0 0 .75rem;font-size:.75rem;font-weight:500;letter-spacing:.14em;
   text-transform:uppercase;color:var(--red-l)}
-.lab-top h1{margin:0;font-size:clamp(2rem,6vw,3.5rem);font-weight:400;letter-spacing:-.04em}
-.lab-note{margin:.75rem 0 0;font-size:clamp(.8125rem,2vw,1rem);font-weight:300;color:var(--muted)}
+.lab-top h1{margin:0;font-size:clamp(2rem, 1.5rem + 2.2222vw, 3.5rem);font-weight:400;letter-spacing:-.04em}
+.lab-note{margin:.75rem 0 0;font-size:clamp(0.8125rem, 0.75rem + 0.2778vw, 1rem);font-weight:300;color:var(--muted)}
 
-.case{padding:clamp(2rem,5vw,4rem) clamp(1.25rem,5vw,5rem);
+.case{padding:clamp(2rem, 1.3333rem + 2.963vw, 4rem) clamp(1.25rem, 0rem + 5.5556vw, 5rem);
   border-top:1px solid rgba(255,255,255,.1)}
-.case__head{display:flex;gap:clamp(.75rem,2vw,1.5rem);margin-bottom:clamp(1.5rem,4vw,2.5rem)}
+.case__head{display:flex;gap:clamp(0.75rem, 0.5rem + 1.1111vw, 1.5rem);margin-bottom:clamp(1.5rem, 1.1667rem + 1.4815vw, 2.5rem)}
 .case__n{flex:0 0 auto;width:2rem;height:2rem;display:grid;place-items:center;
   border:1px solid rgba(255,255,255,.2);border-radius:50%;font-size:.75rem;color:var(--red-l)}
-.case__head h2{margin:0;font-size:clamp(1.125rem,3vw,1.625rem);font-weight:500;letter-spacing:-.02em}
-.case__head p{margin:.375rem 0 0;max-width:62ch;font-size:clamp(.8125rem,2vw,.9375rem);
+.case__head h2{margin:0;font-size:clamp(1.125rem, 0.9583rem + 0.7407vw, 1.625rem);font-weight:500;letter-spacing:-.02em}
+.case__head p{margin:.375rem 0 0;max-width:62ch;font-size:clamp(0.8125rem, 0.7708rem + 0.1852vw, 0.9375rem);
   font-weight:300;line-height:1.4;color:var(--muted)}
 
-.stage{display:grid;place-items:center;min-height:clamp(20rem,52vw,32rem)}
+.stage{display:grid;place-items:center;min-height:clamp(20rem, 16rem + 17.7778vw, 32rem)}
 .stage--wide{min-height:auto}
 svg{display:block;width:100%;height:100%;overflow:visible}
 
 .pill{position:absolute;margin:0;line-height:1.25;opacity:0;white-space:nowrap;text-align:center}
-.pill b{display:block;font-size:clamp(.6875rem,1.6vw,.875rem);font-weight:500}
-.pill i{font-size:clamp(.5625rem,1.3vw,.6875rem);font-style:normal;font-weight:300;color:var(--muted)}
+.pill b{display:block;font-size:clamp(0.875rem, 0.7708rem + 0.463vw, 1.1875rem);font-weight:500}
+.pill i{font-size:clamp(0.6875rem, 0.625rem + 0.2778vw, 0.875rem);font-style:normal;font-weight:300;color:var(--muted)}
 
 /* ---------- A · пересечение ---------- */
 .vA{position:relative;width:min(100%,30rem);aspect-ratio:1}
@@ -48,8 +48,8 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .coreA{position:absolute;left:50%;top:48.5%;translate:-50% -50%;width:19%;aspect-ratio:1;
   display:grid;place-content:center;gap:.15em;border-radius:50%;background:var(--red);
   text-align:center;opacity:0;box-shadow:0 0 3rem -.5rem rgba(172,12,15,.75)}
-.coreA b{font-size:clamp(.625rem,1.5vw,.9375rem);font-weight:600;line-height:1.1}
-.coreA i{font-size:clamp(.5rem,1.1vw,.625rem);font-style:normal;font-weight:300;opacity:.82}
+.coreA b{font-size:clamp(0.625rem, 0.5208rem + 0.463vw, 0.9375rem);font-weight:600;line-height:1.1}
+.coreA i{font-size:clamp(0.5rem, 0.4583rem + 0.1852vw, 0.625rem);font-style:normal;font-weight:300;opacity:.82}
 .vA.on .coreA{animation:pop .9s cubic-bezier(.34,1.4,.64,1) 1.25s forwards}
 
 /* ---------- B · конвейер ---------- */
@@ -66,25 +66,25 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .vB.on .vB__spark{animation:fade .5s ease 1.9s forwards}
 .nodeB{position:absolute;top:63%;margin:0;text-align:center;line-height:1.25;opacity:0;
   translate:-50% 0;white-space:nowrap}
-.nodeB b{display:block;font-size:clamp(.6875rem,1.5vw,.875rem);font-weight:500}
-.nodeB i{font-size:clamp(.5625rem,1.2vw,.6875rem);font-style:normal;font-weight:300;color:var(--muted)}
+.nodeB b{display:block;font-size:clamp(0.6875rem, 0.625rem + 0.2778vw, 0.875rem);font-weight:500}
+.nodeB i{font-size:clamp(0.5625rem, 0.5208rem + 0.1852vw, 0.6875rem);font-style:normal;font-weight:300;color:var(--muted)}
 .b1{left:13.3%}.b2{left:50%}.b3{left:86.7%}
 .vB.on .nodeB{animation:fade3 .7s ease forwards}
 .vB.on .b1{animation-delay:.35s}.vB.on .b2{animation-delay:.9s}.vB.on .b3{animation-delay:1.45s}
 .outB{position:absolute;left:50%;top:22%;translate:-50% 0;margin:0;text-align:center;opacity:0}
-.outB b{display:block;font-size:clamp(.9375rem,2.4vw,1.375rem);font-weight:500;color:var(--red-l)}
-.outB i{font-size:clamp(.625rem,1.3vw,.75rem);font-style:normal;font-weight:300;color:var(--muted)}
+.outB b{display:block;font-size:clamp(0.9375rem, 0.7917rem + 0.6481vw, 1.375rem);font-weight:500;color:var(--red-l)}
+.outB i{font-size:clamp(0.625rem, 0.5833rem + 0.1852vw, 0.75rem);font-style:normal;font-weight:300;color:var(--muted)}
 .vB.on .outB{animation:fade3 .8s ease 2.1s forwards}
 
 /* ---------- C · типографика ---------- */
-.vC{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem,5vw,5rem);
-  width:100%;padding:clamp(1rem,3vw,2rem) 0}
-.vC__cap{margin:0 0 clamp(.75rem,2vw,1.25rem);font-size:.6875rem;font-weight:500;
+.vC{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(1.5rem, 0.3333rem + 5.1852vw, 5rem);
+  width:100%;padding:clamp(1rem, 0.6667rem + 1.4815vw, 2rem) 0}
+.vC__cap{margin:0 0 clamp(0.75rem, 0.5833rem + 0.7407vw, 1.25rem);font-size:.6875rem;font-weight:500;
   letter-spacing:.12em;text-transform:uppercase;color:#555}
 .vC__col--on .vC__cap{color:var(--red-l)}
 .vC__list{margin:0;padding:0;list-style:none}
-.vC__list li{padding:clamp(.625rem,1.6vw,1rem) 0;border-top:1px solid rgba(255,255,255,.08);
-  font-size:clamp(.8125rem,2vw,1rem);font-weight:300;line-height:1.4;color:#6e6e6e;
+.vC__list li{padding:clamp(0.625rem, 0.5rem + 0.5556vw, 1rem) 0;border-top:1px solid rgba(255,255,255,.08);
+  font-size:clamp(0.8125rem, 0.75rem + 0.2778vw, 1rem);font-weight:300;line-height:1.4;color:#6e6e6e;
   opacity:0;translate:0 8px}
 .vC__list li b{font-weight:500;color:#9a9a9a}
 .vC__list li i{font-style:normal;color:#5a5a5a}
@@ -92,9 +92,9 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .vC.on .vC__list li:nth-child(1){animation-delay:.1s}
 .vC.on .vC__list li:nth-child(2){animation-delay:.25s}
 .vC.on .vC__list li:nth-child(3){animation-delay:.4s}
-.vC__big{margin:0;font-size:clamp(2rem,7vw,4.25rem);font-weight:400;line-height:.98;
+.vC__big{margin:0;font-size:clamp(2rem, 1.25rem + 3.3333vw, 4.25rem);font-weight:400;line-height:.98;
   letter-spacing:-.04em;opacity:0;translate:0 12px}
-.vC__sub{margin:clamp(.625rem,1.6vw,1rem) 0 0;font-size:clamp(.8125rem,2vw,1rem);
+.vC__sub{margin:clamp(0.625rem, 0.5rem + 0.5556vw, 1rem) 0 0;font-size:clamp(0.8125rem, 0.75rem + 0.2778vw, 1rem);
   font-weight:300;color:var(--muted);opacity:0}
 .vC.on .vC__big{animation:rise .9s cubic-bezier(.22,1,.36,1) .55s forwards}
 .vC.on .vC__sub{animation:fade .8s ease .85s forwards}
@@ -115,7 +115,7 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .vD.on .pD1{animation-delay:.6s}.vD.on .pD2{animation-delay:.75s}
 .vD.on .pD3{animation-name:fade3;animation-delay:.9s}
 .coreD{position:absolute;left:50%;top:50%;translate:-50% -50%;text-align:center;opacity:0}
-.coreD b{font-size:clamp(.625rem,1.5vw,.875rem);font-weight:600;line-height:1.1}
+.coreD b{font-size:clamp(0.625rem, 0.5417rem + 0.3704vw, 0.875rem);font-weight:600;line-height:1.1}
 .vD.on .coreD{animation:fade .8s ease 1.3s forwards}
 
 @keyframes draw{to{stroke-dashoffset:0}}
@@ -154,8 +154,8 @@ svg{display:block;width:100%;height:100%;overflow:visible}
 .vE__stage.on ~ .pE3{animation-name:fade3;animation-delay:1.06s}
 .coreE{position:absolute;left:50%;top:47%;translate:-50% -50%;text-align:center;opacity:0;
   pointer-events:none}
-.coreE b{display:block;font-size:clamp(.75rem,1.8vw,1rem);font-weight:500;line-height:1.15}
-.coreE i{font-size:clamp(.5625rem,1.3vw,.75rem);font-style:normal;font-weight:300;color:rgba(255,255,255,.75)}
+.coreE b{display:block;font-size:clamp(0.9375rem, 0.7917rem + 0.6481vw, 1.375rem);font-weight:600;line-height:1.15}
+.coreE i{font-size:clamp(0.6875rem, 0.6042rem + 0.3704vw, 0.9375rem);font-style:normal;font-weight:300;color:rgba(255,255,255,.85)}
 .vE__stage.on ~ .coreE{animation:fade .9s ease 1.35s forwards}
 @media (prefers-reduced-motion:reduce){
   .vE .pill,.coreE{opacity:1}

@@ -137,7 +137,7 @@ p, li { text-wrap: pretty; }
 .nav__menu a {
   position: relative;
   color: var(--text);
-  font-size: clamp(0.75rem, 0.7115rem + 0.1643vw, 1.0625rem);
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 300;
   line-height: 1.35;
   text-decoration: none;
@@ -161,7 +161,7 @@ p, li { text-wrap: pretty; }
   border-radius: 999px;
   color: var(--text);
   font-family: var(--font-num);
-  font-size: clamp(0.625rem, 0.5965rem + 0.1216vw, 0.875rem);
+  font-size: clamp(0.75rem, 0.5965rem + 0.1216vw, 0.875rem);
   font-weight: 700;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -246,7 +246,7 @@ p, li { text-wrap: pretty; }
   border-radius: 999px;
   color: #0e0404;
   font-family: var(--font-ui);
-  font-size: clamp(0.6875rem, 0.6193rem + 0.291vw, 1.0625rem);
+  font-size: clamp(0.75rem, 0.6193rem + 0.291vw, 1.0625rem);
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -353,7 +353,7 @@ p, li { text-wrap: pretty; }
    ============================================================ */
 
 @media (min-width: 901px) and (max-height: 820px) {
-  .hero__body { gap: clamp(0.875rem, 2vh, 1.75rem); }
+  .hero__body { gap: clamp(0.875rem, 0.5833rem + 1.2963vw, 1.75rem); }
   .hero__title { font-size: clamp(2.5rem, 1.5rem + 3vw, 4.5rem); }
 }
 
@@ -492,7 +492,7 @@ p, li { text-wrap: pretty; }
   border: 1px solid #fff;
   border-radius: 999px;
   font-family: var(--font-num);
-  font-size: 0.6875rem !important;
+  font-size: clamp(0.75rem, 0.6607rem + 0.1143vw, 0.8125rem) !important;
   font-weight: 700 !important;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -523,11 +523,11 @@ p, li { text-wrap: pretty; }
 
 .preloader__label {
   position: absolute;
-  bottom: clamp(2rem, 6vh, 4rem);
+  bottom: clamp(2rem, 1.3333rem + 2.963vw, 4rem);
   margin: 0;
   color: rgba(255, 255, 255, 0.5);
   font-family: var(--font-ui);
-  font-size: 0.75rem;
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 800;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -729,7 +729,7 @@ p.hero__lead { text-wrap: normal; }
   -webkit-backdrop-filter: blur(10px);
   background: rgba(255, 255, 255, 0.12);
   font-family: var(--font-ui);
-  font-size: clamp(0.5625rem, 0.5268rem + 0.1524vw, 0.7188rem);
+  font-size: clamp(0.75rem, 0.7143rem + 0.1524vw, 0.8125rem);
   line-height: 1;
   color: #fff;
   white-space: nowrap;
@@ -777,7 +777,7 @@ p.hero__lead { text-wrap: normal; }
 @media (max-width: 720px) {
   .situation__head {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1rem, 4vw, 1.75rem);
+    gap: clamp(1rem, 0.75rem + 1.1111vw, 1.75rem);
   }
 
   .cards {
@@ -821,7 +821,7 @@ p.hero__lead { text-wrap: normal; }
 .questions-head h2 {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(48px, 5.7vw, calc(80px * var(--up)));
+  font-size: clamp(3rem, 2.3333rem + 2.963vw, calc(80px * var(--up)));
   font-weight: 500;
   line-height: 0.88;
   letter-spacing: -0.04em;
@@ -949,15 +949,15 @@ p.hero__lead { text-wrap: normal; }
     padding-top: 80px;
     padding-bottom: 53px;
   }
-  .questions-head h2 { font-size: clamp(47px, 13vw, 58px); line-height: 0.86; }
+  .questions-head h2 { font-size: clamp(2.9375rem, 2.7083rem + 1.0185vw, 3.625rem); line-height: 0.86; }
 
   .questions-trigger {
     min-height: 82px;
     grid-template-columns: 33px minmax(0, 1fr) 32px;
     gap: 13px;
   }
-  .questions-number { width: 33px; height: 22px; font-size: 9px; }
-  .questions-item h3 { font-size: clamp(16px, 4.6vw, 19px); line-height: 1.07; }
+  .questions-number { width: 33px; height: 22px; font-size: 12px; }
+  .questions-item h3 { font-size: clamp(1rem, 0.9375rem + 0.2778vw, 1.1875rem); line-height: 1.07; }
   .questions-plus { width: 32px; height: 32px; font-size: 20px; }
   .questions-panel > div { margin-left: 46px; }
   .questions-answer p { font-size: 15px; }
@@ -979,8 +979,8 @@ p.hero__lead { text-wrap: normal; }
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(2rem, 0.9286rem + 4.5714vw, 7.25rem);
   width: 100%;
-  max-width: min(var(--shell), 100%);
-  margin: 0 auto;
+  max-width: 100%;
+  margin: 0;
 }
 
 .footer__logo {
@@ -1010,7 +1010,7 @@ p.hero__lead { text-wrap: normal; }
 .footer__label {
   margin: 0 0 calc(6px * var(--up));
   color: rgba(255, 255, 255, 0.4);
-  font-size: calc(11px * var(--up));
+  font-size: max(12px, calc(11px * var(--up)));
   font-weight: 700;
   letter-spacing: 0.22em;
   text-transform: uppercase;
@@ -1063,7 +1063,7 @@ p.hero__lead { text-wrap: normal; }
   align-items: center;
   gap: 0.5em;
   margin: 0 0 clamp(0.75rem, 0.5714rem + 0.7619vw, 1.5rem);
-  font-size: clamp(0.625rem, 0.5982rem + 0.1143vw, 0.75rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1171,13 +1171,13 @@ p.hero__lead { text-wrap: normal; }
 }
 .venn-pillar b {
   display: block;
-  font-size: clamp(0.6875rem, 0.6339rem + 0.2286vw, 0.9375rem);
+  font-size: clamp(0.75rem, 0.6339rem + 0.2286vw, 0.9375rem);
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text);
 }
 .venn-pillar i {
-  font-size: clamp(0.5625rem, 0.5357rem + 0.1143vw, 0.6875rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-style: normal;
   font-weight: 300;
   color: var(--muted);
@@ -1218,16 +1218,27 @@ p.hero__lead { text-wrap: normal; }
   background: var(--arc-high);
   text-align: center;
   opacity: 0;
-  box-shadow: 0 0 clamp(2rem, 4vw, 4rem) -0.5rem rgba(172, 12, 15, 0.75);
+  box-shadow: 0 0 clamp(2rem, 1.3333rem + 2.963vw, 4rem) -0.5rem rgba(172, 12, 15, 0.75);
 }
 .venn-core b {
-  font-size: clamp(0.6875rem, 0.6161rem + 0.3048vw, 1rem);
+  font-size: clamp(0.75rem, 0.6161rem + 0.3048vw, 1rem);
   font-weight: 600;
   line-height: 1.1;
   letter-spacing: -0.01em;
 }
+
+/* Подписи лежат поверх WebGL-канваса: доли секунды кадра бывают
+   почти белыми, и белый текст на них пропадал (замерено 2.4:1).
+   Тень не меняет палитру — она лишь затемняет подложку под глифами. */
+.venn-pillar b,
+.venn-pillar i,
+.venn-core b,
 .venn-core i {
-  font-size: clamp(0.5rem, 0.4732rem + 0.1143vw, 0.625rem);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85),
+               0 0 10px rgba(0, 0, 0, 0.7);
+}
+.venn-core i {
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-style: normal;
   font-weight: 300;
   opacity: 0.82;
@@ -1275,7 +1286,7 @@ p.hero__lead { text-wrap: normal; }
   border-radius: 999px;
   background: #fff;
   color: #0e0404;
-  font-size: clamp(0.625rem, 0.5982rem + 0.1143vw, 0.75rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 500;
   letter-spacing: 0.02em;
   text-transform: uppercase;
@@ -1296,7 +1307,7 @@ p.hero__lead { text-wrap: normal; }
 
 .quiz__meta {
   margin: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem) 0 0;
-  font-size: clamp(0.6875rem, 0.6607rem + 0.1143vw, 0.8125rem);
+  font-size: clamp(0.75rem, 0.6607rem + 0.1143vw, 0.8125rem);
   font-weight: 300;
   color: var(--muted);
 }
@@ -1307,7 +1318,7 @@ p.hero__lead { text-wrap: normal; }
   .venn-sec__inner {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     grid-template-areas: "lede quiz" "venn venn";
-    gap: clamp(1.5rem, 4vw, 2.5rem);
+    gap: clamp(1.5rem, 1.1667rem + 1.4815vw, 2.5rem);
   }
   .venn-lede { grid-area: lede; }
   .quiz { grid-area: quiz; }
@@ -1365,7 +1376,7 @@ p.hero__lead { text-wrap: normal; }
   gap: 0.5em;
   margin: 0 0 clamp(0.75rem, 0.5714rem + 0.7619vw, 1.5rem);
   font-family: var(--font-ui);
-  font-size: clamp(0.625rem, 0.5982rem + 0.1143vw, 0.75rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1564,7 +1575,7 @@ p.hero__lead { text-wrap: normal; }
   gap: 0.5em;
   margin: 0 0 clamp(0.75rem, 0.5714rem + 0.7619vw, 1.5rem);
   font-family: var(--font-ui);
-  font-size: clamp(0.625rem, 0.5982rem + 0.1143vw, 0.75rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -1610,7 +1621,7 @@ p.hero__lead { text-wrap: normal; }
            clamp(1.125rem, 0.9643rem + 0.7143vw, 1.625rem);
   border-radius: 999px;
   font-family: var(--font-ui);
-  font-size: clamp(0.6875rem, 0.6607rem + 0.1190vw, 0.8125rem);
+  font-size: clamp(0.75rem, 0.6607rem + 0.1143vw, 0.8125rem);
   font-weight: 500;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -1643,7 +1654,7 @@ p.hero__lead { text-wrap: normal; }
 @media (max-width: 900px) {
   .final-cta__inner {
     grid-template-columns: minmax(0, 1fr);
-    gap: clamp(1.5rem, 4vw, 2.25rem);
+    gap: clamp(1.5rem, 1.25rem + 1.1111vw, 2.25rem);
   }
   .final-cta__actions {
     justify-self: stretch;
@@ -1682,13 +1693,13 @@ p.hero__lead { text-wrap: normal; }
 }
 .venn-issue b {
   display: block;
-  font-size: clamp(0.5625rem, 0.5357rem + 0.1143vw, 0.6875rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 500;
   letter-spacing: 0.01em;
   color: #ff5a5f;
 }
 .venn-issue i {
-  font-size: clamp(0.5rem, 0.4732rem + 0.1143vw, 0.625rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-style: normal;
   font-weight: 300;
   color: var(--muted);
@@ -1715,18 +1726,18 @@ p.hero__lead { text-wrap: normal; }
 
 .venn-vs__col dt {
   margin: 0 0 0.35em;
-  font-size: clamp(0.625rem, 0.5982rem + 0.1143vw, 0.75rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
   font-weight: 500;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #555;
+  color: #8a8a8a;
 }
 .venn-vs__col dd {
   margin: 0;
   font-size: clamp(0.75rem, 0.7286rem + 0.0914vw, 0.9375rem);
   font-weight: 300;
-  line-height: 1.32;
-  color: #6e6e6e;
+  line-height: 1.35;
+  color: #8a8a8a;
 }
 /* Правая колонка — состояние «вместе»: она и есть результат */
 .venn-vs__col--on dt { color: var(--arc-high); }
@@ -1743,4 +1754,311 @@ p.hero__lead { text-wrap: normal; }
   .venn.is-in .venn-issue { animation: none; }
   .venn__link { stroke-dashoffset: 0; }
   .venn-issue { opacity: 1; }
+}
+
+/* ============================================================
+   11 / Услуги · светлый аккордеон
+   Механика та же, что в «Частых вопросах» (grid-template-rows
+   0fr → 1fr), палитра инвертирована: светлый фон, тёмный текст.
+   ============================================================ */
+
+.services {
+  position: relative;
+  z-index: 2;
+  background: #f2efe9;
+  color: #16120d;
+  padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) 0
+           clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem);
+}
+
+.services-head { padding: 0 var(--gutter); }
+
+.services-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0 0 clamp(0.75rem, 0.5714rem + 0.7619vw, 1.5rem);
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #b3131a;
+}
+.services-eyebrow span { opacity: 0.5; }
+
+.services-title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: clamp(1.75rem, 1.1607rem + 2.5143vw, 4.5rem);
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.services-sub {
+  max-width: 34ch;
+  margin: clamp(0.875rem, 0.6964rem + 0.7619vw, 1.625rem) 0
+          clamp(1.75rem, 1.1964rem + 2.3619vw, 4.0625rem);
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: #6b655c;
+}
+
+.services-list { border-top: 1px solid rgba(22, 18, 13, 0.16); }
+.services-item { border-bottom: 1px solid rgba(22, 18, 13, 0.16); }
+
+/* Три колонки как в макете: название | описание | «Подробнее» */
+.services-trigger {
+  width: 100%;
+  padding: clamp(1.375rem, 1.0179rem + 1.5238vw, 2.875rem) var(--gutter);
+  display: grid;
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.25fr) max-content;
+  align-items: start;
+  gap: clamp(1rem, 0.5714rem + 1.8286vw, 2.875rem);
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.services-trigger:hover { background: rgba(22, 18, 13, 0.025); }
+
+.services-item h3 {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: clamp(0.9375rem, 0.8304rem + 0.4571vw, 1.375rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+.services-note {
+  margin: 0;
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: #4a443c;
+}
+
+.services-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid #b3131a;
+  font-size: clamp(0.75rem, 0.6607rem + 0.1143vw, 0.8125rem);
+  font-weight: 500;
+  color: #b3131a;
+  white-space: nowrap;
+}
+.services-more i {
+  font-style: normal;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.services-trigger:hover .services-more i { transform: translateX(3px); }
+.services-item.is-open .services-more i { transform: rotate(90deg); }
+
+/* ---------- Раскрывающаяся панель ---------- */
+
+.services-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0 var(--gutter);
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.services-panel > div {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.24s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.services-item.is-open .services-panel { grid-template-rows: 1fr; }
+.services-item.is-open .services-panel > div {
+  opacity: 1;
+  transform: none;
+  transition-delay: 0.1s;
+}
+
+.services-answer {
+  max-width: 62ch;
+  padding-bottom: clamp(1.5rem, 1.1429rem + 1.5238vw, 3rem);
+}
+.services-answer p {
+  margin: 0 0 0.85em;
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: #4a443c;
+}
+.services-answer p:last-of-type { margin-bottom: clamp(1.25rem, 0.9833rem + 0.7407vw, 1.75rem); }
+
+/* Факты о формате — короткая сводка сверху панели */
+.services-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.625rem);
+  margin: 0 0 clamp(1.125rem, 0.9464rem + 0.7619vw, 1.875rem);
+  padding: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
+  border-radius: 0.5rem;
+  background: rgba(22, 18, 13, 0.04);
+}
+.services-facts dt {
+  margin: 0 0 0.3em;
+  font-size: clamp(0.75rem, 0.7232rem + 0.1143vw, 0.875rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8377;
+}
+.services-facts dd {
+  margin: 0;
+  font-size: clamp(0.8125rem, 0.7679rem + 0.1905vw, 1rem);
+  font-weight: 500;
+  color: #16120d;
+}
+
+.services-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: clamp(0.6875rem, 0.6161rem + 0.3048vw, 1rem)
+           clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  border: 1px solid #16120d;
+  border-radius: 999px;
+  color: #16120d;
+  font-size: clamp(0.75rem, 0.6607rem + 0.1143vw, 0.8125rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 0.28s ease, color 0.28s ease;
+}
+.services-cta:hover { background: #16120d; color: #f2efe9; }
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 900px) {
+  .services-trigger {
+    grid-template-columns: minmax(0, 1fr) max-content;
+    gap: clamp(0.625rem, 0.4167rem + 0.9259vw, 1.25rem);
+  }
+  .services-item h3 { grid-column: 1; }
+  .services-more { grid-column: 2; grid-row: 1; align-self: start; }
+  .services-note { grid-column: 1 / -1; }
+}
+
+@media (max-width: 600px) {
+  .services-facts { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .services-panel,
+  .services-panel > div,
+  .services-more i { transition: none; }
+}
+
+
+/* ---------- Стеклянная сцена вместо SVG-схемы ---------- */
+.venn__stage { position: absolute; inset: 0; }
+
+/* Подписи и ядро появляются после сборки фигур */
+.venn .venn-pillar,
+.venn .venn-core { opacity: 0; }
+.venn__stage.on ~ .venn-pillar { animation: vFade 0.8s ease forwards; }
+.venn__stage.on ~ .venn-pillar--1 { animation-delay: 0.5s; }
+.venn__stage.on ~ .venn-pillar--2 { animation-delay: 0.78s; }
+.venn__stage.on ~ .venn-pillar--3 { animation-name: vFade3; animation-delay: 1.06s; }
+.venn__stage.on ~ .venn-issue { animation: vFade 0.7s ease forwards; }
+.venn__stage.on ~ .venn-issue--1 { animation-delay: 1.5s; }
+.venn__stage.on ~ .venn-issue--2 { animation-delay: 1.65s; }
+.venn__stage.on ~ .venn-issue--3 { animation-name: vFade3; animation-delay: 1.8s; }
+
+/* Ядро — только текст, подложку рисует шейдер */
+.venn-core {
+  background: none;
+  box-shadow: none;
+  width: auto;
+  aspect-ratio: auto;
+  top: 50%;
+}
+.venn__stage.on ~ .venn-core { animation: vFadeCore 0.9s ease 1.35s forwards; }
+@keyframes vFadeCore {
+  from { opacity: 0; translate: -50% -50%; }
+  to   { opacity: 1; translate: -50% -50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venn .venn-pillar, .venn .venn-core, .venn .venn-issue { opacity: 1; }
+}
+
+/* ============================================================
+   §12 · Зоны касания на мобильных
+   Минимум 44×44 по WCAG 2.5.5. Размеры и положение элементов
+   не меняются: площадь добирается внутренними отступами, а
+   отрицательные margin компенсируют их, чтобы вёрстка осталась
+   той же. Только хитбокс, не композиция.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Бургер: рисунок 26×26, зона касания 44×44 */
+  .nav__burger {
+    width: 44px;
+    height: 44px;
+    margin-right: -9px;
+    align-items: center;
+  }
+
+  /* Ссылки футера: строка 20px -> 44px по высоте */
+  .footer__col a {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  /* компенсируем прирост высоты, чтобы колонка не растянулась */
+  .footer__col { gap: 0; }
+
+  .footer__logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+
+  /* Логотип шапки — точка отсчёта для левого края всех секций,
+     поэтому сдвигать его нельзя. Зону касания растим псевдо-
+     элементом: он не влияет на поток и не двигает логотип. */
+  .nav__logo {
+    position: relative;
+    display: inline-block;
+  }
+  .nav__logo::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: 44px;
+    transform: translateY(-50%);
+  }
+
+  /* Кнопки-CTA: добираем высоту до 44 */
+  .hero__cta,
+  .quiz__cta,
+  .quiz__label,
+  .services-cta,
+  .final-cta__btn,
+  .nav__cta {
+    min-height: 44px;
+  }
+
+  .hero__cta-label,
+  .quiz__label,
+  .services-cta,
+  .final-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
 }

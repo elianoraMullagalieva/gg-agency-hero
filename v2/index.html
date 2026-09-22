@@ -234,46 +234,7 @@
     <!-- Центр: схема -->
     <div class="venn" role="img"
          aria-label="Три опоры продаж: лидогенерация, продукт и продажи. Работают вместе — деньги в кассе каждый день. По отдельности — заявки сгорают, нечего продавать, менеджеры ждут.">
-      <svg class="venn__svg" viewBox="0 0 560 560" aria-hidden="true">
-        <defs>
-          <radialGradient id="vg-core">
-            <stop offset="0%"   stop-color="#C8102E" stop-opacity=".38" />
-            <stop offset="70%"  stop-color="#C8102E" stop-opacity=".12" />
-            <stop offset="100%" stop-color="#C8102E" stop-opacity="0" />
-          </radialGradient>
-        </defs>
-
-        <!-- Зона тройного пересечения — настоящая форма из трёх дуг,
-             а не круг поверх. Именно она держит смысл блока. -->
-        <path class="venn__core-shape"
-              d="M 187.3 217.9
-                 A 168 168 0 0 1 372.7 217.9
-                 A 168 168 0 0 1 280 378.3
-                 A 168 168 0 0 1 187.3 217.9 Z" />
-
-        <!-- три контура -->
-        <circle class="venn__ring venn__ring--1" cx="205" cy="228" r="168" />
-        <circle class="venn__ring venn__ring--2" cx="355" cy="228" r="168" />
-        <circle class="venn__ring venn__ring--3" cx="280" cy="358" r="168" />
-
-        <!-- Коннекторы к проблемам: линия возникает при скролле,
-             а не нарисована заранее. -->
-        <g class="venn__links">
-          <path class="venn__link" d="M 150 120 L 60 62" />
-          <path class="venn__link" d="M 410 120 L 500 62" />
-          <path class="venn__link" d="M 280 470 L 280 540" />
-        </g>
-
-        <!-- импульсы, бегущие по контурам к центру -->
-        <g class="venn__pulses">
-          <circle class="venn__pulse" r="2.4"><animateMotion dur="4.2s" repeatCount="indefinite"
-            path="M 205 60 A 168 168 0 0 1 373 228 A 168 168 0 0 1 205 396 A 168 168 0 0 1 37 228 A 168 168 0 0 1 205 60" /></circle>
-          <circle class="venn__pulse" r="2.4"><animateMotion dur="5.1s" begin="-1.4s" repeatCount="indefinite"
-            path="M 355 60 A 168 168 0 0 1 523 228 A 168 168 0 0 1 355 396 A 168 168 0 0 1 187 228 A 168 168 0 0 1 355 60" /></circle>
-          <circle class="venn__pulse" r="2.4"><animateMotion dur="4.6s" begin="-2.6s" repeatCount="indefinite"
-            path="M 280 190 A 168 168 0 0 1 448 358 A 168 168 0 0 1 280 526 A 168 168 0 0 1 112 358 A 168 168 0 0 1 280 190" /></circle>
-        </g>
-      </svg>
+      <div class="venn__stage" id="glassStage" aria-hidden="true"></div>
 
       <!-- подписи опор -->
       <p class="venn-pillar venn-pillar--1"><b>Лидогенерация</b><i>трафик и заявки</i></p>
@@ -383,6 +344,92 @@
   </div>
 </section>
 
+
+<!-- ===== 11 / Услуги · светлый аккордеон ===== -->
+<section class="services" id="services" aria-labelledby="services-title">
+  <div class="services-head">
+    <p class="services-eyebrow"><span>11</span> Услуги</p>
+    <h2 class="services-title" id="services-title">Нужен конкретный формат?</h2>
+    <p class="services-sub">
+      Если уже понимаете, что вам нужно. Если не&nbsp;уверены&nbsp;—
+      начните с&nbsp;разбора выше.
+    </p>
+  </div>
+
+  <div class="services-list">
+    <article class="services-item">
+      <button class="services-trigger" type="button" aria-expanded="false">
+        <h3>Аудит отдела продаж</h3>
+        <p class="services-note">
+          Самостоятельная диагностика без обязательств по&nbsp;дальнейшей работе:
+          воронка, CRM, звонки и&nbsp;переписки, отчётность, работа с&nbsp;базой.
+          Документ и&nbsp;созвон по&nbsp;итогам.
+        </p>
+        <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
+      </button>
+      <div class="services-panel"><div class="services-answer">
+        <dl class="services-facts">
+          <div><dt>Срок</dt><dd>5–7 дней</dd></div>
+          <div><dt>Формат</dt><dd>документ + созвон</dd></div>
+          <div><dt>Обязательства</dt><dd>нет</dd></div>
+        </dl>
+        <p>Смотрим, где именно теряются деньги: разбираем записи звонков и переписки,
+          считаем конверсию каждого менеджера, проверяем настройку CRM и работу с базой.</p>
+        <p>На выходе — документ с найденными точками потерь и планом, что чинить
+          в первую очередь. Созвон, чтобы разобрать выводы и ответить на вопросы.</p>
+        <a class="services-cta" href="#">Получить консультацию</a>
+      </div></div>
+    </article>
+
+    <article class="services-item">
+      <button class="services-trigger" type="button" aria-expanded="false">
+        <h3>Отдел продаж<br />на период запуска</h3>
+        <p class="services-note">
+          Готовая команда&nbsp;— менеджеры, РОП, лидорубы, ОКК&nbsp;— под конкретное
+          окно продаж. Подготовка 5–7&nbsp;дней, весь цикл около месяца.
+        </p>
+        <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
+      </button>
+      <div class="services-panel"><div class="services-answer">
+        <dl class="services-facts">
+          <div><dt>Подготовка</dt><dd>5–7 дней</dd></div>
+          <div><dt>Весь цикл</dt><dd>около месяца</dd></div>
+          <div><dt>Команда</dt><dd>под ваш объём</dd></div>
+        </dl>
+        <p>Собираем команду под конкретное окно продаж: менеджеры, руководитель,
+          лидорубы и контроль качества. Пишем скрипты под ваш продукт, настраиваем
+          воронку и отчётность.</p>
+        <p>Вы получаете работающий отдел к старту запуска, без найма и обучения
+          с нуля. После окончания — передаём наработки и статистику.</p>
+        <a class="services-cta" href="#">Получить консультацию</a>
+      </div></div>
+    </article>
+
+    <article class="services-item">
+      <button class="services-trigger" type="button" aria-expanded="false">
+        <h3>Оптимизация<br />текущего отдела</h3>
+        <p class="services-note">
+          Команда и&nbsp;CRM уже есть, но&nbsp;результата нет&nbsp;— точечно
+          донастраиваем то, что работает не&nbsp;так, без остановки продаж.
+        </p>
+        <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
+      </button>
+      <div class="services-panel"><div class="services-answer">
+        <dl class="services-facts">
+          <div><dt>Срок</dt><dd>2–3 месяца</dd></div>
+          <div><dt>Остановка</dt><dd>не требуется</dd></div>
+          <div><dt>Дальше</dt><dd>план на полгода</dd></div>
+        </dl>
+        <p>Не ломаем то, что уже работает. Находим узкие места и чиним их по очереди:
+          скрипты, регламенты, мотивацию, контроль качества, работу с базой.</p>
+        <p>Обучаем вашего руководителя вести отдел дальше самостоятельно
+          и передаём управление с планом на полгода вперёд.</p>
+        <a class="services-cta" href="#">Получить консультацию</a>
+      </div></div>
+    </article>
+  </div>
+</section>
+
 <!-- ===== Частые вопросы · структура из проекта Кэмпа ===== -->
 <section class="questions-section" id="questions" aria-labelledby="questions-title">
   <div class="questions-head">
@@ -486,6 +533,8 @@
   </div>
 </footer>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="main.js"></script>
+<script src="glass.js"></script>
 </body>
 </html>
