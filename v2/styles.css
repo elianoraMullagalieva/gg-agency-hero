@@ -2310,3 +2310,64 @@ p.hero__lead { text-wrap: normal; }
 @media (prefers-reduced-motion: reduce) {
   .case-num, .case-step { opacity: 1; translate: none; animation: none; }
 }
+
+/* ---------- Переворот карточек · механика из «Нейро-практикума» ---------- */
+
+.card { perspective: 1500px; }
+
+.card__inner { position: absolute; inset: 0; }
+
+.card__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  transform: rotateY(0deg);
+  transition: transform 0.62s cubic-bezier(0.22, 1, 0.36, 1),
+              opacity 0.22s ease;
+  will-change: transform, opacity;
+}
+
+/* Затемнение переехало с карточки на грань — иначе оборот без него */
+.card__face::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg,
+    rgba(0, 0, 0, 0.28) 0%,
+    rgba(0, 0, 0, 0) 32%,
+    rgba(0, 0, 0, 0.55) 72%,
+    rgba(0, 0, 0, 0.86) 100%);
+}
+.card::after { content: none; }
+
+.card__face--back {
+  opacity: 0;
+  pointer-events: none;
+  transform: rotateY(-90deg);
+}
+
+/* Только там, где есть курсор: на тач-устройствах оборот недостижим */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover .card__face--front {
+    opacity: 0;
+    transform: rotateY(90deg);
+  }
+  .card:hover .card__face--back {
+    opacity: 1;
+    pointer-events: auto;
+    transform: rotateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card__face { transition: opacity 0.2s ease; }
+  .card:hover .card__face--front { transform: none; }
+  .card:hover .card__face--back { transform: none; }
+}

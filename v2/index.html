@@ -93,7 +93,7 @@
       <span class="hero__cta-label">Получить консультацию</span>
       <span class="hero__cta-icon" aria-hidden="true">
         <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M11.378 0H2.5v1.25h6.74L.44 10.05l.884.884L10.75 2.51v6.74H12V.624A.624.624 0 0 0 11.378 0Z"
+          <path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z"
                 fill="currentColor"/>
         </svg>
       </span>
@@ -155,6 +155,8 @@
 
   <ul class="cards" role="list">
     <li class="card" style="--i:0">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
       <picture>
         <source srcset="assets/cards/card-1.webp" type="image/webp" />
         <img class="card__photo" src="assets/cards/card-1.jpg" alt=""
@@ -170,9 +172,28 @@
           Растёте, но&nbsp;можно больше<br />с&nbsp;той&nbsp;же базой и&nbsp;трафиком
         </p>
       </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-1.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-1.jpg" alt=""
+                 width="383" height="569" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">01</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Найдём, где недобираете</h3>
+            <p class="card__note">Аудит покажет точки роста на&nbsp;той&nbsp;же базе, без&nbsp;увеличения бюджета</p>
+          </div>
+        </div>
+      </div>
     </li>
 
     <li class="card" style="--i:1">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
       <picture>
         <source srcset="assets/cards/card-2.webp" type="image/webp" />
         <img class="card__photo" src="assets/cards/card-2.jpg" alt=""
@@ -188,9 +209,28 @@
           Без&nbsp;вас ничего не&nbsp;продаётся&nbsp;—<br />масштабироваться так нельзя
         </p>
       </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-2.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-2.jpg" alt=""
+                 width="383" height="569" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">02</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Продажи без вашего участия</h3>
+            <p class="card__note">Команда, регламенты и&nbsp;контроль качества&nbsp;— система работает без&nbsp;ручного режима</p>
+          </div>
+        </div>
+      </div>
     </li>
 
     <li class="card" style="--i:2">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
       <picture>
         <source srcset="assets/cards/card-3.webp" type="image/webp" />
         <img class="card__photo" src="assets/cards/card-3.jpg" alt=""
@@ -206,9 +246,28 @@
           Держатся на&nbsp;органике и&nbsp;сарафане.<br />Для&nbsp;многих мы&nbsp;были первыми
         </p>
       </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-3.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-3.jpg" alt=""
+                 width="383" height="569" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">03</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Отдел с нуля за месяц</h3>
+            <p class="card__note">Наймём, обучим, поставим CRM и&nbsp;скрипты. Первые продажи&nbsp;— до&nbsp;конца цикла</p>
+          </div>
+        </div>
+      </div>
     </li>
 
     <li class="card" style="--i:3">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
       <picture>
         <source srcset="assets/cards/card-4.webp" type="image/webp" />
         <img class="card__photo" src="assets/cards/card-4.jpg" alt=""
@@ -223,6 +282,23 @@
         <p class="card__note">
           Заявки теряются между чатами,<br />менеджеры продают кто как умеет
         </p>
+      </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-4.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-4.jpg" alt=""
+                 width="383" height="569" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">04</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Соберём разрозненное</h3>
+            <p class="card__note">Единая воронка, отчётность и&nbsp;нормативы обработки вместо чатов и&nbsp;догадок</p>
+          </div>
+        </div>
       </div>
     </li>
   </ul>
