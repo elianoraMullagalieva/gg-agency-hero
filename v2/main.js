@@ -423,7 +423,12 @@
     });
 
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") set(false);
+      if (e.key !== "Escape") return;
+      var wasOpen = burger.getAttribute("aria-expanded") === "true";
+      set(false);
+      // Меню закрылось — фокус не должен остаться на скрытом пункте,
+      // иначе следующий Tab уводит в начало страницы.
+      if (wasOpen) burger.focus();
     });
 
     window.addEventListener("resize", function () {
@@ -711,6 +716,19 @@
   var canvas = document.querySelector(".hero__bg");
   if (canvas) initArc(canvas);
 /* Аккордеон услуг — та же механика, что у вопросов. */
+/* Поочерёдное появление строк «Где утекают деньги». */
+  function initLeaks() {
+    var sec = document.querySelector(".leaks");
+    if (!sec) return;
+    if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { sec.classList.add("is-in"); io.disconnect(); }
+      });
+    }, { threshold: 0.15 });
+    io.observe(sec);
+  }
+
   function initServices() {
     var triggers = document.querySelectorAll(".services-trigger");
     if (!triggers.length) return;
@@ -875,5 +893,6 @@
   initVenn();
   initQuestions();
   initServices();
+  initLeaks();
   initShots();
 })();

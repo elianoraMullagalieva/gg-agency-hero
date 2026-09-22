@@ -65,8 +65,8 @@
   ].join("\n");
 
   /* ---------- сквиркл вместо сферы ---------- */
-  function buildBody(exponent) {
-    var geo = new THREE.SphereGeometry(1, 96, 72);
+  function buildBody(exponent, segW, segH) {
+    var geo = new THREE.SphereGeometry(1, segW, segH);
     var pos = geo.getAttribute("position");
     var v = new THREE.Vector3();
     var n = Math.max(2, exponent);
@@ -104,10 +104,26 @@
   }
 
   /* ---------- сцена ---------- */
-  var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // Узкие экраны: antialias дорог, а сглаживание даёт почти нулевой
+  // выигрыш при pixelRatio 2+. Отключаем и режем pixelRatio.
+  var narrow = window.matchMedia("(max-width: 640px)").matches;
+
+  // Фолбэк: без WebGL (или при отказе контекста) блок остался бы пустым.
+  var renderer;
+  try {
+    renderer = new THREE.WebGLRenderer({ antialias: !narrow, alpha: true });
+  } catch (err) {
+    renderer = null;
+  }
+  if (!renderer || !renderer.getContext()) {
+    mount.classList.add("no-webgl");
+    return;
+  }
+
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, narrow ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   var el = renderer.domElement;
+  el.setAttribute("aria-hidden", "true");
   el.style.cssText = "position:absolute;inset:0;width:100%;height:100%";
   mount.appendChild(el);
 
@@ -122,9 +138,9 @@
   };
   // Красное стекло — результат в зоне пересечения.
   var RED = {
-    glass: "#c8102e", roomTop: "#8f0d1e", roomBottom: "#3a0409",
-    highlight: "#ff6b70", ior: 1.34, dispersion: 0.05,
-    clarity: 0.5, edge: 1.7, gloss: 300
+    glass: "#e00c24", roomTop: "#c20f22", roomBottom: "#6b0710",
+    highlight: "#ff8d92", ior: 1.34, dispersion: 0.05,
+    clarity: 0.28, edge: 2.0, gloss: 260
   };
 
   // Позиции повторяют макет: три опоры + центр
@@ -132,10 +148,12 @@
     { p: [-0.78, 0.46, 0.0],  s: 1.02, cfg: DARK, spin: 0.105 },
     { p: [ 0.78, 0.46, -0.1], s: 1.02, cfg: DARK, spin: -0.095 },
     { p: [ 0.0, -0.66, 0.1],  s: 1.02, cfg: DARK, spin: 0.10 },
-    { p: [ 0.0,  0.02, 0.9],  s: 0.6,  cfg: RED,  spin: -0.13 }
+    { p: [ 0.0,  0.02, 0.9],  s: 0.74, cfg: RED,  spin: -0.13 }
   ];
 
-  var geoBody = buildBody(2.9);
+  // На узких экранах сквиркл читается и на вдвое меньшей сетке:
+  // 96×72 = 6912 вершин против 48×36 = 1728 — силуэт тот же.
+  var geoBody = narrow ? buildBody(2.9, 48, 36) : buildBody(2.9, 96, 72);
   var items = SPEC.map(function (s) {
     var m = mat(s.cfg);
     var mesh = new THREE.Mesh(geoBody, m);
@@ -159,6 +177,9 @@
     camera.lookAt(0, 0, 0);
     camera.fov = 2 * Math.atan(visible / 2 / dist) * (180 / Math.PI);
     camera.updateProjectionMatrix();
+    // Цикл может стоять на паузе (вне экрана / reduced-motion) —
+    // тогда после ресайза в буфере осталась бы картинка старого размера.
+    if (typeof running !== "undefined" && !running) renderer.render(scene, camera);
   }
   resize();
   new ResizeObserver(resize).observe(mount);
@@ -167,21 +188,52 @@
   var started = reduce;
   if (reduce) items.forEach(function (it) { it.m.uniforms.uOpacity.value = 1; });
 
+  // Сцена видна в экране? Вне экрана рендер останавливаем совсем:
+  // раньше 4 объекта со сложным шейдером крутились всё время, пока
+  // открыта вкладка, даже когда блок далеко за пределами видимости.
+  var onScreen = false;
+  var running = false;
+
   var io = new IntersectionObserver(function (es) {
     es.forEach(function (e) {
-      if (e.isIntersecting && !started) {
+      onScreen = e.isIntersecting;
+      if (onScreen && !started) {
         started = true;
         mount.classList.add("on");
-        io.disconnect();
       }
+      sync();
     });
-  }, { threshold: 0.3 });
+  }, { threshold: 0 });
   io.observe(mount);
 
+  document.addEventListener("visibilitychange", sync);
+
+  function sync() {
+    // При prefers-reduced-motion кадр рисуем один раз — статичная
+    // картинка вместо бесконечного цикла.
+    if (reduce) {
+      if (onScreen && !document.hidden && !drawnOnce) {
+        drawnOnce = true;
+        renderer.render(scene, camera);
+      }
+      return;
+    }
+    var want = onScreen && !document.hidden;
+    if (want && !running) {
+      running = true;
+      last = performance.now();
+      requestAnimationFrame(frame);
+    } else if (!want) {
+      running = false;
+    }
+  }
+
+  var drawnOnce = false;
   var t0 = performance.now();
   var last = t0;
 
   function frame(now) {
+    if (!running) return;
     requestAnimationFrame(frame);
     var dt = Math.min(0.05, (now - last) / 1000);
     last = now;
@@ -206,5 +258,6 @@
 
     renderer.render(scene, camera);
   }
-  requestAnimationFrame(frame);
+  // Цикл больше не стартует сам: его включает sync(), когда сцена
+  // реально видна. См. IntersectionObserver выше.
 })();

@@ -10,6 +10,36 @@
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
 <link rel="stylesheet" href="styles.css" />
+
+<!-- Без JS прелоадер некому убрать: он fixed, inset:0 и непрозрачный,
+     то есть закрывает весь сайт навсегда. Аккордеоны тоже не раскрыть,
+     поэтому в no-JS показываем все ответы развёрнутыми. -->
+<noscript>
+  <style>
+    .preloader { display: none !important; }
+    body.is-loading .nav,
+    body.is-loading .hero__title span,
+    body.is-loading .hero__lead,
+    body.is-loading .hero__cta,
+    body.is-loading .stats__inner { animation-play-state: running; }
+
+    /* Контент аккордеонов доступен: панели раскрыты, «плюс» и
+       «Подробнее» убраны, чтобы не обещать несуществующий клик. */
+    .questions-panel,
+    .services-panel { grid-template-rows: 1fr !important; }
+    .questions-panel > div,
+    .services-panel > div { opacity: 1 !important; visibility: visible !important; }
+    .questions-plus,
+    .services-more { display: none !important; }
+    .questions-trigger,
+    .services-trigger { cursor: default; }
+
+    /* Схема опор: шейдер не запустится, текст обязан быть виден. */
+    .venn .venn-pillar,
+    .venn .venn-core,
+    .venn .venn-issue { opacity: 1 !important; }
+  </style>
+</noscript>
 </head>
 <body class="is-loading">
 
@@ -137,7 +167,7 @@
       <div class="card__copy">
         <h3 class="card__name">Продажи<br />вроде неплохие</h3>
         <p class="card__note">
-          Растёте, но&nbsp;чувствуете, что можно больше<br />с&nbsp;той&nbsp;же базой и&nbsp;трафиком
+          Растёте, но&nbsp;можно больше<br />с&nbsp;той&nbsp;же базой и&nbsp;трафиком
         </p>
       </div>
     </li>
@@ -155,7 +185,7 @@
       <div class="card__copy">
         <h3 class="card__name">Контролируете<br />каждую сделку</h3>
         <p class="card__note">
-          Без&nbsp;вас ничего не&nbsp;продаётся,<br />а&nbsp;масштабироваться так нельзя
+          Без&nbsp;вас ничего не&nbsp;продаётся&nbsp;—<br />масштабироваться так нельзя
         </p>
       </div>
     </li>
@@ -173,7 +203,7 @@
       <div class="card__copy">
         <h3 class="card__name">Отдела<br />продаж нет</h3>
         <p class="card__note">
-          Продажи держатся на&nbsp;органике<br />и&nbsp;сарафане. Для&nbsp;многих<br />мы&nbsp;были первыми
+          Держатся на&nbsp;органике и&nbsp;сарафане.<br />Для&nbsp;многих мы&nbsp;были первыми
         </p>
       </div>
     </li>
@@ -191,9 +221,85 @@
       <div class="card__copy">
         <h3 class="card__name">Есть команда,<br />нет роста</h3>
         <p class="card__note">
-          Заявки теряются между чатами<br />и&nbsp;CRM, менеджеры продают<br />кто как умеет
+          Заявки теряются между чатами,<br />менеджеры продают кто как умеет
         </p>
       </div>
+    </li>
+  </ul>
+</section>
+
+
+<!-- ===== Где утекают деньги · светлый блок ===== -->
+<section class="leaks" id="leaks" aria-labelledby="leaks-title">
+  <div class="leaks-head">
+    <h2 class="leaks-title" id="leaks-title">Отдел продаж теряет деньги тихо</h2>
+    <p class="leaks-sub">
+      Утечки не&nbsp;бьют по&nbsp;выручке в&nbsp;тот же день. Сначала они копятся
+      в&nbsp;CRM и&nbsp;переписках, а&nbsp;через два-три месяца выручка проседает&nbsp;—
+      и&nbsp;уже никто не&nbsp;может объяснить почему. Поэтому их&nbsp;ловят
+      в&nbsp;процессе, пока деньги ещё можно вернуть. Все цифры ниже&nbsp;—
+      из&nbsp;наших аудитов.
+    </p>
+  </div>
+
+  <ul class="leaks-list" role="list">
+    <li class="leak" style="--i:0">
+      <p class="leak__num">7+ часов</p>
+      <h3 class="leak__name">Заявка ждёт ответа</h3>
+      <p class="leak__text">
+        За&nbsp;это время интерес остывает, а&nbsp;человек листает предложения
+        конкурентов. Вы&nbsp;заплатили за&nbsp;заявку, прогрели её&nbsp;эфиром
+        или вебинаром&nbsp;— и&nbsp;отдали клиента тому, кто ответил раньше.
+        <b>Каждый час ожидания&nbsp;— это оплаченный лид, который уходит
+        в&nbsp;минус.</b>
+      </p>
+    </li>
+
+    <li class="leak" style="--i:1">
+      <p class="leak__num">год на&nbsp;3 запусках</p>
+      <h3 class="leak__name">Выручка держится на&nbsp;запусках</h3>
+      <p class="leak__text">
+        Между запусками касса почти пустая, хотя трафик идёт каждый день
+        и&nbsp;продавать его некому. А&nbsp;все ставки&nbsp;— на&nbsp;несколько
+        недель в&nbsp;году: не&nbsp;зашёл оффер, просела реклама, эксперт выпал
+        из&nbsp;графика&nbsp;— <b>и&nbsp;полгода работы не&nbsp;окупились.</b>
+      </p>
+    </li>
+
+    <li class="leak" style="--i:2">
+      <p class="leak__num">87%</p>
+      <h3 class="leak__name">База не&nbsp;сегментирована</h3>
+      <p class="leak__text">
+        Сделки закрыты как «не&nbsp;реализовано», а&nbsp;почему&nbsp;—
+        не&nbsp;знает никто. Непонятно, кому и&nbsp;что предложить, вернуть
+        этих людей нечем. Кажется, что база у&nbsp;вас есть,
+        <b>а&nbsp;по&nbsp;сути это кладбище лидов, а&nbsp;не&nbsp;актив.</b>
+      </p>
+    </li>
+
+    <li class="leak" style="--i:3">
+      <p class="leak__num">0 звонков</p>
+      <h3 class="leak__name">Продают только перепиской</h3>
+      <p class="leak__text">
+        Звонить некому или менеджеры не&nbsp;любят звонить&nbsp;— и&nbsp;всё
+        уходит в&nbsp;чат. Но&nbsp;на&nbsp;высоком чеке сомнение «справлюсь
+        ли&nbsp;я» и&nbsp;«стоит ли&nbsp;это своих денег» снимается голосом,
+        а&nbsp;не&nbsp;текстом: в&nbsp;переписке человек не&nbsp;спорит,
+        он&nbsp;просто перестаёт отвечать.
+        <b>Итог&nbsp;— отдел недобирает около 20% выручки.</b>
+      </p>
+    </li>
+
+    <li class="leak" style="--i:4">
+      <p class="leak__num">1 касание</p>
+      <h3 class="leak__name">После «я&nbsp;подумаю» никто не&nbsp;возвращается</h3>
+      <p class="leak__text">
+        Менеджер написал один раз, получил «подумаю» и&nbsp;переключился
+        на&nbsp;новые заявки. Решение о&nbsp;покупке редко принимают
+        с&nbsp;первого контакта, а&nbsp;до&nbsp;второго и&nbsp;третьего дело
+        не&nbsp;доходит. <b>Эти люди были готовы заплатить&nbsp;— их&nbsp;просто
+        не&nbsp;довели до&nbsp;оплаты.</b>
+      </p>
     </li>
   </ul>
 </section>
@@ -204,7 +310,6 @@
 
     <!-- Левая колонка: заголовок -->
     <div class="venn-lede">
-      <p class="venn-eyebrow"><span>02</span> Проблема</p>
       <h2 class="venn-title" id="venn-title">
         Запуск<br />закончился<br /><b>и&nbsp;всё встало?</b>
       </h2>
@@ -253,7 +358,6 @@
 <!-- ===== 13 / Отзывы · видео-отзывы и скрины переписок ===== -->
 <section class="reviews" id="reviews" aria-labelledby="reviews-title">
   <div class="reviews__head">
-    <p class="reviews__eyebrow"><span>13</span> Отзывы</p>
     <h2 class="reviews__title" id="reviews-title">Что говорят клиенты</h2>
   </div>
 
@@ -326,7 +430,6 @@
 <!-- ===== 11 / Услуги · светлый аккордеон ===== -->
 <section class="services" id="services" aria-labelledby="services-title">
   <div class="services-head">
-    <p class="services-eyebrow"><span>11</span> Услуги</p>
     <h2 class="services-title" id="services-title">Нужен конкретный формат?</h2>
     <p class="services-sub">
       Если уже понимаете, что вам нужно. Если не&nbsp;уверены&nbsp;—
@@ -336,7 +439,7 @@
 
   <div class="services-list">
     <article class="services-item">
-      <button class="services-trigger" type="button" aria-expanded="false">
+      <button class="services-trigger" type="button" aria-expanded="false" aria-controls="s-panel-1" id="s-trigger-1">
         <h3>Аудит отдела продаж</h3>
         <p class="services-note">
           Самостоятельная диагностика без обязательств по&nbsp;дальнейшей работе:
@@ -345,7 +448,7 @@
         </p>
         <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
       </button>
-      <div class="services-panel"><div class="services-answer">
+      <div class="services-panel" id="s-panel-1" role="region" aria-labelledby="s-trigger-1"><div class="services-answer">
         <dl class="services-facts">
           <div><dt>Срок</dt><dd>5–7 дней</dd></div>
           <div><dt>Формат</dt><dd>документ + созвон</dd></div>
@@ -360,7 +463,7 @@
     </article>
 
     <article class="services-item">
-      <button class="services-trigger" type="button" aria-expanded="false">
+      <button class="services-trigger" type="button" aria-expanded="false" aria-controls="s-panel-2" id="s-trigger-2">
         <h3>Отдел продаж<br />на период запуска</h3>
         <p class="services-note">
           Готовая команда&nbsp;— менеджеры, РОП, лидорубы, ОКК&nbsp;— под конкретное
@@ -368,7 +471,7 @@
         </p>
         <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
       </button>
-      <div class="services-panel"><div class="services-answer">
+      <div class="services-panel" id="s-panel-2" role="region" aria-labelledby="s-trigger-2"><div class="services-answer">
         <dl class="services-facts">
           <div><dt>Подготовка</dt><dd>5–7 дней</dd></div>
           <div><dt>Весь цикл</dt><dd>около месяца</dd></div>
@@ -384,7 +487,7 @@
     </article>
 
     <article class="services-item">
-      <button class="services-trigger" type="button" aria-expanded="false">
+      <button class="services-trigger" type="button" aria-expanded="false" aria-controls="s-panel-3" id="s-trigger-3">
         <h3>Оптимизация<br />текущего отдела</h3>
         <p class="services-note">
           Команда и&nbsp;CRM уже есть, но&nbsp;результата нет&nbsp;— точечно
@@ -392,7 +495,7 @@
         </p>
         <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
       </button>
-      <div class="services-panel"><div class="services-answer">
+      <div class="services-panel" id="s-panel-3" role="region" aria-labelledby="s-trigger-3"><div class="services-answer">
         <dl class="services-facts">
           <div><dt>Срок</dt><dd>2–3 месяца</dd></div>
           <div><dt>Остановка</dt><dd>не требуется</dd></div>
@@ -416,43 +519,43 @@
 
   <div class="questions-list" aria-label="Частые вопросы">
           <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">01</span><h3>Сколько это стоит?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel"><div class="questions-answer">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-1" id="q-trigger-1"><span class="questions-number">01</span><h3>Сколько это стоит?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-1" role="region" aria-labelledby="q-trigger-1"><div class="questions-answer">
               <p>Стоимость зависит от задачи: построение отдела с нуля, оптимизация действующего или сопровождение.</p>
               <p>На разборе считаем под ваши цифры — выручку, средний чек и объём базы. Без созвона и обязательств.</p>
             </div></div>
           </article>
           <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">02</span><h3>Сколько времени занимает?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel"><div class="questions-answer">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-2" id="q-trigger-2"><span class="questions-number">02</span><h3>Сколько времени занимает?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-2" role="region" aria-labelledby="q-trigger-2"><div class="questions-answer">
               <p>Отдел под запуск — подготовка 5–7 дней, весь цикл около месяца.</p>
               <p>Построение и оптимизация — 2–3 месяца до системной работы, дальше сопровождение с планом на полгода.</p>
             </div></div>
           </article>
           <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">03</span><h3>У нас уже есть менеджеры. Их придётся уволить?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel"><div class="questions-answer">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-3" id="q-trigger-3"><span class="questions-number">03</span><h3>У нас уже есть менеджеры. Их придётся уволить?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-3" role="region" aria-labelledby="q-trigger-3"><div class="questions-answer">
               <p>Нет. Сначала смотрим, кто и как продаёт: разбираем звонки, переписки и конверсию каждого.</p>
               <p>Чаще проблема не в людях, а в отсутствии системы — скриптов, регламентов и контроля.</p>
             </div></div>
           </article>
           <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">04</span><h3>Мы обжигались на подрядчиках. Чем вы отличаетесь?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel"><div class="questions-answer">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-4" id="q-trigger-4"><span class="questions-number">04</span><h3>Мы обжигались на подрядчиках. Чем вы отличаетесь?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-4" role="region" aria-labelledby="q-trigger-4"><div class="questions-answer">
               <p>Мы не сдаём «отдел под ключ» и не исчезаем. Выстраиваем систему, обучаем руководителя и передаём управление с планом на полгода вперёд.</p>
               <p>За 4 года — 130+ отделов продаж. Метрики открываем на разборе.</p>
             </div></div>
           </article>
           <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">05</span><h3>Работаете с зарубежной аудиторией?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel"><div class="questions-answer">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-5" id="q-trigger-5"><span class="questions-number">05</span><h3>Работаете с зарубежной аудиторией?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-5" role="region" aria-labelledby="q-trigger-5"><div class="questions-answer">
               <p>Да. Работали с проектами на русскоязычную аудиторию за рубежом и со смешанными рынками.</p>
               <p>Разница в каналах и часовых поясах — система продаж остаётся той же.</p>
             </div></div>
           </article>
           <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false"><span class="questions-number">06</span><h3>Мы не онлайн-школа. Подойдёт?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel"><div class="questions-answer">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-6" id="q-trigger-6"><span class="questions-number">06</span><h3>Мы не онлайн-школа. Подойдёт?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-6" role="region" aria-labelledby="q-trigger-6"><div class="questions-answer">
               <p>Подойдёт, если продаёте через личный контакт: консалтинг, услуги, экспертные продукты.</p>
               <p>Не подойдёт для розницы и маркетплейсов — там другая механика.</p>
             </div></div>
@@ -464,7 +567,6 @@
 <section class="final-cta" id="final-cta" aria-labelledby="final-cta-title">
   <div class="final-cta__inner">
     <div class="final-cta__lede">
-      <p class="final-cta__eyebrow"><span>14</span> Разбор</p>
       <h2 class="final-cta__title" id="final-cta-title">
         <span>Увидьте, где</span>
         <span>утекают деньги</span>
