@@ -653,7 +653,7 @@ p.hero__lead { text-wrap: normal; }
 .expert__role {
   margin: 0.25rem 0 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.75rem, 0.7286rem + 0.0914vw, 0.9375rem);
+  font-size: clamp(0.6875rem, 0.6696rem + 0.0794vw, 0.8438rem);
   font-weight: 300;
   line-height: 1.35;
   color: #757575;
@@ -725,11 +725,13 @@ p.hero__lead { text-wrap: normal; }
   padding: 0.3em 0.75em;
   border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 999px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: rgba(255, 255, 255, 0.12);
+  /* Только размытие, без белой подложки — как у карточки цифр
+     на первом экране. */
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background: rgba(0, 0, 0, 0.12);
   font-family: var(--font-ui);
-  font-size: clamp(0.75rem, 0.7143rem + 0.1524vw, 0.8125rem);
+  font-size: clamp(0.5625rem, 0.5268rem + 0.1524vw, 0.7188rem);
   line-height: 1;
   color: #fff;
   white-space: nowrap;
@@ -743,6 +745,8 @@ p.hero__lead { text-wrap: normal; }
 .card__copy {
   position: relative;
   padding: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
+  /* Блок текста приподнят от нижнего края карточки */
+  padding-bottom: clamp(1.5625rem, 1.4196rem + 0.6095vw, 2.1875rem);
   color: #fff;
 }
 
@@ -757,9 +761,12 @@ p.hero__lead { text-wrap: normal; }
 }
 
 .card__note {
+  /* Короткие строки: длинная строка на всю ширину карточки
+     читается хуже и даёт рваные переносы. */
+  max-width: 26ch;
   margin: clamp(0.375rem, 0.3036rem + 0.3048vw, 0.6875rem) 0 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.75rem, 0.7286rem + 0.0914vw, 0.9375rem);
+  font-size: clamp(0.6875rem, 0.6696rem + 0.0794vw, 0.8438rem);
   font-weight: 300;
   line-height: 1.35;
   color: rgba(255, 255, 255, 0.88);
@@ -1734,7 +1741,7 @@ p.hero__lead { text-wrap: normal; }
 }
 .venn-vs__col dd {
   margin: 0;
-  font-size: clamp(0.75rem, 0.7286rem + 0.0914vw, 0.9375rem);
+  font-size: clamp(0.6875rem, 0.6696rem + 0.0794vw, 0.8438rem);
   font-weight: 300;
   line-height: 1.35;
   color: #8a8a8a;
