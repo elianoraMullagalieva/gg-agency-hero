@@ -235,10 +235,10 @@ p, li { text-wrap: pretty; }
 .hero__title {
   margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(2.5rem, 1.6857rem + 3.4742vw, 6.75rem);
+  font-size: clamp(2.5rem, 1.7292rem + 3.4259vw, 4.8125rem);
   font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.06em;
+  line-height: 0.98;
+  letter-spacing: -0.03em;
 }
 .hero__title span { display: block; }
 
@@ -632,12 +632,12 @@ p.hero__lead { text-wrap: normal; }
 }
 
 .situation__title {
-  margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 0.8929rem + 3.6571vw, 5.25rem);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.02em;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0;
   color: #757575;
 }
 .situation__title b { font-weight: 400; color: #000; }
@@ -857,10 +857,10 @@ p.hero__lead { text-wrap: normal; }
 .questions-head h2 {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(3rem, 2.3333rem + 2.963vw, calc(80px * var(--up)));
-  font-weight: 500;
-  line-height: 0.88;
-  letter-spacing: -0.04em;
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
 }
 
 /* Вторая строка приглушена — как в Кэмпе */
@@ -991,7 +991,7 @@ p.hero__lead { text-wrap: normal; }
     padding-top: 80px;
     padding-bottom: 53px;
   }
-  .questions-head h2 { font-size: clamp(2.9375rem, 2.7083rem + 1.0185vw, 3.625rem); line-height: 0.86; }
+  .questions-head h2 { line-height: 1.02; }
 
   .questions-trigger {
     min-height: 82px;
@@ -1114,12 +1114,12 @@ p.hero__lead { text-wrap: normal; }
 .venn-eyebrow span { opacity: 0.55; }
 
 .venn-title {
-  margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.1607rem + 2.5143vw, 4.5rem);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.045em;
+  letter-spacing: -0.03em;
+  margin: 0;
   color: #8a8a8a;
 }
 .venn-title b { font-weight: 400; color: var(--text); }
@@ -1375,13 +1375,13 @@ p.hero__lead { text-wrap: normal; }
 .reviews__eyebrow span { opacity: 0.55; }
 
 .reviews__title {
-  margin: 0;
   font-family: var(--font-logo);
-  /* 30@360 → 68@1440 */
-  font-size: clamp(1.875rem, 1.0833rem + 3.5185vw, 4.25rem);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.03em;
+  margin: 0;
+  /* 30@360 → 68@1440 */
 }
 
 /* ---------- Сетка видео-отзывов ---------- */
@@ -1574,13 +1574,13 @@ p.hero__lead { text-wrap: normal; }
 .final-cta__eyebrow span { opacity: 0.55; }
 
 .final-cta__title {
-  margin: 0;
   font-family: var(--font-logo);
-  /* 32@360 → 76@1440 */
-  font-size: clamp(2rem, 1.0833rem + 4.0741vw, 4.75rem);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -0.04em;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0;
+  /* 32@360 → 76@1440 */
 }
 .final-cta__title span { display: block; }
 
@@ -1649,12 +1649,6 @@ p.hero__lead { text-wrap: normal; }
   .final-cta__actions {
     justify-self: stretch;
     max-width: none;
-  }
-  /* На узком экране заголовок в две строки не помещается кеглем
-     от ширины — уводим его в отдельную, заметно меньшую шкалу. */
-  .final-cta__title {
-    font-size: clamp(1.625rem, 1.4583rem + 0.7407vw, 2.125rem);
-    line-height: 1.04;
   }
 }
 
@@ -1739,7 +1733,7 @@ p.hero__lead { text-wrap: normal; }
 .services {
   position: relative;
   z-index: 2;
-  background: #f2efe9;
+  background: #ffffff;
   color: #16120d;
   padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) 0
            clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem);
@@ -1761,12 +1755,12 @@ p.hero__lead { text-wrap: normal; }
 .services-eyebrow span { opacity: 0.5; }
 
 .services-title {
-  margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.1607rem + 2.5143vw, 4.5rem);
-  font-weight: 500;
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
+  margin: 0;
 }
 
 .services-sub {
@@ -1916,7 +1910,7 @@ p.hero__lead { text-wrap: normal; }
   text-transform: uppercase;
   transition: background 0.28s ease, color 0.28s ease;
 }
-.services-cta:hover { background: #16120d; color: #f2efe9; }
+.services-cta:hover { background: #16120d; color: #ffffff; }
 
 /* ---------- Адаптив ---------- */
 
@@ -2066,7 +2060,7 @@ p.hero__lead { text-wrap: normal; }
 .leaks {
   position: relative;
   z-index: 2;
-  background: #f2efe9;
+  background: #ffffff;
   color: #16120d;
   padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter)
            clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem);
@@ -2075,13 +2069,13 @@ p.hero__lead { text-wrap: normal; }
 .leaks-head { margin-bottom: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem); }
 
 .leaks-title {
-  margin: 0;
-  max-width: 18ch;
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.1607rem + 2.5143vw, 4.5rem);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   font-weight: 400;
   line-height: 1.02;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
+  margin: 0;
+  max-width: 18ch;
 }
 
 .leaks-sub {
@@ -2186,12 +2180,12 @@ p.hero__lead { text-wrap: normal; }
 }
 
 .case-title {
-  margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(2rem, 1.3214rem + 2.8952vw, 5.1875rem);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.04em;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  margin: 0;
 }
 
 .case-meta {
