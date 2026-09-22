@@ -142,3 +142,21 @@ svg{display:block;width:100%;height:100%;overflow:visible}
   .pill,.coreA,.coreD,.outB,.nodeB,.vC__list li,.vC__big,.vC__sub,
   .vD__orb,.vD__core,.vB__nodes circle,.vB__spark{opacity:1;translate:none}
 }
+
+/* ---------- E · стекло ---------- */
+.vE{position:relative;width:min(100%,34rem);aspect-ratio:1}
+.vE__stage{position:absolute;inset:0}
+.pE1{left:2%;top:34%}.pE2{right:2%;top:34%}.pE3{left:50%;bottom:12%;translate:-50% 0}
+.vE .pill{opacity:0}
+.vE__stage.on ~ .pill{animation:fade .8s ease forwards}
+.vE__stage.on ~ .pE1{animation-delay:.5s}
+.vE__stage.on ~ .pE2{animation-delay:.78s}
+.vE__stage.on ~ .pE3{animation-name:fade3;animation-delay:1.06s}
+.coreE{position:absolute;left:50%;top:47%;translate:-50% -50%;text-align:center;opacity:0;
+  pointer-events:none}
+.coreE b{display:block;font-size:clamp(.75rem,1.8vw,1rem);font-weight:500;line-height:1.15}
+.coreE i{font-size:clamp(.5625rem,1.3vw,.75rem);font-style:normal;font-weight:300;color:rgba(255,255,255,.75)}
+.vE__stage.on ~ .coreE{animation:fade .9s ease 1.35s forwards}
+@media (prefers-reduced-motion:reduce){
+  .vE .pill,.coreE{opacity:1}
+}
