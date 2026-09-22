@@ -23,9 +23,14 @@
   --arc-accent: #710f11;
   --arc-high: #ac0c0f;
 
-  --font-ui: -apple-system, "SF Pro Text", "Onest", system-ui, sans-serif;
+  /* Один шрифт на весь сайт. Раньше в --font-ui первым стоял
+     -apple-system: мелкий текст рисовался системным SF, заголовки —
+     Onest, и метрики двух шрифтов не совпадали (отсюда «дыры»
+     между букв). На Windows подставлялся третий шрифт и вёрстка
+     расходилась с макетом. */
+  --font-ui: "Onest", system-ui, sans-serif;
   --font-logo: "Onest", system-ui, sans-serif;
-  --font-num: "Manrope", "Onest", system-ui, sans-serif;
+  --font-num: "Onest", system-ui, sans-serif;
 
   /* §03 · Оболочка и множитель для того, что не масштабируется само */
   --shell: 1280px;
@@ -196,11 +201,11 @@ p, li { text-wrap: pretty; }
 /* §02 · Заголовок: 40@375 → 77@1440, потолок 108 на 4K */
 .hero__title {
   margin: 0;
-  font-family: -apple-system, "SF Pro Text", "Onest", system-ui, sans-serif;
+  font-family: var(--font-logo);
   font-size: clamp(2.5rem, 1.6857rem + 3.4742vw, 6.75rem);
   font-weight: 400;
   line-height: 0.9;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.06em;
 }
 .hero__title span { display: block; }
 
@@ -579,6 +584,8 @@ p.hero__lead { text-wrap: normal; }
   --card-radius: 14px;
   background: #fff;
   color: #000;
+  /* Поля те же, что у шапки: логотип, кнопка и карточки стоят
+     на одной вертикали по всей странице. */
   padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter)
            clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem);
 }
@@ -588,8 +595,7 @@ p.hero__lead { text-wrap: normal; }
   grid-template-columns: minmax(0, 1fr) max-content;
   align-items: start;
   gap: clamp(1.5rem, 0.7857rem + 3.0476vw, 4.5rem);
-  max-width: var(--shell);
-  margin: 0 auto clamp(1.75rem, 1.1964rem + 2.3619vw, 4.0625rem);
+  margin: 0 0 clamp(1.75rem, 1.1964rem + 2.3619vw, 4.0625rem);
 }
 
 .situation__title {
@@ -607,7 +613,10 @@ p.hero__lead { text-wrap: normal; }
   max-width: 34ch;
   margin: clamp(0.5rem, 0.3214rem + 0.7619vw, 1.25rem) 0 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.8125rem, 0.7411rem + 0.3048vw, 1.125rem);
+  /* Кегль и интерлиньяж — как у подписей под цифрами на первом
+     экране: единый стиль мелкого текста на всём сайте. */
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
   line-height: 1.35;
   color: #757575;
 }
@@ -633,17 +642,19 @@ p.hero__lead { text-wrap: normal; }
 .expert__name {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.875rem, 0.8036rem + 0.3048vw, 1.1875rem);
-  font-weight: 600;
-  line-height: 1.2;
+  font-size: clamp(0.9375rem, 0.8929rem + 0.1905vw, 1.125rem);
+  font-weight: 500;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: #000;
 }
 
 .expert__role {
   margin: 0.25rem 0 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.6875rem, 0.6518rem + 0.1524vw, 0.8438rem);
-  line-height: 1.3;
+  font-size: clamp(0.75rem, 0.7286rem + 0.0914vw, 0.9375rem);
+  font-weight: 300;
+  line-height: 1.35;
   color: #757575;
 }
 
@@ -653,8 +664,7 @@ p.hero__lead { text-wrap: normal; }
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.625rem);
-  max-width: var(--shell);
-  margin: 0 auto;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -664,7 +674,10 @@ p.hero__lead { text-wrap: normal; }
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  aspect-ratio: 300 / 447;
+  /* Пропорция из макета, но с потолком по высоте экрана: на
+     широких и низких мониторах карточки иначе вылезали за фолд. */
+  /* Пропорция из макета: карточки высокие, текст в две строки. */
+  aspect-ratio: 300 / 470;
   overflow: hidden;
   border-radius: var(--card-radius);
   isolation: isolate;
@@ -705,6 +718,7 @@ p.hero__lead { text-wrap: normal; }
 
 .card__num,
 .card__tag {
+  font-weight: 400;
   display: inline-flex;
   align-items: center;
   padding: 0.3em 0.75em;
@@ -733,19 +747,21 @@ p.hero__lead { text-wrap: normal; }
 
 .card__name {
   margin: 0;
+  text-wrap: pretty;
   font-family: var(--font-logo);
-  font-size: clamp(1rem, 0.8929rem + 0.4571vw, 1.4375rem);
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 400;
-  line-height: 1.12;
+  line-height: 1.14;
   letter-spacing: -0.01em;
 }
 
 .card__note {
   margin: clamp(0.375rem, 0.3036rem + 0.3048vw, 0.6875rem) 0 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.6875rem, 0.6518rem + 0.1524vw, 0.8438rem);
-  line-height: 1.32;
-  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(0.75rem, 0.7286rem + 0.0914vw, 0.9375rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 /* ---------- Адаптив ---------- */
@@ -778,4 +794,239 @@ p.hero__lead { text-wrap: normal; }
     flex: 0 0 min(72vw, 17rem);
     scroll-snap-align: start;
   }
+}
+
+
+
+/* ============================================================
+   ЧАСТЫЕ ВОПРОСЫ
+   Структура, пропорции и механика — из проекта Кэмпа
+   (.questions-*). Изменены только палитра на нашу тёмную
+   и шрифт на SF, размеры масштабируются через --up.
+   ============================================================ */
+
+.questions-section {
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.questions-head {
+  /* Те же поля, что у шапки и карточек. */
+  padding: calc(130px * var(--up)) var(--gutter) calc(47px * var(--up));
+}
+
+.questions-head h2 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: clamp(48px, 5.7vw, calc(80px * var(--up)));
+  font-weight: 500;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+}
+
+/* Вторая строка приглушена — как в Кэмпе */
+.questions-head h2 span {
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+}
+
+.questions-list {
+  margin-inline: var(--gutter);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.questions-item {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+}
+
+/* Сетка триггера из Кэмпа: номер | заголовок | плюс */
+.questions-trigger {
+  width: 100%;
+  min-height: calc(109px * var(--up));
+  padding: 0 max(var(--gutter), calc((100vw - var(--shell)) / 2));
+  display: grid;
+  grid-template-columns: calc(39px * var(--up)) minmax(0, 1fr) calc(37px * var(--up));
+  align-items: center;
+  gap: calc(27px * var(--up));
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.questions-number {
+  display: grid;
+  width: calc(39px * var(--up));
+  height: calc(25px * var(--up));
+  place-items: center;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  font-family: var(--font-num);
+  font-size: calc(12px * var(--up));
+  font-weight: 500;
+  line-height: 0.85;
+}
+
+.questions-item h3 {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: calc(23px * var(--up));
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
+
+.questions-plus {
+  display: grid;
+  width: calc(37px * var(--up));
+  height: calc(37px * var(--up));
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  font-size: calc(23px * var(--up));
+  font-weight: 400;
+  line-height: 1;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              background 0.2s ease, color 0.2s ease;
+}
+
+.questions-trigger:hover .questions-plus {
+  background: var(--text);
+  color: var(--bg);
+}
+
+.questions-item.is-open .questions-plus { transform: rotate(45deg); }
+
+/* Раскрытие без фиксированной высоты — механика Кэмпа */
+.questions-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding: 0 max(var(--gutter), calc((100vw - var(--shell)) / 2));
+  transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.questions-panel > div {
+  min-height: 0;
+  overflow: hidden;
+  /* сдвиг под колонку заголовка, а не под номер */
+  margin-left: calc(66px * var(--up));
+  max-width: calc(820px * var(--up));
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity 0.24s ease,
+              transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.questions-item.is-open .questions-panel { grid-template-rows: 1fr; }
+
+.questions-item.is-open .questions-panel > div {
+  padding: 0 0 calc(34px * var(--up));
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.08s;
+}
+
+.questions-answer p {
+  margin: 0 0 12px;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: var(--font-ui);
+  font-size: calc(15px * var(--up));
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-wrap: pretty;
+}
+.questions-answer p:last-child { margin-bottom: 0; }
+
+/* Мобильные — пропорции из Кэмпа */
+@media (max-width: 900px) {
+  .questions-head {
+    padding-top: 80px;
+    padding-bottom: 53px;
+  }
+  .questions-head h2 { font-size: clamp(47px, 13vw, 58px); line-height: 0.86; }
+
+  .questions-trigger {
+    min-height: 82px;
+    grid-template-columns: 33px minmax(0, 1fr) 32px;
+    gap: 13px;
+  }
+  .questions-number { width: 33px; height: 22px; font-size: 9px; }
+  .questions-item h3 { font-size: clamp(16px, 4.6vw, 19px); line-height: 1.07; }
+  .questions-plus { width: 32px; height: 32px; font-size: 20px; }
+  .questions-panel > div { margin-left: 46px; }
+  .questions-answer p { font-size: 15px; }
+}
+
+/* ============================================================
+   Футер
+   ============================================================ */
+
+.footer {
+  background: #0a0908;
+  color: var(--text);
+  padding: calc(84px * var(--up)) var(--gutter)
+           calc(48px * var(--up) + env(safe-area-inset-bottom, 0px));
+}
+
+.footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 0.9286rem + 4.5714vw, 7.25rem);
+  width: 100%;
+  max-width: min(var(--shell), 100%);
+  margin: 0 auto;
+}
+
+.footer__logo {
+  display: inline-block;
+  color: var(--text);
+  font-family: var(--font-logo, var(--font-ui));
+  font-size: calc(22px * var(--up));
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.footer__tagline {
+  margin: calc(18px * var(--up)) 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: calc(15px * var(--up));
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.footer__col {
+  display: flex;
+  flex-direction: column;
+  gap: calc(14px * var(--up));
+}
+
+.footer__label {
+  margin: 0 0 calc(6px * var(--up));
+  color: rgba(255, 255, 255, 0.4);
+  font-size: calc(11px * var(--up));
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.footer__col a {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: calc(15px * var(--up));
+  font-weight: 300;
+  text-decoration: none;
+  transition: color 0.24s ease, text-shadow 0.35s ease;
+}
+.footer__col a:hover {
+  color: #fff;
+  text-shadow: 0 0 calc(12px * var(--up)) rgba(255, 255, 255, 0.5);
+}
+
+@media (max-width: 900px) {
+  .footer__inner { grid-template-columns: minmax(0, 1fr); gap: 2.25rem; }
 }

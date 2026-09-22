@@ -710,5 +710,29 @@
 
   var canvas = document.querySelector(".hero__bg");
   if (canvas) initArc(canvas);
+  function initQuestions() {
+    var triggers = document.querySelectorAll(".questions-trigger");
+    if (!triggers.length) return;
+
+    triggers.forEach(function (trigger) {
+      trigger.addEventListener("click", function () {
+        var item = trigger.closest(".questions-item");
+        var isOpen = item.classList.contains("is-open");
+
+        document.querySelectorAll(".questions-item").forEach(function (el) {
+          el.classList.remove("is-open");
+          var t = el.querySelector(".questions-trigger");
+          if (t) t.setAttribute("aria-expanded", "false");
+        });
+
+        if (!isOpen) {
+          item.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+        }
+      });
+    });
+  }
+
   initMenu();
+  initQuestions();
 })();
