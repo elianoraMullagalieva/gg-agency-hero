@@ -733,6 +733,122 @@
     });
   }
 
+
+  /* ============================================================
+     Схема трёх опор: точки стягиваются к центру пересечения,
+     контуры прочерчиваются при входе секции в экран.
+     ============================================================ */
+
+  function initVenn() {
+    var venn = document.querySelector(".venn");
+    if (!venn) return;
+
+    if (!("IntersectionObserver" in window)) {
+      venn.classList.add("is-in");
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          venn.classList.add("is-in");
+          io.disconnect();
+        }
+      });
+    }, { threshold: 0.25 });
+
+    io.observe(venn);
+  }
+
+
+  /* ============================================================
+     Лента скринов переписок: шаг раз в 3 секунды, с начала после
+     последней карточки. Пауза при наведении и касании, ничего
+     не крутится за пределами экрана и при prefers-reduced-motion.
+     ============================================================ */
+
+  function initShots() {
+    var shots = document.querySelector("[data-shots]");
+    if (!shots) return;
+
+    var track = shots.querySelector(".shots__track");
+    if (!track) return;
+
+    var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (motionQuery.matches) return;
+
+    var STEP_MS = 3000;
+    var timer = null;
+    var paused = false;
+    var visible = false;
+
+    function step() {
+      if (paused || !visible) return;
+
+      var item = track.querySelector(".shot");
+      if (!item) return;
+
+      var gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      var delta = item.getBoundingClientRect().width + gap;
+      var max = shots.scrollWidth - shots.clientWidth;
+
+      // допуск в 2px: дробный scrollLeft иначе не даёт вернуться в начало
+      if (shots.scrollLeft >= max - 2) {
+        shots.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        shots.scrollTo({ left: shots.scrollLeft + delta, behavior: "smooth" });
+      }
+    }
+
+    function start() {
+      if (timer) return;
+      timer = window.setInterval(step, STEP_MS);
+    }
+
+    function stop() {
+      if (!timer) return;
+      window.clearInterval(timer);
+      timer = null;
+    }
+
+    function pause() { paused = true; }
+    function resume() { paused = false; }
+
+    shots.addEventListener("mouseenter", pause);
+    shots.addEventListener("mouseleave", resume);
+    shots.addEventListener("focusin", pause);
+    shots.addEventListener("focusout", resume);
+    shots.addEventListener("touchstart", pause, { passive: true });
+    shots.addEventListener("touchend", resume, { passive: true });
+
+    // ручная прокрутка тоже считается касанием: не дёргаем ленту под рукой
+    shots.addEventListener("pointerdown", pause);
+    window.addEventListener("pointerup", resume);
+
+    if (motionQuery.addEventListener) {
+      motionQuery.addEventListener("change", function (e) {
+        if (e.matches) stop(); else if (visible) start();
+      });
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      visible = true;
+      start();
+      return;
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        visible = e.isIntersecting;
+        if (visible) start(); else stop();
+      });
+    }, { threshold: 0.2 });
+
+    io.observe(shots);
+  }
+
   initMenu();
+  initVenn();
   initQuestions();
+  initShots();
 })();

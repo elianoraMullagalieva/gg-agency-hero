@@ -202,6 +202,187 @@
   </ul>
 </section>
 
+
+<!-- ===== 02 / Проблема · схема трёх опор ===== -->
+<section class="venn-sec" id="problem" aria-labelledby="venn-title">
+  <div class="venn-sec__inner">
+
+    <!-- Левая колонка: заголовок -->
+    <div class="venn-lede">
+      <p class="venn-eyebrow"><span>02</span> Проблема</p>
+      <h2 class="venn-title" id="venn-title">
+        Запуск<br />закончился<br /><b>и&nbsp;всё встало?</b>
+      </h2>
+      <p class="venn-sub">
+        Продуктовая линейка, трафик и&nbsp;отдел продаж держались
+        на&nbsp;запуске. Запуск кончился&nbsp;— встало всё сразу.
+      </p>
+
+      <!-- Оппозиция без графики: смысл держит типографика. -->
+      <dl class="venn-vs">
+        <div class="venn-vs__col">
+          <dt>По&nbsp;отдельности</dt>
+          <dd>три процесса, которые ждут друг друга</dd>
+        </div>
+        <div class="venn-vs__col venn-vs__col--on">
+          <dt>Вместе</dt>
+          <dd>система, которая продаёт каждый день</dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Центр: схема -->
+    <div class="venn" role="img"
+         aria-label="Три опоры продаж: лидогенерация, продукт и продажи. Работают вместе — деньги в кассе каждый день. По отдельности — заявки сгорают, нечего продавать, менеджеры ждут.">
+      <svg class="venn__svg" viewBox="0 0 560 560" aria-hidden="true">
+        <defs>
+          <radialGradient id="vg-core">
+            <stop offset="0%"   stop-color="#C8102E" stop-opacity=".38" />
+            <stop offset="70%"  stop-color="#C8102E" stop-opacity=".12" />
+            <stop offset="100%" stop-color="#C8102E" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <!-- Зона тройного пересечения — настоящая форма из трёх дуг,
+             а не круг поверх. Именно она держит смысл блока. -->
+        <path class="venn__core-shape"
+              d="M 187.3 217.9
+                 A 168 168 0 0 1 372.7 217.9
+                 A 168 168 0 0 1 280 378.3
+                 A 168 168 0 0 1 187.3 217.9 Z" />
+
+        <!-- три контура -->
+        <circle class="venn__ring venn__ring--1" cx="205" cy="228" r="168" />
+        <circle class="venn__ring venn__ring--2" cx="355" cy="228" r="168" />
+        <circle class="venn__ring venn__ring--3" cx="280" cy="358" r="168" />
+
+        <!-- Коннекторы к проблемам: линия возникает при скролле,
+             а не нарисована заранее. -->
+        <g class="venn__links">
+          <path class="venn__link" d="M 150 120 L 60 62" />
+          <path class="venn__link" d="M 410 120 L 500 62" />
+          <path class="venn__link" d="M 280 470 L 280 540" />
+        </g>
+
+        <!-- импульсы, бегущие по контурам к центру -->
+        <g class="venn__pulses">
+          <circle class="venn__pulse" r="2.4"><animateMotion dur="4.2s" repeatCount="indefinite"
+            path="M 205 60 A 168 168 0 0 1 373 228 A 168 168 0 0 1 205 396 A 168 168 0 0 1 37 228 A 168 168 0 0 1 205 60" /></circle>
+          <circle class="venn__pulse" r="2.4"><animateMotion dur="5.1s" begin="-1.4s" repeatCount="indefinite"
+            path="M 355 60 A 168 168 0 0 1 523 228 A 168 168 0 0 1 355 396 A 168 168 0 0 1 187 228 A 168 168 0 0 1 355 60" /></circle>
+          <circle class="venn__pulse" r="2.4"><animateMotion dur="4.6s" begin="-2.6s" repeatCount="indefinite"
+            path="M 280 190 A 168 168 0 0 1 448 358 A 168 168 0 0 1 280 526 A 168 168 0 0 1 112 358 A 168 168 0 0 1 280 190" /></circle>
+        </g>
+      </svg>
+
+      <!-- подписи опор -->
+      <p class="venn-pillar venn-pillar--1"><b>Лидогенерация</b><i>трафик и заявки</i></p>
+      <p class="venn-pillar venn-pillar--2"><b>Продукт</b><i>программа и оффер</i></p>
+      <p class="venn-pillar venn-pillar--3"><b>Продажи</b><i>команда и процессы</i></p>
+
+      <!-- проблемы: что ломается, когда опора выпадает -->
+      <p class="venn-issue venn-issue--1"><b>Заявки сгорают</b><i>обрабатывать некому</i></p>
+      <p class="venn-issue venn-issue--2"><b>Нечего продавать</b><i>между запусками</i></p>
+      <p class="venn-issue venn-issue--3"><b>Менеджеры ждут</b><i>следующий запуск</i></p>
+
+      <!-- ядро -->
+      <div class="venn-core">
+        <b>Деньги<br />в&nbsp;кассе</b>
+        <i>каждый день</i>
+      </div>
+    </div>
+
+    <!-- Правая колонка: квиз -->
+    <aside class="quiz">
+      <p class="quiz__lead">
+        Пройдите тест и&nbsp;узнайте, где именно ваша школа теряет деньги
+      </p>
+      <a class="quiz__cta" href="#">
+        <span class="quiz__label">Узнать, где вы теряете деньги</span>
+        <span class="quiz__icon" aria-hidden="true">
+          <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.378 0H2.5v1.25h6.74L.44 10.05l.884.884L10.75 2.51v6.74H12V.624A.624.624 0 0 0 11.378 0Z" fill="currentColor"/>
+          </svg>
+        </span>
+      </a>
+      <p class="quiz__meta">7&nbsp;вопросов · 3&nbsp;минуты</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ===== 13 / Отзывы · видео-отзывы и скрины переписок ===== -->
+<section class="reviews" id="reviews" aria-labelledby="reviews-title">
+  <div class="reviews__head">
+    <p class="reviews__eyebrow"><span>13</span> Отзывы</p>
+    <h2 class="reviews__title" id="reviews-title">Что говорят клиенты</h2>
+  </div>
+
+  <ul class="reviews__grid" role="list">
+    <li class="vreview">
+      <!-- Файл подставляется в src у .vreview__media (video/img) -->
+      <div class="vreview__frame">
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: онлайн-школа">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <p class="vreview__caption">Видео-отзыв · онлайн-школа</p>
+    </li>
+
+    <li class="vreview">
+      <div class="vreview__frame">
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: эксперт">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <p class="vreview__caption">Видео-отзыв · эксперт</p>
+    </li>
+
+    <li class="vreview">
+      <div class="vreview__frame">
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: продюсер">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <p class="vreview__caption">Видео-отзыв · продюсер</p>
+    </li>
+
+    <li class="vreview">
+      <div class="vreview__frame">
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: зарубежный проект">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+      <p class="vreview__caption">Видео-отзыв · зарубежный проект</p>
+    </li>
+  </ul>
+
+  <p class="reviews__sub">Скрины переписок</p>
+
+  <!-- Лента с автопрокруткой: initShots() в main.js -->
+  <div class="shots" data-shots aria-label="Скриншоты переписок">
+    <ul class="shots__track" role="list">
+      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 1"></div></li>
+      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 2"></div></li>
+      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 3"></div></li>
+      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 4"></div></li>
+      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 5"></div></li>
+      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 6"></div></li>
+    </ul>
+  </div>
+</section>
+
 <!-- ===== Частые вопросы · структура из проекта Кэмпа ===== -->
 <section class="questions-section" id="questions" aria-labelledby="questions-title">
   <div class="questions-head">
@@ -251,6 +432,29 @@
               <p>Не подойдёт для розницы и маркетплейсов — там другая механика.</p>
             </div></div>
           </article>
+  </div>
+</section>
+
+<!-- ===== 14 / Разбор · финальный CTA ===== -->
+<section class="final-cta" id="final-cta" aria-labelledby="final-cta-title">
+  <div class="final-cta__inner">
+    <div class="final-cta__lede">
+      <p class="final-cta__eyebrow"><span>14</span> Разбор</p>
+      <h2 class="final-cta__title" id="final-cta-title">
+        <span>Увидьте, где</span>
+        <span>утекают деньги</span>
+      </h2>
+      <p class="final-cta__text">
+        Ответьте на&nbsp;несколько вопросов в&nbsp;боте&nbsp;— и&nbsp;получите разбор
+        того, где именно вы&nbsp;теряете деньги. Без созвона, без обязательств
+        и&nbsp;без&nbsp;«оставьте заявку, мы&nbsp;перезвоним»
+      </p>
+    </div>
+
+    <div class="final-cta__actions">
+      <a class="final-cta__btn final-cta__btn--solid" href="#">Узнать, где вы теряете деньги</a>
+      <a class="final-cta__btn final-cta__btn--ghost" href="#">Получить консультацию</a>
+    </div>
   </div>
 </section>
 
