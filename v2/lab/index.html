@@ -1,0 +1,126 @@
+<!doctype html><html lang="ru"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Схема · 4 решения</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="lab.css">
+</head><body>
+
+<header class="lab-top">
+  <p class="lab-kicker">02 / Проблема · схема трёх опор</p>
+  <h1>Четыре решения</h1>
+  <p class="lab-note">Одни и те же смыслы. Прокрути — каждая схема собирается при появлении.</p>
+</header>
+
+<!-- ================= A ================= -->
+<section class="case">
+  <div class="case__head">
+    <span class="case__n">A</span>
+    <div>
+      <h2>Пересечение</h2>
+      <p>Три контура и настоящая зона пересечения — треугольник Рёло. Сейчас стоит на сайте.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="vA" data-anim>
+      <svg viewBox="0 0 560 560">
+        <path class="vA__zone" d="M 187.3 217.9 A 168 168 0 0 1 372.7 217.9 A 168 168 0 0 1 280 378.3 A 168 168 0 0 1 187.3 217.9 Z"/>
+        <circle class="vA__ring" cx="205" cy="228" r="168"/>
+        <circle class="vA__ring" cx="355" cy="228" r="168"/>
+        <circle class="vA__ring" cx="280" cy="358" r="168"/>
+      </svg>
+      <p class="pill pA1"><b>Лидогенерация</b><i>трафик и заявки</i></p>
+      <p class="pill pA2"><b>Продукт</b><i>программа и оффер</i></p>
+      <p class="pill pA3"><b>Продажи</b><i>команда и процессы</i></p>
+      <div class="coreA"><b>Деньги<br>в кассе</b><i>каждый день</i></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= B ================= -->
+<section class="case">
+  <div class="case__head">
+    <span class="case__n">B</span>
+    <div>
+      <h2>Конвейер</h2>
+      <p>Три узла и линия между ними. Импульс идёт слева направо — видно, что система работает непрерывно, а не «от запуска к запуску».</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="vB" data-anim>
+      <svg viewBox="0 0 900 300">
+        <line class="vB__rail" x1="120" y1="150" x2="780" y2="150"/>
+        <line class="vB__live" x1="120" y1="150" x2="780" y2="150"/>
+        <g class="vB__nodes">
+          <circle cx="120" cy="150" r="9"/><circle cx="450" cy="150" r="9"/><circle cx="780" cy="150" r="9"/>
+        </g>
+        <circle class="vB__spark" r="5" cx="120" cy="150">
+          <animateMotion dur="3.4s" repeatCount="indefinite" path="M 0 0 L 660 0"/>
+        </circle>
+      </svg>
+      <p class="nodeB b1"><b>Лидогенерация</b><i>трафик и заявки</i></p>
+      <p class="nodeB b2"><b>Продукт</b><i>программа и оффер</i></p>
+      <p class="nodeB b3"><b>Продажи</b><i>команда и процессы</i></p>
+      <p class="outB"><b>Деньги в кассе</b><i>каждый день</i></p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= C ================= -->
+<section class="case">
+  <div class="case__head">
+    <span class="case__n">C</span>
+    <div>
+      <h2>Без графики</h2>
+      <p>Схемы нет вообще. Смысл держит типографика: слева то, что ломается, справа — что работает. Приём с премиальных сайтов 2026.</p>
+    </div>
+  </div>
+  <div class="stage stage--wide">
+    <div class="vC" data-anim>
+      <div class="vC__col">
+        <p class="vC__cap">По отдельности</p>
+        <ul class="vC__list">
+          <li><b>Лидогенерация</b> без продаж — <i>заявки сгорают</i></li>
+          <li><b>Продукт</b> без трафика — <i>некому показать</i></li>
+          <li><b>Продажи</b> без продукта — <i>нечего продавать</i></li>
+        </ul>
+      </div>
+      <div class="vC__col vC__col--on">
+        <p class="vC__cap">Вместе</p>
+        <p class="vC__big">Деньги<br>в кассе</p>
+        <p class="vC__sub">каждый день, а не от запуска к запуску</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= D ================= -->
+<section class="case">
+  <div class="case__head">
+    <span class="case__n">D</span>
+    <div>
+      <h2>Орбиты</h2>
+      <p>Три кольца вращаются вокруг общего центра с разной скоростью. Совпадают — деньги идут. Живёт постоянно, без скролла.</p>
+    </div>
+  </div>
+  <div class="stage">
+    <div class="vD" data-anim>
+      <svg viewBox="0 0 560 560">
+        <g class="vD__sys">
+          <ellipse class="vD__orb o1" cx="280" cy="280" rx="215" ry="88"/>
+          <ellipse class="vD__orb o2" cx="280" cy="280" rx="215" ry="88"/>
+          <ellipse class="vD__orb o3" cx="280" cy="280" rx="215" ry="88"/>
+        </g>
+        <circle class="vD__core" cx="280" cy="280" r="52"/>
+      </svg>
+      <p class="pill pD1"><b>Лидогенерация</b></p>
+      <p class="pill pD2"><b>Продукт</b></p>
+      <p class="pill pD3"><b>Продажи</b></p>
+      <div class="coreD"><b>Деньги<br>в кассе</b></div>
+    </div>
+  </div>
+</section>
+
+<script src="lab.js"></script>
+</body></html>
