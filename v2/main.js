@@ -717,6 +717,41 @@
   if (canvas) initArc(canvas);
 /* Аккордеон услуг — та же механика, что у вопросов. */
 /* Поочерёдное появление строк «Где утекают деньги». */
+/* Кейс: цифры докручиваются от нуля при появлении секции. */
+  function initCase() {
+    var sec = document.querySelector(".case-sec");
+    if (!sec) return;
+
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function run() {
+      sec.classList.add("is-in");
+      if (reduce) return;
+      sec.querySelectorAll("[data-count]").forEach(function (el) {
+        var target = parseFloat(el.getAttribute("data-count"));
+        var pre = el.getAttribute("data-prefix") || "";
+        var suf = el.getAttribute("data-suffix") || "";
+        var t0 = null;
+        function step(now) {
+          if (!t0) t0 = now;
+          var k = Math.min(1, (now - t0) / 1100);
+          var e = 1 - Math.pow(1 - k, 3);
+          el.textContent = pre + Math.round(target * e) + suf;
+          if (k < 1) requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      });
+    }
+
+    if (!("IntersectionObserver" in window)) { run(); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { run(); io.disconnect(); }
+      });
+    }, { threshold: 0.2 });
+    io.observe(sec);
+  }
+
   function initLeaks() {
     var sec = document.querySelector(".leaks");
     if (!sec) return;
@@ -894,5 +929,6 @@
   initQuestions();
   initServices();
   initLeaks();
+  initCase();
   initShots();
 })();

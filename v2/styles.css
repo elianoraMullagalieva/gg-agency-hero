@@ -2159,3 +2159,154 @@ p.hero__lead { text-wrap: normal; }
 @media (prefers-reduced-motion: reduce) {
   .leak { opacity: 1; translate: none; animation: none; }
 }
+
+/* ============================================================
+   Кейс · развёрнутый формат
+   Тёмная секция: крупные цифры результата сверху, под ними —
+   история тремя этапами. Цифры докручиваются при появлении.
+   ============================================================ */
+
+.case-sec {
+  position: relative;
+  z-index: 2;
+  background: var(--bg);
+  color: var(--text);
+  padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter);
+}
+
+.case-head { margin-bottom: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem); }
+
+.case-kicker {
+  margin: 0 0 clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
+  font-size: clamp(0.6875rem, 0.6607rem + 0.1143vw, 0.8125rem);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.case-title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: clamp(2rem, 1.3214rem + 2.8952vw, 5.1875rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.case-meta {
+  max-width: 46ch;
+  margin: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem) 0 0;
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* ---------- Цифры ---------- */
+
+.case-nums {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(0.75rem, 0.5357rem + 0.9143vw, 1.5rem);
+  margin: 0 0 clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem);
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  padding-top: clamp(1.5rem, 1.1429rem + 1.5238vw, 3rem);
+}
+
+.case-num {
+  opacity: 0;
+  translate: 0 12px;
+}
+.case-sec.is-in .case-num {
+  animation: caseRise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--i) * 90ms);
+}
+
+.case-num__v {
+  display: block;
+  font-family: var(--font-logo);
+  font-size: clamp(1.75rem, 1.2857rem + 1.981vw, 3.9375rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+}
+
+.case-num__l {
+  display: block;
+  max-width: 22ch;
+  margin-top: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--muted);
+}
+
+/* ---------- Этапы ---------- */
+
+.case-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 0.7143rem + 1.219vw, 2rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.case-step {
+  padding: clamp(1.125rem, 0.9464rem + 0.7619vw, 1.875rem);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
+  background: rgba(255, 255, 255, 0.025);
+  opacity: 0;
+  translate: 0 12px;
+}
+.case-sec.is-in .case-step {
+  animation: caseRise 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(0.36s + var(--i) * 110ms);
+}
+
+.case-step__n {
+  margin: 0 0 clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem);
+  font-family: var(--font-logo);
+  font-size: clamp(0.8125rem, 0.7679rem + 0.1905vw, 1rem);
+  font-weight: 400;
+  color: var(--arc-high);
+}
+
+.case-step__h {
+  margin: 0 0 clamp(0.375rem, 0.3036rem + 0.3048vw, 0.6875rem);
+  font-size: clamp(0.9375rem, 0.8661rem + 0.3048vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.case-step__t {
+  margin: 0;
+  font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
+  font-weight: 300;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+@keyframes caseRise { to { opacity: 1; translate: 0 0; } }
+
+/* ---------- Адаптив ---------- */
+
+@media (max-width: 900px) {
+  .case-nums { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-steps { grid-template-columns: minmax(0, 1fr); }
+}
+
+@media (max-width: 480px) {
+  .case-nums { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+  .case-num__l { max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .case-num, .case-step { opacity: 1; translate: none; animation: none; }
+}
