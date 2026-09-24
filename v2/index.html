@@ -127,6 +127,30 @@
   </div>
 </section>
 
+<!-- ===== Бегущая строка клиентов ===== -->
+<section class="clients" aria-label="С нами построили продажи">
+  <p class="clients__lead">С&nbsp;нами построили продажи</p>
+
+  <div class="clients__marquee"
+       data-marquee-speed="34"
+       data-marquee-direction="left"
+       data-marquee-scroll-speed="6">
+    <div class="clients__rail">
+      <div class="clients__group">
+        <span class="clients__item">Alex Magnier</span>
+        <span class="clients__item">Kira Noire</span>
+        <span class="clients__item">Галя Филатович</span>
+        <span class="clients__item">Made in Cosmos</span>
+        <span class="clients__item">Pixel School</span>
+        <span class="clients__item">GORA Academy</span>
+        <span class="clients__item">Школа&nbsp;+Балл</span>
+        <span class="clients__item">Реальный репетитор</span>
+        <span class="clients__item">ЗЕМЛЯ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== 01 / Ситуация · node 2059:348 ===== -->
 <section class="situation" id="situation" aria-labelledby="situation-title">
   <div class="situation__head">
@@ -810,7 +834,10 @@
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js"></script>
+<script src="marquee.js"></script>
 <script src="glass.js"></script>
 </body>
 </html>
