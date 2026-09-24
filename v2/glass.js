@@ -132,9 +132,9 @@
 
   // Тёмное стекло — крупные опоры. Кромка белёсая за счёт uHighlight.
   var DARK = {
-    glass: "#141414", roomTop: "#2e2e2e", roomBottom: "#070707",
+    glass: "#1f1f1f", roomTop: "#4a4a4a", roomBottom: "#101010",
     highlight: "#ffffff", ior: 1.30, dispersion: 0.03,
-    clarity: 0.55, edge: 2.6, gloss: 240
+    clarity: 0.62, edge: 3.2, gloss: 200
   };
   // Красное стекло — результат в зоне пересечения.
   var RED = {
@@ -145,15 +145,15 @@
 
   // Позиции повторяют макет: три опоры + центр
   var SPEC = [
-    { p: [-0.78, 0.46, 0.0],  s: 1.02, cfg: DARK, spin: 0.105 },
-    { p: [ 0.78, 0.46, -0.1], s: 1.02, cfg: DARK, spin: -0.095 },
-    { p: [ 0.0, -0.66, 0.1],  s: 1.02, cfg: DARK, spin: 0.10 },
-    { p: [ 0.0,  0.02, 0.9],  s: 0.74, cfg: RED,  spin: -0.13 }
+    { p: [-0.92, 0.54, 0.0],  s: 1.30, cfg: DARK, spin: 0.105 },
+    { p: [ 0.92, 0.54, -0.1], s: 1.30, cfg: DARK, spin: -0.095 },
+    { p: [ 0.0, -0.84, 0.28], s: 1.30, cfg: DARK, spin: 0.10 },
+    { p: [ 0.0,  0.02, 1.15], s: 0.88, cfg: RED,  spin: -0.13 }
   ];
 
   // На узких экранах сквиркл читается и на вдвое меньшей сетке:
   // 96×72 = 6912 вершин против 48×36 = 1728 — силуэт тот же.
-  var geoBody = narrow ? buildBody(2.9, 48, 36) : buildBody(2.9, 96, 72);
+  var geoBody = narrow ? buildBody(2.35, 48, 36) : buildBody(2.35, 96, 72);
   var items = SPEC.map(function (s) {
     var m = mat(s.cfg);
     var mesh = new THREE.Mesh(geoBody, m);
@@ -170,7 +170,7 @@
     renderer.setSize(w, h, false);
     var aspect = w / h;
     var dist = 6.6;
-    var span = 3.9;
+    var span = 4.6;
     var visible = aspect < 1 ? span / aspect : span;
     camera.aspect = aspect;
     camera.position.set(0, 0, dist);
