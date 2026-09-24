@@ -15,7 +15,7 @@
   var group = rail.firstElementChild;
 
   var speed       = parseFloat(box.dataset.marqueeSpeed) || 34;
-  var dir         = box.dataset.marqueeDirection === "right" ? 1 : -1;
+  var dir         = box.dataset.marqueeDirection === "right" ? -1 : 1;
   var scrollSpeed = parseFloat(box.dataset.marqueeScrollSpeed) || 0;
 
   // Скорость режется на узких экранах — лента не мельтешит
