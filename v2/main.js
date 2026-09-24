@@ -816,6 +816,19 @@
      контуры прочерчиваются при входе секции в экран.
      ============================================================ */
 
+/* Плоская версия схемы: появление по скроллу. */
+  function initVennFlat() {
+    var el = document.querySelector(".venn__flat");
+    if (!el) return;
+    if (!("IntersectionObserver" in window)) { el.classList.add("on"); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { el.classList.add("on"); io.disconnect(); }
+      });
+    }, { threshold: 0.25 });
+    io.observe(el);
+  }
+
   function initVenn() {
     var venn = document.querySelector(".venn");
     if (!venn) return;
@@ -926,6 +939,7 @@
 
   initMenu();
   initVenn();
+  initVennFlat();
   initQuestions();
   initServices();
   initLeaks();
