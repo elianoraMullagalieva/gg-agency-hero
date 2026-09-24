@@ -755,6 +755,9 @@
 /* Одометр: каждая цифра — барабан, прокручивается к своему знаку.
      Соседние разряды стартуют с разной задержкой, поэтому число
      «собирается», а не переключается разом. */
+  var ODO_TURNS   = 2;   // базовых полных оборота барабана
+  var ODO_STAGGER = 75;  // мс между разрядами, справа налево
+
   function initOdometer() {
     var vals = document.querySelectorAll(".stat__value");
     if (!vals.length) return;
@@ -768,30 +771,48 @@
       var text = (el.dataset.odoValue || el.textContent).trim();
       el.dataset.odoValue = text;
       el.dataset.odoReady = "1";
-      var out = "";
+      // Сколько цифр в числе — столько барабанов; правый крутится
+      // дольше левого, как в эталоне (там младшие разряды проходят
+      // заметно больше полных циклов, чем старшие).
+      var total = 0, j;
+      for (j = 0; j < text.length; j++) if (text[j] >= "0" && text[j] <= "9") total++;
+
+      var out = "", idx = 0;
       for (var i = 0; i < text.length; i++) {
         var ch = text[i];
         if (ch >= "0" && ch <= "9") {
+          // Полные обороты до остановки: база 2 плюс по одному на разряд
+          // вправо. Без них барабан «130+» на нуле не двигался вовсе.
+          var turns = ODO_TURNS + idx;
+          var steps = turns * 10 + parseInt(ch, 10);
           var reel = "";
-          for (var n = 0; n <= 9; n++) reel += "<span>" + n + "</span>";
-          out += '<span class="odo" data-d="' + ch + '"><span class="odo__reel">' + reel + "</span></span>";
+          for (var n = 0; n <= steps; n++) reel += "<span>" + (n % 10) + "</span>";
+          out += '<span class="odo" data-d="' + ch + '" data-steps="' + steps +
+                 '" data-i="' + idx + '" data-n="' + total + '"><span class="odo__reel">' +
+                 reel + "</span></span>";
+          idx++;
         } else {
           out += "<span>" + ch + "</span>";
         }
       }
-      el.innerHTML = out;
+      // Барабаны — картинка: в textContent попало бы «012345…».
+      // Настоящее значение отдаём скринридеру отдельной строкой.
+      el.innerHTML = '<span class="odo-a11y">' + text + "</span>" +
+                     '<span aria-hidden="true">' + out + "</span>";
     }
 
     function run(el) {
       var odos = el.querySelectorAll(".odo");
       odos.forEach(function (o, i) {
-        var target = parseInt(o.dataset.d, 10);
-        var reel = o.querySelector(".odo__reel");
-        // стартуем на два оборота ниже — барабан успевает раскрутиться
+        var steps = parseInt(o.dataset.steps, 10);
+        var n     = parseInt(o.dataset.n, 10) || 1;
+        var reel  = o.querySelector(".odo__reel");
         reel.style.transform = "translateY(0)";
+        // Первым трогается младший разряд, последним — старший:
+        // в эталоне левая цифра замирает на ~130 мс позже правой.
         setTimeout(function () {
-          reel.style.transform = "translateY(-" + target + "em)";
-        }, 60 + i * 90);
+          reel.style.transform = "translateY(-" + steps + "em)";
+        }, 80 + (n - 1 - i) * ODO_STAGGER);
       });
     }
 
@@ -799,9 +820,10 @@
 
     if (reduce || !("IntersectionObserver" in window)) {
       vals.forEach(function (el) {
+        var slots = el.querySelectorAll(".odo");
         el.querySelectorAll(".odo__reel").forEach(function (r, i) {
           r.style.transition = "none";
-          r.style.transform = "translateY(-" + el.querySelectorAll(".odo")[i].dataset.d + "em)";
+          r.style.transform = "translateY(-" + slots[i].dataset.steps + "em)";
         });
       });
       return;
@@ -809,10 +831,128 @@
 
     var io = new IntersectionObserver(function (es) {
       es.forEach(function (e) {
-        if (e.isIntersecting) { run(e.target); io.unobserve(e.target); }
+        if (!e.isIntersecting) return;
+        io.unobserve(e.target);
+        var el = e.target;
+        // Ждём ухода прелоадера: иначе барабаны докручиваются,
+        // пока экран ещё закрыт, и человек видит готовые цифры.
+        if (document.body.classList.contains("is-loading")) {
+          var wait = setInterval(function () {
+            if (!document.body.classList.contains("is-loading")) {
+              clearInterval(wait);
+              setTimeout(function () { run(el); }, 260);
+            }
+          }, 80);
+        } else {
+          run(el);
+        }
       });
     }, { threshold: 0.6 });
     vals.forEach(function (el) { io.observe(el); });
+  }
+
+/* Радиальная лента: дуга, повторы и угол хода считаются от кегля.
+     Эталон Osmo — R ≈ 1.26 × ширины окна, прогиб ≈ 10% ширины,
+     ход ≈ 240 px/с при ширине 1440. Текст едет по дуге, дуга стоит. */
+  /* Бегущая строка клиентов: текст едет по волне (эталон — Text Path).
+     Шов повтора невидим только тогда, когда ход за цикл равен
+     ОДНОВРЕМЕННО длине одного повтора текста и целому числу периодов
+     волны. Поэтому период подбирается от измеренного текста, а не
+     задаётся руками: иначе при любом кегле шов вылезает в кадр. */
+  function initClientsWave() {
+    var svg = document.querySelector(".clients__svg");
+    if (!svg) return;
+    var tp   = svg.querySelector("textPath");
+    var path = svg.querySelector("#clientsWave");
+    var spin = svg.querySelector(".clients__spin");
+    var text = svg.querySelector(".clients__text");
+    if (!tp || !path || !spin || !text) return;
+
+    var NS    = "http://www.w3.org/2000/svg";
+    var VW    = 1440;
+    var SPEED = parseFloat(svg.dataset.waveSpeed) || 112; // единиц viewBox в секунду
+    var AMP_K = 0.112;   // амплитуда как доля полупериода — пропорция эталона
+
+    /* Разделитель с вшитыми полукруглыми шпациями: просвет между
+       именами всегда одинаковый, а обычные пробелы внутри имён
+       («Pixel School») остаются нормальными. word-spacing так нельзя —
+       он раздвигает и те, и другие. */
+    var SEP = "\u2002·\u2002";
+    var phrase = (svg.dataset.wavePhrase || tp.textContent)
+      .split(/\s*·\s*/).map(function (n) { return n.replace(/\s+/g, " ").trim(); })
+      .filter(Boolean).join(SEP) + SEP;
+    svg.dataset.wavePhrase = phrase;
+
+    spin.style.transformBox = "view-box";
+
+    /* Волна из полупериодов: Q рисует первый горб, T зеркалит остальные.
+       Вершина квадратичной кривой лежит на полпути к контрольной точке,
+       поэтому смещение контроля берём вдвое больше амплитуды. */
+    function wave(x0, base, h, a, segs) {
+      var d = "M " + x0 + " " + base +
+              " Q " + (x0 + h / 2) + " " + (base - 2 * a) +
+              " "   + (x0 + h)     + " " + base;
+      for (var i = 2; i <= segs; i++) d += " T " + (x0 + i * h) + " " + base;
+      return d;
+    }
+
+    // Во сколько раз дуга волны длиннее своей проекции на X.
+    // Форма подобна при любом периоде, поэтому меряем один раз.
+    var stretch = 0;
+    function measureStretch() {
+      var p = document.createElementNS(NS, "path");
+      p.setAttribute("d", wave(0, 200, 100, 100 * AMP_K, 2));
+      p.setAttribute("fill", "none");
+      svg.appendChild(p);
+      var L = p.getTotalLength();
+      svg.removeChild(p);
+      return L / 200;
+    }
+
+    function layout() {
+      var w = svg.getBoundingClientRect().width;
+      if (!w) return;
+      var k  = w / VW;                                          // px на единицу viewBox
+      var fs = parseFloat(getComputedStyle(text).fontSize) / k; // кегль в единицах viewBox
+
+      tp.textContent = phrase;
+      var rep = tp.getComputedTextLength();   // длина одного повтора ВДОЛЬ пути
+      if (!rep) return;
+      if (!stretch) stretch = measureStretch();
+
+      // Полупериод ≈ 3.6 кегля — пропорция из эталона (180 при кегле 50).
+      // Округляем до чётного, чтобы волна закончилась в той же фазе.
+      var repX = rep / stretch;                                  // тот же повтор по оси X
+      var segs = Math.max(2, Math.round(repX / (fs * 3.6) / 2) * 2);
+      var h     = repX / segs;                                   // полупериод
+      var a     = h * AMP_K;                                     // амплитуда
+      var shift = repX;                                          // ход за цикл
+
+      var base = a + fs * 0.82;
+      var H    = Math.ceil(base + a + fs * 0.34);
+
+      // Путь и текст длиннее окна на полный ход, иначе справа
+      // к концу цикла кончаются глифы и строка обрывается.
+      var total = VW + 2 * shift;
+      path.setAttribute("d", wave(0, base, h, a, Math.ceil(total / h)));
+
+      var need = Math.ceil(total / rep) + 1, out = "", i;
+      for (i = 0; i < need; i++) out += phrase;
+      tp.textContent = out;
+
+      svg.setAttribute("viewBox", "0 0 " + VW + " " + H);
+      spin.style.setProperty("--wave-shift", (-shift).toFixed(2) + "px");
+      spin.style.setProperty("--wave-dur",   (shift / SPEED).toFixed(3) + "s");
+    }
+
+    layout();
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
+
+    var t;
+    addEventListener("resize", function () {
+      clearTimeout(t);
+      t = setTimeout(layout, 160);
+    });
   }
 
   function initCards() {
@@ -827,16 +967,45 @@
     io.observe(sec);
   }
 
+  /* Липкая лента: пока блок закреплён, прокрутка гонит карточки
+     вбок. Когда последняя встала по краю сетки — блок отпускает. */
   function initLeaks() {
     var sec = document.querySelector(".leaks");
     if (!sec) return;
-    if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) {
-        if (e.isIntersecting) { sec.classList.add("is-in"); io.disconnect(); }
+    var rail = sec.querySelector(".leaks-rail");
+    if (!rail) return;
+
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var narrow = matchMedia("(max-width: 900px)").matches;
+    if (reduce || narrow) return;
+
+    var max = 0, ticking = false;
+
+    function measure() {
+      var gut = parseFloat(getComputedStyle(sec).getPropertyValue("--gutter")) ||
+                parseFloat(getComputedStyle(rail).paddingLeft) || 0;
+      // Сколько ленты не влезло: последняя карточка должна встать
+      // ровно по правому полю сетки.
+      max = Math.max(0, rail.scrollWidth - window.innerWidth);
+      // Высота секции = экран + путь ленты, чтобы скорость была 1:1
+      sec.style.height = (window.innerHeight + max) + "px";
+    }
+
+    function onScroll() {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var r = sec.getBoundingClientRect();
+        var passed = Math.min(Math.max(-r.top, 0), max);
+        rail.style.transform = "translate3d(" + (-passed) + "px,0,0)";
       });
-    }, { threshold: 0.15 });
-    io.observe(sec);
+    }
+
+    measure();
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", function () { measure(); onScroll(); });
   }
 
   function initServices() {
@@ -1020,6 +1189,89 @@
   initLeaks();
   initCards();
   initOdometer();
+  initClientsWave();
   initCase();
   initShots();
+})();
+
+/* --- Выравнивание заголовков карточек --- */
+/* Блок текста карточки прижат к её низу, поэтому верх заголовка
+   зависит от высоты всего, что лежит ниже. Описание у разных карточек
+   переносится на разное число строк (1180px: 2 и 4 строки), и заголовки
+   расходились до 45px. Резервируем по ряду одинаковую высоту заголовка
+   и описания — верх заголовка совпадает у всех карточек ряда.
+   Только min-height: содержимое и порядок DOM не трогаем. */
+(function () {
+  var PARTS = [".card__name", ".card__note"];
+
+  function rows(cards) {
+    // группируем по фактическому ряду сетки: offsetTop с допуском 2px
+    var map = [];
+    cards.forEach(function (c) {
+      var t = c.offsetTop;
+      var row = null;
+      for (var i = 0; i < map.length; i++) {
+        if (Math.abs(map[i].top - t) <= 2) { row = map[i]; break; }
+      }
+      if (!row) { row = { top: t, items: [] }; map.push(row); }
+      row.items.push(c);
+    });
+    return map;
+  }
+
+  function align() {
+    var cards = [].slice.call(document.querySelectorAll(".situation .card"));
+    if (!cards.length) return;
+
+    // сбрасываем прошлый резерв, иначе высоты только растут
+    cards.forEach(function (c) {
+      PARTS.forEach(function (sel) {
+        var el = c.querySelector(".card__face--front " + sel);
+        if (el) el.style.minHeight = "";
+      });
+    });
+
+    rows(cards).forEach(function (row) {
+      PARTS.forEach(function (sel) {
+        var els = row.items.map(function (c) {
+          return c.querySelector(".card__face--front " + sel);
+        }).filter(Boolean);
+        if (els.length < 2) return;
+        var max = 0;
+        els.forEach(function (el) {
+          var h = el.getBoundingClientRect().height;
+          if (h > max) max = h;
+        });
+        els.forEach(function (el) { el.style.minHeight = max.toFixed(2) + "px"; });
+      });
+    });
+  }
+
+  function schedule() {
+    // два кадра: после перерасчёта шрифта и после раскладки сетки
+    requestAnimationFrame(function () { requestAnimationFrame(align); });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", schedule);
+  } else {
+    schedule();
+  }
+
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(schedule);
+  window.addEventListener("load", schedule);
+
+  if ("ResizeObserver" in window) {
+    var list = document.querySelector(".situation .cards");
+    if (list) {
+      var busy = false;
+      new ResizeObserver(function () {
+        if (busy) return;
+        busy = true;
+        requestAnimationFrame(function () { busy = false; align(); });
+      }).observe(list);
+    }
+  } else {
+    window.addEventListener("resize", schedule);
+  }
 })();

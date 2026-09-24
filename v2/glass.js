@@ -138,8 +138,8 @@
   };
   // Красное стекло — результат в зоне пересечения.
   var RED = {
-    glass: "#8f0512", roomTop: "#7d0510", roomBottom: "#3a0207",
-    highlight: "#d4565c", ior: 1.34, dispersion: 0.05,
+    glass: "#d1091c", roomTop: "#ff2a35", roomBottom: "#61020e",
+    highlight: "#ff9298", ior: 1.34, dispersion: 0.05,
     clarity: 0.10, edge: 2.0, gloss: 220
   };
 

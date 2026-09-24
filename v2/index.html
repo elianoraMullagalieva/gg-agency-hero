@@ -67,7 +67,7 @@
       <a href="#">Команда</a>
     </nav>
 
-    <a class="nav__cta" href="#">получить консультацию</a>
+    <a class="nav__cta" href="#">консультация</a>
 
     <button class="nav__burger" type="button" aria-label="Меню"
             aria-expanded="false" aria-controls="mobile-menu">
@@ -127,22 +127,27 @@
   </div>
 </section>
 
-<!-- ===== Бегущая строка клиентов · радиальная ===== -->
+<!-- ===== Бегущая строка клиентов · по волне ===== -->
 <section class="clients" aria-label="С нами построили продажи">
   <p class="clients__lead">С&nbsp;нами построили продажи</p>
 
-  <div class="clients__arc">
-    <svg class="clients__svg" viewBox="0 0 1400 230" aria-hidden="true"
-         preserveAspectRatio="xMidYMid meet">
+  <div class="clients__wave">
+    <!-- Волну, повторы и длительность строит main.js: период
+         подбирается от измеренной длины текста, иначе шов повтора
+         попадает в кадр. -->
+    <svg class="clients__svg" viewBox="0 0 1440 200" aria-hidden="true"
+         preserveAspectRatio="xMidYMid meet"
+         data-wave-speed="112">
       <defs>
-        <!-- Дуга очень большого круга: текст ложится мягко -->
-        <path id="clientsArc" d="M -700 210 A 5200 5200 0 0 1 2100 210" />
+        <path id="clientsWave" d="M -700 210 A 5200 5200 0 0 1 2100 210" />
       </defs>
-      <text class="clients__text">
-        <textPath href="#clientsArc" startOffset="0%">
-          Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · 
-        </textPath>
-      </text>
+      <g class="clients__spin">
+        <text class="clients__text">
+          <textPath href="#clientsWave" startOffset="0">
+            Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · 
+          </textPath>
+        </text>
+      </g>
     </svg>
   </div>
 </section>
@@ -386,79 +391,58 @@
   </div>
 </section>
 
-<!-- ===== Где утекают деньги · светлый блок ===== -->
+<!-- ===== Где утекают деньги · липкая лента карточек ===== -->
 <section class="leaks" id="leaks" aria-labelledby="leaks-title">
-  <div class="leaks-head">
-    <h2 class="leaks-title" id="leaks-title">Отдел продаж теряет деньги тихо</h2>
-    <p class="leaks-sub">
-      Утечки не&nbsp;бьют по&nbsp;выручке в&nbsp;тот же день. Сначала они копятся
-      в&nbsp;CRM и&nbsp;переписках, а&nbsp;через два-три месяца выручка проседает&nbsp;—
-      и&nbsp;уже никто не&nbsp;может объяснить почему. Поэтому их&nbsp;ловят
-      в&nbsp;процессе, пока деньги ещё можно вернуть. Все цифры ниже&nbsp;—
-      из&nbsp;наших аудитов.
-    </p>
+  <div class="leaks-sticky">
+    <div class="leaks-head">
+      <h2 class="leaks-title" id="leaks-title">Отдел продаж<br />теряет деньги тихо</h2>
+      <p class="leaks-sub">
+        Отдел продаж теряет деньги тихо. Утечки не&nbsp;бьют по&nbsp;выручке сразу:
+        сначала копятся в&nbsp;CRM и&nbsp;переписках, а&nbsp;через 2–3&nbsp;месяца выручка
+        проседает&nbsp;— и&nbsp;никто не&nbsp;понимает почему. Ловить их&nbsp;нужно
+        в&nbsp;процессе, пока деньги ещё можно вернуть. Все цифры ниже&nbsp;—
+        из&nbsp;наших аудитов.
+      </p>
+    </div>
+
+    <ul class="leaks-rail" role="list">
+      <li class="leak leak--dark" style="--i:0">
+        <div class="leak__copy">
+          <p class="leak__num">7+ часов</p>
+          <h3 class="leak__name">Заявка ждёт ответа</h3>
+          <p class="leak__text">За это время интерес остывает, а&nbsp;человек уже смотрит конкурентов. Вы&nbsp;оплатили заявку, прогрели эфиром или вебинаром&nbsp;— и&nbsp;отдали клиента тому, кто ответил раньше. Каждый час ожидания&nbsp;— оплаченный лид в&nbsp;минус.</p>
+        </div>
+      </li>
+      <li class="leak leak--red" style="--i:1">
+        <div class="leak__copy">
+          <p class="leak__num">Год на 3 запусках</p>
+          <h3 class="leak__name">Выручка держится на&nbsp;запусках</h3>
+          <p class="leak__text">Между запусками касса почти пустая, а&nbsp;ежедневный трафик некому продавать. Все ставки&nbsp;— на&nbsp;несколько недель в&nbsp;году: не&nbsp;зашёл оффер, просела реклама, эксперт выпал из&nbsp;графика&nbsp;— и&nbsp;полгода работы не&nbsp;окупились.</p>
+        </div>
+      </li>
+      <li class="leak leak--dark" style="--i:2">
+        <div class="leak__copy">
+          <p class="leak__num">87%</p>
+          <h3 class="leak__name">База не&nbsp;сегментирована</h3>
+          <p class="leak__text">Сделки закрыты как «не&nbsp;реализовано», а&nbsp;почему&nbsp;— не&nbsp;знает никто. Непонятно, кому и&nbsp;что предложить, вернуть этих людей нечем. Кажется, что база у&nbsp;вас есть, а&nbsp;по&nbsp;сути это кладбище лидов, а&nbsp;не&nbsp;актив.</p>
+        </div>
+      </li>
+      <li class="leak leak--red" style="--i:3">
+        <div class="leak__copy">
+          <p class="leak__num">0 звонков</p>
+          <h3 class="leak__name">Продают только перепиской</h3>
+          <p class="leak__text">Звонить некому или менеджеры не&nbsp;любят&nbsp;— всё уходит в&nbsp;чат. Но&nbsp;на&nbsp;высоком чеке сомнения «справлюсь ли?» и&nbsp;«стоит ли&nbsp;это денег?» снимает голос. В&nbsp;переписке не&nbsp;спорят&nbsp;— просто пропадают. Итог: недобор около 20% выручки.</p>
+        </div>
+      </li>
+      <li class="leak leak--dark" style="--i:4">
+        <div class="leak__copy">
+          <p class="leak__num">1 касание</p>
+          <h3 class="leak__name">После «я&nbsp;подумаю» никто не&nbsp;возвращается</h3>
+          <p class="leak__text">Менеджер написал один раз, получил «подумаю» и&nbsp;ушёл к&nbsp;новым заявкам. С&nbsp;первого контакта покупают редко, а&nbsp;до&nbsp;второго и&nbsp;третьего дело не&nbsp;доходит. Эти люди были готовы заплатить&nbsp;— их&nbsp;просто не&nbsp;довели до&nbsp;оплаты.</p>
+        </div>
+      </li>
+    </ul>
   </div>
-
-  <ul class="leaks-list" role="list">
-    <li class="leak" style="--i:0">
-      <p class="leak__num">7+ часов</p>
-      <h3 class="leak__name">Заявка ждёт ответа</h3>
-      <p class="leak__text">
-        За&nbsp;это время интерес остывает, а&nbsp;человек листает предложения
-        конкурентов. Вы&nbsp;заплатили за&nbsp;заявку, прогрели её&nbsp;эфиром
-        или вебинаром&nbsp;— и&nbsp;отдали клиента тому, кто ответил раньше.
-        <b>Каждый час ожидания&nbsp;— это оплаченный лид, который уходит
-        в&nbsp;минус.</b>
-      </p>
-    </li>
-
-    <li class="leak" style="--i:1">
-      <p class="leak__num">год на&nbsp;3 запусках</p>
-      <h3 class="leak__name">Выручка держится на&nbsp;запусках</h3>
-      <p class="leak__text">
-        Между запусками касса почти пустая, хотя трафик идёт каждый день
-        и&nbsp;продавать его некому. А&nbsp;все ставки&nbsp;— на&nbsp;несколько
-        недель в&nbsp;году: не&nbsp;зашёл оффер, просела реклама, эксперт выпал
-        из&nbsp;графика&nbsp;— <b>и&nbsp;полгода работы не&nbsp;окупились.</b>
-      </p>
-    </li>
-
-    <li class="leak" style="--i:2">
-      <p class="leak__num">87%</p>
-      <h3 class="leak__name">База не&nbsp;сегментирована</h3>
-      <p class="leak__text">
-        Сделки закрыты как «не&nbsp;реализовано», а&nbsp;почему&nbsp;—
-        не&nbsp;знает никто. Непонятно, кому и&nbsp;что предложить, вернуть
-        этих людей нечем. Кажется, что база у&nbsp;вас есть,
-        <b>а&nbsp;по&nbsp;сути это кладбище лидов, а&nbsp;не&nbsp;актив.</b>
-      </p>
-    </li>
-
-    <li class="leak" style="--i:3">
-      <p class="leak__num">0 звонков</p>
-      <h3 class="leak__name">Продают только перепиской</h3>
-      <p class="leak__text">
-        Звонить некому или менеджеры не&nbsp;любят звонить&nbsp;— и&nbsp;всё
-        уходит в&nbsp;чат. Но&nbsp;на&nbsp;высоком чеке сомнение «справлюсь
-        ли&nbsp;я» и&nbsp;«стоит ли&nbsp;это своих денег» снимается голосом,
-        а&nbsp;не&nbsp;текстом: в&nbsp;переписке человек не&nbsp;спорит,
-        он&nbsp;просто перестаёт отвечать.
-        <b>Итог&nbsp;— отдел недобирает около 20% выручки.</b>
-      </p>
-    </li>
-
-    <li class="leak" style="--i:4">
-      <p class="leak__num">1 касание</p>
-      <h3 class="leak__name">После «я&nbsp;подумаю» никто не&nbsp;возвращается</h3>
-      <p class="leak__text">
-        Менеджер написал один раз, получил «подумаю» и&nbsp;переключился
-        на&nbsp;новые заявки. Решение о&nbsp;покупке редко принимают
-        с&nbsp;первого контакта, а&nbsp;до&nbsp;второго и&nbsp;третьего дело
-        не&nbsp;доходит. <b>Эти люди были готовы заплатить&nbsp;— их&nbsp;просто
-        не&nbsp;довели до&nbsp;оплаты.</b>
-      </p>
-    </li>
-  </ul>
 </section>
 
 

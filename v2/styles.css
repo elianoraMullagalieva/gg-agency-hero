@@ -37,6 +37,13 @@
   --shell: 1280px;
   --up: 1;
 
+  /* Шкала мелкого текста — ровно две ступени.
+     M = 18px и S = 14px на 1440. Формула §02:
+     B = (s2−s1)/((W2−W1)/100), A = (s1 − B×W1/100)/16, W1=360, W2=1440.
+     M: 16px@360 → 18px@1440.   S: 13px@360 → 14px@1440. */
+  --fs-m: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  --fs-s: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+
   --gutter: clamp(1.25rem, 0.7143rem + 2.2857vw, 5rem);
 }
 
@@ -48,6 +55,16 @@
 @media (min-width: 3600px) { :root { --shell: 2720px; --up: 2.00; } }
 
 * { box-sizing: border-box; }
+
+/* UA-стиль кнопок и полей подставляет свой шрифт (в Chromium — Arial
+   13.333px). Из-за этого триггеры аккордеонов, бургер и кнопка плеера
+   рисовались не Onest. Наследование возвращает единый шрифт. */
+button, input, select, textarea, optgroup {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+}
 
 /* §11 · clip, а не hidden: hidden ломает sticky у вложенных элементов */
 html, body {
@@ -151,7 +168,7 @@ p, li { text-wrap: pretty; }
 .nav__logo {
   color: var(--text);
   font-family: var(--font-logo);
-  font-size: clamp(0.9375rem, 0.9155rem + 0.0939vw, 1.25rem);
+  font-size: var(--fs-m);
   font-weight: 800;
   line-height: 1.2;
   letter-spacing: -0.0625em;
@@ -194,7 +211,8 @@ p, li { text-wrap: pretty; }
   color: var(--text);
   font-family: var(--font-num);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
-  font-weight: 700;
+  /* Regular: вторичная кнопка не должна спорить с основной (500) */
+  font-weight: 400;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   text-decoration: none;
@@ -678,7 +696,7 @@ p.hero__lead { text-wrap: normal; }
 .expert__name {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.9375rem, 0.8929rem + 0.1905vw, 1.125rem);
+  font-size: var(--fs-m);
   font-weight: 500;
   line-height: 1.25;
   letter-spacing: -0.01em;
@@ -793,7 +811,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0;
   text-wrap: pretty;
   font-family: var(--font-logo);
-  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
+  font-size: var(--fs-m);
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.01em;
@@ -842,7 +860,6 @@ p.hero__lead { text-wrap: normal; }
     scroll-snap-align: start;
   }
 }
-
 
 
 /* ============================================================
@@ -920,7 +937,7 @@ p.hero__lead { text-wrap: normal; }
 .questions-item h3 {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: calc(23px * var(--up));
+  font-size: var(--fs-m);
   font-weight: 500;
   line-height: 1.1;
   letter-spacing: -0.01em;
@@ -1039,7 +1056,7 @@ p.hero__lead { text-wrap: normal; }
   display: inline-block;
   color: var(--text);
   font-family: var(--font-logo, var(--font-ui));
-  font-size: calc(22px * var(--up));
+  font-size: var(--fs-m);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-decoration: none;
@@ -1146,10 +1163,30 @@ p.hero__lead { text-wrap: normal; }
 /* ---------- Схема ---------- */
 
 .venn {
+  /* Геометрия схемы задана здесь один раз. И круги, и подписи, и ядро
+     берут эти же координаты, поэтому подпись физически не может
+     разъехаться с центром своего круга. Менять размер/позиции — тут. */
+  /* Геометрия снята с макета (фрейм 554.67 × 509.97) и переведена
+     в проценты своего бокса. Круги и подписи берут одни и те же
+     переменные — разъехаться они больше не могут.
+     Подписи: по горизонтали — центр круга, по вертикали — смещение
+     вверх у верхних и вниз у нижней, как нарисовано. */
+  --cw: 54.5%;                                  /* диаметр опоры */
+  --c1x: 27.2%;  --c1y: 29.8%;
+  --c2x: 72.9%;  --c2y: 29.8%;
+  --c3x: 50.1%;  --c3y: 64.7%;
+
+  --p1x: 27.2%;  --p1y: 20.2%;
+  --p2x: 72.3%;  --p2y: 20.7%;
+  --p3x: 50.8%;  --p3y: 80.2%;
+
+  --core-x: 51.1%; --core-y: 46.0%;
+  --core-w: 37.4%;
+
   position: relative;
   width: 100%;
-  max-width: clamp(19rem, 12rem + 30vw, 40rem);
-  aspect-ratio: 1;
+  max-width: clamp(20rem, 12.5rem + 32.5vw, 46rem);
+  aspect-ratio: 554.67 / 509.97;
   margin-inline: auto;
 }
 
@@ -1191,9 +1228,11 @@ p.hero__lead { text-wrap: normal; }
 /* позиции по центрам окружностей из макета */
 /* Подписи стоят в центрах сфер — координаты посчитаны из позиций
    объектов сцены (камера dist 6.6, span 3.9). */
-.venn-pillar--1 { left: 33%; top: 34%; translate: -50% -50%; }
-.venn-pillar--2 { left: 67%; top: 34%; translate: -50% -50%; }
-.venn-pillar--3 { left: 50%; top: 73%; translate: -50% -50%; }
+/* Поверх блоба: ядро лежит на z-index 2 */
+.venn-pillar { z-index: 3; }
+.venn-pillar--1 { left: var(--p1x); top: var(--p1y); translate: -50% -50%; }
+.venn-pillar--2 { left: var(--p2x); top: var(--p2y); translate: -50% -50%; }
+.venn-pillar--3 { left: var(--p3x); top: var(--p3y); translate: -50% -50%; }
 
 .venn.is-in .venn-pillar {
   animation: vFade 0.8s ease forwards;
@@ -1264,7 +1303,7 @@ p.hero__lead { text-wrap: normal; }
 
 .quiz__lead {
   margin: 0 0 clamp(1rem, 0.8214rem + 0.7619vw, 1.75rem);
-  font-size: clamp(0.875rem, 0.8036rem + 0.3048vw, 1.1875rem);
+  font-size: var(--fs-m);
   font-weight: 400;
   line-height: 1.28;
   letter-spacing: -0.01em;
@@ -1333,9 +1372,7 @@ p.hero__lead { text-wrap: normal; }
   }
   .venn { max-width: min(100%, 22rem); }
   /* Подписи и на узком экране остаются в центрах блобов. */
-  .venn-pillar--1 { left: 27%; right: auto; top: 34%; translate: -50% -50%; }
-  .venn-pillar--2 { left: 73%; right: auto; top: 34%; translate: -50% -50%; }
-  .venn-pillar--3 { left: 50%; top: 75%; translate: -50% -50%; }
+  /* позиции подписей наследуются из общей геометрии .venn */
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1803,7 +1840,7 @@ p.hero__lead { text-wrap: normal; }
 .services-item h3 {
   margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(0.9375rem, 0.8304rem + 0.4571vw, 1.375rem);
+  font-size: var(--fs-m);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.01em;
@@ -2057,109 +2094,6 @@ p.hero__lead { text-wrap: normal; }
   }
 }
 
-/* ============================================================
-   Где утекают деньги · светлый блок
-   Горизонтальные карточки-строки: цифра | название | объяснение.
-   Появляются по очереди при скролле. Красного текста нет —
-   акцент держит вес шрифта, а не цвет.
-   ============================================================ */
-
-.leaks {
-  position: relative;
-  z-index: 2;
-  background: #ffffff;
-  color: #16120d;
-  padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter)
-           clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem);
-}
-
-.leaks-head { margin-bottom: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem); }
-
-.leaks-title {
-  font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
-  font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
-  margin: 0;
-  max-width: 18ch;
-}
-
-.leaks-sub {
-  max-width: 54ch;
-  margin: clamp(0.875rem, 0.6964rem + 0.7619vw, 1.625rem) 0 0;
-  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
-  font-weight: 300;
-  line-height: 1.45;
-  color: #4a443c;
-}
-
-.leaks-list {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid rgba(22, 18, 13, 0.14);
-}
-
-/* Три колонки: цифра | название | объяснение */
-.leak {
-  display: grid;
-  grid-template-columns: minmax(0, 0.62fr) minmax(0, 0.84fr) minmax(0, 1.3fr);
-  align-items: start;
-  gap: clamp(1rem, 0.5714rem + 1.8286vw, 2.875rem);
-  padding: clamp(1.375rem, 1.0179rem + 1.5238vw, 2.875rem) 0;
-  border-bottom: 1px solid rgba(22, 18, 13, 0.14);
-  opacity: 0;
-  translate: 0 14px;
-}
-
-.leaks.is-in .leak {
-  animation: leakRise 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: calc(var(--i) * 110ms);
-}
-@keyframes leakRise { to { opacity: 1; translate: 0 0; } }
-
-.leak__num {
-  margin: 0;
-  font-family: var(--font-logo);
-  font-size: clamp(1.25rem, 1.0357rem + 0.9143vw, 2rem);
-  font-weight: 300;
-  line-height: 1.05;
-  letter-spacing: -0.0345em;
-  color: #16120d;
-}
-
-.leak__name {
-  margin: 0;
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
-  font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
-}
-
-.leak__text {
-  margin: 0;
-  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
-  font-weight: 300;
-  line-height: 1.45;
-  color: #6b655c;
-}
-/* Вывод выделен весом, не цветом */
-.leak__text b { font-weight: 500; color: #16120d; }
-
-/* ---------- Адаптив ---------- */
-
-@media (max-width: 900px) {
-  .leak {
-    grid-template-columns: minmax(0, 1fr);
-    gap: clamp(0.375rem, 1.5vw, 0.75rem);
-  }
-  .leak__num { order: -1; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .leak { opacity: 1; translate: none; animation: none; }
-}
 
 /* ============================================================
    Кейс · развёрнутый формат
@@ -2273,14 +2207,14 @@ p.hero__lead { text-wrap: normal; }
 .case-step__n {
   margin: 0 0 clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem);
   font-family: var(--font-logo);
-  font-size: clamp(0.8125rem, 0.7679rem + 0.1905vw, 1rem);
+  font-size: var(--fs-s);
   font-weight: 400;
   color: var(--arc-high);
 }
 
 .case-step__h {
   margin: 0 0 clamp(0.375rem, 0.3036rem + 0.3048vw, 0.6875rem);
-  font-size: clamp(0.9375rem, 0.8661rem + 0.3048vw, 1.25rem);
+  font-size: var(--fs-m);
   font-weight: 500;
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -2388,7 +2322,6 @@ p.hero__lead { text-wrap: normal; }
 .card:hover .card__act i { transform: translateX(3px); }
 
 
-
 /* Диагональ: заголовок у верхнего края схемы, карточка теста
    уходит к нижнему — композиция перестаёт быть одной линией. */
 @media (min-width: 1101px) {
@@ -2421,7 +2354,7 @@ p.hero__lead { text-wrap: normal; }
 .venn__circle--1,
 .venn__circle--2,
 .venn__circle--3 {
-  width: 52%;
+  width: var(--cw);
   aspect-ratio: 1;
   /* Настоящее стекло: размытие фона за кругом, лёгкий градиент
      сверху вниз и тонкая светлая рамка по краю. */
@@ -2432,46 +2365,40 @@ p.hero__lead { text-wrap: normal; }
     rgba(255, 255, 255, 0.045) 42%,
     rgba(255, 255, 255, 0.022) 100%);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  /* Внутренний блик сверху — стекло ловит свет по верхней кромке */
-  box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, 0.22),
-    inset 0 -18px 34px -22px rgba(255, 255, 255, 0.10),
-    0 18px 44px -20px rgba(0, 0, 0, 0.6);
+  /* Теней нет — ни внешних, ни внутренних. Строгий запрет по макету:
+     объём держат только заливка-градиент и тонкая светлая кромка. */
+  box-shadow: none;
 }
 /* Позиции из макета: круги r=152 при ширине 1440 */
-.venn__circle--1 { left: 32%; top: 41%; }
-.venn__circle--2 { left: 68%; top: 41%; }
-.venn__circle--3 { left: 50%; top: 68%; }
+.venn__circle--1 { left: var(--c1x); top: var(--c1y); }
+.venn__circle--2 { left: var(--c2x); top: var(--c2y); }
+.venn__circle--3 { left: var(--c3x); top: var(--c3y); }
 
 /* Ядро: насыщенный красный, крупнее относительно опор */
 .venn__core-stage {
   position: absolute;
-  left: 50%;
-  top: 52.8%;
+  left: var(--core-x);
+  top: var(--core-y);
   translate: -50% -50%;
-  width: 36%;
+  width: var(--core-w);
   aspect-ratio: 1;
   z-index: 2;
 }
-.venn__circle--core {
-  left: 50%;
-  top: 52.8%;
-  /* 22.6% ширины макета при схеме в 46% — ядро крупное
-     и заметно перекрывает нижний круг. */
-  width: 31%;
-  aspect-ratio: 1;
-  background:
-    linear-gradient(152deg,
-      rgba(255, 255, 255, 0.16) 0%,
-      rgba(255, 255, 255, 0.04) 48%,
-      rgba(255, 255, 255, 0) 100%),
-    radial-gradient(circle at 46% 38%,
-      #ff1f26 0%, #e00c24 34%, #b00a1c 72%, #7c0714 100%);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  box-shadow:
-    inset 0 1px 2px rgba(255, 255, 255, 0.35),
-    0 0 clamp(2.5rem, 5vw, 5rem) -0.75rem rgba(224, 12, 36, 0.55);
+/* Свечение вокруг блоба: сам шейдер даёт цвет, а насыщенность
+   на тёмном фоне читается только вместе с ореолом. Лежит ПОД
+   канвасом — канвас идёт следующим в потоке и красит поверх. */
+.venn__core-stage::before {
+  content: "";
+  position: absolute;
+  inset: -34%;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle,
+    rgba(232, 18, 42, 0.50) 0%,
+    rgba(214, 14, 36, 0.22) 44%,
+    rgba(160, 8, 24, 0) 72%);
 }
+
 
 /* Появление: круги проявляются по очереди, как и блобы */
 .venn-sec--flat .venn__circle { opacity: 0; }
@@ -2482,7 +2409,6 @@ p.hero__lead { text-wrap: normal; }
 .venn-sec--flat .venn__circle--1 { animation-delay: 0.05s; }
 .venn-sec--flat .venn__circle--2 { animation-delay: 0.2s; }
 .venn-sec--flat .venn__circle--3 { animation-delay: 0.35s; }
-.venn-sec--flat .venn__circle--core { animation-delay: 0.55s; }
 
 @keyframes vFlat {
   from { opacity: 0; scale: 0.88; }
@@ -2635,7 +2561,7 @@ p.hero__lead { text-wrap: normal; }
 .quiz__lead {
   margin: 0 0 clamp(1.125rem, 0.9464rem + 0.7619vw, 1.875rem);
   font-family: var(--font-logo);
-  font-size: clamp(1rem, 0.8929rem + 0.4571vw, 1.4375rem);
+  font-size: var(--fs-m);
   font-weight: 400;
   line-height: 1.22;
   letter-spacing: -0.0345em;
@@ -2699,21 +2625,7 @@ p.hero__lead { text-wrap: normal; }
 }
 
 /* Ядро пульсирует свечением — «деньги идут каждый день» */
-.venn__circle--core { display: none; }
-@keyframes vCoreBeat {
-  0%, 100% {
-    translate: -50% -50%;
-    box-shadow:
-      inset 0 1px 2px rgba(255, 255, 255, 0.35),
-      0 0 clamp(2.5rem, 5vw, 5rem) -0.75rem rgba(224, 12, 36, 0.55);
-  }
-  50% {
-    translate: -50% calc(-50% - 0.8%);
-    box-shadow:
-      inset 0 1px 2px rgba(255, 255, 255, 0.42),
-      0 0 clamp(3.5rem, 7vw, 7rem) -0.5rem rgba(240, 16, 44, 0.75);
-  }
-}
+
 
 /* Блик, скользящий по стеклу */
 .venn-sec--flat .venn__circle--1::after,
@@ -2753,11 +2665,14 @@ p.hero__lead { text-wrap: normal; }
     0 18px 44px -20px rgba(0, 0, 0, 0.6);
 }
 
-/* Текст ядра строго по центру круга */
+/* Текст ядра строго по центру блоба.
+   Сцена блоба стоит на top: 52.8%, а базовое правило .venn-core
+   оставляло текст на 50% — он висел на ~15px выше центра. */
 .venn-sec--flat .venn-core {
   display: grid;
   place-items: center;
   text-align: center;
+  top: var(--core-y);
   /* Поверх WebGL-блоба */
   z-index: 3;
 }
@@ -2813,15 +2728,12 @@ p.hero__lead { text-wrap: normal; }
    Живой текст в SVG — кириллица и Onest сохраняются.
    ============================================================ */
 
-.clients__arc {
+.clients__wave {
   position: relative;
   width: 100%;
+  /* Обрезка по краям секции — как в эталоне: там строка уходит
+     за кадр в полную силу, без растворения. */
   overflow: hidden;
-  /* Края растворяются */
-  -webkit-mask-image: linear-gradient(90deg,
-    transparent 0, #000 6%, #000 94%, transparent 100%);
-  mask-image: linear-gradient(90deg,
-    transparent 0, #000 6%, #000 94%, transparent 100%);
 }
 
 .clients__svg {
@@ -2840,21 +2752,26 @@ p.hero__lead { text-wrap: normal; }
   fill: rgba(22, 18, 13, 0.78);
 }
 
-.clients__svg {
-  animation: clientsArc 44s linear infinite;
+/* Ход строки: группа едет влево ровно на один повтор текста.
+   Волна периодична, а ход кратен её периоду — после сдвига
+   глифы ложатся на тот же рельеф, шва не видно. */
+.clients__spin {
+  transform-box: view-box;
+  will-change: transform;
+  animation: clientsWave var(--wave-dur, 30s) linear infinite;
 }
-@keyframes clientsArc {
+@keyframes clientsWave {
   from { transform: translateX(0); }
-  to   { transform: translateX(-33.33%); }
+  to   { transform: translateX(var(--wave-shift, -1440px)); }
 }
 
 /* Наведение останавливает ход */
 @media (hover: hover) and (pointer: fine) {
-  .clients__arc:hover .clients__svg { animation-play-state: paused; }
+  .clients__wave:hover .clients__spin { animation-play-state: paused; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .clients__svg { animation: none; }
+  .clients__spin { animation: none; will-change: auto; }
 }
 
 /* ============================================================
@@ -2866,15 +2783,36 @@ p.hero__lead { text-wrap: normal; }
   translate: 0 46%;
 }
 .situation.is-in .card {
-  /* Кривая с плато посередине: карточка стартует, на миг
-     замирает и доезжает. Одно движение, разделённое паузой. */
-  animation: cardSlide 1.15s cubic-bezier(0.16, 0.9, 0.2, 1) forwards;
-  animation-delay: calc(var(--i) * 110ms);
+  /* Профиль снят покадрово с эталона (30 fps, 1333 мс, 650 px хода)
+     и пересчитан в проценты своей высоты. Шаг кадров — 5% времени,
+     поэтому собственная кривая уже внутри ключей: timing linear.
+     Характер: короткий подъём на треть пути, микропауза на 25–35%
+     времени (≈130 мс, за неё проходит 2% пути), затем основной ход
+     и долгий выкат. */
+  animation: cardSlide 2.05s linear forwards;
+  animation-delay: calc(var(--i) * 200ms);
 }
 @keyframes cardSlide {
-  0%   { opacity: 0; translate: 0 46%; }
-  38%  { opacity: 1; translate: 0 13%; }
-  52%  { translate: 0 11.5%; }   /* микропауза */
+    0% { opacity: 0; translate: 0 46.00%; }
+    5% { translate: 0 41.57%; }
+   10% { translate: 0 38.21%; }
+   15% { opacity: 1; translate: 0 35.88%; }
+   20% { translate: 0 34.24%; }
+   25% { translate: 0 33.14%; }   /* вход в микропаузу */
+   30% { translate: 0 32.46%; }
+   35% { translate: 0 31.76%; }   /* выход из микропаузы */
+   40% { translate: 0 29.71%; }
+   45% { translate: 0 25.25%; }
+   50% { translate: 0 18.75%; }
+   55% { translate: 0 11.68%; }
+   60% { translate: 0 6.86%; }
+   65% { translate: 0 3.99%; }
+   70% { translate: 0 2.38%; }
+   75% { translate: 0 1.38%; }
+   80% { translate: 0 0.81%; }
+   85% { translate: 0 0.44%; }
+   90% { translate: 0 0.22%; }
+   95% { translate: 0 0.10%; }
   100% { opacity: 1; translate: 0 0; }
 }
 
@@ -2898,8 +2836,24 @@ p.hero__lead { text-wrap: normal; }
   display: flex;
   flex-direction: column;
   will-change: transform;
-  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  /* 1.6 с — столько идёт разгон-остановка в эталоне.
+     Кривая экспоненциальная: почти весь путь в первой трети,
+     дальше длинный выкат, как и на видео. */
+  transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
+/* Значение для скринридера: барабаны из разметки для него скрыты */
+.odo-a11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
 .odo__reel span {
   height: 1em;
   line-height: 1;
@@ -2909,4 +2863,154 @@ p.hero__lead { text-wrap: normal; }
 
 @media (prefers-reduced-motion: reduce) {
   .odo__reel { transition: none; }
+}
+
+/* ============================================================
+   Где утекают деньги · липкая лента карточек
+   Блок фиксируется, прокрутка гонит карточки вбок. Когда пятая
+   встала по краю сетки — фиксация снимается.
+   ============================================================ */
+
+.leaks {
+  position: relative;
+  z-index: 2;
+  background: #ffffff;
+  color: #16120d;
+  /* Высота даёт запас прокрутки под горизонтальный ход */
+  height: 260svh;
+}
+
+.leaks-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem);
+  overflow: hidden;
+}
+
+.leaks-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 0.7857rem + 3.0476vw, 4.5rem);
+  padding-inline: var(--gutter);
+}
+
+.leaks-title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-weight: 400;
+  line-height: 1.02;
+  letter-spacing: -0.0345em;
+}
+
+.leaks-sub {
+  margin: 0;
+  max-width: 46ch;
+  justify-self: end;
+  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  font-weight: 300;
+  line-height: 1.45;
+  color: #6b655c;
+}
+
+/* ---------- Лента ---------- */
+
+.leaks-rail {
+  display: flex;
+  /* Зазор меньше, чем у карточек ситуации: в макете 11px при 300 */
+  gap: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
+  margin: 0;
+  padding-inline: var(--gutter);
+  list-style: none;
+  width: max-content;
+  will-change: transform;
+}
+
+.leak {
+  position: relative;
+  flex: none;
+  width: clamp(13rem, 9.5rem + 15.5vw, 18.8rem);
+  aspect-ratio: 300 / 470;
+  overflow: hidden;
+  border-radius: var(--card-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  isolation: isolate;
+}
+
+/* Чётные подняты — ступенчатое чередование из макета */
+.leak:nth-child(even) { translate: 0 -12.8%; }
+
+.leak--dark {
+  background:
+    radial-gradient(120% 90% at 50% 120%, #1a1a1a 0%, #0a0a0a 55%, #050505 100%);
+}
+.leak--red {
+  background:
+    radial-gradient(120% 100% at 62% -8%,
+      #ff2b18 0%, #d41410 26%, #6b0a0c 52%, #1a0304 78%, #0a0202 100%);
+}
+
+.leak__copy {
+  position: relative;
+  padding: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
+  padding-bottom: clamp(1.5625rem, 1.4196rem + 0.6095vw, 2.1875rem);
+  color: #fff;
+}
+
+.leak__num {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-s);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+}
+
+.leak__name {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-m);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+}
+
+.leak__text {
+  margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
+  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  font-weight: 300;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* ---------- Мобильные: обычная лента со свайпом ---------- */
+
+@media (max-width: 900px) {
+  .leaks { height: auto; }
+  .leaks-sticky { position: static; height: auto; padding-block: clamp(3.5rem, 2.6667rem + 3.7037vw, 6rem); }
+  .leaks-rail {
+    width: auto;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    transform: none !important;
+  }
+  .leaks-rail::-webkit-scrollbar { display: none; }
+  .leak { scroll-snap-align: start; width: min(72vw, 17rem); }
+  .leak:nth-child(even) { translate: none; }
+  .leaks-head { grid-template-columns: minmax(0, 1fr); }
+  .leaks-sub { justify-self: start; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .leaks { height: auto; }
+  .leaks-sticky { position: static; height: auto; }
+  .leaks-rail { transform: none !important; overflow-x: auto; width: auto; }
 }
