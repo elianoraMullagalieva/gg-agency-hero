@@ -629,6 +629,7 @@ p.hero__lead { text-wrap: normal; }
 .situation__head {
   display: grid;
   grid-template-columns: minmax(0, 1fr) max-content;
+  /* Заголовок и карточка эксперта выровнены по верхней линии */
   align-items: start;
   gap: clamp(1.5rem, 0.7857rem + 3.0476vw, 4.5rem);
   margin: 0 0 clamp(1.75rem, 1.1964rem + 2.3619vw, 4.0625rem);
@@ -646,7 +647,6 @@ p.hero__lead { text-wrap: normal; }
 .situation__title b { font-weight: 400; color: #000; }
 
 .situation__sub {
-  max-width: 34ch;
   margin: clamp(0.5rem, 0.3214rem + 0.7619vw, 1.25rem) 0 0;
   font-family: var(--font-ui);
   /* Кегль и интерлиньяж — как у подписей под цифрами на первом
@@ -1103,7 +1103,7 @@ p.hero__lead { text-wrap: normal; }
 
 .venn-sec__inner {
   display: grid;
-  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.6fr) minmax(0, 0.88fr);
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 0.95fr);
   align-items: center;
   gap: clamp(1rem, 0.2857rem + 3.0476vw, 4rem);
 }
@@ -2390,10 +2390,15 @@ p.hero__lead { text-wrap: normal; }
 /* Диагональ: заголовок у верхнего края схемы, карточка теста
    уходит к нижнему — композиция перестаёт быть одной линией. */
 @media (min-width: 1101px) {
+  /* Плашка прижата к низу схемы — в макете её верх на 55.7%
+     высоты секции, а не по центру колонки. */
   .venn-sec__inner > .venn-lede { align-self: start; }
   .venn-sec__inner > .quiz {
+    /* Верх плашки на 55.7% высоты секции — как в макете.
+       Сдвиг через transform: он не меняет высоту секции,
+       иначе процент уезжает вслед за ней. */
     align-self: end;
-    margin-bottom: clamp(2rem, 1.0714rem + 3.9683vw, 5rem);
+    transform: translateY(38%);
   }
 }
 
@@ -2415,7 +2420,7 @@ p.hero__lead { text-wrap: normal; }
 .venn__circle--1,
 .venn__circle--2,
 .venn__circle--3 {
-  width: 46%;
+  width: 52%;
   aspect-ratio: 1;
   /* Настоящее стекло: размытие фона за кругом, лёгкий градиент
      сверху вниз и тонкая светлая рамка по краю. */
@@ -2438,6 +2443,15 @@ p.hero__lead { text-wrap: normal; }
 .venn__circle--3 { left: 50%; top: 68%; }
 
 /* Ядро: насыщенный красный, крупнее относительно опор */
+.venn__core-stage {
+  position: absolute;
+  left: 50%;
+  top: 52.8%;
+  translate: -50% -50%;
+  width: 36%;
+  aspect-ratio: 1;
+  z-index: 2;
+}
 .venn__circle--core {
   left: 50%;
   top: 52.8%;
@@ -2494,7 +2508,7 @@ p.hero__lead { text-wrap: normal; }
 .venn-sec--flat { position: relative; overflow: hidden; }
 .venn-sec__bg {
   position: absolute;
-  inset: 0;
+  inset: 22% 0 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -2517,7 +2531,8 @@ p.hero__lead { text-wrap: normal; }
   /* Инверсия: светлая полоса между тёмными секциями */
   background: #ffffff;
   color: #16120d;
-  padding: clamp(2.25rem, 1.7143rem + 2.2857vw, 4.5rem) 0;
+  padding: clamp(2.25rem, 1.7143rem + 2.2857vw, 4.5rem) 0
+           clamp(3.5rem, 2.6071rem + 3.8095vw, 7.25rem);
   overflow: hidden;
 }
 
@@ -2525,6 +2540,7 @@ p.hero__lead { text-wrap: normal; }
 .clients__lead {
   margin: 0 0 clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
   padding-inline: var(--gutter);
+  text-align: center;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
   line-height: 1.35;
@@ -2638,7 +2654,7 @@ p.hero__lead { text-wrap: normal; }
 
 /* На больших экранах плашка и схема растут вместе с сеткой */
 @media (min-width: 1600px) {
-  .quiz { max-width: 26rem; }
+  .quiz { max-width: 21rem; }
 }
 
 /* ============================================================
@@ -2682,9 +2698,7 @@ p.hero__lead { text-wrap: normal; }
 }
 
 /* Ядро пульсирует свечением — «деньги идут каждый день» */
-.venn-sec--flat .venn__circle--core {
-  animation: vCoreBeat 5.5s ease-in-out infinite;
-}
+.venn__circle--core { display: none; }
 @keyframes vCoreBeat {
   0%, 100% {
     translate: -50% -50%;
@@ -2749,3 +2763,18 @@ p.hero__lead { text-wrap: normal; }
   .venn-sec--flat .venn__circle,
   .venn-sec--flat .venn__circle::after { animation: none; }
 }
+
+
+/* Плашка теста — ширина с макета 2209:600, стрелка вплотную */
+.venn-sec--flat .quiz { max-width: 21rem; }
+.venn-sec--flat .quiz__cta { gap: 0; }
+.venn-sec--flat .quiz__icon { margin-left: 2px; }
+
+
+/* Блок эксперта: фото и подпись выровнены по высоте */
+.expert {
+  align-items: start;
+  justify-self: end;
+}
+.expert__body { display: grid; align-content: start; }
+.expert__name { margin-top: -0.12em; }

@@ -138,17 +138,14 @@
   };
   // Красное стекло — результат в зоне пересечения.
   var RED = {
-    glass: "#e00c24", roomTop: "#c20f22", roomBottom: "#6b0710",
-    highlight: "#ff8d92", ior: 1.34, dispersion: 0.05,
-    clarity: 0.28, edge: 2.0, gloss: 260
+    glass: "#ff0a1e", roomTop: "#e8081c", roomBottom: "#8f0512",
+    highlight: "#ffb3b7", ior: 1.34, dispersion: 0.05,
+    clarity: 0.14, edge: 2.2, gloss: 240
   };
 
   // Позиции повторяют макет: три опоры + центр
   var SPEC = [
-    { p: [-0.80, 0.52, 0.0],  s: 1.24, cfg: DARK, spin: 0.105 },
-    { p: [ 0.80, 0.52, -0.1], s: 1.24, cfg: DARK, spin: -0.095 },
-    { p: [ 0.0, -0.72, 0.28], s: 1.24, cfg: DARK, spin: 0.10 },
-    { p: [ 0.0, -0.06, 1.15], s: 0.92, cfg: RED,  spin: -0.13 }
+    { p: [0, 0, 0], s: 1.0, cfg: RED, spin: -0.16 }
   ];
 
   // На узких экранах сквиркл читается и на вдвое меньшей сетке:
@@ -170,7 +167,7 @@
     renderer.setSize(w, h, false);
     var aspect = w / h;
     var dist = 6.6;
-    var span = 4.6;
+    var span = 2.5;
     var visible = aspect < 1 ? span / aspect : span;
     camera.aspect = aspect;
     camera.position.set(0, 0, dist);
