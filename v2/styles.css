@@ -811,7 +811,9 @@ p.hero__lead { text-wrap: normal; }
   margin: 0;
   text-wrap: pretty;
   font-family: var(--font-logo);
-  font-size: var(--fs-m);
+  /* 24px на 1440 — кегль прежней версии, он нравился больше.
+     Не сводить к --fs-m: заголовок карточки крупнее мелкого текста. */
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
   line-height: 1.14;
   letter-spacing: -0.01em;
@@ -1112,18 +1114,30 @@ p.hero__lead { text-wrap: normal; }
 .venn-sec {
   position: relative;
   z-index: 2;
+  /* Во весь экран: схема — цельный кадр, а не лента с прокруткой.
+     min-height, а не height: на низких окнах контент важнее рамки. */
+  min-height: 100svh;
+  display: grid;
+  /* stretch, а не center: иначе сетка сжимается по контенту и
+     прижать заголовок к верху, а плашку к низу нечем. */
+  align-content: stretch;
   background: var(--bg);
   color: var(--text);
-  padding: clamp(4.5rem, 2.9286rem + 6.7048vw, 11.25rem) var(--gutter);
+  padding: clamp(2.5rem, 1.7857rem + 3.0476vw, 5.5rem) var(--gutter);
   overflow: hidden;
 }
 
 .venn-sec__inner {
   display: grid;
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.5fr) minmax(0, 0.95fr);
-  align-items: center;
+  /* Боковые колонки тянутся во всю высоту: заголовок прижат кверху,
+     плашка теста — к низу, как в макете. Схема остаётся по центру. */
+  align-items: stretch;
   gap: clamp(1rem, 0.2857rem + 3.0476vw, 4rem);
 }
+.venn-lede { align-self: start; }
+.venn-sec__inner > .quiz { margin-top: auto; }
+.venn-sec__inner > .venn { align-self: center; }
 
 /* ---------- Левая колонка ---------- */
 
@@ -1214,7 +1228,9 @@ p.hero__lead { text-wrap: normal; }
 }
 .venn-pillar b {
   display: block;
-  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  /* 22px на 1440. Тот же кегль, что у лида плашки теста —
+     это один уровень иерархии внутри блока. */
+  font-size: clamp(1.125rem, 1.0417rem + 0.3704vw, 1.375rem);
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -1303,7 +1319,8 @@ p.hero__lead { text-wrap: normal; }
 
 .quiz__lead {
   margin: 0 0 clamp(1rem, 0.8214rem + 0.7619vw, 1.75rem);
-  font-size: var(--fs-m);
+  /* 22px — как подписи опор */
+  font-size: clamp(1.125rem, 1.0417rem + 0.3704vw, 1.375rem);
   font-weight: 400;
   line-height: 1.28;
   letter-spacing: -0.01em;
@@ -2561,7 +2578,7 @@ p.hero__lead { text-wrap: normal; }
 .quiz__lead {
   margin: 0 0 clamp(1.125rem, 0.9464rem + 0.7619vw, 1.875rem);
   font-family: var(--font-logo);
-  font-size: var(--fs-m);
+  font-size: clamp(1.125rem, 1.0417rem + 0.3704vw, 1.375rem);
   font-weight: 400;
   line-height: 1.22;
   letter-spacing: -0.0345em;
@@ -2752,18 +2769,9 @@ p.hero__lead { text-wrap: normal; }
   fill: rgba(22, 18, 13, 0.78);
 }
 
-/* Ход строки: группа едет влево ровно на один повтор текста.
-   Волна периодична, а ход кратен её периоду — после сдвига
-   глифы ложатся на тот же рельеф, шва не видно. */
-.clients__spin {
-  transform-box: view-box;
-  will-change: transform;
-  animation: clientsWave var(--wave-dur, 30s) linear infinite;
-}
-@keyframes clientsWave {
-  from { transform: translateX(0); }
-  to   { transform: translateX(var(--wave-shift, -1440px)); }
-}
+/* Ход строки считает main.js покадрово через startOffset — буквы
+   должны плыть по волне, а не ехать застывшими. */
+.clients__spin { will-change: contents; }
 
 /* Наведение останавливает ход */
 @media (hover: hover) and (pointer: fine) {
@@ -2934,60 +2942,67 @@ p.hero__lead { text-wrap: normal; }
 .leak {
   position: relative;
   flex: none;
-  width: clamp(13rem, 9.5rem + 15.5vw, 18.8rem);
-  aspect-ratio: 300 / 470;
+  /* 301x446 из макета (фрейм 1440). Пропорция одна на все пять. */
+  width: clamp(13rem, 9.6rem + 15.1vw, 18.8125rem);
+  aspect-ratio: 301 / 446;
   overflow: hidden;
-  border-radius: var(--card-radius);
+  border-radius: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.25rem);
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: space-between;
   isolation: isolate;
 }
 
-/* Чётные подняты — ступенчатое чередование из макета */
+/* Два уровня по высоте, как нарисовано: красные подняты, чёрные ниже.
+   57px при высоте 446 — это 12.8%. */
 .leak:nth-child(even) { translate: 0 -12.8%; }
 
 .leak--dark {
   background:
-    radial-gradient(120% 90% at 50% 120%, #1a1a1a 0%, #0a0a0a 55%, #050505 100%);
+    radial-gradient(120% 90% at 50% 120%, #161616 0%, #0a0a0a 55%, #050505 100%);
 }
 .leak--red {
+  /* Пятно уходит в чёрный раньше и глубже — как нарисовано:
+     красное держится в верхней трети, ниже почти уголь. */
   background:
-    radial-gradient(120% 100% at 62% -8%,
-      #ff2b18 0%, #d41410 26%, #6b0a0c 52%, #1a0304 78%, #0a0202 100%);
+    radial-gradient(108% 84% at 60% -10%,
+      #ff2d1c 0%, #dd121b 16%, #7d0810 34%, #200407 56%, #080203 76%, #040101 100%);
+}
+
+/* Пилюли сверху — те же, что в карточках «Ситуации», их не трогаем */
+.leak__tags {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.25rem);
 }
 
 .leak__copy {
   position: relative;
-  padding: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
-  padding-bottom: clamp(1.5625rem, 1.4196rem + 0.6095vw, 2.1875rem);
+  padding: 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.25rem) 20px;
   color: #fff;
 }
 
-.leak__num {
-  margin: 0;
-  font-family: var(--font-logo);
-  font-size: var(--fs-s);
-  font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
-}
-
+/* Число и заголовок — ОДИН кегль, тот же, что в карточках «Ситуации».
+   Раньше здесь стояли две разные мелкие ступени, и блок слипался. */
+.leak__num,
 .leak__name {
   margin: 0;
   font-family: var(--font-logo);
-  font-size: var(--fs-m);
-  font-weight: 600;
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   line-height: 1.14;
   letter-spacing: -0.01em;
 }
+.leak__num  { font-weight: 400; color: rgba(255, 255, 255, 0.72); }
+.leak__name { font-weight: 600; }
 
 .leak__text {
   margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
-  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.35;
-  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.82);
 }
 
 /* ---------- Мобильные: обычная лента со свайпом ---------- */

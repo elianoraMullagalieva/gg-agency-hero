@@ -883,7 +883,7 @@
       .filter(Boolean).join(SEP) + SEP;
     svg.dataset.wavePhrase = phrase;
 
-    spin.style.transformBox = "view-box";
+    var period = 0;   // длина одного повтора вдоль пути
 
     /* Волна из полупериодов: Q рисует первый горб, T зеркалит остальные.
        Вершина квадратичной кривой лежит на полпути к контрольной точке,
@@ -931,27 +931,87 @@
       var base = a + fs * 0.82;
       var H    = Math.ceil(base + a + fs * 0.34);
 
-      // Путь и текст длиннее окна на полный ход, иначе справа
-      // к концу цикла кончаются глифы и строка обрывается.
+      // Путь начинается левее кадра и кончается правее: текст скользит
+      // ВДОЛЬ него, поэтому запас нужен с обеих сторон.
+      var x0    = -shift;
       var total = VW + 2 * shift;
-      path.setAttribute("d", wave(0, base, h, a, Math.ceil(total / h)));
+      path.setAttribute("d", wave(x0, base, h, a, Math.ceil(total / h)));
 
-      var need = Math.ceil(total / rep) + 1, out = "", i;
+      // Текста должно хватить на весь путь плюс один ход — иначе к концу
+      // цикла правый край пустеет.
+      var pathLen = path.getTotalLength();
+      var need = Math.ceil((pathLen + rep) / rep) + 1, out = "", i;
       for (i = 0; i < need; i++) out += phrase;
       tp.textContent = out;
 
       svg.setAttribute("viewBox", "0 0 " + VW + " " + H);
-      spin.style.setProperty("--wave-shift", (-shift).toFixed(2) + "px");
-      spin.style.setProperty("--wave-dur",   (shift / SPEED).toFixed(3) + "s");
+      period = rep;   // ход за цикл — ровно один повтор текста
+    }
+
+    /* Ход строки. Двигать группу целиком нельзя: глифы тогда ложатся
+       на волну один раз и едут застывшими. Здесь меняется startOffset,
+       то есть положение текста ВДОЛЬ пути — каждый глиф на каждом кадре
+       заново берёт свою точку и наклон с кривой, и буквы плывут по волне.
+       Шов невидим, потому что один повтор текста равен целому числу
+       периодов волны: картинка при off и off−period совпадает. */
+    var off = 0, prev = 0, raf = 0, running = false;
+
+    function tick(now) {
+      if (!prev) prev = now;
+      var dt = Math.min((now - prev) / 1000, 0.05);   // после вкладки в фоне
+      prev = now;
+      off -= SPEED * dt;
+      if (period && off <= -period) off += period;
+      tp.setAttribute("startOffset", off.toFixed(2));
+      raf = requestAnimationFrame(tick);
+    }
+
+    function start() {
+      if (running || !period) return;
+      running = true; prev = 0;
+      raf = requestAnimationFrame(tick);
+    }
+    function stop() {
+      if (!running) return;
+      running = false;
+      cancelAnimationFrame(raf);
     }
 
     layout();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
+    var still = matchMedia("(prefers-reduced-motion: reduce)");
+    function sync() {
+      if (still.matches) { stop(); tp.setAttribute("startOffset", "0"); }
+      else if (visible && !document.hidden) start();
+      else stop();
+    }
+
+    // Считаем только когда лента в кадре: пересчёт раскладки текста
+    // на каждом кадре недёшев, а за экраном он никому не нужен.
+    var visible = true;
+    if ("IntersectionObserver" in window) {
+      visible = false;
+      new IntersectionObserver(function (es) {
+        visible = es[0].isIntersecting;
+        sync();
+      }, { rootMargin: "120px" }).observe(svg);
+    }
+    document.addEventListener("visibilitychange", sync);
+    if (still.addEventListener) still.addEventListener("change", sync);
+
+    var box = svg.closest(".clients__wave") || svg;
+    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      box.addEventListener("mouseenter", stop);
+      box.addEventListener("mouseleave", sync);
+    }
+
+    sync();
+
     var t;
     addEventListener("resize", function () {
       clearTimeout(t);
-      t = setTimeout(layout, 160);
+      t = setTimeout(function () { layout(); sync(); }, 160);
     });
   }
 
