@@ -261,7 +261,11 @@ p, li { text-wrap: pretty; }
      на свою половину. margin сдвигал бы контейнер, но центрирование
      пересчиталось бы с учётом отступа и съело половину эффекта —
      поэтому transform: он не влияет на раскладку. */
-  --cta-shift: clamp(1.375rem, 1.2321rem + 0.6095vw, 2.25rem);
+  /* Сдвиг равен ровно половине круга со стрелкой и считается
+     из его же формулы: иначе при смене кегля кнопки компенсация
+     разъезжается с реальным размером иконки. */
+  --cta-icon-w: clamp(2.75rem, 2.4643rem + 1.219vw, 4.5rem);
+  --cta-shift: calc(var(--cta-icon-w) / 2);
   transform: translateX(var(--cta-shift));
 
   /* §04 · воздух перед кнопкой сверх общего gap блока */
@@ -288,7 +292,7 @@ p, li { text-wrap: pretty; }
 .hero__cta-icon {
   display: grid;
   place-items: center;
-  width: clamp(2.75rem, 2.4643rem + 1.219vw, 4.5rem);
+  width: var(--cta-icon-w);
   height: clamp(2.5rem, 2.2857rem + 0.9143vw, 3.875rem);
   background: #fff;
   border-radius: 999px;
