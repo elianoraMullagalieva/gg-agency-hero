@@ -710,11 +710,10 @@
 
   initPreloader();
 
-  var glyphCanvas = document.querySelector(".hero__glyphs");
-  if (glyphCanvas) initGlyphs(glyphCanvas);
+  // Тот же фон переиспользуется в блоке схемы
+  document.querySelectorAll(".hero__glyphs").forEach(initGlyphs);
 
-  var canvas = document.querySelector(".hero__bg");
-  if (canvas) initArc(canvas);
+  document.querySelectorAll(".hero__bg").forEach(initArc);
 /* Аккордеон услуг — та же механика, что у вопросов. */
 /* Поочерёдное появление строк «Где утекают деньги». */
 /* Кейс: цифры докручиваются от нуля при появлении секции. */
