@@ -138,9 +138,9 @@
   };
   // Красное стекло — результат в зоне пересечения.
   var RED = {
-    glass: "#ff0a1e", roomTop: "#e8081c", roomBottom: "#8f0512",
-    highlight: "#ffb3b7", ior: 1.34, dispersion: 0.05,
-    clarity: 0.14, edge: 2.2, gloss: 240
+    glass: "#8f0512", roomTop: "#7d0510", roomBottom: "#3a0207",
+    highlight: "#d4565c", ior: 1.34, dispersion: 0.05,
+    clarity: 0.10, edge: 2.0, gloss: 220
   };
 
   // Позиции повторяют макет: три опоры + центр

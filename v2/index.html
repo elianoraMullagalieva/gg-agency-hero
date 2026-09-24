@@ -127,27 +127,23 @@
   </div>
 </section>
 
-<!-- ===== Бегущая строка клиентов ===== -->
+<!-- ===== Бегущая строка клиентов · радиальная ===== -->
 <section class="clients" aria-label="С нами построили продажи">
   <p class="clients__lead">С&nbsp;нами построили продажи</p>
 
-  <div class="clients__marquee"
-       data-marquee-speed="34"
-       data-marquee-direction="left"
-       data-marquee-scroll-speed="6">
-    <div class="clients__rail">
-      <div class="clients__group">
-        <span class="clients__item">Alex Magnier</span>
-        <span class="clients__item">Kira Noire</span>
-        <span class="clients__item">Галя Филатович</span>
-        <span class="clients__item">Made in Cosmos</span>
-        <span class="clients__item">Pixel School</span>
-        <span class="clients__item">GORA Academy</span>
-        <span class="clients__item">Школа&nbsp;+Балл</span>
-        <span class="clients__item">Реальный репетитор</span>
-        <span class="clients__item">ЗЕМЛЯ</span>
-      </div>
-    </div>
+  <div class="clients__arc">
+    <svg class="clients__svg" viewBox="0 0 1400 230" aria-hidden="true"
+         preserveAspectRatio="xMidYMid meet">
+      <defs>
+        <!-- Дуга очень большого круга: текст ложится мягко -->
+        <path id="clientsArc" d="M -700 210 A 5200 5200 0 0 1 2100 210" />
+      </defs>
+      <text class="clients__text">
+        <textPath href="#clientsArc" startOffset="0%">
+          Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · 
+        </textPath>
+      </text>
+    </svg>
   </div>
 </section>
 

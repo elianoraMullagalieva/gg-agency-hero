@@ -751,6 +751,82 @@
     io.observe(sec);
   }
 
+/* Появление карточек блока «Какая у вас ситуация» */
+/* Одометр: каждая цифра — барабан, прокручивается к своему знаку.
+     Соседние разряды стартуют с разной задержкой, поэтому число
+     «собирается», а не переключается разом. */
+  function initOdometer() {
+    var vals = document.querySelectorAll(".stat__value");
+    if (!vals.length) return;
+
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    function build(el) {
+      if (el.dataset.odoReady) return;
+      // Исходное значение запоминаем до перестройки: после неё
+      // textContent соберёт все цифры барабанов.
+      var text = (el.dataset.odoValue || el.textContent).trim();
+      el.dataset.odoValue = text;
+      el.dataset.odoReady = "1";
+      var out = "";
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+        if (ch >= "0" && ch <= "9") {
+          var reel = "";
+          for (var n = 0; n <= 9; n++) reel += "<span>" + n + "</span>";
+          out += '<span class="odo" data-d="' + ch + '"><span class="odo__reel">' + reel + "</span></span>";
+        } else {
+          out += "<span>" + ch + "</span>";
+        }
+      }
+      el.innerHTML = out;
+    }
+
+    function run(el) {
+      var odos = el.querySelectorAll(".odo");
+      odos.forEach(function (o, i) {
+        var target = parseInt(o.dataset.d, 10);
+        var reel = o.querySelector(".odo__reel");
+        // стартуем на два оборота ниже — барабан успевает раскрутиться
+        reel.style.transform = "translateY(0)";
+        setTimeout(function () {
+          reel.style.transform = "translateY(-" + target + "em)";
+        }, 60 + i * 90);
+      });
+    }
+
+    vals.forEach(build);
+
+    if (reduce || !("IntersectionObserver" in window)) {
+      vals.forEach(function (el) {
+        el.querySelectorAll(".odo__reel").forEach(function (r, i) {
+          r.style.transition = "none";
+          r.style.transform = "translateY(-" + el.querySelectorAll(".odo")[i].dataset.d + "em)";
+        });
+      });
+      return;
+    }
+
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { run(e.target); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.6 });
+    vals.forEach(function (el) { io.observe(el); });
+  }
+
+  function initCards() {
+    var sec = document.querySelector(".situation");
+    if (!sec) return;
+    if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) { sec.classList.add("is-in"); io.disconnect(); }
+      });
+    }, { threshold: 0.15 });
+    io.observe(sec);
+  }
+
   function initLeaks() {
     var sec = document.querySelector(".leaks");
     if (!sec) return;
@@ -942,6 +1018,8 @@
   initQuestions();
   initServices();
   initLeaks();
+  initCards();
+  initOdometer();
   initCase();
   initShots();
 })();

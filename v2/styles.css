@@ -1315,8 +1315,10 @@ p.hero__lead { text-wrap: normal; }
 
 @media (max-width: 1100px) {
   .venn-sec__inner {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas: "lede quiz" "venn venn";
+    /* Одна колонка: заголовок, схема, плашка. Так нижний отступ
+       плашки совпадает с боковым полем секции. */
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "lede" "venn" "quiz";
     gap: clamp(1.5rem, 1.1667rem + 1.4815vw, 2.5rem);
   }
   .venn-lede { grid-area: lede; }
@@ -2394,11 +2396,10 @@ p.hero__lead { text-wrap: normal; }
      высоты секции, а не по центру колонки. */
   .venn-sec__inner > .venn-lede { align-self: start; }
   .venn-sec__inner > .quiz {
-    /* Верх плашки на 55.7% высоты секции — как в макете.
-       Сдвиг через transform: он не меняет высоту секции,
-       иначе процент уезжает вслед за ней. */
+    /* Плашка прижата к правому краю сетки, отступы снизу и сбоку
+       равны полям секции — как у карточек в соседних блоках. */
     align-self: end;
-    transform: translateY(38%);
+    justify-self: end;
   }
 }
 
@@ -2538,7 +2539,7 @@ p.hero__lead { text-wrap: normal; }
 
 /* Подпись стоит неподвижно — не уезжает вместе с именами */
 .clients__lead {
-  margin: 0 0 clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  margin: 0 0 clamp(2rem, 1.6429rem + 1.5238vw, 3.5rem);
   padding-inline: var(--gutter);
   text-align: center;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
@@ -2757,6 +2758,8 @@ p.hero__lead { text-wrap: normal; }
   display: grid;
   place-items: center;
   text-align: center;
+  /* Поверх WebGL-блоба */
+  z-index: 3;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2778,3 +2781,132 @@ p.hero__lead { text-wrap: normal; }
 }
 .expert__body { display: grid; align-content: start; }
 .expert__name { margin-top: -0.12em; }
+
+
+/* Плашка теста: отступ снизу равен боковому полю секции */
+.venn-sec--flat { padding-bottom: var(--gutter); }
+
+
+/* На узких экранах плашка занимает колонку целиком —
+   отступы слева, справа и снизу равны полю секции. */
+@media (max-width: 1100px) {
+  /* Сетка здесь двухколоночная — плашку растягиваем на всю
+     ширину, чтобы её отступы справа и снизу были равны полю. */
+  .venn-sec__inner > .quiz { grid-column: 1 / -1; }
+  .venn-sec--flat .quiz { max-width: none !important; width: 100%; }
+}
+
+
+/* В колоночной раскладке плашка идёт последней — тогда её
+   нижний отступ совпадает с боковым, как на десктопе. */
+@media (max-width: 1100px) {
+  .venn-sec__inner { grid-template-areas: "lede" "venn" "quiz"; }
+  .venn-sec__inner > .quiz { grid-area: quiz; }
+}
+
+/* Подпись под кнопкой теста */
+.quiz__meta { color: rgba(255, 255, 255, 0.7); }
+
+/* ============================================================
+   Радиальная бегущая строка
+   Текст идёт по дуге очень большого круга и смещается вдоль неё.
+   Живой текст в SVG — кириллица и Onest сохраняются.
+   ============================================================ */
+
+.clients__arc {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  /* Края растворяются */
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0, #000 6%, #000 94%, transparent 100%);
+  mask-image: linear-gradient(90deg,
+    transparent 0, #000 6%, #000 94%, transparent 100%);
+}
+
+.clients__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Кегль на 18% меньше прежнего, из нашей шкалы */
+.clients__text {
+  font-family: var(--font-logo);
+  font-size: clamp(1.125rem, 0.8929rem + 0.9905vw, 2rem);
+  font-weight: 400;
+  letter-spacing: -0.0345em;
+  fill: rgba(22, 18, 13, 0.78);
+}
+
+.clients__svg {
+  animation: clientsArc 44s linear infinite;
+}
+@keyframes clientsArc {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.33%); }
+}
+
+/* Наведение останавливает ход */
+@media (hover: hover) and (pointer: fine) {
+  .clients__arc:hover .clients__svg { animation-play-state: paused; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clients__svg { animation: none; }
+}
+
+/* ============================================================
+   Карточки выезжают снизу: рывок — микропауза — доезд
+   ============================================================ */
+
+.situation .card {
+  opacity: 0;
+  translate: 0 46%;
+}
+.situation.is-in .card {
+  /* Кривая с плато посередине: карточка стартует, на миг
+     замирает и доезжает. Одно движение, разделённое паузой. */
+  animation: cardSlide 1.15s cubic-bezier(0.16, 0.9, 0.2, 1) forwards;
+  animation-delay: calc(var(--i) * 110ms);
+}
+@keyframes cardSlide {
+  0%   { opacity: 0; translate: 0 46%; }
+  38%  { opacity: 1; translate: 0 13%; }
+  52%  { translate: 0 11.5%; }   /* микропауза */
+  100% { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .situation .card { opacity: 1; translate: none; animation: none; }
+}
+
+
+/* ============================================================
+   Одометр: цифры прокручиваются барабаном
+   ============================================================ */
+
+.odo {
+  display: inline-flex;
+  overflow: hidden;
+  height: 1em;
+  line-height: 1;
+  vertical-align: baseline;
+}
+.odo__reel {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+  transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.odo__reel span {
+  height: 1em;
+  line-height: 1;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .odo__reel { transition: none; }
+}
