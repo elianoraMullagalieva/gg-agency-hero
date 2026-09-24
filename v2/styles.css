@@ -261,12 +261,11 @@ p, li { text-wrap: pretty; }
      на свою половину. margin сдвигал бы контейнер, но центрирование
      пересчиталось бы с учётом отступа и съело половину эффекта —
      поэтому transform: он не влияет на раскладку. */
-  /* Сдвиг равен ровно половине круга со стрелкой и считается
-     из его же формулы: иначе при смене кегля кнопки компенсация
-     разъезжается с реальным размером иконки. */
+  /* Плашка и круг читаются как один объект, поэтому по центру
+     встаёт вся пара целиком. Раньше центрировалась только плашка,
+     и круг перевешивал композицию вправо. */
   --cta-icon-w: clamp(2.75rem, 2.4643rem + 1.219vw, 4.5rem);
-  --cta-shift: calc(var(--cta-icon-w) / 2);
-  transform: translateX(var(--cta-shift));
+  --cta-shift: 0rem;
 
   /* §04 · воздух перед кнопкой сверх общего gap блока */
   margin-top: clamp(0.5rem, 0.3214rem + 0.7619vw, 1.5rem);
@@ -758,17 +757,17 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 400;
   display: inline-flex;
   align-items: center;
-  padding: 0.3em 0.75em;
-  border: 1px solid rgba(255, 255, 255, 0.34);
+  /* Воздуха внутри больше, чем было: плашка не жмёт текст. */
+  padding: 0.55em 0.95em;
+  /* Только полупрозрачная обводка — без заливки и размытия. */
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
-  /* Только размытие, без белой подложки — как у карточки цифр
-     на первом экране. */
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  background: rgba(0, 0, 0, 0.12);
+  background: transparent;
   font-family: var(--font-ui);
   font-size: clamp(0.6875rem, 0.6607rem + 0.1143vw, 0.8125rem);
-  line-height: 1;
+  /* Одинаковый интерлиньяж у цифры и у текста — плашки
+     выравниваются по высоте между собой. */
+  line-height: 1.1;
   color: #fff;
   white-space: nowrap;
 }
@@ -2418,11 +2417,12 @@ p.hero__lead { text-wrap: normal; }
 .venn__circle--3 {
   width: 43%;
   aspect-ratio: 1;
-  background: radial-gradient(circle at 38% 28%,
-    rgba(255, 255, 255, 0.10) 0%,
-    rgba(255, 255, 255, 0.045) 38%,
-    rgba(255, 255, 255, 0.02) 72%,
-    rgba(255, 255, 255, 0.012) 100%);
+  /* Заливка #141414 против фона #030303 — как в макете:
+     круги отчётливо светлее фона, с ровным краем. */
+  background: radial-gradient(circle at 42% 30%,
+    rgba(255, 255, 255, 0.085) 0%,
+    rgba(255, 255, 255, 0.072) 55%,
+    rgba(255, 255, 255, 0.062) 100%);
 }
 /* Позиции из макета: круги r=152 при ширине 1440 */
 .venn__circle--1 { left: 33%; top: 42%; }
@@ -2433,7 +2433,9 @@ p.hero__lead { text-wrap: normal; }
 .venn__circle--core {
   left: 50%;
   top: 53%;
-  width: 30%;
+  /* 22.6% ширины макета при схеме в 46% — ядро крупное
+     и заметно перекрывает нижний круг. */
+  width: 34%;
   aspect-ratio: 1;
   background: radial-gradient(circle at 46% 38%,
     #ff1f26 0%,
@@ -2473,3 +2475,29 @@ p.hero__lead { text-wrap: normal; }
   .venn-sec--flat .venn-pillar,
   .venn-sec--flat .venn-core { opacity: 1; animation: none; }
 }
+
+/* Растровая красная сетка внизу секции — как в макете 2209:591 */
+.venn-sec--flat { position: relative; overflow: hidden; }
+.venn-sec--flat::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 62%;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    /* сама сетка */
+    repeating-linear-gradient(0deg,
+      rgba(0, 0, 0, 0.55) 0 2px, transparent 2px 5px),
+    repeating-linear-gradient(90deg,
+      rgba(0, 0, 0, 0.55) 0 2px, transparent 2px 5px),
+    /* красное свечение снизу */
+    radial-gradient(120% 108% at 50% 128%,
+      #8f0a14 0%, #5c060d 28%, #260306 56%, transparent 78%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 38%, #000 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 38%, #000 100%);
+}
+.venn-sec--flat > * { position: relative; z-index: 1; }
+
+/* Ядро: текст в четыре строки, без подписи */
+.venn-sec--flat .venn-core b { line-height: 1.18; }
