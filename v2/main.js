@@ -1194,6 +1194,18 @@
     io.observe(sec);
   }
 
+
+  /* Блок «Почему с нами по-другому»: карточки проявляются по очереди */
+  function initWhy() {
+    var sec = document.querySelector(".why");
+    if (!sec) return;
+    if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { sec.classList.add("is-in"); io.disconnect(); }
+    }, { threshold: 0.2 });
+    io.observe(sec);
+  }
+
   function initCards() {
     var sec = document.querySelector(".situation");
     if (!sec) return;
@@ -1464,6 +1476,7 @@
   initApproach();
   initFan();
   initStacks();
+  initWhy();
   initCards();
   initOdometer();
   initClientsWave();
