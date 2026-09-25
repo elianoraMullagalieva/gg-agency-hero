@@ -855,21 +855,14 @@ p.hero__lead { text-wrap: normal; }
     gap: clamp(1rem, 0.75rem + 1.1111vw, 1.75rem);
   }
 
+  /* Два в ряд, два ряда — все четыре видны без прокрутки вбок.
+     Боковая лента здесь читалась хуже: половина карточки за кадром. */
   .cards {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
-    margin-inline: calc(var(--gutter) * -1);
-    padding-inline: var(--gutter);
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
   }
-  .cards::-webkit-scrollbar { display: none; }
-
-  .card {
-    flex: 0 0 min(72vw, 17rem);
-    scroll-snap-align: start;
-  }
+  .card { aspect-ratio: 300 / 500; }
 }
 
 
@@ -3723,4 +3716,68 @@ p.hero__lead { text-wrap: normal; }
   .stack--lock .stack__sticky { position: static; height: auto; }
   .stack__card { position: static; margin-bottom: 0.75rem; transform: none !important; }
   .stack__list { height: auto !important; }
+}
+
+
+/* ============================================================
+   Мобильные доводки
+   ============================================================ */
+
+@media (max-width: 480px) {
+  /* Цифры первого экрана: строкой «значение — подпись» вместо
+     колонки в четыре строки. Иначе первый экран не закрывается. */
+  .stats__inner {
+    flex-direction: column;
+    gap: 0.875rem;
+    width: 100%;
+    padding: 1.125rem 1.25rem;
+  }
+  .stat {
+    flex-direction: row;
+    align-items: baseline;
+    text-align: left;
+    gap: 0.75rem;
+  }
+  .stat__value {
+    flex: none;
+    min-width: 4.5ch;
+    font-family: var(--font-ui);
+  }
+  .stat__label {
+    max-width: none;
+    text-align: left;
+    font-family: var(--font-ui);
+    line-height: 1.3;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Утечки: липкая лента отключена, карточки листаются пальцем
+     по одной и стоят в полях сетки — раньше они упирались
+     в левый край и текст читался с трудом. */
+  .leaks { height: auto !important; }
+  .leaks-sticky {
+    position: static;
+    height: auto;
+    padding-top: 0;
+    overflow: visible;
+  }
+  .leaks-rail {
+    width: auto;
+    padding-top: 0 !important;
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    transform: none !important;
+  }
+  .leaks-rail::-webkit-scrollbar { display: none; }
+  .leak {
+    width: min(78vw, 19rem) !important;
+    scroll-snap-align: center;
+    translate: none !important;
+  }
+
+  /* Карточки подхода и стопка — тоже без перехвата прокрутки */
+  .approach__rail { padding-inline: 0; }
 }

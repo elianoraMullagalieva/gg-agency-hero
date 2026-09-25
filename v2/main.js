@@ -807,11 +807,18 @@
         var steps = parseInt(o.dataset.steps, 10);
         var n     = parseInt(o.dataset.n, 10) || 1;
         var reel  = o.querySelector(".odo__reel");
+        /* Шаг в целых пикселях. В em он дробный, а Safari округляет окно
+           обрезки до целого — за два десятка шагов набегало смещение и
+           в окне оказывались половинки соседних цифр. */
+        var unit = Math.round(parseFloat(getComputedStyle(o).fontSize));
+        o.style.height = unit + "px";
+        var digits = reel.children;
+        for (var q = 0; q < digits.length; q++) digits[q].style.height = unit + "px";
         reel.style.transform = "translateY(0)";
         // Первым трогается младший разряд, последним — старший:
         // в эталоне левая цифра замирает на ~130 мс позже правой.
         setTimeout(function () {
-          reel.style.transform = "translateY(-" + steps + "em)";
+          reel.style.transform = "translateY(-" + (steps * unit) + "px)";
         }, 80 + (n - 1 - i) * ODO_STAGGER);
       });
     }
@@ -869,8 +876,11 @@
     if (!tp || !path || !spin || !text) return;
 
     var NS    = "http://www.w3.org/2000/svg";
+    /* viewBox совпадает с реальной шириной: font-size внутри SVG
+       задаётся в ЕДИНИЦАХ viewBox, а не в пикселях. При жёстком
+       viewBox 1440 на мобиле масштаб 0.27 и текст рисовался в 3.8px. */
     var VW    = 1440;
-    var SPEED = parseFloat(svg.dataset.waveSpeed) || 112; // единиц viewBox в секунду
+    var SPEED = parseFloat(svg.dataset.waveSpeed) || 56; // единиц viewBox в секунду
     var AMP_K = 0;       // 0 — строка ровная. Волну убрали, путь прямой.
 
     /* Разделитель с вшитыми полукруглыми шпациями: просвет между
@@ -925,11 +935,19 @@
     function layout() {
       var w = svg.getBoundingClientRect().width;
       if (!w) return;
-      var k  = w / VW;                                          // px на единицу viewBox
-      var fs = parseFloat(getComputedStyle(text).fontSize) / k; // кегль в единицах viewBox
+      VW = Math.round(w);          // единица viewBox == пиксель
+      var fs = parseFloat(getComputedStyle(text).fontSize);
 
-      tp.innerHTML = markup(1);
-      var rep = tp.getComputedTextLength();   // длина одного повтора ВДОЛЬ пути
+      /* Длину повтора меряем отдельным зондом обычным текстом:
+         getComputedTextLength() на textPath не учитывает содержимое
+         вложенных tspan и занижает результат втрое. */
+      var probe = document.createElementNS(NS, "text");
+      probe.setAttribute("class", text.getAttribute("class") || "");
+      probe.setAttribute("x", "-99999");
+      probe.textContent = names.join(SEP) + SEP;
+      svg.appendChild(probe);
+      var rep = probe.getComputedTextLength();
+      svg.removeChild(probe);
       if (!rep) return;
       if (!stretch) stretch = measureStretch();
 
