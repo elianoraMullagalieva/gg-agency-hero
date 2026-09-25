@@ -42,13 +42,13 @@
     // Френель — светлая кромка, она и читается как объём
     "  float f = pow(1.0 - ndv, 3.4);",
     "  float rim = clamp(f * uEdge, 0.0, 1.0);",
-    "  vec3 col = mix(body, uHighlight, rim * 0.8);",
+    "  vec3 col = mix(body, uHighlight, rim * 0.42);",
     // блик обходит сферу по кругу — стекло живое, а не залитое
     "  float a = uTime * 0.32;",
     "  vec3 key = normalize(vec3(cos(a) * 0.8, 0.5, sin(a) * 0.8 + 0.45));",
     "  float spec = pow(max(dot(n, normalize(key + v)), 0.0), uGloss);",
     "  float wash = pow(max(dot(n, key), 0.0), 2.6);",
-    "  col += uHighlight * (spec * 1.7 + wash * 0.22);",
+    "  col += uHighlight * (spec * 0.55 + wash * 0.14);",
     // вторая подсветка с изнанки — внутри стекла что-то происходит
     "  vec3 back = normalize(vec3(-cos(a * 0.55) * 0.9, -0.4, -sin(a * 0.55)));",
     "  col += uGlass * pow(max(dot(n, normalize(back + v)), 0.0), uGloss * 0.4) * 0.55;",
@@ -125,8 +125,10 @@
   // Корпус, глубина и свет. Красный держится в фирменном створе,
   // но в глубине уходит почти в чёрный — иначе шар плоский.
   var RED = {
-    glass: "#c20f1a", deep: "#3a0208", highlight: "#ff8f8f",
-    edge: 1.9, gloss: 64
+    // highlight светлее тела, но всё ещё красный: чисто белый блик
+    // читался как посторонний белый кружок внутри шара.
+    glass: "#c20f1a", deep: "#3a0208", highlight: "#ff5a52",
+    edge: 1.25, gloss: 26
   };
 
   // Позиции повторяют макет: три опоры + центр

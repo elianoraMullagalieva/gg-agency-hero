@@ -941,8 +941,10 @@
       var a     = h * AMP_K;                                     // амплитуда
       var shift = repX;                                          // ход за цикл
 
-      var base = a + fs * 0.82;
-      var H    = Math.ceil(base + a + fs * 0.34);
+      // Базовая линия ниже, бокс выше: выносные элементы должны
+      // помещаться целиком, иначе при клиппинге срежет верхушки.
+      var base = a + fs * 1.22;
+      var H    = Math.ceil(base + a + fs * 0.36);
 
       // Путь начинается левее кадра и кончается правее: текст скользит
       // ВДОЛЬ него, поэтому запас нужен с обеих сторон.
@@ -995,73 +997,74 @@
   }
 
 
-  /* Колода источников выручки. Swiper подключён бандлом с CDN, поэтому
-     modules передавать не нужно — они уже внутри. Автоплея нет: карточки
-     перелистывает сама прокрутка, пока блок идёт через кадр. */
-  function initSources() {
-    var host = document.querySelector(".deck");
-    if (!host || typeof Swiper === "undefined") return;
-    var sec = document.querySelector(".sources");
-    var total = host.querySelectorAll(".swiper-slide").length;
-    if (!sec || total < 2) return;
 
-    var sw = new Swiper(host, {
-      effect: "cards",
-      grabCursor: true,
-      speed: 520,
-      cardsEffect: { perSlideOffset: 9, perSlideRotate: 3, slideShadows: false }
-    });
 
-    // Точки-указатели
-    var dots = document.createElement("div");
-    dots.className = "deck__dots";
-    for (var i = 0; i < total; i++) {
-      var b = document.createElement("button");
-      b.className = "deck__dot";
-      b.type = "button";
-      b.setAttribute("aria-label", "Карточка " + (i + 1));
-      b.dataset.i = i;
-      dots.appendChild(b);
-    }
-    host.parentNode.appendChild(dots);
-    dots.addEventListener("click", function (e) {
-      var d = e.target.closest(".deck__dot");
-      if (d) sw.slideTo(+d.dataset.i);
-    });
-    function paint() {
-      var list = dots.children;
-      for (var i = 0; i < list.length; i++)
-        list[i].setAttribute("aria-current", i === sw.activeIndex ? "true" : "false");
-    }
-    sw.on("slideChange", paint);
-    paint();
-
+  /* Стопка «Кто и как продаёт». Карточки наезжают снизу одна на другую.
+     Версия --lock держит страницу, пока стопка не собралась; --flow
+     собирает её за проход блока через кадр. Обе считают одно и то же:
+     сколько карточек уже село. */
+  function initStack(sec) {
+    var list = sec.querySelector(".stack__list");
+    var cards = [].slice.call(sec.querySelectorAll(".stack__card"));
+    if (!list || cards.length < 2) return;
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (matchMedia("(max-width: 900px)").matches) return;
 
-    /* Прокрутка листает колоду. Отсчёт идёт по пути блока через кадр,
-       а не по фиксации: лишний липкий блок сразу после ленты утечек
-       читался бы как заедание страницы. */
-    var touched = false;
-    sw.on("touchStart", function () { touched = true; });
+    var lock = sec.classList.contains("stack--lock");
+    var n = cards.length, peek = 0, cardH = 0, cur = 0, raf = 0;
 
-    var ticking = false;
-    function onScroll() {
-      if (ticking || touched) return;
-      ticking = true;
-      requestAnimationFrame(function () {
-        ticking = false;
-        var r = sec.getBoundingClientRect();
-        var vh = window.innerHeight;
-        if (r.bottom < 0 || r.top > vh) return;
-        // 0 — блок только вошёл снизу, 1 — уходит вверх
-        var p = (vh - r.top) / (vh + r.height);
-        var i = Math.round(p * (total + 0.6) - 0.8);
-        i = Math.min(total - 1, Math.max(0, i));
-        if (i !== sw.activeIndex) sw.slideTo(i);
-      });
+    function measure() {
+      peek = parseFloat(getComputedStyle(cards[0]).getPropertyValue("--peek")) ||
+             parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.5;
+      cardH = cards[0].offsetHeight;
+      list.style.height = (cardH + (n - 1) * peek) + "px";
+      if (lock) {
+        // Экран на вход плюс по экрану на каждую приезжающую карточку
+        sec.style.height = (window.innerHeight * (1 + (n - 1) * 0.72)) + "px";
+      }
     }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    onScroll();
+
+    function goal() {
+      var r = sec.getBoundingClientRect(), vh = window.innerHeight;
+      var p;
+      if (lock) {
+        p = -r.top / Math.max(1, sec.offsetHeight - vh);
+      } else {
+        p = (vh - r.top) / (vh + r.height);
+      }
+      return Math.min(Math.max(p, 0), 1) * (n - 1);
+    }
+
+    function paint() {
+      for (var i = 0; i < n; i++) {
+        // local: 0 — карточка ещё внизу, 1 — села на место
+        var local = Math.min(Math.max(cur - (i - 1), 0), 1);
+        if (i === 0) local = 1;
+        var y = (1 - local) * (window.innerHeight * 0.75);
+        var tilt = (1 - local) * (i % 2 ? 1.6 : -1.6);
+        cards[i].style.transform = "translate3d(0," + y.toFixed(1) + "px,0) rotate(" + tilt.toFixed(2) + "deg)";
+        cards[i].style.opacity = local > 0.02 || i === 0 ? 1 : 0;
+      }
+    }
+
+    function loop() {
+      var to = goal();
+      cur += (to - cur) * 0.16;
+      if (Math.abs(to - cur) < 0.004) cur = to;
+      paint();
+      var r = sec.getBoundingClientRect();
+      if (r.bottom > -200 && r.top < window.innerHeight + 200) {
+        raf = requestAnimationFrame(loop);
+      } else { raf = 0; }
+    }
+    function wake() { if (!raf) raf = requestAnimationFrame(loop); }
+
+    measure();
+    cur = goal();
+    paint();
+    window.addEventListener("scroll", wake, { passive: true });
+    window.addEventListener("resize", function () { measure(); wake(); });
+    wake();
   }
 
 
@@ -1094,6 +1097,60 @@
       clearTimeout(timer);
       if (live) step();
     }, { threshold: 0 }).observe(sec || el);
+  }
+
+
+  /* Лента «Наш подход»: две карточки в кадре, третья выглядывает.
+     Прокрутка блока доводит её до края. Без липкой фиксации — блок
+     не во весь экран, и второй замок подряд читался бы как заедание. */
+  function initApproach() {
+    var rail = document.querySelector(".approach__rail");
+    var sec  = document.querySelector(".approach");
+    if (!rail || !sec) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (matchMedia("(max-width: 1000px)").matches) return;
+
+    var max = 0, cur = 0, raf = 0;
+
+    function measure() { max = Math.max(0, rail.scrollWidth - rail.clientWidth); }
+
+    function goal() {
+      var r = sec.getBoundingClientRect(), vh = window.innerHeight;
+      var p = (vh - r.top) / (vh * 0.62 + r.height * 0.5);
+      return Math.min(Math.max(p, 0), 1) * max;
+    }
+
+    function loop() {
+      var to = goal();
+      cur += (to - cur) * 0.12;
+      if (Math.abs(to - cur) < 0.4) cur = to;
+      rail.scrollLeft = cur;
+      var r = sec.getBoundingClientRect();
+      if (r.bottom > -200 && r.top < window.innerHeight + 200) {
+        raf = requestAnimationFrame(loop);
+      } else { raf = 0; }
+    }
+    function wake() { if (!raf) raf = requestAnimationFrame(loop); }
+
+    measure();
+    window.addEventListener("scroll", wake, { passive: true });
+    window.addEventListener("resize", function () { measure(); wake(); });
+    wake();
+  }
+
+  function initStacks() {
+    [].forEach.call(document.querySelectorAll(".stack"), initStack);
+  }
+
+  /* Веер источников: запускается, когда блок входит в кадр */
+  function initFan() {
+    var sec = document.querySelector(".sources");
+    if (!sec) return;
+    if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
+    var io = new IntersectionObserver(function (es) {
+      if (es[0].isIntersecting) { sec.classList.add("is-in"); io.disconnect(); }
+    }, { threshold: 0.25 });
+    io.observe(sec);
   }
 
   function initCards() {
@@ -1136,6 +1193,11 @@
       var peek = vw * 0.078;
       var w = (vw - gut - 4 * gap - peek) / 4;
       rail.style.setProperty("--leak-w", w.toFixed(2) + "px");
+
+      /* Чётные карточки подняты на 12.8% своей высоты, и этот подъём
+         растёт вместе с шириной экрана. Резервируем его отступом сверху,
+         иначе на широких и низких окнах они лезут на подзаголовок. */
+      rail.style.paddingTop = (w * (446 / 301) * 0.128).toFixed(1) + "px";
 
       // Сколько ленты не влезло: последняя карточка должна встать
       // ровно по правому полю сетки.
@@ -1357,8 +1419,10 @@
   initQuestions();
   initServices();
   initLeaks();
-  initSources();
   initVennMark();
+  initApproach();
+  initFan();
+  initStacks();
   initCards();
   initOdometer();
   initClientsWave();
