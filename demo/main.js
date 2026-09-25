@@ -1296,7 +1296,7 @@
     if (reduce || narrow) return;
 
     var RUN = 1.8;   // во сколько раз путь прокрутки длиннее хода ленты
-    var max = 0, hold = 0, cur = 0, raf = 0;
+    var max = 0, hold = 0, tail = 0, cur = 0, raf = 0;
 
     function measure() {
       var cs  = getComputedStyle(rail);
@@ -1373,7 +1373,11 @@
          стартовый кадр успевают прочесть. Дальше путь растянут в RUN
          раз: при ходе 1:1 один щелчок колеса уносил карточку целиком. */
       hold = window.innerHeight * 0.18;
-      sec.style.height = (window.innerHeight + hold + max * RUN) + "px";
+      /* Хвост в конце: лента доезжает до упора, и блок ещё держит
+         экран — последняя карточка успевает встать по полю сетки,
+         и только следующий скролл уводит на другую секцию. */
+      tail = window.innerHeight * 0.4;
+      sec.style.height = (window.innerHeight + hold + max * RUN + tail) + "px";
     }
 
     function target() {
