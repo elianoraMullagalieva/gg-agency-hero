@@ -1272,7 +1272,8 @@ p.hero__lead { text-wrap: normal; }
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-style: normal;
   font-weight: 300;
-  color: var(--muted);
+  color: #fff;
+  opacity: 0.92;
 }
 /* позиции по центрам окружностей из макета */
 /* Подписи стоят в центрах сфер — координаты посчитаны из позиций
@@ -2919,6 +2920,8 @@ p.hero__lead { text-wrap: normal; }
 
 .odo {
   display: inline-flex;
+  /* flex-start, иначе барабан растягивается на высоту окна */
+  align-items: flex-start;
   overflow: hidden;
   height: 1em;
   line-height: 1;
@@ -2927,6 +2930,11 @@ p.hero__lead { text-wrap: normal; }
 .odo__reel {
   display: flex;
   flex-direction: column;
+  /* Барабан — flex-элемент окна высотой в одну цифру. Без запрета
+     на сжатие WebKit ужимает его под окно, а вместе с ним и все
+     41 цифру: в кадре оказывались половинки соседних. Chromium
+     этого не делал, поэтому в замерах было чисто. */
+  flex: none;
   will-change: transform;
   /* Переход убран: барабан крутит main.js покадрово, округляя
      до целого пикселя. Дробный сдвиг резал цифры пополам. */
@@ -2945,6 +2953,7 @@ p.hero__lead { text-wrap: normal; }
 }
 
 .odo__reel span {
+  flex: none;
   height: 1em;
   line-height: 1;
   text-align: center;
@@ -3039,7 +3048,7 @@ p.hero__lead { text-wrap: normal; }
   /* Текст внутри меряется от ширины карточки, а не от экрана: на 4К
      карточка вырастает до ~850px, и прежние 14px в ней терялись. */
   container-type: inline-size;
-  aspect-ratio: 301 / 446;
+  aspect-ratio: 301 / 379;
   overflow: hidden;
   border-radius: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.25rem);
   display: flex;
@@ -3054,14 +3063,16 @@ p.hero__lead { text-wrap: normal; }
 
 .leak--dark {
   background:
-    radial-gradient(120% 90% at 50% 120%, #161616 0%, #0a0a0a 55%, #050505 100%);
+    /* #100F0F вместо чистого чёрного: у карточек тёплая глубина,
+       а не провал в ноль. */
+    radial-gradient(120% 90% at 50% 120%, #1a1818 0%, #141212 55%, #100f0f 100%);
 }
 .leak--red {
   /* Пятно уходит в чёрный раньше и глубже — как нарисовано:
      красное держится в верхней трети, ниже почти уголь. */
   background:
     radial-gradient(108% 84% at 60% -10%,
-      #ff2d1c 0%, #dd121b 16%, #7d0810 34%, #200407 56%, #080203 76%, #040101 100%);
+      #ff2d1c 0%, #dd121b 16%, #7d0810 34%, #250709 56%, #16100f 76%, #100f0f 100%);
 }
 
 /* Пилюли сверху — те же, что в карточках «Ситуации», их не трогаем */
