@@ -1308,17 +1308,62 @@
          должны стоять ровно четыре карточки и краешек пятой (7.8%
          ширины экрана — пропорция макета). На любом мониторе стартовый
          кадр выглядит одинаково, а прокрутка всегда имеет что везти. */
-      /* До 1200px четыре карточки дают 190px ширины: текст в них
-         не помещается и режется по overflow. Ставим три. */
+      /* Ширина ограничена с двух сторон, берём меньшую.
+         По горизонтали: четыре карточки в кадре плюс краешек пятой
+         (до 1200px — три, иначе карточка 190px и текст режется).
+         По вертикали: карточка плюс подъём чётных должны уместиться
+         между шапкой и нижним полем, равным боковому. Раньше высота
+         шла только от ширины — на низких окнах карточки упирались
+         в край, на высоких оставалась дыра. */
       var per  = vw < 1200 ? 3 : 4;
       var peek = vw * 0.078;
-      var w = (vw - gut - (per + 1) * gap - peek) / per;
-      rail.style.setProperty("--leak-w", w.toFixed(2) + "px");
+      var wByWidth = (vw - gut - (per + 1) * gap - peek) / per;
 
-      /* Чётные карточки подняты на 12.8% своей высоты, и этот подъём
-         растёт вместе с шириной экрана. Резервируем его отступом сверху,
-         иначе на широких и низких окнах они лезут на подзаголовок. */
-      rail.style.paddingTop = (w * (379 / 301) * 0.128).toFixed(1) + "px";
+      var stick = sec.querySelector(".leaks-sticky");
+      var head  = sec.querySelector(".leaks-head");
+      var sc    = stick ? getComputedStyle(stick) : null;
+      var wByHeight = Infinity;
+      if (stick && head && sc) {
+        var free = stick.clientHeight
+                 - parseFloat(sc.paddingTop)
+                 - parseFloat(sc.paddingBottom)
+                 - head.offsetHeight
+                 - (parseFloat(sc.rowGap) || 0);
+        // 1.128 — карточка плюс подъём чётных на 12.8% её высоты
+        var cardH = free / 1.128;
+        wByHeight = cardH * (301 / 379);
+      }
+
+      /* Ведёт высота: карточка заполняет свободную полосу, и тогда
+         нижнее поле совпадает с боковым. Ширина лишь ограничивает
+         сверху, чтобы в кадр всё же попадало не меньше 2.6 карточек
+         и ленте было что везти. */
+      var wCap = (vw - gut - peek) / 2.6;
+      var w = Math.max(160, Math.min(wByHeight, wCap, wByWidth * 1.6));
+      /* Подгонка по факту в несколько проходов. Аналитически свободную
+         полосу не сосчитать: на неё влияют переносы шапки, округления
+         полей и резерв под подъём чётных, который сам зависит от
+         ширины. Поэтому меряем получившийся зазор и подводим ширину,
+         пока низ карточки не встанет ровно на боковое поле. */
+      function apply(px) {
+        rail.style.setProperty("--leak-w", px.toFixed(2) + "px");
+        rail.style.paddingTop = (px * (379 / 301) * 0.128).toFixed(1) + "px";
+      }
+      apply(w);
+
+      if (stick) {
+        var want = parseFloat(sc.paddingBottom) || 0;
+        var k = (301 / 379) / 1.128;          // насколько ширина меняет полную высоту
+        for (var pass = 0; pass < 4; pass++) {
+          var card = rail.querySelector(".leak");
+          if (!card) break;
+          var got = stick.getBoundingClientRect().bottom - card.getBoundingClientRect().bottom;
+          var delta = got - want;
+          if (Math.abs(delta) < 1.5) break;
+          w = Math.max(160, Math.min(w + delta * k, wCap));
+          apply(w);
+        }
+      }
 
       // Сколько ленты не влезло: последняя карточка должна встать
       // ровно по правому полю сетки.
@@ -1356,6 +1401,15 @@
     measure();
     cur = target();
     rail.style.transform = "translate3d(" + (-cur) + "px,0,0)";
+
+    /* Пересчёт после подмены шрифта: до неё заголовок занимает лишнюю
+       строку, свободная полоса выходит на ~27px короче, и карточка
+       получается меньше, чем могла бы. */
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { measure(); wake(); });
+    }
+    addEventListener("load", function () { measure(); wake(); });
+
     window.addEventListener("scroll", wake, { passive: true });
     window.addEventListener("resize", function () { measure(); wake(); });
     wake();
