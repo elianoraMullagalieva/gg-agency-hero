@@ -1206,6 +1206,62 @@
     io.observe(sec);
   }
 
+
+  /* Кейсы: карточка раскрывается в окне. Содержимое переносим из
+     самой карточки — держать те же тексты в двух местах незачем. */
+  function initCases() {
+    var grid = document.querySelector(".cases__grid");
+    var modal = document.getElementById("case-modal");
+    if (!grid || !modal) return;
+
+    var win = modal.querySelector(".cmodal__win");
+    var last = null;
+
+    function fill(card) {
+      var get = function (s) { var e = card.querySelector(s); return e ? e.innerHTML : ""; };
+      modal.querySelector(".cmodal__tag").innerHTML   = get(".ccard__tag");
+      modal.querySelector(".cmodal__value").innerHTML = get(".ccard__value");
+      modal.querySelector(".cmodal__lead").innerHTML  = get(".ccard__lead");
+      modal.querySelector(".cmodal__name").innerHTML  = get(".ccard__name");
+      modal.querySelector(".cmodal__meta").innerHTML  = get(".ccard__meta");
+      var ba = card.querySelector(".ccard__ba");
+      modal.querySelector(".cmodal__ba").innerHTML = ba ? ba.innerHTML : "";
+    }
+
+    function open(card, from) {
+      fill(card);
+      last = from;
+      modal.hidden = false;
+      document.body.style.overflow = "hidden";
+      win.querySelector(".cmodal__close").focus();
+      document.addEventListener("keydown", onKey);
+    }
+    function close() {
+      modal.hidden = true;
+      document.body.style.overflow = "";
+      document.removeEventListener("keydown", onKey);
+      if (last) last.focus();
+    }
+    function onKey(e) {
+      if (e.key === "Escape") { close(); return; }
+      if (e.key !== "Tab") return;
+      // Фокус не должен уходить за пределы окна, пока оно открыто
+      var f = win.querySelectorAll("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])");
+      if (!f.length) return;
+      var first = f[0], lastEl = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); lastEl.focus(); }
+      else if (!e.shiftKey && document.activeElement === lastEl) { e.preventDefault(); first.focus(); }
+    }
+
+    grid.addEventListener("click", function (e) {
+      var btn = e.target.closest(".ccard__btn");
+      if (btn) open(btn, btn);
+    });
+    modal.addEventListener("click", function (e) {
+      if (e.target.hasAttribute("data-close")) close();
+    });
+  }
+
   function initCards() {
     var sec = document.querySelector(".situation");
     if (!sec) return;
@@ -1477,6 +1533,7 @@
   initFan();
   initStacks();
   initWhy();
+  initCases();
   initCards();
   initOdometer();
   initClientsWave();
