@@ -1044,8 +1044,38 @@
     var n = cards.length, peek = 0, cardH = 0, cur = 0, raf = 0;
 
     function measure() {
-      peek = parseFloat(getComputedStyle(cards[0]).getPropertyValue("--peek")) ||
-             parseFloat(getComputedStyle(document.documentElement).fontSize) * 4.5;
+      /* И высота карточки, и ширина полоски считаются от одной
+         свободной полосы: карточка забирает 62%, остальное делится
+         между лесенкой. Клампы по отдельности не годились — на низких
+         окнах полоски съедали всё место, и последнюю карточку
+         накрывал следующий блок. */
+      var stick = sec.querySelector(".stack__sticky");
+      var head  = sec.querySelector(".stack__head");
+      var free  = 0;
+      if (stick && head) {
+        var sc = getComputedStyle(stick);
+        free = stick.clientHeight
+             - parseFloat(sc.paddingTop) - parseFloat(sc.paddingBottom)
+             - head.offsetHeight - (parseFloat(sc.rowGap) || 0)
+             - 16;   // рамки карточек и округления
+      }
+      var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+
+      if (free > rem * 16) {
+        var h = free * 0.62;
+        peek = (free - h) / (n - 1);
+        // В полоску должна целиком влезать цифра
+        var minPeek = rem * 3;
+        if (peek < minPeek) { peek = minPeek; h = free - (n - 1) * peek; }
+        cards.forEach(function (c) {
+          c.style.height = Math.max(rem * 11, h) + "px";
+          c.style.minHeight = "0";
+          c.style.setProperty("--peek", peek.toFixed(1) + "px");
+        });
+      } else {
+        peek = parseFloat(getComputedStyle(cards[0]).getPropertyValue("--peek")) || rem * 4.5;
+      }
+
       cardH = cards[0].offsetHeight;
       list.style.height = (cardH + (n - 1) * peek) + "px";
       if (lock) {
@@ -1107,6 +1137,9 @@
 
     measure();
     paint(0.016);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { measure(); wake(); });
+    }
     window.addEventListener("scroll", wake, { passive: true });
     window.addEventListener("resize", function () { measure(); wake(); });
     wake();
@@ -1194,14 +1227,54 @@
     [].forEach.call(document.querySelectorAll(".stack"), initStack);
   }
 
-  /* Веер источников: запускается, когда блок входит в кадр */
+  /* Веер источников. Положение карточек считается от прокрутки, а не
+     проигрывается один раз: при движении вверх ход отыгрывает назад,
+     и посмотреть его можно сколько угодно. */
   function initFan(sec) {
     if (!sec) return;
-    if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
-    var io = new IntersectionObserver(function (es) {
-      if (es[0].isIntersecting) { sec.classList.add("is-in"); io.disconnect(); }
-    }, { threshold: 0.25 });
-    io.observe(sec);
+    var cards = [].slice.call(sec.querySelectorAll(".fan__card"));
+    if (!cards.length) return;
+
+    var still = matchMedia("(prefers-reduced-motion: reduce)");
+    if (still.matches) {
+      cards.forEach(function (c) { c.style.opacity = 1; c.style.transform = "none"; });
+      return;
+    }
+
+    var n = cards.length, raf = 0;
+
+    function paint() {
+      var r = sec.getBoundingClientRect();
+      var vh = window.innerHeight;
+      /* 0 — блок только показался снизу, 1 — он стоит по центру экрана.
+         Дальше карточки уже собраны и просто едут вместе со страницей. */
+      var t = (vh * 0.92 - r.top) / (vh * 0.58);
+      t = Math.min(Math.max(t, 0), 1);
+
+      for (var i = 0; i < n; i++) {
+        // Каждая следующая трогается позже: веер раскрывается по одной
+        var local = Math.min(Math.max(t * (n + 0.8) - i * 0.9, 0), 1);
+        var e = 1 - Math.pow(1 - local, 3);
+        var over = Math.sin(Math.min(local, 1) * Math.PI) * 0.006;
+        var y = (1 - e - over) * 118;
+        cards[i].style.transform = "translate3d(0," + y.toFixed(2) + "%,0)";
+        cards[i].style.opacity = Math.min(1, local * 2.2).toFixed(3);
+      }
+    }
+
+    function loop() {
+      paint();
+      var r = sec.getBoundingClientRect();
+      if (r.bottom > -200 && r.top < window.innerHeight + 200) {
+        raf = requestAnimationFrame(loop);
+      } else { raf = 0; }
+    }
+    function wake() { if (!raf) raf = requestAnimationFrame(loop); }
+
+    paint();
+    window.addEventListener("scroll", wake, { passive: true });
+    window.addEventListener("resize", wake);
+    wake();
   }
 
 
