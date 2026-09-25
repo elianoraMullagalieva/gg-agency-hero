@@ -855,14 +855,39 @@ p.hero__lead { text-wrap: normal; }
     gap: clamp(1rem, 0.75rem + 1.1111vw, 1.75rem);
   }
 
-  /* Два в ряд, два ряда — все четыре видны без прокрутки вбок.
-     Боковая лента здесь читалась хуже: половина карточки за кадром. */
+  /* Два в ряд, два ряда: все четыре видны без прокрутки вбок.
+     Работает, пока карточка шире ~250px. */
   .cards {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.75rem;
   }
   .card { aspect-ratio: 300 / 500; }
+}
+
+/* Узкие телефоны: две колонки дают карточку в 174px — в неё
+   не влезает даже пилюля с тегом, а заголовок ломается на
+   четыре строки. Здесь возвращается лента по одной карточке. */
+@media (max-width: 560px) {
+  .cards {
+    display: flex;
+    gap: 0.75rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    /* Без этого snap прижимает карточку к краю области прокрутки
+       и съедает боковое поле — первая упиралась в край экрана. */
+    scroll-padding-inline: var(--gutter);
+    scrollbar-width: none;
+  }
+  .cards::-webkit-scrollbar { display: none; }
+
+  .card {
+    flex: 0 0 min(76vw, 18rem);
+    aspect-ratio: 300 / 470;
+    scroll-snap-align: start;
+  }
 }
 
 
