@@ -1133,8 +1133,15 @@
     function measure() { max = Math.max(0, rail.scrollWidth - rail.clientWidth); }
 
     function goal() {
-      var r = sec.getBoundingClientRect(), vh = window.innerHeight;
-      var p = (vh - r.top) / (vh * 0.62 + r.height * 0.5);
+      /* Отсчёт от момента, когда блок уже встал по центру: до этого
+         r.top >= 0 и ход равен нулю. Раньше лента начинала ехать,
+         пока блок только выходил снизу, и первая карточка уползала
+         ещё до того, как до неё доходили глазами. */
+      var r = sec.getBoundingClientRect();
+      // 0.85 — чтобы лента доезжала до упора чуть раньше, чем блок
+      // отпускает экран, а не на самом последнем пикселе.
+      var run = Math.max(1, (sec.offsetHeight - window.innerHeight) * 0.85);
+      var p = -r.top / run;
       return Math.min(Math.max(p, 0), 1) * max;
     }
 

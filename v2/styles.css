@@ -3139,7 +3139,9 @@ p.hero__lead { text-wrap: normal; }
    ============================================================ */
 
 .bridge {
-  background: #f4f3f1;
+  /* Тот же белый, что у блока утечек сверху: деления по фону
+     между ними быть не должно. */
+  background: #fff;
   color: #16120d;
   padding: clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem) var(--gutter);
   display: grid;
@@ -3154,9 +3156,11 @@ p.hero__lead { text-wrap: normal; }
   width: min(100%, 68rem);
   padding: clamp(0.625rem, 0.5357rem + 0.381vw, 0.9375rem);
   border-radius: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
-  background: #fff;
-  /* Мягкая подложка, как в эталоне: карточка чуть приподнята над фоном */
-  box-shadow: 0 18px 50px -24px rgba(22, 18, 13, 0.28);
+  /* Плашка сероватая — токен --text-dim из палитры. Нейтральный:
+     R и B равны, желтизны прежнего #f4f3f1 в нём нет. */
+  background: var(--text-dim);
+  /* Мягкая подложка: на белом фоне плашка иначе не отделяется */
+  box-shadow: 0 18px 50px -24px rgba(22, 18, 13, 0.18);
 }
 
 .bridge__visual {
@@ -3205,14 +3209,18 @@ p.hero__lead { text-wrap: normal; }
   gap: 1rem;
   margin-top: auto;
   padding-top: clamp(1.5rem, 1.1667rem + 1.4222vw, 3rem);
+  --cta-h: clamp(2.75rem, 2.4643rem + 1.219vw, 3.5rem);
 }
 .bridge__pill {
   display: inline-flex;
   align-items: center;
-  padding: 0.72em 1.35em;
+  /* Высота задана явно и тем же числом, что у круга: у пилюли она
+     иначе считается от кегля и строки, и кнопки выходили разными. */
+  height: var(--cta-h);
+  padding: 0 1.45em;
   border-radius: 999px;
-  background: #f1efec;
-  color: #16120d;
+  background: #16120d;
+  color: #fff;
   font-size: var(--fs-s);
   font-weight: 400;
   letter-spacing: 0.02em;
@@ -3221,21 +3229,24 @@ p.hero__lead { text-wrap: normal; }
   white-space: nowrap;
   transition: background 0.24s ease, color 0.24s ease;
 }
-.bridge__pill:hover { background: #16120d; color: #fff; }
+.bridge__pill:hover { background: var(--arc-high); color: #fff; }
 
 .bridge__round {
   flex: none;
   display: grid;
   place-items: center;
-  width: clamp(2.25rem, 1.9643rem + 1.219vw, 3rem);
-  aspect-ratio: 1;
+  width: var(--cta-h);
+  height: var(--cta-h);
   border-radius: 50%;
   background: #16120d;
   color: #fff;
   text-decoration: none;
   transition: background 0.24s ease;
 }
-.bridge__round svg { width: 36%; }
+/* Обёртка строчная, и стрелка вставала по базовой линии —
+   отсюда смещение вниз. Гасим строку целиком. */
+.bridge__round > span { display: grid; place-items: center; line-height: 0; }
+.bridge__round svg { display: block; width: 34%; }
 .bridge__round:hover { background: var(--arc-high); }
 .bridge__round:hover svg { transform: translate(2px, -2px); }
 .bridge__round svg { transition: transform 0.24s ease; }
@@ -3253,7 +3264,22 @@ p.hero__lead { text-wrap: normal; }
 .approach {
   background: var(--bg);
   color: var(--text);
-  padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter);
+  /* Блок держит экран: пока он не встал по центру, лента стоит.
+     Дальше каждый скролл доводит карточки. */
+  height: 200svh;
+}
+.approach__stick {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: grid;
+  align-content: center;
+  padding: clamp(2.5rem, 1.7857rem + 3.0476vw, 5.5rem) var(--gutter);
+  overflow: hidden;
+}
+@media (max-width: 1000px) {
+  .approach { height: auto; }
+  .approach__stick { position: static; height: auto; overflow: visible; }
 }
 
 .approach__lede {
@@ -3264,11 +3290,12 @@ p.hero__lead { text-wrap: normal; }
 }
 .approach__eyebrow {
   margin: 0;
+  /* Без красного и без широкой разрядки: надзаголовок тихий */
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--arc-high);
+  color: rgba(255, 255, 255, 0.5);
 }
 .approach__title {
   margin: 0;
@@ -3558,7 +3585,11 @@ p.hero__lead { text-wrap: normal; }
 .sources .frame__eyebrow { color: #8d8880; }
 .sources .frame__sub     { color: #6b655c; }
 .sources .frame__note    { color: var(--arc-high); }
-.approach .frame__eyebrow { color: rgba(255, 255, 255, 0.45); }
+/* Без красного и без разрядки: надзаголовок тихий */
+.approach .frame__eyebrow {
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.06em;
+}
 .approach .frame__sub     { color: var(--muted); }
 
 @media (max-width: 1000px) {
