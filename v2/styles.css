@@ -927,17 +927,17 @@ p.hero__lead { text-wrap: normal; }
 
 /* Вторая строка приглушена — как в Кэмпе */
 .questions-head h2 span {
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(22, 18, 13, 0.42);
   font-weight: 400;
 }
 
 .questions-list {
   margin-inline: var(--gutter);
-  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  border-top: 1px solid rgba(22, 18, 13, 0.14);
 }
 
 .questions-item {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  border-bottom: 1px solid rgba(22, 18, 13, 0.12);
 }
 
 /* Сетка триггера из Кэмпа: номер | заголовок | плюс */
@@ -951,7 +951,7 @@ p.hero__lead { text-wrap: normal; }
   gap: calc(27px * var(--up));
   border: 0;
   background: transparent;
-  color: var(--text);
+  color: #16120d;
   text-align: left;
   cursor: pointer;
 }
@@ -961,7 +961,7 @@ p.hero__lead { text-wrap: normal; }
   width: calc(39px * var(--up));
   height: calc(25px * var(--up));
   place-items: center;
-  border: 1px solid var(--text);
+  border: 1px solid rgba(22, 18, 13, 0.3);
   border-radius: 999px;
   font-family: var(--font-num);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
@@ -984,7 +984,7 @@ p.hero__lead { text-wrap: normal; }
   width: calc(37px * var(--up));
   height: calc(37px * var(--up));
   place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(22, 18, 13, 0.3);
   border-radius: 50%;
   font-size: calc(23px * var(--up));
   font-weight: 400;
@@ -994,8 +994,8 @@ p.hero__lead { text-wrap: normal; }
 }
 
 .questions-trigger:hover .questions-plus {
-  background: var(--text);
-  color: var(--bg);
+  background: #16120d;
+  color: #fff;
 }
 
 .questions-item.is-open .questions-plus { transform: rotate(45deg); }
@@ -1037,7 +1037,7 @@ p.hero__lead { text-wrap: normal; }
 
 .questions-answer p {
   margin: 0 0 12px;
-  color: rgba(255, 255, 255, 0.6);
+  color: #6b655c;
   font-family: var(--font-ui);
   font-size: calc(15px * var(--up));
   font-weight: 300;
@@ -3983,8 +3983,7 @@ p.hero__lead { text-wrap: normal; }
   .venn__circle--3::before { animation: none; }
 }
 
-/* Надзаголовок и название на светлом */
-.stack .frame__eyebrow { color: #8d8880; }
+/* Название на светлом; цвет пилюли — в общем блоке надзаголовков */
 .stack__title { color: #16120d; }
 
 
@@ -4078,6 +4077,8 @@ p.hero__lead { text-wrap: normal; }
 .quizform__lede {
   display: flex;
   flex-direction: column;
+  /* Панель красная — текст на ней светлый, иначе наследуется тёмный */
+  color: #fff;
   padding: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
   border-radius: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem);
   /* Тот же красный, что на панели моста */
@@ -4425,8 +4426,8 @@ p.hero__lead { text-wrap: normal; }
 .cmodal__ba dt {
   margin: 0;
   font-weight: 500;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
   color: #8d8880;
   white-space: nowrap;
 }
@@ -4647,7 +4648,6 @@ p.hero__lead { text-wrap: normal; }
 
 /* Стопка · заголовок по центру, как просили для всех блоков-двойников */
 .stack__head { text-align: center; }
-.stack__head .frame__eyebrow { letter-spacing: 0.14em; }
 
 
 /* Веер на узких экранах: карточки становятся обычной колонкой.
@@ -4680,10 +4680,18 @@ p.hero__lead { text-wrap: normal; }
 .approach__eyebrow,
 .cases__eyebrow,
 .reviews__eyebrow,
-.why__eyebrow {
+.why__eyebrow,
+.vreview__tag,
+.quizform__step,
+.ccard__tag,
+.cmodal__tag {
   display: inline-flex;
   align-items: center;
+  /* Родители бывают и flex, и grid — держим обе оси, иначе
+     в grid пилюля растягивается во всю колонку. */
   align-self: flex-start;
+  justify-self: start;
+  width: fit-content;
   padding: 0.55em 0.95em;
   border: 1px solid;
   border-radius: 999px;
@@ -4698,16 +4706,24 @@ p.hero__lead { text-wrap: normal; }
 /* На тёмном — светлая обводка, на светлом — тёмная */
 .approach__eyebrow,
 .why__eyebrow,
-.stack .frame__eyebrow {
+.reviews__eyebrow,
+.vreview__tag {
   border-color: rgba(255, 255, 255, 0.28);
   color: rgba(255, 255, 255, 0.72);
 }
 .cases__eyebrow,
-.reviews__eyebrow,
-.sources .frame__eyebrow {
+.stack .frame__eyebrow,
+.sources .frame__eyebrow,
+.quizform__step,
+.ccard__tag,
+.cmodal__tag {
   border-color: rgba(22, 18, 13, 0.22);
   color: #6b655c;
 }
 /* В блоках с центровкой пилюля тоже по центру */
 .sources--center .frame__eyebrow,
-.stack__head .frame__eyebrow { align-self: center; }
+.stack__head .frame__eyebrow {
+  align-self: center;
+  justify-self: center;
+  margin-inline: auto;
+}
