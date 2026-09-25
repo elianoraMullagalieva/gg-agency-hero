@@ -55,6 +55,10 @@
   --gutter: clamp(1.25rem, 0.7143rem + 2.2857vw, 5rem);
   /* Один строй для всех кнопок, кроме шапки: 44px на 360, 52 на 1440 */
   --btn-h: clamp(2.75rem, 2.5833rem + 0.7407vw, 3.25rem);
+  /* Одна кривая и одна длительность на все выезды. Перелёт держим
+     около 0.5% хода — как в эталоне; раньше он гулял от 0 до 7%. */
+  --ease-out: cubic-bezier(0.33, 1, 0.68, 1);
+  --dur-in: 0.92s;
 }
 
 /* §03 · Ступени для больших мониторов */
@@ -898,9 +902,14 @@ p.hero__lead { text-wrap: normal; }
 .questions-section {
   position: relative;
   z-index: 2;
-  background: var(--bg);
-  color: var(--text);
+  background: #fff;
+  color: #16120d;
 }
+/* Светлая схема аккордеона: рамки и подписи тоном, без красного */
+.questions-item   { border-color: rgba(22, 18, 13, 0.12) !important; }
+.questions-number { color: #8d8880 !important; }
+.questions-answer { color: #6b655c !important; }
+.questions-plus   { color: #16120d !important; }
 
 .questions-head {
   /* Те же поля, что у шапки и карточек. */
@@ -1174,7 +1183,7 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--arc-high);
+  color: rgba(255, 255, 255, 0.45);
 }
 .venn-eyebrow span { opacity: 0.55; }
 
@@ -1460,7 +1469,7 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--arc-high);
+  color: #8d8880;
 }
 .reviews__eyebrow span { opacity: 0.55; }
 
@@ -1800,7 +1809,7 @@ p.hero__lead { text-wrap: normal; }
   color: #8a8a8a;
 }
 /* Правая колонка — состояние «вместе»: она и есть результат */
-.venn-vs__col--on dt { color: var(--arc-high); }
+.venn-vs__col--on dt { color: #fff; }
 .venn-vs__col--on dd { color: var(--text); }
 
 @media (max-width: 720px) {
@@ -2255,7 +2264,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-s);
   font-weight: 400;
-  color: var(--arc-high);
+  color: #8d8880;
 }
 
 .case-step__h {
@@ -2882,30 +2891,15 @@ p.hero__lead { text-wrap: normal; }
      Характер: короткий подъём на треть пути, микропауза на 25–35%
      времени (≈130 мс, за неё проходит 2% пути), затем основной ход
      и долгий выкат. */
-  animation: cardSlide 2.05s linear forwards;
-  animation-delay: calc(var(--i) * 200ms);
+  animation: cardSlide var(--dur-in) var(--ease-out) both;
+  animation-delay: calc(var(--i) * 130ms);
 }
+/* Ход и кривая те же, что у веера и стопки. Прежние ключи держали
+   плато на 205 мс посреди полёта и ещё 820 мс ползли последние 15%
+   пути — анимация формально шла, визуально давно кончилась. */
 @keyframes cardSlide {
-    0% { opacity: 0; translate: 0 46.00%; }
-    5% { translate: 0 41.57%; }
-   10% { translate: 0 38.21%; }
-   15% { opacity: 1; translate: 0 35.88%; }
-   20% { translate: 0 34.24%; }
-   25% { translate: 0 33.14%; }   /* вход в микропаузу */
-   30% { translate: 0 32.46%; }
-   35% { translate: 0 31.76%; }   /* выход из микропаузы */
-   40% { translate: 0 29.71%; }
-   45% { translate: 0 25.25%; }
-   50% { translate: 0 18.75%; }
-   55% { translate: 0 11.68%; }
-   60% { translate: 0 6.86%; }
-   65% { translate: 0 3.99%; }
-   70% { translate: 0 2.38%; }
-   75% { translate: 0 1.38%; }
-   80% { translate: 0 0.81%; }
-   85% { translate: 0 0.44%; }
-   90% { translate: 0 0.22%; }
-   95% { translate: 0 0.10%; }
+  0%   { opacity: 0; translate: 0 46%; }
+  70%  { opacity: 1; translate: 0 -0.5%; }
   100% { opacity: 1; translate: 0 0; }
 }
 
@@ -3455,8 +3449,10 @@ p.hero__lead { text-wrap: normal; }
   top: var(--y);
   /* Шаг больше половины карточки: при плотной раскладке соседняя
      накрывала заголовок, и читать было нечего. */
-  left: calc(var(--i) * 26%);
-  width: 48%;
+  /* Шаг 33%: при 26% соседка срезала 46% ширины карточки
+     и заголовок читался как «Воронки и окна про…». */
+  left: calc(var(--i) * 33%);
+  width: 44%;
   aspect-ratio: 300 / 480;
   display: flex;
   flex-direction: column;
@@ -3474,12 +3470,12 @@ p.hero__lead { text-wrap: normal; }
       #d0101c 0%, #8e0a12 30%, #3a060b 62%, #0d0304 86%, #060202 100%); }
 
 .sources.is-in .fan__card {
-  animation: fanIn 0.92s cubic-bezier(0.2, 0.9, 0.24, 1) forwards;
+  animation: fanIn var(--dur-in) var(--ease-out) both;
   animation-delay: calc(var(--i) * 150ms);
 }
 @keyframes fanIn {
   0%   { opacity: 0; translate: 0 118%; }
-  58%  { opacity: 1; translate: 0 -7%; }   /* перелёт */
+  72%  { opacity: 1; translate: 0 -0.6%; }   /* перелёт как в эталоне */
   100% { opacity: 1; translate: 0 0; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -3584,7 +3580,7 @@ p.hero__lead { text-wrap: normal; }
 
 .sources .frame__eyebrow { color: #8d8880; }
 .sources .frame__sub     { color: #6b655c; }
-.sources .frame__note    { color: var(--arc-high); }
+.sources .frame__note    { color: #8d8880; }
 /* Без красного и без разрядки: надзаголовок тихий */
 .approach .frame__eyebrow {
   color: rgba(255, 255, 255, 0.5);
@@ -3679,7 +3675,7 @@ p.hero__lead { text-wrap: normal; }
   border: 1px solid rgba(22, 18, 13, 0.12);
   background: rgba(22, 18, 13, 0.018);
 }
-.case-step__n { color: var(--arc-high); }
+.case-step__n { color: #8d8880; }
 
 /* Нижний ряд карточек стоит по общей линии: тексты разной длины,
    а низ у всех один. */
@@ -3716,7 +3712,9 @@ p.hero__lead { text-wrap: normal; }
   gap: clamp(1.25rem, 1rem + 1.0667vw, 2rem);
   padding: clamp(2.5rem, 1.7857rem + 3.0476vw, 5.5rem) var(--gutter);
 }
-.stack--lock { height: 320svh; }
+/* Высоту задаёт main.js от числа карточек — здесь только запас
+   на случай, если скрипт не отработал. */
+.stack--lock { min-height: 100svh; }
 .stack--lock .stack__sticky {
   position: sticky;
   top: 0;
@@ -3750,7 +3748,8 @@ p.hero__lead { text-wrap: normal; }
   height: 100%;
 }
 .stack__card {
-  --peek: clamp(3.25rem, 7.5svh, 4.75rem);
+  /* 27% высоты карточки: в щель должна целиком влезать цифра */
+  --peek: clamp(5rem, 13svh, 8rem);
   position: absolute;
   left: 50%;
   translate: -50% 0;
@@ -3769,7 +3768,13 @@ p.hero__lead { text-wrap: normal; }
   background: #fff;
   will-change: transform;
 }
-.stack__card:nth-child(even) { background: var(--text-dim); }
+/* Контраст по тону: иначе белая карточка наезжает на белую
+   и наезд читается только по волосяной линии. */
+.stack__card:nth-child(2) { background: #e7e5e1; }
+.stack__card:nth-child(3) { background: #16120d; border-color: transparent; }
+.stack__card:nth-child(3) .stack__num  { color: rgba(255, 255, 255, 0.5); }
+.stack__card:nth-child(3) .stack__name { color: #fff; }
+.stack__card:nth-child(3) .stack__text { color: rgba(255, 255, 255, 0.78); }
 /* Последняя — красная: серия на ней закрывается */
 .stack__card:last-child {
   border-color: transparent;
@@ -3784,9 +3789,12 @@ p.hero__lead { text-wrap: normal; }
 .stack__num {
   /* Номер наверху, всё остальное уезжает к низу карточки */
   margin-bottom: auto;
-  font-size: var(--fs-s);
+  /* Цифра крупная: она единственное, что видно в щели стопки */
+  font-family: var(--font-logo);
+  font-size: clamp(1.25rem, 1.0714rem + 0.7619vw, 2rem);
   font-weight: 400;
-  letter-spacing: 0.08em;
+  line-height: 1;
+  letter-spacing: -0.02em;
   color: rgba(22, 18, 13, 0.45);
 }
 .stack__name {
@@ -3903,18 +3911,9 @@ p.hero__lead { text-wrap: normal; }
       rgba(255, 255, 255, 0) 76%);
   animation: vOrbit 22s linear infinite;
 }
-/* Второй блик идёт навстречу первому — вместе они дают ощущение
-   объёма, который проворачивается, а не плоского пятна. */
-.venn__circle--1::after,
-.venn__circle--2::after,
-.venn__circle--3::after {
-  background:
-    radial-gradient(closest-side circle at 68% 74%,
-      rgba(255, 255, 255, 0.10) 0%,
-      rgba(255, 255, 255, 0.035) 44%,
-      rgba(255, 255, 255, 0) 74%);
-  animation: vOrbit 34s linear infinite reverse;
-}
+/* Второй блик снят: на полосе 1700–2400px и так тяжело от
+   backdrop-filter, а четыре бесконечные анимации роняли кадры
+   до 20 fps. Объём держит первый блик и кольцо по кромке. */
 .venn__circle--2::before { animation-duration: 27s; animation-delay: -9s; }
 .venn__circle--3::before { animation-duration: 19s; animation-delay: -14s; }
 
@@ -3984,7 +3983,7 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 500;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--arc-high);
+  color: #8d8880;
 }
 .vreview__quote {
   margin: 0 0 0.45em;
@@ -4003,8 +4002,8 @@ p.hero__lead { text-wrap: normal; }
    ============================================================ */
 
 .quizform {
-  background: var(--bg);
-  color: var(--text);
+  background: #fff;
+  color: #16120d;
   padding: clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem) var(--gutter);
   display: grid;
   place-items: center;
@@ -4016,9 +4015,9 @@ p.hero__lead { text-wrap: normal; }
   gap: clamp(1.25rem, 0.9821rem + 1.1429vw, 2.375rem);
   width: min(100%, 68rem);
   padding: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(22, 18, 13, 0.1);
   border-radius: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
-  background: #0c0c0d;
+  background: var(--text-dim);
 }
 
 .quizform__lede {
@@ -4064,7 +4063,7 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 400;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
+  color: #8d8880;
 }
 .quizform__q {
   margin: 0 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
@@ -4093,9 +4092,11 @@ p.hero__lead { text-wrap: normal; }
   border-radius: 999px;
   background: #fff;
   color: #16120d;
+  border: 1px solid rgba(22, 18, 13, 0.08);
   text-decoration: none;
-  transition: background 0.24s ease, color 0.24s ease;
+  transition: background 0.24s ease, color 0.24s ease, border-color 0.24s ease;
 }
+.quizform__opt:hover { border-color: transparent; }
 .quizform__opt-label {
   font-size: var(--fs-m);
   font-weight: 400;
@@ -4114,25 +4115,25 @@ p.hero__lead { text-wrap: normal; }
 .quizform__note {
   margin: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
   padding-top: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid rgba(22, 18, 13, 0.12);
   font-size: var(--fs-s);
   font-weight: 300;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6b655c;
 }
 .quizform__talk {
   margin: auto 0 0;
   padding-top: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
   font-size: var(--fs-s);
   font-weight: 300;
-  color: rgba(255, 255, 255, 0.5);
+  color: #6b655c;
 }
 .quizform__talk a {
-  color: var(--arc-high);
+  color: #16120d;
   text-decoration: none;
   border-bottom: 1px solid currentColor;
 }
-.quizform__talk a:hover { color: #fff; }
+.quizform__talk a:hover { color: #8d8880; }
 
 @media (max-width: 860px) {
   .quizform__card { grid-template-columns: minmax(0, 1fr); }
@@ -4189,27 +4190,17 @@ p.hero__lead { text-wrap: normal; }
     rgba(255, 255, 255, 0.022) 52%,
     rgba(255, 255, 255, 0.01) 100%);
 }
-/* Линия сверху прочерчивается слева направо */
-.why__card::before {
-  content: "";
-  position: absolute;
-  inset: 0 auto auto 0;
-  width: 100%;
-  height: 1px;
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  background: linear-gradient(90deg,
-    var(--arc-high) 0%, rgba(172, 12, 15, 0.25) 60%, transparent 100%);
-}
+/* Линии нет: красным в нашем стиле не рисуют. */
 
 .why__value {
   margin: 0 0 clamp(1.25rem, 1rem + 1.0667vw, 2.25rem);
+  opacity: 0.92;
   font-family: var(--font-logo);
   font-size: clamp(1.375rem, 1.1607rem + 0.9143vw, 2.25rem);
   font-weight: 400;
   line-height: 1;
   letter-spacing: -0.0345em;
-  color: var(--arc-high);
+  color: #fff;
 }
 .why__name {
   margin: 0;
@@ -4233,20 +4224,13 @@ p.hero__lead { text-wrap: normal; }
   animation: whyIn 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(var(--i) * 90ms);
 }
-.why.is-in .why__card::before {
-  animation: whyRule 0.66s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  animation-delay: calc(var(--i) * 90ms + 220ms);
-}
 @keyframes whyIn {
   to { opacity: 1; translate: 0 0; }
 }
-@keyframes whyRule {
-  to { transform: scaleX(1); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .why__card { opacity: 1; translate: none; animation: none; }
-  .why__card::before { transform: scaleX(1); animation: none; }
 }
 
 @media (max-width: 1000px) {
@@ -4331,7 +4315,7 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--arc-high);
+  color: #8d8880;
 }
 .ccard__value {
   margin: 0 0 0.45em;
@@ -4394,7 +4378,7 @@ p.hero__lead { text-wrap: normal; }
 .ccard__ba dd,
 .cmodal__ba dd { margin: 0; font-weight: 300; color: #16120d; }
 .ccard__ba dt:last-of-type,
-.cmodal__ba dt:last-of-type { color: var(--arc-high); }
+.cmodal__ba dt:last-of-type { color: #16120d; }
 
 .ccard__more {
   margin-top: auto;
@@ -4405,7 +4389,7 @@ p.hero__lead { text-wrap: normal; }
   transition: color 0.24s ease;
 }
 .ccard__more::after { content: " →"; }
-.ccard__btn:hover .ccard__more { color: var(--arc-high); }
+.ccard__btn:hover .ccard__more { color: #16120d; }
 
 .cases__foot {
   display: flex;
@@ -4519,7 +4503,7 @@ p.hero__lead { text-wrap: normal; }
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--arc-high);
+  color: #8d8880;
 }
 .cmodal__value {
   margin: 0 0 0.35em;
@@ -4561,3 +4545,50 @@ p.hero__lead { text-wrap: normal; }
   .cases__grid { grid-template-columns: minmax(0, 1fr); }
   .cases__foot { flex-direction: column; align-items: flex-start; }
 }
+
+
+/* ============================================================
+   Версии-двойники для выбора
+   ============================================================ */
+
+/* Утечки · светлая: белый фон, карточки того же серого, что плашка
+   опросника (--text-dim), текст тёмный. */
+.leaks--light { background: #fff; }
+.leaks--light .leaks-title { color: #16120d; }
+.leaks--light .leaks-sub   { color: #6b655c; }
+.leaks--light .leak--dark,
+.leaks--light .leak--red {
+  background: var(--text-dim);
+  border: 1px solid rgba(22, 18, 13, 0.08);
+}
+.leaks--light .leak__name { color: #16120d; }
+.leaks--light .leak__num  { color: #16120d; }
+.leaks--light .leak__text { color: #6b655c; }
+.leaks--light .card__num,
+.leaks--light .card__tag {
+  border-color: rgba(22, 18, 13, 0.22);
+  color: #6b655c;
+}
+
+/* Источники · заголовок по центру страницы, карточки под ним */
+.sources--center .frame {
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+}
+.sources--center .frame__lede {
+  display: block;
+  max-width: 46rem;
+  text-align: center;
+}
+.sources--center .sources__mid { align-self: auto; }
+.sources--center .frame__sub { margin-inline: auto; }
+.sources--center .frame__note { margin-top: 1.25em; }
+.sources--center .frame__side {
+  width: 100%;
+  margin-top: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem);
+}
+.sources--center .fan { max-width: 46rem; }
+
+/* Стопка · заголовок по центру, как просили для всех блоков-двойников */
+.stack__head { text-align: center; }
+.stack__head .frame__eyebrow { letter-spacing: 0.14em; }

@@ -1039,6 +1039,8 @@
     if (matchMedia("(max-width: 900px)").matches) return;
 
     var lock = sec.classList.contains("stack--lock");
+    // Постоянный наклон: в эталоне карточки лежат косо и в покое
+    var TILT = [-1.6, 1.2, -2.1, 0.9];
     var n = cards.length, peek = 0, cardH = 0, cur = 0, raf = 0;
 
     function measure() {
@@ -1048,7 +1050,7 @@
       list.style.height = (cardH + (n - 1) * peek) + "px";
       if (lock) {
         // Экран на вход плюс по экрану на каждую приезжающую карточку
-        sec.style.height = (window.innerHeight * (1 + (n - 1) * 0.72)) + "px";
+        sec.style.height = (window.innerHeight * (1 + (n - 1) * 0.62)) + "px";
       }
     }
 
@@ -1056,46 +1058,55 @@
       var r = sec.getBoundingClientRect(), vh = window.innerHeight;
       var p;
       if (lock) {
-        p = -r.top / Math.max(1, sec.offsetHeight - vh);
+        // 0.88 — стопка успевает постоять собранной до расфиксации
+        p = -r.top / Math.max(1, (sec.offsetHeight - vh) * 0.88);
       } else {
         p = (vh - r.top) / (vh + r.height);
       }
       return Math.min(Math.max(p, 0), 1) * (n - 1);
     }
 
-    function paint() {
+    /* Пружина по времени, а не функция от прокрутки. Прежний перелёт
+       считался от local, то есть от положения скролла: при таком
+       фильтре перерегулирования не бывает в принципе, и «отскок»
+       выходил 0.6px вместо 2px. Здесь у каждой карточки своя масса:
+       цель задаёт скролл, а доводит её пружина за ~0.5 с.
+       K и C подобраны на перелёт около 0.45% хода — как в эталоне. */
+    var K = 200, C = 24.3;
+    var st = cards.map(function () { return { y: 1, v: 0 }; });
+    var prev = 0;
+
+    function paint(dt) {
+      var p = goal();
       for (var i = 0; i < n; i++) {
-        // local: 0 — карточка ещё внизу, 1 — села на место
-        var local = Math.min(Math.max(cur - (i - 1), 0), 1);
-        if (i === 0) local = 1;
-        /* Посадка с перелётом: карточка проскакивает место и
-           возвращается — тот самый bounce из эталона. */
-        var e = local < 1
-          ? 1 - Math.pow(1 - local, 3)
-          : 1;
-        var over = Math.sin(Math.min(local, 1) * Math.PI) * 0.06 * (1 - local);
-        var y = (1 - e - over) * (window.innerHeight * 0.75);
-        var tilt = (1 - local) * (i % 2 ? 1.6 : -1.6);
-        cards[i].style.transform = "translate3d(0," + y.toFixed(1) + "px,0) rotate(" + tilt.toFixed(2) + "deg)";
-        cards[i].style.opacity = local > 0.02 || i === 0 ? 1 : 0;
+        var to = 1 - Math.min(Math.max(p - (i - 1), 0), 1);
+        if (i === 0) to = 0;
+        var a = (to - st[i].y) * K - st[i].v * C;
+        st[i].v += a * dt;
+        st[i].y += st[i].v * dt;
+        if (Math.abs(to - st[i].y) < 0.0004 && Math.abs(st[i].v) < 0.004) {
+          st[i].y = to; st[i].v = 0;
+        }
+        var y = st[i].y * (window.innerHeight * 0.62);
+        cards[i].style.transform =
+          "translate3d(0," + y.toFixed(2) + "px,0) rotate(" + TILT[i % TILT.length] + "deg)";
       }
     }
 
-    function loop() {
-      var to = goal();
-      cur += (to - cur) * 0.16;
-      if (Math.abs(to - cur) < 0.004) cur = to;
-      paint();
+    function loop(now) {
+      var dt = prev ? Math.min(0.032, (now - prev) / 1000) : 0.016;
+      prev = now;
+      paint(dt);
       var r = sec.getBoundingClientRect();
       if (r.bottom > -200 && r.top < window.innerHeight + 200) {
         raf = requestAnimationFrame(loop);
-      } else { raf = 0; }
+      } else { raf = 0; prev = 0; }
     }
+
     function wake() { if (!raf) raf = requestAnimationFrame(loop); }
 
     measure();
-    cur = goal();
-    paint();
+    paint(0.016);
     window.addEventListener("scroll", wake, { passive: true });
     window.addEventListener("resize", function () { measure(); wake(); });
     wake();
@@ -1135,8 +1146,8 @@
 
 
   /* Лента «Наш подход»: две карточки в кадре, третья выглядывает.
-     Прокрутка блока доводит её до края. Без липкой фиксации — блок
-     не во весь экран, и второй замок подряд читался бы как заедание. */
+     Блок липкий (.approach__stick), и прокрутка доводит ленту до
+     края, пока он держит экран. */
   function initApproach() {
     var rail = document.querySelector(".approach__rail");
     var sec  = document.querySelector(".approach");
@@ -1156,7 +1167,7 @@
       var r = sec.getBoundingClientRect();
       // 0.85 — чтобы лента доезжала до упора чуть раньше, чем блок
       // отпускает экран, а не на самом последнем пикселе.
-      var run = Math.max(1, (sec.offsetHeight - window.innerHeight) * 0.85);
+      var run = Math.max(1, (sec.offsetHeight - window.innerHeight) * 0.72);
       var p = -r.top / run;
       return Math.min(Math.max(p, 0), 1) * max;
     }
@@ -1184,8 +1195,7 @@
   }
 
   /* Веер источников: запускается, когда блок входит в кадр */
-  function initFan() {
-    var sec = document.querySelector(".sources");
+  function initFan(sec) {
     if (!sec) return;
     if (!("IntersectionObserver" in window)) { sec.classList.add("is-in"); return; }
     var io = new IntersectionObserver(function (es) {
@@ -1276,8 +1286,7 @@
 
   /* Липкая лента: пока блок закреплён, прокрутка гонит карточки
      вбок. Когда последняя встала по краю сетки — блок отпускает. */
-  function initLeaks() {
-    var sec = document.querySelector(".leaks");
+  function initLeaks(sec) {
     if (!sec) return;
     var rail = sec.querySelector(".leaks-rail");
     if (!rail) return;
@@ -1286,7 +1295,7 @@
     var narrow = matchMedia("(max-width: 900px)").matches;
     if (reduce || narrow) return;
 
-    var RUN = 3.2;   // во сколько раз путь прокрутки длиннее хода ленты
+    var RUN = 1.8;   // во сколько раз путь прокрутки длиннее хода ленты
     var max = 0, hold = 0, cur = 0, raf = 0;
 
     function measure() {
@@ -1315,7 +1324,7 @@
       /* Пауза на входе: первый экран прокрутки блок просто стоит —
          стартовый кадр успевают прочесть. Дальше путь растянут в RUN
          раз: при ходе 1:1 один щелчок колеса уносил карточку целиком. */
-      hold = window.innerHeight * 0.45;
+      hold = window.innerHeight * 0.18;
       sec.style.height = (window.innerHeight + hold + max * RUN) + "px";
     }
 
@@ -1527,10 +1536,10 @@
   initVennFlat();
   initQuestions();
   initServices();
-  initLeaks();
+  [].forEach.call(document.querySelectorAll(".leaks"), initLeaks);
   initVennMark();
   initApproach();
-  initFan();
+  [].forEach.call(document.querySelectorAll(".sources"), initFan);
   initStacks();
   initWhy();
   initCases();
