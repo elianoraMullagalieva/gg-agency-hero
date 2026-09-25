@@ -3995,3 +3995,146 @@ p.hero__lead { text-wrap: normal; }
   letter-spacing: -0.01em;
   text-wrap: pretty;
 }
+
+
+/* ============================================================
+   Опросник перед подвалом. Форма та же, что у карточки моста:
+   слева визуал с заголовком, справа вопрос с вариантами.
+   ============================================================ */
+
+.quizform {
+  background: var(--bg);
+  color: var(--text);
+  padding: clamp(3rem, 2.0179rem + 4.1905vw, 7.0625rem) var(--gutter);
+  display: grid;
+  place-items: center;
+}
+
+.quizform__card {
+  display: grid;
+  grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
+  gap: clamp(1.25rem, 0.9821rem + 1.1429vw, 2.375rem);
+  width: min(100%, 68rem);
+  padding: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  background: #0c0c0d;
+}
+
+.quizform__lede {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
+  border-radius: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem);
+  /* Тот же красный, что на панели моста */
+  background:
+    radial-gradient(118% 104% at 60% 92%,
+      #ff2a18 0%, #e2121a 20%, #b00d18 42%, #7a0912 66%, #45050c 86%, #2a0408 100%);
+}
+.quizform__visual {
+  flex: 1 1 auto;
+  min-height: clamp(4rem, 14svh, 9rem);
+}
+.quizform__title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.0345em;
+  text-wrap: balance;
+}
+.quizform__sub {
+  margin: 0.7em 0 0;
+  font-size: var(--fs-s);
+  font-weight: 300;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.quizform__body {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.75rem, 0.5357rem + 0.9143vw, 1.625rem)
+           clamp(0.5rem, 0.3571rem + 0.6095vw, 1.125rem);
+}
+.quizform__step {
+  margin: 0 0 0.75em;
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+.quizform__q {
+  margin: 0 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
+  font-family: var(--font-logo);
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.quizform__opts {
+  display: grid;
+  gap: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* Вариант — белая пилюля во всю ширину, справа тихая подпись «в бот» */
+.quizform__opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--btn-h);
+  padding: 0 1.25em;
+  border-radius: 999px;
+  background: #fff;
+  color: #16120d;
+  text-decoration: none;
+  transition: background 0.24s ease, color 0.24s ease;
+}
+.quizform__opt-label {
+  font-size: var(--fs-m);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.quizform__opt-go {
+  font-size: var(--fs-s);
+  font-weight: 400;
+  color: #8d8880;
+  white-space: nowrap;
+  transition: color 0.24s ease;
+}
+.quizform__opt:hover { background: var(--arc-high); color: #fff; }
+.quizform__opt:hover .quizform__opt-go { color: rgba(255, 255, 255, 0.72); }
+
+.quizform__note {
+  margin: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
+  padding-top: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: var(--fs-s);
+  font-weight: 300;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.5);
+}
+.quizform__talk {
+  margin: auto 0 0;
+  padding-top: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  font-size: var(--fs-s);
+  font-weight: 300;
+  color: rgba(255, 255, 255, 0.5);
+}
+.quizform__talk a {
+  color: var(--arc-high);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+.quizform__talk a:hover { color: #fff; }
+
+@media (max-width: 860px) {
+  .quizform__card { grid-template-columns: minmax(0, 1fr); }
+  .quizform__visual { min-height: clamp(3rem, 10svh, 6rem); }
+}
