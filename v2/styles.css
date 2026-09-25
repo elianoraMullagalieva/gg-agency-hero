@@ -3693,9 +3693,10 @@ p.hero__lead { text-wrap: normal; }
   justify-content: center;
   overflow: hidden;
 }
-/* Площадка ровно под стопку: иначе под одинокой первой карточкой
-   зияла пустота во весь экран. */
-.stack__area { display: flex; align-items: flex-start; }
+/* Площадка блочная: карточки в ней абсолютные, и flex схлопывал
+   ленту по содержимому — ширина уходила в ноль. */
+.stack__area { display: block; }
+.stack__list { width: 100%; }
 
 .stack__head { display: grid; gap: 0.5rem; }
 .stack__title {
@@ -3725,27 +3726,29 @@ p.hero__lead { text-wrap: normal; }
 .stack__card {
   --peek: clamp(3.25rem, 7.5svh, 4.75rem);
   position: absolute;
-  min-height: clamp(8rem, 19svh, 12rem);
-  left: 0;
-  right: 0;
-  /* Верхние края копятся лесенкой: от нижних видна полоса с номером */
+  left: 50%;
+  translate: -50% 0;
+  /* Карточка не во всю сетку: в эталоне она уже и заметно выше,
+     номер наверху, заголовок и текст прижаты к низу. */
+  width: min(100%, 62rem);
   top: calc(var(--i) * var(--peek));
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  align-items: start;
-  column-gap: clamp(1.25rem, 1rem + 1.0667vw, 2.5rem);
-  row-gap: 0.35rem;
-  padding: clamp(1.125rem, 0.9821rem + 0.6095vw, 1.75rem)
-           clamp(1.25rem, 1rem + 1.0667vw, 2.25rem);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  /* Ближе к пропорции эталона: там карточка заметно выше */
+  min-height: clamp(15rem, 52svh, 30rem);
+  padding: clamp(1.25rem, 1rem + 1.0667vw, 2.25rem)
+           clamp(1.375rem, 1.0714rem + 1.2952vw, 2.75rem);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
-  background: #111112;
+  /* Светлее фона страницы: на #030303 прежние #111 сливались */
+  background: #161618;
   will-change: transform;
 }
-.stack__card:nth-child(even) { background: #0b0b0c; }
+.stack__card:nth-child(even) { background: #0e0e10; }
 
 .stack__num {
-  grid-row: 1 / span 2;
+  /* Номер наверху, всё остальное уезжает к низу карточки */
+  margin-bottom: auto;
   font-size: var(--fs-s);
   font-weight: 400;
   letter-spacing: 0.08em;
@@ -3760,9 +3763,8 @@ p.hero__lead { text-wrap: normal; }
   letter-spacing: -0.01em;
 }
 .stack__text {
-  margin: 0;
-  grid-column: 2;
-  max-width: 62ch;
+  margin: 0.45rem 0 0;
+  max-width: 56ch;
   font-size: var(--fs-s);
   font-weight: 300;
   line-height: 1.45;
