@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>GG Agency — Строим отделы продаж под ключ</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@300;400;500;600;800&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="styles.css" />
+
+<!-- Без JS прелоадер некому убрать: он fixed, inset:0 и непрозрачный,
+     то есть закрывает весь сайт навсегда. Аккордеоны тоже не раскрыть,
+     поэтому в no-JS показываем все ответы развёрнутыми. -->
+<noscript>
+  <style>
+    .preloader { display: none !important; }
+    body.is-loading .nav,
+    body.is-loading .hero__title span,
+    body.is-loading .hero__lead,
+    body.is-loading .hero__cta,
+    body.is-loading .stats__inner { animation-play-state: running; }
+
+    /* Контент аккордеонов доступен: панели раскрыты, «плюс» и
+       «Подробнее» убраны, чтобы не обещать несуществующий клик. */
+    .questions-panel,
+    .services-panel { grid-template-rows: 1fr !important; }
+    .questions-panel > div,
+    .services-panel > div { opacity: 1 !important; visibility: visible !important; }
+    .questions-plus,
+    .services-more { display: none !important; }
+    .questions-trigger,
+    .services-trigger { cursor: default; }
+
+    /* Схема опор: шейдер не запустится, текст обязан быть виден. */
+    .venn .venn-pillar,
+    .venn .venn-core,
+    .venn .venn-issue { opacity: 1 !important; }
+  </style>
+</noscript>
+</head>
+<body class="is-loading">
+
+<!-- Прелоадер: сфера из точек, схлопывается в кольцо и обратно -->
+<div class="preloader" id="preloader">
+  <canvas class="preloader__canvas" aria-hidden="true"></canvas>
+  <p class="preloader__label">GG AGENCY</p>
+</div>
+
+<section class="hero">
+  <!-- Слой 1: сетка глифов Sales — тусклая, с бегущей волной -->
+  <canvas class="hero__glyphs" aria-hidden="true"></canvas>
+
+  <!-- Слой 2: WebGL-поле квадратных точек, изгибающееся по параболе -->
+  <canvas class="hero__bg" aria-hidden="true"></canvas>
+
+  <header class="nav">
+    <a class="nav__logo" href="#">GG AGENCY</a>
+
+    <nav class="nav__menu" aria-label="Основная навигация">
+      <a href="#">Построение продаж</a>
+      <a href="#">С кем работаем</a>
+      <a href="#">Кейсы</a>
+      <a href="#">Услуги</a>
+      <a href="#">Команда</a>
+    </nav>
+
+    <a class="nav__cta" href="#">консультация</a>
+
+    <button class="nav__burger" type="button" aria-label="Меню"
+            aria-expanded="false" aria-controls="mobile-menu">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main class="hero__body">
+    <div class="hero__text">
+      <h1 class="hero__title">
+        <span>Строим отделы</span>
+        <span>продаж под ключ</span>
+      </h1>
+
+      <p class="hero__lead">
+      Строим самостоятельные команды и системы, которые каждый день
+      доводят людей&nbsp;от&nbsp;интереса&nbsp;до&nbsp;оплаты
+      без вашего контроля
+    </p>
+    </div>
+
+    <a class="hero__cta" href="#">
+      <span class="hero__cta-label">Получить консультацию</span>
+      <span class="hero__cta-icon" aria-hidden="true">
+        <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z"
+                fill="currentColor"/>
+        </svg>
+      </span>
+    </a>
+  </main>
+
+  
+
+
+<footer class="stats">
+    <div class="stats__inner">
+      <div class="stat">
+        <span class="stat__value">1%</span>
+        <span class="stat__label">наши проекты входят в&nbsp;Топ 1% Геткурса</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">130+</span>
+        <span class="stat__label">отделов продаж построено за&nbsp;4 года</span>
+      </div>
+      <div class="stat">
+        <span class="stat__value">×4-8</span>
+        <span class="stat__label">рост выручки в&nbsp;долгосрочной&nbsp;работе</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="sheet" id="mobile-menu" hidden>
+    <a href="#">Построение продаж</a>
+    <a href="#">С кем работаем</a>
+    <a href="#">Кейсы</a>
+    <a href="#">Услуги</a>
+    <a href="#">Команда</a>
+    <a class="sheet__cta" href="#">получить консультацию</a>
+  </div>
+</section>
+
+<!-- ===== Бегущая строка клиентов · по волне ===== -->
+<section class="clients" aria-label="С нами построили продажи">
+  <p class="clients__lead">С&nbsp;нами построили продажи</p>
+
+  <div class="clients__wave">
+    <!-- Волну, повторы и длительность строит main.js: период
+         подбирается от измеренной длины текста, иначе шов повтора
+         попадает в кадр. -->
+    <svg class="clients__svg" viewBox="0 0 1440 200" aria-hidden="true"
+         preserveAspectRatio="xMidYMid meet"
+         data-wave-speed="56">
+      <defs>
+        <path id="clientsWave" d="M -700 210 A 5200 5200 0 0 1 2100 210" />
+      </defs>
+      <g class="clients__spin">
+        <text class="clients__text">
+          <textPath href="#clientsWave" startOffset="0">
+            Alex Magnier · Kira Noire · Галя Филатович · Made in Cosmos · Pixel School · GORA Academy · Школа +Балл · Реальный репетитор · ЗЕМЛЯ · 
+          </textPath>
+        </text>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ===== 01 / Ситуация · node 2059:348 ===== -->
+<section class="situation" id="situation" aria-labelledby="situation-title">
+  <div class="situation__head">
+    <div class="situation__lede">
+      <h2 class="situation__title" id="situation-title">
+        <b>Какая</b> у&nbsp;вас ситуация?
+      </h2>
+      <p class="situation__sub">
+        Работаем и&nbsp;со&nbsp;школами на&nbsp;старте, и&nbsp;с&nbsp;проектами на&nbsp;десятки миллионов в&nbsp;месяц.
+      </p>
+    </div>
+
+    <figure class="expert">
+      <img class="expert__photo" src="assets/expert.jpg" alt=""
+           width="72" height="72" loading="lazy" decoding="async" />
+      <figcaption class="expert__body">
+        <p class="expert__name">Ангелина Глазкова</p>
+        <p class="expert__role">
+          Основательница GG-agency и&nbsp;специалист по&nbsp;продажам
+          с&nbsp;10&nbsp;летним опытом
+        </p>
+      </figcaption>
+    </figure>
+  </div>
+
+  <ul class="cards" role="list">
+    <li class="card" style="--i:0">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
+      <picture>
+        <source srcset="assets/cards/card-1.webp" type="image/webp" />
+        <img class="card__photo" src="assets/cards/card-1.jpg" alt=""
+             width="703" height="1046" loading="lazy" decoding="async" />
+      </picture>
+      <div class="card__tags">
+        <span class="card__num">01</span>
+        <span class="card__tag card__tag--red">от 10 млн в&nbsp;месяц</span>
+      </div>
+      <div class="card__copy">
+        <h3 class="card__name">Выручка растёт, а<br />вместе с&nbsp;ней&nbsp;— хаос</h3>
+        <p class="card__note">
+            Каждый следующий миллион<br />стоит дороже предыдущего.
+          </p>
+        <p class="card__act"><span>Где вырасти без&nbsp;раздувания команды</span> <i aria-hidden="true">→</i></p>
+      </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-1.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-1.jpg" alt=""
+                 width="703" height="1046" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">01</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Найдём, где недобираете</h3>
+            <p class="card__note">Аудит покажет точки роста на&nbsp;той&nbsp;же базе, без&nbsp;увеличения бюджета</p>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="card" style="--i:1">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
+      <picture>
+        <source srcset="assets/cards/card-2.webp" type="image/webp" />
+        <img class="card__photo" src="assets/cards/card-2.jpg" alt=""
+             width="703" height="1046" loading="lazy" decoding="async" />
+      </picture>
+      <div class="card__tags">
+        <span class="card__num">02</span>
+        <span class="card__tag">кажется, всё в&nbsp;порядке</span>
+      </div>
+      <div class="card__copy">
+        <h3 class="card__name">«У&nbsp;нас с&nbsp;продажами<br />всё нормально»</h3>
+        <p class="card__note">
+            Так говорят почти все.<br />«Нормально» = не&nbsp;считали
+          </p>
+        <p class="card__act"><span>Проверить, насколько нормально</span> <i aria-hidden="true">→</i></p>
+      </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-2.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-2.jpg" alt=""
+                 width="703" height="1046" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">02</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Продажи без вашего участия</h3>
+            <p class="card__note">Команда, регламенты и&nbsp;контроль качества&nbsp;— система работает без&nbsp;ручного режима</p>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="card" style="--i:2">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
+      <picture>
+        <source srcset="assets/cards/card-3.webp" type="image/webp" />
+        <img class="card__photo" src="assets/cards/card-3.jpg" alt=""
+             width="703" height="1046" loading="lazy" decoding="async" />
+      </picture>
+      <div class="card__tags">
+        <span class="card__num">03</span>
+        <span class="card__tag">запусковая модель</span>
+      </div>
+      <div class="card__copy">
+        <h3 class="card__name">Продажи&nbsp;— от<br />запуска к&nbsp;запуску</h3>
+        <p class="card__note">
+            В&nbsp;запуск касса полная,<br />между запусками&nbsp;— пустая.
+          </p>
+        <p class="card__act"><span>Продавать и&nbsp;между запусками</span> <i aria-hidden="true">→</i></p>
+      </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-3.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-3.jpg" alt=""
+                 width="703" height="1046" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">03</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Отдел с нуля за месяц</h3>
+            <p class="card__note">Наймём, обучим, поставим CRM и&nbsp;скрипты. Первые продажи&nbsp;— до&nbsp;конца цикла</p>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="card" style="--i:3">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
+      <picture>
+        <source srcset="assets/cards/card-4.webp" type="image/webp" />
+        <img class="card__photo" src="assets/cards/card-4.jpg" alt=""
+             width="703" height="1046" loading="lazy" decoding="async" />
+      </picture>
+      <div class="card__tags">
+        <span class="card__num">04</span>
+        <span class="card__tag">отдел&nbsp;— это вы</span>
+      </div>
+      <div class="card__copy">
+        <h3 class="card__name">Всё продаётся,<br />пока вы&nbsp;на&nbsp;связи</h3>
+        <p class="card__note">
+            Стоит отойти от&nbsp;продаж&nbsp;—<br />и&nbsp;выручка проседает.
+          </p>
+        <p class="card__act"><span>Собрать отдел, который продаёт сам</span> <i aria-hidden="true">→</i></p>
+      </div>
+        </div>
+        <div class="card__face card__face--back" aria-hidden="true">
+          <picture>
+            <source srcset="assets/cards/card-4.webp" type="image/webp" />
+            <img class="card__photo" src="assets/cards/card-4.jpg" alt=""
+                 width="703" height="1046" loading="lazy" decoding="async" />
+          </picture>
+          <div class="card__tags">
+            <span class="card__num">04</span>
+            <span class="card__tag">решение</span>
+          </div>
+          <div class="card__copy">
+            <h3 class="card__name">Соберём разрозненное</h3>
+            <p class="card__note">Единая воронка, отчётность и&nbsp;нормативы обработки вместо чатов и&nbsp;догадок</p>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</section>
+
+
+<!-- ===== 02 / Проблема · версия с кругами · схема трёх опор ===== -->
+<section class="venn-sec venn-sec--flat" id="problem-flat" aria-labelledby="venn-flat-title">
+  <canvas class="venn-sec__bg hero__glyphs" aria-hidden="true"></canvas>
+  <canvas class="venn-sec__bg hero__bg" aria-hidden="true"></canvas>
+  <p class="venn-mark" aria-hidden="true"><span class="venn-mark__type"></span></p>
+  <p class="venn-tick" aria-hidden="true">
+    <span class="venn-tick__dot"></span>схема работает, когда собраны все три
+  </p>
+  <div class="venn-sec__inner">
+
+    <!-- Левая колонка: заголовок -->
+    <div class="venn-lede">
+      <h2 class="venn-title" id="venn-flat-title">
+        Запуск<br />закончился<br /><b>и&nbsp;всё встало?</b>
+      </h2>
+      <p class="venn-sub">
+        Продуктовая линейка, трафик и&nbsp;отдел продаж держались
+        на&nbsp;запуске. Запуск кончился&nbsp;— встало всё сразу.
+      </p>
+
+    </div>
+
+    <!-- Центр: схема -->
+    <div class="venn" role="img"
+         aria-label="Три опоры продаж: лидогенерация, продукт и продажи. Работают вместе — деньги в кассе каждый день. По отдельности — заявки сгорают, нечего продавать, менеджеры ждут.">
+      <div class="venn__flat" aria-hidden="true">
+          <span class="venn__circle venn__circle--1"></span>
+          <span class="venn__circle venn__circle--2"></span>
+          <span class="venn__circle venn__circle--3"></span>
+          <div class="venn__core-stage" id="glassStage"></div>
+        </div>
+
+      <!-- подписи опор -->
+      <p class="venn-pillar venn-pillar--1"><b>Лидогенерация</b><i>трафик и заявки</i></p>
+      <p class="venn-pillar venn-pillar--2"><b>Продукт</b><i>программа и оффер</i></p>
+      <p class="venn-pillar venn-pillar--3"><b>Продажи</b><i>команда и процессы</i></p>
+
+      <!-- ядро -->
+      <div class="venn-core">
+        <b>Деньги<br />в&nbsp;кассе<br />каждый<br />день</b>
+      </div>
+    </div>
+
+    <!-- Правая колонка: квиз -->
+    <aside class="quiz">
+      <img class="quiz__qr" src="assets/quiz-qr.svg" alt="" width="96" height="96" loading="lazy" />
+      <p class="quiz__lead">
+        Пройдите тест и&nbsp;узнайте<br />где именно ваша школа<br />теряет деньги
+      </p>
+      <a class="quiz__cta" href="#">
+        <span class="quiz__label">Пройти тест</span>
+        <span class="quiz__icon" aria-hidden="true">
+          <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z" fill="currentColor"/>
+          </svg>
+        </span>
+      </a>
+      <p class="quiz__meta">7&nbsp;вопросов · 3&nbsp;минуты</p>
+    </aside>
+  </div>
+</section>
+
+<!-- ===== Где утекают деньги · липкая лента карточек ===== -->
+<section class="leaks" id="leaks" aria-labelledby="leaks-title">
+  <div class="leaks-sticky">
+    <div class="leaks-head">
+      <h2 class="leaks-title" id="leaks-title">Отдел продаж<br />теряет деньги тихо</h2>
+      <p class="leaks-sub">
+        Отдел продаж теряет деньги тихо. Утечки не&nbsp;бьют по&nbsp;выручке сразу:
+        сначала копятся в&nbsp;CRM и&nbsp;переписках, а&nbsp;через 2–3&nbsp;месяца выручка
+        проседает&nbsp;— и&nbsp;никто не&nbsp;понимает почему. Ловить их&nbsp;нужно
+        в&nbsp;процессе, пока деньги ещё можно вернуть. Все цифры ниже&nbsp;—
+        из&nbsp;наших аудитов.
+      </p>
+    </div>
+
+    <ul class="leaks-rail" role="list">
+      <li class="leak leak--dark" style="--i:0">
+        <div class="leak__tags">
+        <span class="card__num">01</span>
+        <span class="card__tag">неплохие</span>
+        </div>
+        <div class="leak__copy">
+          <h3 class="leak__name"><span class="leak__num">7+ часов</span><br />Заявка ждёт ответа</h3>
+          <p class="leak__text">За это время интерес остывает, а&nbsp;человек уже смотрит конкурентов. Вы&nbsp;оплатили заявку, прогрели эфиром или вебинаром&nbsp;— и&nbsp;отдали клиента тому, кто ответил раньше. Каждый час ожидания&nbsp;— оплаченный лид в&nbsp;минус.</p>
+        </div>
+      </li>
+      <li class="leak leak--red" style="--i:1">
+        <div class="leak__tags">
+        <span class="card__num">02</span>
+        
+        <span class="card__tag">так у всех</span>
+        </div>
+        <div class="leak__copy">
+          <h3 class="leak__name"><span class="leak__num">Год на 3 запусках</span><br />Выручка держится на&nbsp;запусках</h3>
+          <p class="leak__text">Между запусками касса почти пустая, а&nbsp;ежедневный трафик некому продавать. Все ставки&nbsp;— на&nbsp;несколько недель в&nbsp;году: не&nbsp;зашёл оффер, просела реклама, эксперт выпал из&nbsp;графика&nbsp;— и&nbsp;полгода работы не&nbsp;окупились.</p>
+        </div>
+      </li>
+      <li class="leak leak--dark" style="--i:2">
+        <div class="leak__tags">
+        <span class="card__num">03</span>
+        
+        <span class="card__tag">база есть</span>
+        </div>
+        <div class="leak__copy">
+          <h3 class="leak__name"><span class="leak__num">87%</span> База<br />не&nbsp;сегментирована</h3>
+          <p class="leak__text">Сделки закрыты как «не&nbsp;реализовано», а&nbsp;почему&nbsp;— не&nbsp;знает никто. Непонятно, кому и&nbsp;что предложить, вернуть этих людей нечем. Кажется, что база у&nbsp;вас есть, а&nbsp;по&nbsp;сути это кладбище лидов, а&nbsp;не&nbsp;актив.</p>
+        </div>
+      </li>
+      <li class="leak leak--red" style="--i:3">
+        <div class="leak__tags">
+        <span class="card__num">04</span>
+        
+        <span class="card__tag">так удобнее</span>
+        </div>
+        <div class="leak__copy">
+          <h3 class="leak__name"><span class="leak__num">0 звонков</span><br />Продают только перепиской</h3>
+          <p class="leak__text">Звонить некому или менеджеры не&nbsp;любят&nbsp;— всё уходит в&nbsp;чат. Но&nbsp;на&nbsp;высоком чеке сомнения «справлюсь ли?» и&nbsp;«стоит ли&nbsp;это денег?» снимает голос. В&nbsp;переписке не&nbsp;спорят&nbsp;— просто пропадают. Итог: недобор около 20% выручки.</p>
+        </div>
+      </li>
+      <li class="leak leak--dark" style="--i:4">
+        <div class="leak__tags">
+        <span class="card__num">05</span>
+        
+        <span class="card__tag">сами вернутся</span>
+        </div>
+        <div class="leak__copy">
+          <h3 class="leak__name"><span class="leak__num">1 касание</span><br />После «я&nbsp;подумаю»<br />никто не&nbsp;возвращается</h3>
+          <p class="leak__text">Менеджер написал один раз, получил «подумаю» и&nbsp;ушёл к&nbsp;новым заявкам. С&nbsp;первого контакта покупают редко, а&nbsp;до&nbsp;второго и&nbsp;третьего дело не&nbsp;доходит. Эти люди были готовы заплатить&nbsp;— их&nbsp;просто не&nbsp;довели до&nbsp;оплаты.</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+
+
+
+
+
+
+<footer class="footer">
+  <div class="footer__inner">
+    <div class="footer__brand">
+      <a class="footer__logo" href="#">GG AGENCY</a>
+      <p class="footer__tagline">
+        Системные продажи для онлайн-школ<br />и экспертных проектов
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label="Разделы">
+      <p class="footer__label">Разделы</p>
+      <a href="#">Построение постоянных продаж</a>
+      <a href="#">Кейсы</a>
+      <a href="#">С кем мы работаем</a>
+      <a href="#">Другие услуги</a>
+      <a href="#">Команда</a>
+    </nav>
+
+    <div class="footer__col">
+      <p class="footer__label">Связаться</p>
+      <a href="#">Telegram</a>
+      <a href="#">Instagram</a>
+      <a href="mailto:hello@ggagency.ru">hello@ggagency.ru</a>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="main.js"></script>
+<script src="marquee.js"></script>
+<script src="glass.js"></script>
+</body>
+</html>
