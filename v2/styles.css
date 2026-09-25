@@ -3292,3 +3292,138 @@ p.hero__lead { text-wrap: normal; }
   .approach__frame { grid-template-columns: minmax(0, 1fr); }
   .step { width: min(78vw, 20rem); }
 }
+
+
+/* ============================================================
+   На чём держатся системные продажи. Три источника выручки
+   лежат колодой: прокрутка блока перелистывает карточки.
+   ============================================================ */
+
+.sources {
+  background: #fff;
+  color: #16120d;
+  padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter);
+}
+.sources__eyebrow {
+  margin: 0 0 clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8d8880;
+}
+.sources__title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: -0.0345em;
+}
+.sources__sub {
+  margin: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
+  max-width: 48ch;
+  font-size: var(--fs-m);
+  font-weight: 300;
+  line-height: 1.45;
+  color: #6b655c;
+}
+
+.sources__body {
+  display: grid;
+  grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(1.5rem, 0.8333rem + 2.8444vw, 4rem);
+  margin-top: clamp(2.5rem, 1.6667rem + 3.5556vw, 5.5rem);
+}
+.sources__kicker {
+  margin: 0 0 0.35em;
+  font-size: var(--fs-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--arc-high);
+}
+.sources__name {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
+  font-weight: 400;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+}
+
+/* ---------- Колода ---------- */
+
+.deck {
+  width: min(100%, 24rem);
+  margin: 0;
+  overflow: visible;   /* тени и края соседних карточек не режутся */
+}
+.deck .swiper-wrapper { margin: 0; padding: 0; list-style: none; }
+
+.source {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  /* Пропорция карточки, а не колодца: высота от содержимого,
+     минимум держит стопку ровной при коротком тексте. */
+  min-height: clamp(15rem, 12.5rem + 10.6vw, 20rem);
+  padding: clamp(1.25rem, 1rem + 1.0667vw, 2rem);
+  border-radius: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.25rem);
+  color: #fff;
+  background:
+    radial-gradient(128% 104% at 74% -6%,
+      #e2121a 0%, #b90e18 26%, #7d0810 54%, #4a040a 78%, #2a0508 100%);
+}
+.source__num {
+  margin-bottom: clamp(1.5rem, 1.1667rem + 1.4222vw, 3rem);
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.72);
+}
+.source__name {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
+  font-weight: 600;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+}
+.source__text {
+  margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
+  font-size: var(--fs-s);
+  font-weight: 300;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.86);
+}
+
+/* Точки-указатели: видно, сколько карточек и какая сейчас */
+.deck__dots {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+}
+.deck__dot {
+  width: 1.5rem;
+  height: 2px;
+  border: 0;
+  padding: 0;
+  border-radius: 999px;
+  background: rgba(22, 18, 13, 0.18);
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+.deck__dot[aria-current="true"] { background: var(--arc-high); }
+
+/* Без Swiper (скрипт не догрузился) колода остаётся читаемым столбцом */
+.deck:not(.swiper-initialized) .swiper-wrapper {
+  display: grid;
+  gap: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.625rem);
+}
+
+@media (max-width: 900px) {
+  .sources__body { grid-template-columns: minmax(0, 1fr); }
+  .deck { width: 100%; }
+}

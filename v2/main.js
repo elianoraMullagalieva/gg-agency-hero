@@ -983,6 +983,76 @@
     });
   }
 
+
+  /* Колода источников выручки. Swiper подключён бандлом с CDN, поэтому
+     modules передавать не нужно — они уже внутри. Автоплея нет: карточки
+     перелистывает сама прокрутка, пока блок идёт через кадр. */
+  function initSources() {
+    var host = document.querySelector(".deck");
+    if (!host || typeof Swiper === "undefined") return;
+    var sec = document.querySelector(".sources");
+    var total = host.querySelectorAll(".swiper-slide").length;
+    if (!sec || total < 2) return;
+
+    var sw = new Swiper(host, {
+      effect: "cards",
+      grabCursor: true,
+      speed: 520,
+      cardsEffect: { perSlideOffset: 9, perSlideRotate: 3, slideShadows: false }
+    });
+
+    // Точки-указатели
+    var dots = document.createElement("div");
+    dots.className = "deck__dots";
+    for (var i = 0; i < total; i++) {
+      var b = document.createElement("button");
+      b.className = "deck__dot";
+      b.type = "button";
+      b.setAttribute("aria-label", "Карточка " + (i + 1));
+      b.dataset.i = i;
+      dots.appendChild(b);
+    }
+    host.parentNode.appendChild(dots);
+    dots.addEventListener("click", function (e) {
+      var d = e.target.closest(".deck__dot");
+      if (d) sw.slideTo(+d.dataset.i);
+    });
+    function paint() {
+      var list = dots.children;
+      for (var i = 0; i < list.length; i++)
+        list[i].setAttribute("aria-current", i === sw.activeIndex ? "true" : "false");
+    }
+    sw.on("slideChange", paint);
+    paint();
+
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    /* Прокрутка листает колоду. Отсчёт идёт по пути блока через кадр,
+       а не по фиксации: лишний липкий блок сразу после ленты утечек
+       читался бы как заедание страницы. */
+    var touched = false;
+    sw.on("touchStart", function () { touched = true; });
+
+    var ticking = false;
+    function onScroll() {
+      if (ticking || touched) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var r = sec.getBoundingClientRect();
+        var vh = window.innerHeight;
+        if (r.bottom < 0 || r.top > vh) return;
+        // 0 — блок только вошёл снизу, 1 — уходит вверх
+        var p = (vh - r.top) / (vh + r.height);
+        var i = Math.round(p * (total + 0.6) - 0.8);
+        i = Math.min(total - 1, Math.max(0, i));
+        if (i !== sw.activeIndex) sw.slideTo(i);
+      });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+  }
+
   function initCards() {
     var sec = document.querySelector(".situation");
     if (!sec) return;
@@ -1226,6 +1296,7 @@
   initQuestions();
   initServices();
   initLeaks();
+  initSources();
   initCards();
   initOdometer();
   initClientsWave();

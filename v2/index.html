@@ -40,6 +40,7 @@
     .venn .venn-issue { opacity: 1 !important; }
   </style>
 </noscript>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 </head>
 <body class="is-loading">
 
@@ -515,6 +516,50 @@
   </div>
 </section>
 
+<!-- ===== На чём держатся системные продажи · колода источников ===== -->
+<section class="sources" id="sources" aria-labelledby="sources-title">
+  <div class="sources__head">
+    <p class="sources__eyebrow">На чём держатся системные продажи</p>
+    <h2 class="sources__title" id="sources-title">
+      Отдел продаж&nbsp;—<br />это не&nbsp;только люди
+    </h2>
+    <p class="sources__sub">
+      Выручка растёт системно, когда у&nbsp;команды всегда есть что продавать
+      и&nbsp;кому, а&nbsp;у&nbsp;вас&nbsp;— цифры, по&nbsp;которым этим можно
+      управлять. Мы&nbsp;выстраиваем обе части.
+    </p>
+  </div>
+
+  <div class="sources__body">
+    <div class="sources__label">
+      <p class="sources__kicker">Откуда деньги</p>
+      <p class="sources__name">Источники выручки</p>
+    </div>
+
+    <div class="swiper deck">
+      <!-- Колода: карточки лежат стопкой и перелистываются при прокрутке.
+           Переключение делает main.js от положения блока в кадре. -->
+      <ul class="swiper-wrapper" role="list">
+          <li class="swiper-slide source">
+            <span class="source__num">01</span>
+            <h3 class="source__name">Воронки и&nbsp;окна продаж</h3>
+            <p class="source__text">Маршруты внутри вашего трафика: практикумы, вебинары, диагностики, разборы. Продажи идут по&nbsp;календарю, а&nbsp;не&nbsp;когда повезёт.</p>
+          </li>
+          <li class="swiper-slide source">
+            <span class="source__num">02</span>
+            <h3 class="source__name">Офферы</h3>
+            <p class="source__text">Предложение под каждый сегмент и&nbsp;этап: первая покупка, повышенный тариф, продолжение, допродажа из&nbsp;ваших продуктов.</p>
+          </li>
+          <li class="swiper-slide source">
+            <span class="source__num">03</span>
+            <h3 class="source__name">База</h3>
+            <p class="source__text">Сегментация, возврат тех, кто не&nbsp;купил, повторные продажи. Стабильно 15–20% выручки в&nbsp;месяц.</p>
+          </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <!-- ===== Кейс · развёрнутый формат ===== -->
 <section class="case-sec" id="cases" aria-labelledby="case-title">
   <div class="case-head">
@@ -836,6 +881,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script src="main.js"></script>
 <script src="marquee.js"></script>
 <script src="glass.js"></script>
