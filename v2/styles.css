@@ -3966,3 +3966,32 @@ p.hero__lead { text-wrap: normal; }
   height: var(--btn-h);
   aspect-ratio: auto;
 }
+
+
+/* Отзывы: надзаголовок, тег и цитата. Дизайн карточки прежний —
+   добавлены только текстовые строки над подписью. */
+.reviews__eyebrow {
+  margin: 0 0 clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8d8880;
+}
+.vreview__tag {
+  margin: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem) 0 0.4em;
+  font-size: var(--fs-s);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--arc-high);
+}
+.vreview__quote {
+  margin: 0 0 0.45em;
+  font-family: var(--font-logo);
+  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  font-weight: 500;
+  line-height: 1.24;
+  letter-spacing: -0.01em;
+  text-wrap: pretty;
+}
