@@ -461,13 +461,15 @@
 
 <!-- ===== Мост: от утечек к тесту ===== -->
 <section class="bridge" aria-labelledby="bridge-title">
-  <div class="bridge__inner">
-    <h2 class="bridge__title" id="bridge-title">
-      Такие утечки есть почти в&nbsp;каждом отделе продаж&nbsp;— и&nbsp;в&nbsp;школе
-      на&nbsp;старте, и&nbsp;в&nbsp;проекте на&nbsp;десятки миллионов.
-      <b>Разница только в&nbsp;том, сколько денег через них уходит.</b>
-    </h2>
-    <div class="bridge__aside">
+  <div class="frame">
+    <div class="frame__lede">
+      <h2 class="bridge__title" id="bridge-title">
+        Такие утечки есть почти в&nbsp;каждом отделе продаж&nbsp;— и&nbsp;в&nbsp;школе
+        на&nbsp;старте, и&nbsp;в&nbsp;проекте на&nbsp;десятки миллионов. Разница только
+        в&nbsp;том, сколько денег через них уходит.
+      </h2>
+    </div>
+    <div class="frame__side bridge__aside">
       <p class="bridge__note">
         8&nbsp;вопросов в&nbsp;Telegram-боте&nbsp;— и&nbsp;вы&nbsp;увидите, какие
         из&nbsp;этих утечек есть у&nbsp;вас и&nbsp;сколько они стоят.
@@ -482,12 +484,12 @@
 
 <!-- ===== Наш подход · карточки едут вбок ===== -->
 <section class="approach" id="approach" aria-labelledby="approach-title">
-  <div class="approach__frame">
-    <div class="approach__lede">
+  <div class="frame">
+    <div class="frame__lede approach__lede">
       <p class="approach__eyebrow">Наш подход</p>
       <h2 class="approach__title" id="approach-title">
-        Мы&nbsp;не&nbsp;приводим новый трафик.
-        <b>Мы&nbsp;забираем деньги, которые уже лежат</b> внутри проекта
+        Мы&nbsp;не&nbsp;приводим новый трафик. Мы&nbsp;забираем
+        деньги, которые уже лежат внутри проекта
       </h2>
       <p class="approach__sub">
         Заявки, за&nbsp;которые вы&nbsp;уже заплатили. База, которая не&nbsp;купила
@@ -496,7 +498,7 @@
       </p>
     </div>
 
-    <ul class="approach__rail" role="list">
+    <ul class="frame__side approach__rail" role="list">
       <li class="step" style="--i:0">
         <span class="step__num">01</span>
         <h3 class="step__name">Из&nbsp;запусков&nbsp;— в&nbsp;постоянные продажи</h3>
@@ -518,25 +520,21 @@
 
 <!-- ===== На чём держатся системные продажи · колода источников ===== -->
 <section class="sources" id="sources" aria-labelledby="sources-title">
-  <div class="sources__head">
-    <p class="sources__eyebrow">На чём держатся системные продажи</p>
-    <h2 class="sources__title" id="sources-title">
-      Отдел продаж&nbsp;—<br />это не&nbsp;только люди
-    </h2>
-    <p class="sources__sub">
-      Выручка растёт системно, когда у&nbsp;команды всегда есть что продавать
-      и&nbsp;кому, а&nbsp;у&nbsp;вас&nbsp;— цифры, по&nbsp;которым этим можно
-      управлять. Мы&nbsp;выстраиваем обе части.
-    </p>
-  </div>
-
-  <div class="sources__body">
-    <div class="sources__label">
-      <p class="sources__kicker">Откуда деньги</p>
-      <p class="sources__name">Источники выручки</p>
+  <div class="frame">
+    <div class="frame__lede">
+      <p class="frame__eyebrow">На чём держатся системные продажи</p>
+      <h2 class="sources__title" id="sources-title">
+        Отдел продаж&nbsp;—<br />это не&nbsp;только люди
+      </h2>
+      <p class="frame__sub">
+        Выручка растёт системно, когда у&nbsp;команды всегда есть что продавать
+        и&nbsp;кому, а&nbsp;у&nbsp;вас&nbsp;— цифры, по&nbsp;которым этим можно
+        управлять. Мы&nbsp;выстраиваем обе части.
+      </p>
+      <p class="frame__note">Откуда деньги&nbsp;· источники выручки</p>
     </div>
-
-    <div class="swiper deck">
+    <div class="frame__side">
+<div class="swiper deck">
       <!-- Колода: карточки лежат стопкой и перелистываются при прокрутке.
            Переключение делает main.js от положения блока в кадре. -->
       <ul class="swiper-wrapper" role="list">
@@ -556,6 +554,7 @@
             <p class="source__text">Сегментация, возврат тех, кто не&nbsp;купил, повторные продажи. Стабильно 15–20% выручки в&nbsp;месяц.</p>
           </li>
       </ul>
+    </div>
     </div>
   </div>
 </section>

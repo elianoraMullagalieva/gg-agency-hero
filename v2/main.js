@@ -877,11 +877,24 @@
        именами всегда одинаковый, а обычные пробелы внутри имён
        («Pixel School») остаются нормальными. word-spacing так нельзя —
        он раздвигает и те, и другие. */
+    /* Имена и разделители — отдельные tspan: только так точку можно
+       покрасить отдельно от названия. Шпации вшиты в разделитель,
+       поэтому просвет между брендами ровный, а пробелы внутри имён
+       («Pixel School») остаются обычными. */
     var SEP = "\u2002·\u2002";
-    var phrase = (svg.dataset.wavePhrase || tp.textContent)
+    var names = (svg.dataset.waveNames || tp.textContent)
       .split(/\s*·\s*/).map(function (n) { return n.replace(/\s+/g, " ").trim(); })
-      .filter(Boolean).join(SEP) + SEP;
-    svg.dataset.wavePhrase = phrase;
+      .filter(Boolean);
+    svg.dataset.waveNames = names.join(" · ");
+
+    function markup(times) {
+      var out = "", i, j;
+      for (i = 0; i < times; i++)
+        for (j = 0; j < names.length; j++)
+          out += "<tspan>" + names[j] + "</tspan>" +
+                 '<tspan class="clients__dot">' + SEP + "</tspan>";
+      return out;
+    }
 
     var period = 0;   // длина одного повтора вдоль пути
 
@@ -915,7 +928,7 @@
       var k  = w / VW;                                          // px на единицу viewBox
       var fs = parseFloat(getComputedStyle(text).fontSize) / k; // кегль в единицах viewBox
 
-      tp.textContent = phrase;
+      tp.innerHTML = markup(1);
       var rep = tp.getComputedTextLength();   // длина одного повтора ВДОЛЬ пути
       if (!rep) return;
       if (!stretch) stretch = measureStretch();
@@ -940,9 +953,7 @@
       // Текста должно хватить на весь путь плюс один ход — иначе к концу
       // цикла правый край пустеет.
       var pathLen = path.getTotalLength();
-      var need = Math.ceil((pathLen + rep) / rep) + 1, out = "", i;
-      for (i = 0; i < need; i++) out += phrase;
-      tp.textContent = out;
+      tp.innerHTML = markup(Math.ceil((pathLen + rep) / rep) + 1);
 
       svg.setAttribute("viewBox", "0 0 " + VW + " " + H);
       // Ход за цикл — ровно один повтор текста. Путь прямой, поэтому
@@ -1077,7 +1088,8 @@
     var narrow = matchMedia("(max-width: 900px)").matches;
     if (reduce || narrow) return;
 
-    var max = 0, ticking = false;
+    var RUN = 3.2;   // во сколько раз путь прокрутки длиннее хода ленты
+    var max = 0, hold = 0, cur = 0, raf = 0;
 
     function measure() {
       var cs  = getComputedStyle(rail);
@@ -1096,25 +1108,42 @@
       // Сколько ленты не влезло: последняя карточка должна встать
       // ровно по правому полю сетки.
       max = Math.max(0, rail.scrollWidth - window.innerWidth);
-      // Высота секции = экран + путь ленты, чтобы скорость была 1:1
-      sec.style.height = (window.innerHeight + max) + "px";
+
+      /* Пауза на входе: первый экран прокрутки блок просто стоит —
+         стартовый кадр успевают прочесть. Дальше путь растянут в RUN
+         раз: при ходе 1:1 один щелчок колеса уносил карточку целиком. */
+      hold = window.innerHeight * 0.45;
+      sec.style.height = (window.innerHeight + hold + max * RUN) + "px";
     }
 
-    function onScroll() {
-      if (ticking) return;
-      ticking = true;
-      requestAnimationFrame(function () {
-        ticking = false;
-        var r = sec.getBoundingClientRect();
-        var passed = Math.min(Math.max(-r.top, 0), max);
-        rail.style.transform = "translate3d(" + (-passed) + "px,0,0)";
-      });
+    function target() {
+      var r = sec.getBoundingClientRect();
+      var p = (-r.top - hold) / (max * RUN);
+      return Math.min(Math.max(p, 0), 1) * max;
+    }
+
+    /* Ход сглажен: позиция догоняет цель по экспоненте, поэтому лента
+       не дёргается на каждом щелчке колеса, а доезжает. */
+    function loop() {
+      var to = target();
+      cur += (to - cur) * 0.14;
+      if (Math.abs(to - cur) < 0.4) cur = to;
+      rail.style.transform = "translate3d(" + (-cur).toFixed(2) + "px,0,0)";
+      var r = sec.getBoundingClientRect();
+      var near = r.bottom > -200 && r.top < window.innerHeight + 200;
+      if (near) { raf = requestAnimationFrame(loop); } else { raf = 0; rail.style.transform = "translate3d(" + (-to) + "px,0,0)"; cur = to; }
+    }
+
+    function wake() {
+      if (!raf) raf = requestAnimationFrame(loop);
     }
 
     measure();
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", function () { measure(); onScroll(); });
+    cur = target();
+    rail.style.transform = "translate3d(" + (-cur) + "px,0,0)";
+    window.addEventListener("scroll", wake, { passive: true });
+    window.addEventListener("resize", function () { measure(); wake(); });
+    wake();
   }
 
   function initServices() {

@@ -2478,23 +2478,25 @@ p.hero__lead { text-wrap: normal; }
 .clients {
   position: relative;
   z-index: 2;
-  /* Инверсия: светлая полоса между тёмными секциями */
-  background: #ffffff;
-  color: #16120d;
-  padding: clamp(2.25rem, 1.7143rem + 2.2857vw, 4.5rem) 0
-           clamp(3.5rem, 2.6071rem + 3.8095vw, 7.25rem);
+  /* Тёмная полоса, светлый текст. Узкая: это подпись под первым
+     экраном, а не самостоятельный блок. */
+  background: var(--bg);
+  color: var(--text);
+  padding: clamp(1.5rem, 1.2321rem + 1.1429vw, 2.625rem) 0
+           clamp(1.75rem, 1.4821rem + 1.1429vw, 2.875rem);
   overflow: hidden;
 }
 
 /* Подпись стоит неподвижно — не уезжает вместе с именами */
 .clients__lead {
-  margin: 0 0 clamp(2rem, 1.6429rem + 1.5238vw, 3.5rem);
+  margin: 0 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
   padding-inline: var(--gutter);
   text-align: center;
-  font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   line-height: 1.35;
-  color: #6b655c;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .clients__marquee {
@@ -2783,10 +2785,16 @@ p.hero__lead { text-wrap: normal; }
 /* Кегль на 18% меньше прежнего, из нашей шкалы */
 .clients__text {
   font-family: var(--font-logo);
-  font-size: clamp(1.125rem, 0.8929rem + 0.9905vw, 2rem);
+  /* 14px на 360 -> 18px на 1440: компактная строка, не заголовок */
+  font-size: clamp(0.875rem, 0.7917rem + 0.3704vw, 1.125rem);
   font-weight: 400;
-  letter-spacing: -0.0345em;
-  fill: rgba(22, 18, 13, 0.78);
+  letter-spacing: -0.01em;
+  fill: rgba(255, 255, 255, 0.82);
+}
+/* Точки-разделители красные — единственный акцент в полосе.
+   Ярче --arc-high: на чёрном фоне при кегле 18px тот уходил в бурый. */
+.clients__dot {
+  fill: #d01420;
 }
 
 /* Ход строки: группа едет влево ровно на один повтор текста.
@@ -2933,7 +2941,10 @@ p.hero__lead { text-wrap: normal; }
      чёрных карточек совпадает с низом экрана. Отсюда и «шапка выше,
      карточки ниже» — между ними пружина margin-top: auto. */
   justify-content: flex-start;
-  padding-top: 18.7svh;
+  /* Блок поднят: свободное место уходит вниз, а не встаёт
+     распоркой между шапкой и карточками. */
+  padding-top: 12svh;
+  gap: clamp(1.5rem, 5svh, 3.5rem);
   overflow: hidden;
 }
 
@@ -2970,9 +2981,7 @@ p.hero__lead { text-wrap: normal; }
   display: flex;
   /* Зазор меньше, чем у карточек ситуации: в макете 11px при 300 */
   gap: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
-  /* auto сверху прижимает ленту к низу экрана, как в макете.
-     Раньше здесь стояло margin: 0 и затирало этот отступ. */
-  margin: auto 0 0;
+  margin: 0;
   padding-inline: var(--gutter);
   list-style: none;
   width: max-content;
@@ -3085,12 +3094,6 @@ p.hero__lead { text-wrap: normal; }
   color: #16120d;
   padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter);
 }
-.bridge__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
-  align-items: end;
-  gap: clamp(2rem, 1rem + 4.2667vw, 6rem);
-}
 .bridge__title {
   margin: 0;
   max-width: 18ch;
@@ -3100,7 +3103,6 @@ p.hero__lead { text-wrap: normal; }
   line-height: 1.08;
   letter-spacing: -0.0345em;
 }
-.bridge__title b { font-weight: 400; color: var(--arc-high); }
 
 .bridge__aside {
   display: flex;
@@ -3158,7 +3160,6 @@ p.hero__lead { text-wrap: normal; }
 .bridge__cta:hover .bridge__icon svg { transform: translate(2px, -2px); }
 
 @media (max-width: 900px) {
-  .bridge__inner { grid-template-columns: minmax(0, 1fr); }
   .bridge__title { max-width: none; }
 }
 
@@ -3171,15 +3172,6 @@ p.hero__lead { text-wrap: normal; }
   background: var(--bg);
   color: var(--text);
   padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter);
-}
-.approach__frame {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  align-items: stretch;
-  gap: clamp(1.5rem, 0.8333rem + 2.8444vw, 4rem);
-  padding: clamp(1.5rem, 1rem + 2.1333vw, 3.5rem);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: clamp(1.25rem, 1rem + 1.0667vw, 2rem);
 }
 
 .approach__lede {
@@ -3204,7 +3196,6 @@ p.hero__lead { text-wrap: normal; }
   line-height: 1.06;
   letter-spacing: -0.0345em;
 }
-.approach__title b { font-weight: 400; color: var(--arc-high); }
 .approach__sub {
   margin: 0;
   max-width: 44ch;
@@ -3289,7 +3280,6 @@ p.hero__lead { text-wrap: normal; }
 }
 
 @media (max-width: 1000px) {
-  .approach__frame { grid-template-columns: minmax(0, 1fr); }
   .step { width: min(78vw, 20rem); }
 }
 
@@ -3304,14 +3294,6 @@ p.hero__lead { text-wrap: normal; }
   color: #16120d;
   padding: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem) var(--gutter);
 }
-.sources__eyebrow {
-  margin: 0 0 clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
-  font-size: var(--fs-s);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: #8d8880;
-}
 .sources__title {
   margin: 0;
   font-family: var(--font-logo);
@@ -3320,38 +3302,7 @@ p.hero__lead { text-wrap: normal; }
   line-height: 1.04;
   letter-spacing: -0.0345em;
 }
-.sources__sub {
-  margin: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
-  max-width: 48ch;
-  font-size: var(--fs-m);
-  font-weight: 300;
-  line-height: 1.45;
-  color: #6b655c;
-}
 
-.sources__body {
-  display: grid;
-  grid-template-columns: minmax(0, 0.5fr) minmax(0, 1fr);
-  align-items: start;
-  gap: clamp(1.5rem, 0.8333rem + 2.8444vw, 4rem);
-  margin-top: clamp(2.5rem, 1.6667rem + 3.5556vw, 5.5rem);
-}
-.sources__kicker {
-  margin: 0 0 0.35em;
-  font-size: var(--fs-s);
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--arc-high);
-}
-.sources__name {
-  margin: 0;
-  font-family: var(--font-logo);
-  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
-  font-weight: 400;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
-}
 
 /* ---------- Колода ---------- */
 
@@ -3424,6 +3375,69 @@ p.hero__lead { text-wrap: normal; }
 }
 
 @media (max-width: 900px) {
-  .sources__body { grid-template-columns: minmax(0, 1fr); }
   .deck { width: 100%; }
+}
+
+
+/* ============================================================
+   Общая рамка новых блоков: слева текст, справа карточки.
+   Композиция одна на три блока — они читаются как серия.
+   ============================================================ */
+
+.frame {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: stretch;
+  gap: clamp(1.5rem, 0.8333rem + 2.8444vw, 4rem);
+  padding: clamp(1.5rem, 1rem + 2.1333vw, 3.5rem);
+  border: 1px solid;
+  border-radius: clamp(1.25rem, 1rem + 1.0667vw, 2rem);
+}
+.frame__lede {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+}
+.frame__side {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+.frame__eyebrow {
+  margin: 0;
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.frame__sub {
+  margin: 0;
+  max-width: 46ch;
+  font-size: var(--fs-m);
+  font-weight: 300;
+  line-height: 1.45;
+}
+.frame__note {
+  margin: 0;
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Светлые блоки и тёмные берут рамку одного строя, разной светлоты */
+.bridge .frame,
+.sources .frame { border-color: rgba(22, 18, 13, 0.14); }
+.approach .frame { border-color: rgba(255, 255, 255, 0.12); }
+
+.sources .frame__eyebrow { color: #8d8880; }
+.sources .frame__sub     { color: #6b655c; }
+.sources .frame__note    { color: var(--arc-high); }
+.approach .frame__eyebrow { color: var(--arc-high); }
+.approach .frame__sub     { color: var(--muted); }
+
+@media (max-width: 1000px) {
+  .frame { grid-template-columns: minmax(0, 1fr); }
 }
