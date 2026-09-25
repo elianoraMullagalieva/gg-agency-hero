@@ -41,6 +41,11 @@
      M = 18px и S = 14px на 1440. Формула §02:
      B = (s2−s1)/((W2−W1)/100), A = (s1 − B×W1/100)/16, W1=360, W2=1440.
      M: 16px@360 → 18px@1440.   S: 13px@360 → 14px@1440. */
+  /* H2 — один токен на все блоки. До 1440 прежняя шкала (28->58px),
+     выше растёт дальше, до 84px на 3840. Не 2.67x «в пропорцию»:
+     4K-монитор смотрят с той же дистанции, что и 1440, и заголовок
+     в 155px был бы вывеской. 1.45x — предел, где ещё читается как текст. */
+  --fs-h2: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
   --fs-m: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   --fs-s: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
 
@@ -655,7 +660,7 @@ p.hero__lead { text-wrap: normal; }
 
 .situation__title {
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -886,7 +891,7 @@ p.hero__lead { text-wrap: normal; }
 .questions-head h2 {
   margin: 0;
   font-family: var(--font-ui);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -1156,7 +1161,7 @@ p.hero__lead { text-wrap: normal; }
 
 .venn-title {
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -1437,7 +1442,7 @@ p.hero__lead { text-wrap: normal; }
 
 .reviews__title {
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -1636,7 +1641,7 @@ p.hero__lead { text-wrap: normal; }
 
 .final-cta__title {
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -1817,7 +1822,7 @@ p.hero__lead { text-wrap: normal; }
 
 .services-title {
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -2139,7 +2144,7 @@ p.hero__lead { text-wrap: normal; }
 
 .case-title {
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;
@@ -2381,9 +2386,9 @@ p.hero__lead { text-wrap: normal; }
     rgba(255, 255, 255, 0.085) 0%,
     rgba(255, 255, 255, 0.045) 42%,
     rgba(255, 255, 255, 0.022) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  /* Теней нет — ни внешних, ни внутренних. Строгий запрет по макету:
-     объём держат только заливка-градиент и тонкая светлая кромка. */
+  /* Ни обводки, ни теней: кромка резала глаз. Круг держится
+     только заливкой-градиентом. */
+  border: 0;
   box-shadow: none;
 }
 /* Позиции из макета: круги r=152 при ширине 1440 */
@@ -2605,22 +2610,31 @@ p.hero__lead { text-wrap: normal; }
    Крупные экраны: сетка, схема и карточки растут вместе
    ============================================================ */
 
+/* Потолка по ширине у карточки нет: он упирал её в 512px, а колонка
+   сетки продолжала расти — между карточками разверзались дыры
+   (18px на 1440, 102 на 2560, 417 на 3840). Карточка растёт вместе
+   с экраном, а зазор задан долей ширины ленты, поэтому отношение
+   «зазор к карточке» одно и то же везде. */
+@media (min-width: 1200px) {
+  .cards { gap: 1.33%; }
+}
+
+/* Крупные экраны: заголовки и схема растут дальше единым шагом */
+@media (min-width: 1440px) {
+  :root { --fs-h2: clamp(3.625rem, 2.65rem + 1.0833vw, 5.25rem); }
+}
+
 @media (min-width: 1600px) {
-  .card { max-width: 25rem; }
-  .venn { max-width: clamp(34rem, 26rem + 12vw, 44rem); }
+  /* 46rem на 1440 -> 72rem на 3840: схема держит примерно
+     треть ширины экрана, как на 1440. */
+  .venn { max-width: clamp(46rem, 30.4rem + 17.3333vw, 72rem); }
 }
 
 @media (min-width: 1920px) {
-  .cards { gap: clamp(1.5rem, 1vw + 1rem, 2.25rem); }
-  .card { max-width: 28rem; }
-  .venn { max-width: 46rem; }
   .clients__item { font-size: clamp(2.875rem, 1.5rem + 1.6vw, 3.5rem); }
 }
 
-@media (min-width: 2400px) {
-  .card { max-width: 32rem; }
-  .venn { max-width: 52rem; }
-}
+
 
 /* ============================================================
    Динамика схемы: круги дышат и переливаются
@@ -2769,9 +2783,24 @@ p.hero__lead { text-wrap: normal; }
   fill: rgba(22, 18, 13, 0.78);
 }
 
-/* Ход строки считает main.js покадрово через startOffset — буквы
-   должны плыть по волне, а не ехать застывшими. */
-.clients__spin { will-change: contents; }
+/* Ход строки: группа едет влево ровно на один повтор текста.
+   Путь прямой, поэтому сдвиг по X равен длине повтора и шов не виден.
+   Длину и длительность считает main.js от реального кегля. */
+.clients__spin {
+  transform-box: view-box;
+  will-change: transform;
+  animation: clientsRun var(--wave-dur, 30s) linear infinite;
+}
+@keyframes clientsRun {
+  from { transform: translateX(0); }
+  to   { transform: translateX(var(--wave-shift, -1440px)); }
+}
+@media (hover: hover) and (pointer: fine) {
+  .clients__wave:hover .clients__spin { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .clients__spin { animation: none; }
+}
 
 /* Наведение останавливает ход */
 @media (hover: hover) and (pointer: fine) {
@@ -2910,7 +2939,7 @@ p.hero__lead { text-wrap: normal; }
 .leaks-title {
   margin: 0;
   font-family: var(--font-logo);
-  font-size: clamp(1.75rem, 1.125rem + 2.7778vw, 3.625rem);
+  font-size: var(--fs-h2);
   font-weight: 400;
   line-height: 1.02;
   letter-spacing: -0.0345em;

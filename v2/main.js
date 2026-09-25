@@ -871,7 +871,7 @@
     var NS    = "http://www.w3.org/2000/svg";
     var VW    = 1440;
     var SPEED = parseFloat(svg.dataset.waveSpeed) || 112; // единиц viewBox в секунду
-    var AMP_K = 0.112;   // амплитуда как доля полупериода — пропорция эталона
+    var AMP_K = 0;       // 0 — строка ровная. Волну убрали, путь прямой.
 
     /* Разделитель с вшитыми полукруглыми шпациями: просвет между
        именами всегда одинаковый, а обычные пробелы внутри имён
@@ -945,50 +945,25 @@
       tp.textContent = out;
 
       svg.setAttribute("viewBox", "0 0 " + VW + " " + H);
-      period = rep;   // ход за цикл — ровно один повтор текста
-    }
-
-    /* Ход строки. Двигать группу целиком нельзя: глифы тогда ложатся
-       на волну один раз и едут застывшими. Здесь меняется startOffset,
-       то есть положение текста ВДОЛЬ пути — каждый глиф на каждом кадре
-       заново берёт свою точку и наклон с кривой, и буквы плывут по волне.
-       Шов невидим, потому что один повтор текста равен целому числу
-       периодов волны: картинка при off и off−period совпадает. */
-    var off = 0, prev = 0, raf = 0, running = false;
-
-    function tick(now) {
-      if (!prev) prev = now;
-      var dt = Math.min((now - prev) / 1000, 0.05);   // после вкладки в фоне
-      prev = now;
-      off -= SPEED * dt;
-      if (period && off <= -period) off += period;
-      tp.setAttribute("startOffset", off.toFixed(2));
-      raf = requestAnimationFrame(tick);
-    }
-
-    function start() {
-      if (running || !period) return;
-      running = true; prev = 0;
-      raf = requestAnimationFrame(tick);
-    }
-    function stop() {
-      if (!running) return;
-      running = false;
-      cancelAnimationFrame(raf);
+      // Ход за цикл — ровно один повтор текста. Путь прямой, поэтому
+      // сдвиг по X равен длине повтора и шов не виден.
+      period = rep;
+      spin.style.setProperty("--wave-shift", (-repX).toFixed(2) + "px");
+      spin.style.setProperty("--wave-dur",   (repX / SPEED).toFixed(3) + "s");
     }
 
     layout();
     if (document.fonts && document.fonts.ready) document.fonts.ready.then(layout);
 
+    /* Ход строки — CSS-сдвиг группы. Путь прямой, наклон у всех глифов
+       нулевой, поэтому пересчитывать их положение покадрово незачем:
+       transform уходит на композитор и не трогает раскладку текста. */
     var still = matchMedia("(prefers-reduced-motion: reduce)");
     function sync() {
-      if (still.matches) { stop(); tp.setAttribute("startOffset", "0"); }
-      else if (visible && !document.hidden) start();
-      else stop();
+      spin.style.animationPlayState =
+        (still.matches || !visible || document.hidden) ? "paused" : "running";
     }
 
-    // Считаем только когда лента в кадре: пересчёт раскладки текста
-    // на каждом кадре недёшев, а за экраном он никому не нужен.
     var visible = true;
     if ("IntersectionObserver" in window) {
       visible = false;
@@ -999,19 +974,12 @@
     }
     document.addEventListener("visibilitychange", sync);
     if (still.addEventListener) still.addEventListener("change", sync);
-
-    var box = svg.closest(".clients__wave") || svg;
-    if (matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      box.addEventListener("mouseenter", stop);
-      box.addEventListener("mouseleave", sync);
-    }
-
     sync();
 
     var t;
     addEventListener("resize", function () {
       clearTimeout(t);
-      t = setTimeout(function () { layout(); sync(); }, 160);
+      t = setTimeout(layout, 160);
     });
   }
 
