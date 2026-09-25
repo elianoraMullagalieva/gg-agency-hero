@@ -21,46 +21,39 @@
     "}"
   ].join("\n");
 
+  /* Плотное красное стекло. Прежний шейдер имитировал прозрачную
+     плёнку с переливом — на тёмном фоне перелив не читался, а тело
+     просвечивало. Здесь цвет набирается по закону Бугера: чем длиннее
+     путь луча внутри, тем гуще красный, поэтому центр глубокий, а
+     кромка светлая. Объём держит Френель, жизнь — блик, который
+     медленно обходит сферу. */
   var FRAG = [
-    "uniform vec3 uGlass; uniform vec3 uRoomTop; uniform vec3 uRoomBottom;",
-    "uniform vec3 uHighlight; uniform float uIor; uniform float uDispersion;",
-    "uniform float uClarity; uniform float uEdge; uniform float uGloss;",
+    "uniform vec3 uGlass; uniform vec3 uDeep; uniform vec3 uHighlight;",
+    "uniform float uEdge; uniform float uGloss; uniform float uTime;",
     "uniform float uOpacity;",
     "varying vec3 vNormal; varying vec3 vView;",
-    "const vec3 KEY = vec3(0.55, 0.72, 0.42);",
-    "const vec3 FILL = vec3(-0.62, -0.28, 0.73);",
-    "vec3 room(vec3 dir) {",
-    "  vec3 base = mix(uRoomBottom, uRoomTop, clamp(dir.y * 0.5 + 0.5, 0.0, 1.0));",
-    "  float key = pow(max(dot(dir, normalize(KEY)), 0.0), 28.0);",
-    "  float fill = pow(max(dot(dir, normalize(FILL)), 0.0), 12.0);",
-    "  return base + uHighlight * (key * 1.6 + fill * 0.35);",
-    "}",
     "void main() {",
     "  vec3 n = normalize(vNormal); vec3 v = normalize(vView);",
     "  if (!gl_FrontFacing) n = -n;",
-    "  float facing = gl_FrontFacing ? 1.0 : 0.45;",
-    "  float f = clamp(pow(1.0 - max(dot(n, v), 0.0), 5.0), 0.0, 1.0);",
+    "  float ndv = max(dot(n, v), 0.0);",
+    // толщина: в лоб смотрим сквозь всё тело, у края — вскользь
+    "  float thick = pow(ndv, 0.8);",
+    "  vec3 body = mix(uGlass, uDeep, thick);",
+    // Френель — светлая кромка, она и читается как объём
+    "  float f = pow(1.0 - ndv, 3.4);",
     "  float rim = clamp(f * uEdge, 0.0, 1.0);",
-    "  vec3 reflected = room(reflect(-v, n));",
-    "  float eta = 1.0 / max(1.001, uIor);",
-    "  vec3 rRay = refract(-v, n, eta * (1.0 + uDispersion));",
-    "  vec3 gRay = refract(-v, n, eta);",
-    "  vec3 bRay = refract(-v, n, eta * (1.0 - uDispersion));",
-    "  vec3 refracted = vec3(room(rRay).r, room(gRay).g, room(bRay).b);",
-    "  vec3 tinted = mix(refracted, refracted * uGlass, 1.0 - uClarity);",
-    "  vec3 col = mix(tinted, reflected, rim);",
-    "  float face = smoothstep(-0.35, 0.9, dot(n, normalize(KEY)));",
-    "  col *= 0.72 + face * 0.55;",
-    "  vec3 hKey = normalize(normalize(KEY) + v);",
-    "  vec3 hFill = normalize(normalize(FILL) + v);",
-    "  float spec = pow(max(dot(n, hKey), 0.0), uGloss) * 1.35",
-    "    + pow(max(dot(n, hFill), 0.0), uGloss * 0.35) * 0.5",
-    "    + pow(max(dot(n, hKey), 0.0), 6.0) * 0.12;",
-    "  col += uHighlight * spec * facing;",
-    "  float alpha = 0.05 + rim * 0.85 + clamp(spec, 0.0, 1.0) * 0.75;",
-    "  alpha += (1.0 - uClarity) * 0.16;",
-    "  alpha += face * 0.1;",
-    "  gl_FragColor = vec4(col, clamp(alpha, 0.0, 1.0) * facing * uOpacity);",
+    "  vec3 col = mix(body, uHighlight, rim * 0.8);",
+    // блик обходит сферу по кругу — стекло живое, а не залитое
+    "  float a = uTime * 0.32;",
+    "  vec3 key = normalize(vec3(cos(a) * 0.8, 0.5, sin(a) * 0.8 + 0.45));",
+    "  float spec = pow(max(dot(n, normalize(key + v)), 0.0), uGloss);",
+    "  float wash = pow(max(dot(n, key), 0.0), 2.6);",
+    "  col += uHighlight * (spec * 1.7 + wash * 0.22);",
+    // вторая подсветка с изнанки — внутри стекла что-то происходит
+    "  vec3 back = normalize(vec3(-cos(a * 0.55) * 0.9, -0.4, -sin(a * 0.55)));",
+    "  col += uGlass * pow(max(dot(n, normalize(back + v)), 0.0), uGloss * 0.4) * 0.55;",
+    "  float alpha = 0.90 + rim * 0.10;",
+    "  gl_FragColor = vec4(col, alpha * uOpacity);",
     "}"
   ].join("\n");
 
@@ -87,18 +80,15 @@
       fragmentShader: FRAG,
       uniforms: {
         uGlass:     { value: new THREE.Color(cfg.glass) },
-        uRoomTop:   { value: new THREE.Color(cfg.roomTop) },
-        uRoomBottom:{ value: new THREE.Color(cfg.roomBottom) },
+        uDeep:      { value: new THREE.Color(cfg.deep) },
         uHighlight: { value: new THREE.Color(cfg.highlight) },
-        uIor:       { value: cfg.ior },
-        uDispersion:{ value: cfg.dispersion },
-        uClarity:   { value: cfg.clarity },
         uEdge:      { value: cfg.edge },
         uGloss:     { value: cfg.gloss },
+        uTime:      { value: 0 },
         uOpacity:   { value: 0 }
       },
       transparent: true,
-      side: THREE.DoubleSide,
+      side: THREE.FrontSide,
       depthWrite: false
     });
   }
@@ -131,28 +121,18 @@
   var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 2000);
 
   // Тёмное стекло — крупные опоры. Кромка белёсая за счёт uHighlight.
-  var DARK = {
-    glass: "#1f1f1f", roomTop: "#4a4a4a", roomBottom: "#101010",
-    highlight: "#ffffff", ior: 1.30, dispersion: 0.03,
-    clarity: 0.62, edge: 3.2, gloss: 200
-  };
   // Красное стекло — результат в зоне пересечения.
-  // Глубокий фирменный красный, ближе к --arc-high (#ac0c0f):
-  // предыдущий #ff2a35 уходил в неон.
+  // Корпус, глубина и свет. Красный держится в фирменном створе,
+  // но в глубине уходит почти в чёрный — иначе шар плоский.
   var RED = {
-    glass: "#a60c12", roomTop: "#c2101a", roomBottom: "#3d0206",
-    highlight: "#d9585e", ior: 1.34, dispersion: 0.05,
-    clarity: 0.10, edge: 2.0, gloss: 220
+    glass: "#c20f1a", deep: "#3a0208", highlight: "#ff8f8f",
+    edge: 1.9, gloss: 64
   };
 
   // Позиции повторяют макет: три опоры + центр
-  // Три оболочки ОДНОГО размера (разница в тысячных — только чтобы
-  // грани не спорили за глубину). Разные радиусы давали каскад колец;
-  // совпадающие дают один плотный шар. Вращаются вразнобой — нутро живое.
+  // Один слой: материал теперь непрозрачный по телу и даёт объём сам.
   var SPEC = [
-    { p: [0, 0, 0], s: 1.000, cfg: RED, spin: -0.16 },
-    { p: [0, 0, 0], s: 0.997, cfg: RED, spin:  0.11 },
-    { p: [0, 0, 0], s: 0.994, cfg: RED, spin: -0.07 }
+    { p: [0, 0, 0], s: 1.0, cfg: RED, spin: -0.16 }
   ];
 
   // На узких экранах сквиркл читается и на вдвое меньшей сетке:
@@ -256,6 +236,7 @@
 
     items.forEach(function (it) {
       it.t += dt;
+      it.m.uniforms.uTime.value = it.t;
       it.mesh.rotation.y += it.spin * dt;
       it.mesh.rotation.x = Math.sin(it.t * 0.35) * 0.12;
     });

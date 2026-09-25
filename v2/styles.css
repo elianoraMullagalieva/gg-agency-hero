@@ -1142,7 +1142,7 @@ p.hero__lead { text-wrap: normal; }
   gap: clamp(1rem, 0.2857rem + 3.0476vw, 4rem);
 }
 .venn-lede { align-self: start; }
-.venn-sec__inner > .quiz { margin-top: auto; }
+.venn-sec__inner > .quiz { margin-top: auto; margin-bottom: 15%; }
 .venn-sec__inner > .venn { align-self: center; }
 
 /* ---------- Левая колонка ---------- */
@@ -1198,7 +1198,7 @@ p.hero__lead { text-wrap: normal; }
 
   --p1x: 27.2%;  --p1y: 20.2%;
   --p2x: 72.3%;  --p2y: 20.7%;
-  --p3x: 50.8%;  --p3y: 80.2%;
+  --p3x: 50.8%;  --p3y: 78.2%;   /* на ~10px выше */
 
   --core-x: 51.1%; --core-y: 46.0%;
   --core-w: 37.4%;
@@ -2383,10 +2383,17 @@ p.hero__lead { text-wrap: normal; }
      сверху вниз и тонкая светлая рамка по краю. */
   backdrop-filter: blur(22px) saturate(1.1);
   -webkit-backdrop-filter: blur(22px) saturate(1.1);
-  background: linear-gradient(152deg,
-    rgba(255, 255, 255, 0.085) 0%,
-    rgba(255, 255, 255, 0.045) 42%,
-    rgba(255, 255, 255, 0.022) 100%);
+  /* Объём без рамки и теней: свет ложится на верхне-левую щёку,
+     книзу стекло густеет. Смещённый центр блика и даёт округлость. */
+  background:
+    radial-gradient(76% 76% at 33% 24%,
+      rgba(255, 255, 255, 0.115) 0%,
+      rgba(255, 255, 255, 0.055) 38%,
+      rgba(255, 255, 255, 0.018) 62%,
+      rgba(255, 255, 255, 0.006) 100%),
+    radial-gradient(120% 120% at 50% 118%,
+      rgba(255, 255, 255, 0.05) 0%,
+      rgba(255, 255, 255, 0) 58%);
   /* Ни обводки, ни теней: кромка резала глаз. Круг держится
      только заливкой-градиентом. */
   border: 0;
@@ -2464,7 +2471,10 @@ p.hero__lead { text-wrap: normal; }
   pointer-events: none;
   z-index: 0;
 }
-.venn-sec--flat > *:not(.venn-sec__bg) { position: relative; z-index: 1; }
+/* Подъём детей над фоновыми канвасами. Микроэлементы по углам
+   выведены из-под правила: им нужен position: absolute. */
+.venn-sec--flat > *:not(.venn-sec__bg):not(.venn-mark):not(.venn-tick)
+  { position: relative; z-index: 1; }
 
 /* Ядро: текст в четыре строки, без подписи */
 .venn-sec--flat .venn-core b { line-height: 1.18; }
@@ -3440,4 +3450,105 @@ p.hero__lead { text-wrap: normal; }
 
 @media (max-width: 1000px) {
   .frame { grid-template-columns: minmax(0, 1fr); }
+}
+
+
+/* ---------- Микроэлементы по углам схемы ----------
+   Композиция уравновешивается двумя мелочами: подпись студии
+   слева внизу набирается и стирается, справа сверху — тихая
+   строка с пульсирующей точкой. */
+
+.venn-sec { --mark: rgba(255, 255, 255, 0.34); }
+
+.venn-mark,
+.venn-tick {
+  position: absolute;
+  z-index: 3;
+  margin: 0;
+  font-size: var(--fs-s);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mark);
+  pointer-events: none;
+}
+.venn-mark {
+  left: var(--gutter);
+  bottom: clamp(1.5rem, 1.2321rem + 1.1429vw, 2.625rem);
+}
+.venn-mark__type::after {
+  /* Курсор стоит вплотную к последней букве */
+  content: "";
+  display: inline-block;
+  width: 1px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  background: var(--arc-high);
+  animation: markCaret 1.05s steps(1, end) infinite;
+}
+@keyframes markCaret { 0%, 55% { opacity: 1; } 56%, 100% { opacity: 0; } }
+
+.venn-tick {
+  right: var(--gutter);
+  top: clamp(1.5rem, 1.2321rem + 1.1429vw, 2.625rem);
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+.venn-tick__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--arc-high);
+  animation: tickPulse 2.4s ease-in-out infinite;
+}
+@keyframes tickPulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.8); }
+  50%      { opacity: 1;    transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .venn-mark__type::after,
+  .venn-tick__dot { animation: none; }
+}
+@media (max-width: 1100px) {
+  .venn-mark, .venn-tick { display: none; }
+}
+
+/* ---------- Кейс: светлый ---------- */
+
+.case-sec {
+  background: #fff;
+  color: #16120d;
+}
+.case-kicker      { color: #8d8880; }
+.case-meta,
+.case-num__l,
+.case-step__t     { color: #6b655c; }
+.case-title,
+.case-num__v,
+.case-step__h     { color: #16120d; }
+.case-step {
+  border: 1px solid rgba(22, 18, 13, 0.12);
+  background: rgba(22, 18, 13, 0.018);
+}
+.case-step__n { color: var(--arc-high); }
+
+/* Нижний ряд карточек стоит по общей линии: тексты разной длины,
+   а низ у всех один. */
+.case-steps { align-items: stretch; }
+.case-step  { display: flex; flex-direction: column; }
+.case-step__t { margin-top: auto; }
+
+/* Превью аватарки справа от имени */
+.case-title { display: flex; align-items: center; gap: 0.5em; }
+.case-avatar {
+  flex: none;
+  width: clamp(2.25rem, 1.9643rem + 1.219vw, 3.5rem);
+  aspect-ratio: 1;
+  border: 1px solid rgba(22, 18, 13, 0.18);
+  border-radius: 50%;
 }

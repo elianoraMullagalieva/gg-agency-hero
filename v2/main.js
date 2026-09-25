@@ -1064,6 +1064,38 @@
     onScroll();
   }
 
+
+  /* Подпись студии в углу схемы: набирается и стирается по кругу.
+     Идёт только пока блок в кадре — за экраном таймер ни к чему. */
+  function initVennMark() {
+    var el = document.querySelector(".venn-mark__type");
+    if (!el) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      el.textContent = "GG Agency";
+      return;
+    }
+    var WORD = "GG Agency";
+    var i = 0, back = false, timer = 0, live = false;
+
+    function step() {
+      if (!live) return;
+      el.textContent = WORD.slice(0, i);
+      var wait = back ? 55 : 110;
+      if (!back && i === WORD.length) { back = true; wait = 1900; }
+      else if (back && i === 0) { back = false; wait = 700; }
+      else { i += back ? -1 : 1; }
+      timer = setTimeout(step, wait);
+    }
+
+    var sec = document.querySelector(".venn-sec");
+    if (!("IntersectionObserver" in window)) { live = true; step(); return; }
+    new IntersectionObserver(function (es) {
+      live = es[0].isIntersecting && !document.hidden;
+      clearTimeout(timer);
+      if (live) step();
+    }, { threshold: 0 }).observe(sec || el);
+  }
+
   function initCards() {
     var sec = document.querySelector(".situation");
     if (!sec) return;
@@ -1326,6 +1358,7 @@
   initServices();
   initLeaks();
   initSources();
+  initVennMark();
   initCards();
   initOdometer();
   initClientsWave();
