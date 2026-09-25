@@ -3450,17 +3450,17 @@ p.hero__lead { text-wrap: normal; }
   padding: 0;
   list-style: none;
   width: 100%;
-  /* Высота = карточка плюс запас под наклон */
-  aspect-ratio: 660 / 430;
+  /* Высота под крупные вертикальные карточки плюс запас на наклон */
+  aspect-ratio: 660 / 600;
 }
 .fan__card {
   position: absolute;
   top: var(--y);
   /* Шаг больше половины карточки: при плотной раскладке соседняя
      накрывала заголовок, и читать было нечего. */
-  left: calc(var(--i) * 29%);
-  width: 42%;
-  aspect-ratio: 300 / 400;
+  left: calc(var(--i) * 26%);
+  width: 48%;
+  aspect-ratio: 300 / 480;
   display: flex;
   flex-direction: column;
   padding: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
@@ -3469,9 +3469,9 @@ p.hero__lead { text-wrap: normal; }
   transform-origin: 50% 90%;
   opacity: 0;
 }
-.fan__card--light { --y: 6%;  --r: -4deg; background: #f2f0ec; color: #16120d; }
-.fan__card--grey  { --y: 0%;  --r:  2deg; background: #1b1b1c; }
-.fan__card--red   { --y: 3%;  --r: -2.5deg;
+.fan__card--light { --y: 9%;  --r: -6deg; background: #f2f0ec; color: #16120d; }
+.fan__card--grey  { --y: 0%;  --r:  3deg; background: #1b1b1c; }
+.fan__card--red   { --y: 5%;  --r:  4deg;
   background:
     radial-gradient(118% 92% at 62% -8%,
       #d0101c 0%, #8e0a12 30%, #3a060b 62%, #0d0304 86%, #060202 100%); }
@@ -3537,11 +3537,14 @@ p.hero__lead { text-wrap: normal; }
   border-radius: clamp(1.25rem, 1rem + 1.0667vw, 2rem);
 }
 .frame__lede {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
   gap: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
 }
+/* Заголовок с подзаголовком идут одним блоком по центру колонки,
+   мелкие подписи прижаты к её краям. */
+.sources__mid { align-self: center; }
+.sources__mid .frame__sub { margin-top: 0.75em; }
 .frame__side {
   display: flex;
   flex-direction: column;
@@ -3707,8 +3710,8 @@ p.hero__lead { text-wrap: normal; }
 
 .stack {
   position: relative;
-  background: var(--bg);
-  color: var(--text);
+  background: #fff;
+  color: #16120d;
 }
 .stack__sticky {
   display: flex;
@@ -3738,12 +3741,7 @@ p.hero__lead { text-wrap: normal; }
   line-height: 1.04;
   letter-spacing: -0.0345em;
 }
-.stack__note {
-  margin: 0;
-  font-size: var(--fs-s);
-  font-weight: 300;
-  color: rgba(255, 255, 255, 0.35);
-}
+
 
 /* Площадка держит высоту: карточки в ней лежат абсолютом */
 .stack__area { position: relative; }
@@ -3769,13 +3767,22 @@ p.hero__lead { text-wrap: normal; }
   min-height: clamp(15rem, 52svh, 30rem);
   padding: clamp(1.25rem, 1rem + 1.0667vw, 2.25rem)
            clamp(1.375rem, 1.0714rem + 1.2952vw, 2.75rem);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(22, 18, 13, 0.1);
   border-radius: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
-  /* Светлее фона страницы: на #030303 прежние #111 сливались */
-  background: #161618;
+  background: #fff;
   will-change: transform;
 }
-.stack__card:nth-child(even) { background: #0e0e10; }
+.stack__card:nth-child(even) { background: var(--text-dim); }
+/* Последняя — красная: серия на ней закрывается */
+.stack__card:last-child {
+  border-color: transparent;
+  background:
+    radial-gradient(118% 150% at 62% -20%,
+      #d0101c 0%, #8e0a12 30%, #3a060b 64%, #12060a 88%, #0a0406 100%);
+}
+.stack__card:last-child .stack__num  { color: rgba(255, 255, 255, 0.6); }
+.stack__card:last-child .stack__name { color: #fff; }
+.stack__card:last-child .stack__text { color: rgba(255, 255, 255, 0.82); }
 
 .stack__num {
   /* Номер наверху, всё остальное уезжает к низу карточки */
@@ -3783,7 +3790,7 @@ p.hero__lead { text-wrap: normal; }
   font-size: var(--fs-s);
   font-weight: 400;
   letter-spacing: 0.08em;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(22, 18, 13, 0.45);
 }
 .stack__name {
   margin: 0;
@@ -3799,7 +3806,7 @@ p.hero__lead { text-wrap: normal; }
   font-size: var(--fs-s);
   font-weight: 300;
   line-height: 1.45;
-  color: rgba(255, 255, 255, 0.78);
+  color: #6b655c;
 }
 
 @media (max-width: 900px) {
@@ -3911,3 +3918,7 @@ p.hero__lead { text-wrap: normal; }
   .venn__circle--2::before,
   .venn__circle--3::before { animation: none; }
 }
+
+/* Надзаголовок и название на светлом */
+.stack .frame__eyebrow { color: #8d8880; }
+.stack__title { color: #16120d; }

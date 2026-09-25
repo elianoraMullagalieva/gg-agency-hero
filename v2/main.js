@@ -1058,7 +1058,13 @@
         // local: 0 — карточка ещё внизу, 1 — села на место
         var local = Math.min(Math.max(cur - (i - 1), 0), 1);
         if (i === 0) local = 1;
-        var y = (1 - local) * (window.innerHeight * 0.75);
+        /* Посадка с перелётом: карточка проскакивает место и
+           возвращается — тот самый bounce из эталона. */
+        var e = local < 1
+          ? 1 - Math.pow(1 - local, 3)
+          : 1;
+        var over = Math.sin(Math.min(local, 1) * Math.PI) * 0.06 * (1 - local);
+        var y = (1 - e - over) * (window.innerHeight * 0.75);
         var tilt = (1 - local) * (i % 2 ? 1.6 : -1.6);
         cards[i].style.transform = "translate3d(0," + y.toFixed(1) + "px,0) rotate(" + tilt.toFixed(2) + "deg)";
         cards[i].style.opacity = local > 0.02 || i === 0 ? 1 : 0;
