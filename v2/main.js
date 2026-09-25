@@ -1010,8 +1010,19 @@
     var max = 0, ticking = false;
 
     function measure() {
-      var gut = parseFloat(getComputedStyle(sec).getPropertyValue("--gutter")) ||
-                parseFloat(getComputedStyle(rail).paddingLeft) || 0;
+      var cs  = getComputedStyle(rail);
+      var gut = parseFloat(cs.paddingLeft) || 0;
+      var gap = parseFloat(cs.columnGap) || 0;
+      var vw  = window.innerWidth;
+
+      /* Ширину карточки считаем от экрана, а не наоборот: в кадре
+         должны стоять ровно четыре карточки и краешек пятой (7.8%
+         ширины экрана — пропорция макета). На любом мониторе стартовый
+         кадр выглядит одинаково, а прокрутка всегда имеет что везти. */
+      var peek = vw * 0.078;
+      var w = (vw - gut - 4 * gap - peek) / 4;
+      rail.style.setProperty("--leak-w", w.toFixed(2) + "px");
+
       // Сколько ленты не влезло: последняя карточка должна встать
       // ровно по правому полю сетки.
       max = Math.max(0, rail.scrollWidth - window.innerWidth);
