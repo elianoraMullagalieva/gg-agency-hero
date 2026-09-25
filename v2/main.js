@@ -756,7 +756,8 @@
      Соседние разряды стартуют с разной задержкой, поэтому число
      «собирается», а не переключается разом. */
   var ODO_TURNS   = 2;   // базовых полных оборота барабана
-  var ODO_STAGGER = 75;  // мс между разрядами, справа налево
+  var ODO_STAGGER = 75;
+  var ODO_DUR     = 2200;  // мс на один барабан  // мс между разрядами, справа налево
 
   function initOdometer() {
     var vals = document.querySelectorAll(".stat__value");
@@ -815,10 +816,19 @@
         var digits = reel.children;
         for (var q = 0; q < digits.length; q++) digits[q].style.height = unit + "px";
         reel.style.transform = "translateY(0)";
-        // Первым трогается младший разряд, последним — старший:
-        // в эталоне левая цифра замирает на ~130 мс позже правой.
+        /* Крутим покадрово и округляем до целого пикселя. CSS-переход
+           на барабане длиной под две тысячи пикселей давал дробное
+           сглаживание — в окне оказывались половинки цифр. Первым
+           трогается младший разряд, последним старший. */
+        var to = steps * unit;
         setTimeout(function () {
-          reel.style.transform = "translateY(-" + (steps * unit) + "px)";
+          var t0 = performance.now();
+          (function step(now) {
+            var k = Math.min(1, (now - t0) / ODO_DUR);
+            var e = 1 - Math.pow(1 - k, 4);
+            reel.style.transform = "translateY(" + Math.round(-to * e) + "px)";
+            if (k < 1) requestAnimationFrame(step);
+          })(t0);
         }, 80 + (n - 1 - i) * ODO_STAGGER);
       });
     }

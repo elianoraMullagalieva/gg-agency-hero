@@ -53,6 +53,8 @@
   --fs-s: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
 
   --gutter: clamp(1.25rem, 0.7143rem + 2.2857vw, 5rem);
+  /* Один строй для всех кнопок, кроме шапки: 44px на 360, 52 на 1440 */
+  --btn-h: clamp(2.75rem, 2.5833rem + 0.7407vw, 3.25rem);
 }
 
 /* §03 · Ступени для больших мониторов */
@@ -548,15 +550,10 @@ p, li { text-wrap: pretty; }
 }
 
 .sheet__cta {
+  /* Строй тот же, что у остальных кнопок: высота, кегль, вес и
+     трекинг заданы общим правилом ниже. Здесь только рамка. */
   margin-top: 0.875rem;
-  padding: 0.875rem 1.625rem !important;
   border: 1px solid #fff;
-  border-radius: 999px;
-  font-family: var(--font-num);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
-  font-weight: 700 !important;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
 }
 
 @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
@@ -1310,11 +1307,13 @@ p.hero__lead { text-wrap: normal; }
 .venn-core b {
   display: block;
   text-align: center;
-  text-wrap: balance;
+  /* balance убран: при заданных вручную переносах он подгонял строки
+     по-своему. Трекинг нулевой — отрицательный добавлял «хвост»
+     после последней буквы строки и сбивал оптический центр. */
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  line-height: 1.16;
+  letter-spacing: 0;
 }
 
 /* Подписи лежат поверх WebGL-канваса: доли секунды кадра бывают
@@ -2416,9 +2415,9 @@ p.hero__lead { text-wrap: normal; }
     radial-gradient(circle at 50% 50%,
       rgba(255, 255, 255, 0) 0%,
       rgba(255, 255, 255, 0) 62%,
-      rgba(255, 255, 255, 0.05) 82%,
-      rgba(255, 255, 255, 0.105) 94%,
-      rgba(255, 255, 255, 0.035) 100%),
+      rgba(255, 255, 255, 0.07) 80%,
+      rgba(255, 255, 255, 0.16) 93%,
+      rgba(255, 255, 255, 0.05) 100%),
     linear-gradient(152deg,
       rgba(255, 255, 255, 0.085) 0%,
       rgba(255, 255, 255, 0.045) 45%,
@@ -2930,10 +2929,8 @@ p.hero__lead { text-wrap: normal; }
   display: flex;
   flex-direction: column;
   will-change: transform;
-  /* 1.6 с — столько идёт разгон-остановка в эталоне.
-     Кривая экспоненциальная: почти весь путь в первой трети,
-     дальше длинный выкат, как и на видео. */
-  transition: transform 2.2s cubic-bezier(0.16, 1, 0.3, 1);
+  /* Переход убран: барабан крутит main.js покадрово, округляя
+     до целого пикселя. Дробный сдвиг резал цифры пополам. */
 }
 /* Значение для скринридера: барабаны из разметки для него скрыты */
 .odo-a11y {
@@ -3900,10 +3897,23 @@ p.hero__lead { text-wrap: normal; }
   pointer-events: none;
   background:
     radial-gradient(closest-side circle at 34% 28%,
-      rgba(255, 255, 255, 0.115) 0%,
-      rgba(255, 255, 255, 0.05) 40%,
-      rgba(255, 255, 255, 0) 72%);
+      rgba(255, 255, 255, 0.26) 0%,
+      rgba(255, 255, 255, 0.12) 34%,
+      rgba(255, 255, 255, 0.03) 58%,
+      rgba(255, 255, 255, 0) 76%);
   animation: vOrbit 22s linear infinite;
+}
+/* Второй блик идёт навстречу первому — вместе они дают ощущение
+   объёма, который проворачивается, а не плоского пятна. */
+.venn__circle--1::after,
+.venn__circle--2::after,
+.venn__circle--3::after {
+  background:
+    radial-gradient(closest-side circle at 68% 74%,
+      rgba(255, 255, 255, 0.10) 0%,
+      rgba(255, 255, 255, 0.035) 44%,
+      rgba(255, 255, 255, 0) 74%);
+  animation: vOrbit 34s linear infinite reverse;
 }
 .venn__circle--2::before { animation-duration: 27s; animation-delay: -9s; }
 .venn__circle--3::before { animation-duration: 19s; animation-delay: -14s; }
@@ -3922,3 +3932,37 @@ p.hero__lead { text-wrap: normal; }
 /* Надзаголовок и название на светлом */
 .stack .frame__eyebrow { color: #8d8880; }
 .stack__title { color: #16120d; }
+
+
+/* ============================================================
+   Кнопки: один строй. Высота, кегль, вес, трекинг и поля везде
+   одинаковые — кроме кнопки в шапке, у неё свой, более тихий вид.
+   ============================================================ */
+
+.hero__cta-label,
+.quiz__label,
+.bridge__pill,
+.sheet .sheet__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--btn-h);
+  padding: 0 1.9em;
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: var(--fs-s);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Круглые спутники — той же высоты, что и пилюля рядом */
+.hero__cta-icon,
+.quiz__icon,
+.bridge__round {
+  width: var(--btn-h);
+  height: var(--btn-h);
+  aspect-ratio: auto;
+}
