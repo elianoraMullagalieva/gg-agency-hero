@@ -3390,7 +3390,7 @@ p.hero__lead { text-wrap: normal; }
 /* Три ступени: светлая с «солнцем», тёмная, светлая с «зарёй».
    Графика — из макета, собрана из тех же слоёв. */
 .step--light {
-  background: #f2f0ec url("assets/cards/approach-1.jpg") center / cover no-repeat;
+  background: #f5f5f5 url("assets/cards/approach-1.jpg") center / cover no-repeat;
   color: #16120d;
 }
 /* Графика занимает правый верх — строку туда не пускаем */
@@ -3406,7 +3406,7 @@ p.hero__lead { text-wrap: normal; }
 
 .step--dawn {
   border-color: transparent;
-  background: #f2f0ec url("assets/cards/approach-3.jpg") center / cover no-repeat;
+  background: #f5f5f5 url("assets/cards/approach-3.jpg") center / cover no-repeat;
   color: #16120d;
 }
 .step--dawn .step__num  { border-color: rgba(22, 18, 13, 0.22); color: rgba(22, 18, 13, 0.62); }
@@ -3420,9 +3420,10 @@ p.hero__lead { text-wrap: normal; }
   justify-content: center;
   min-width: 2.5em;
   padding: 0.35em 0.75em;
-  /* Отступ из макета: 60px при карточке 291. Он постоянный, чтобы
-     заголовки всех трёх карточек стояли на одной линии. */
-  margin-bottom: clamp(1.75rem, 1.25rem + 2.1333vw, 3.75rem);
+  /* Отступ из макета: заголовок начинается на 134px от верха
+     карточки 291. Постоянный, чтобы заголовки всех трёх карточек
+     стояли на одной линии. */
+  margin-bottom: clamp(1.75rem, 0.6667rem + 4.8148vw, 5rem);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   font-size: var(--fs-s);
