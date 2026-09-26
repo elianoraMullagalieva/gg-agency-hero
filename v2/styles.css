@@ -52,6 +52,26 @@
   --fs-m: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   --fs-s: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
 
+  /* ---------- Межстрочный и межбуквенный: одна система ----------
+     Раньше межстрочный гулял по 25 значениям, межбуквенный — по 18,
+     причём вокруг одних и тех же намерений: 1.02 и 1.04 — это одно,
+     1.35 / 1.4 / 1.45 — тоже одно. Здесь шесть ступеней и три:
+     чем крупнее кегль, тем плотнее строка и отрицательнее трекинг. */
+  --lh-flat:   1;      /* кнопки, счётчики — строка в один кегль */
+  --lh-head:   1.02;   /* h1 и h2 */
+  --lh-title:  1.14;   /* h3, плашки и пилюли */
+  --lh-lead:   1.3;    /* крупный текст, 22px и больше */
+  --lh-text-m: 1.45;   /* текст M — длинные абзацы во всю колонку */
+  --lh-text-s: 1.4;    /* текст S — короткие подписи в карточках */
+
+  --ls-head:  -0.0345em;  /* h1, h2 и крупные цифры */
+  --ls-title: -0.01em;    /* h3 и крупный текст */
+  --ls-text:  0;          /* весь остальной текст, пилюли, подписи */
+  --ls-btn:   0.02em;     /* у кнопок свой строй: капс с лёгкой разрядкой */
+
+  /* Воздух под пилюлей — один на весь сайт */
+  --pill-gap: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+
   --gutter: clamp(1.25rem, 0.7143rem + 2.2857vw, 5rem);
   /* Один строй для всех кнопок, кроме шапки: 44px на 360, 52 на 1440 */
   --btn-h: clamp(2.75rem, 2.5833rem + 0.7407vw, 3.25rem);
@@ -184,7 +204,7 @@ p, li { text-wrap: pretty; }
   font-family: var(--font-logo);
   font-size: var(--fs-m);
   font-weight: 800;
-  line-height: 1.2;
+  line-height: var(--lh-lead);
   letter-spacing: -0.0625em;
   text-decoration: none;
   white-space: nowrap;
@@ -202,7 +222,7 @@ p, li { text-wrap: pretty; }
   color: var(--text);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-text-s);
   text-decoration: none;
   white-space: nowrap;
   opacity: 0.92;
@@ -227,7 +247,7 @@ p, li { text-wrap: pretty; }
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   /* Regular: вторичная кнопка не должна спорить с основной (500) */
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ls-btn);
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
@@ -269,8 +289,8 @@ p, li { text-wrap: pretty; }
   font-family: var(--font-logo);
   font-size: var(--fs-h1);
   font-weight: 400;
-  line-height: 0.98;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 .hero__title span { display: block; }
 
@@ -281,7 +301,7 @@ p, li { text-wrap: pretty; }
   color: var(--text);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-m);
 }
 
 /* Кнопка: плашка и круг вплотную */
@@ -315,7 +335,7 @@ p, li { text-wrap: pretty; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ls-btn);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -375,8 +395,8 @@ p, li { text-wrap: pretty; }
   font-family: var(--font-num);
   font-size: clamp(1.625rem, 1.3169rem + 1.3146vw, 3.25rem);
   font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.05em;
+  line-height: var(--lh-flat);
+  letter-spacing: var(--ls-head);
   white-space: nowrap;
   font-variant-numeric: tabular-nums;
 }
@@ -387,7 +407,7 @@ p, li { text-wrap: pretty; }
   color: var(--text-dim);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-text-m);
 }
 
 /* ---------- Появление ---------- */
@@ -591,7 +611,7 @@ p, li { text-wrap: pretty; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 800;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   animation: pulse 2s ease-in-out infinite;
 }
@@ -666,8 +686,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   margin: 0;
   color: #757575;
 }
@@ -680,7 +700,7 @@ p.hero__lead { text-wrap: normal; }
      экране: единый стиль мелкого текста на всём сайте. */
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-text-m);
   color: #757575;
 }
 
@@ -707,8 +727,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: var(--fs-m);
   font-weight: 500;
-  line-height: 1.25;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
   color: #000;
 }
 
@@ -717,7 +737,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-text-s);
   color: #757575;
 }
 
@@ -795,7 +815,7 @@ p.hero__lead { text-wrap: normal; }
   font-size: clamp(0.75rem, 0.7083rem + 0.1852vw, 0.875rem);
   /* Одинаковый интерлиньяж у цифры и у текста — плашки
      выравниваются по высоте между собой. */
-  line-height: 1.1;
+  line-height: var(--lh-title);
   color: #fff;
   white-space: nowrap;
 }
@@ -825,8 +845,8 @@ p.hero__lead { text-wrap: normal; }
      карточки: 21.9px при 324 -> 32px при 883. */
   font-size: clamp(1.0625rem, 1rem + 1.812cqw, 2rem);
   font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
 }
 
 .card__note {
@@ -837,7 +857,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 400;
-  line-height: 1.35;
+  line-height: var(--lh-text-m);
   color: rgba(255, 255, 255, 0.88);
 }
 
@@ -921,8 +941,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 
 /* Вторая строка приглушена — как в Кэмпе */
@@ -966,7 +986,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-num);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 500;
-  line-height: 0.85;
+  line-height: var(--lh-flat);
 }
 
 .questions-item h3 {
@@ -974,8 +994,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: var(--fs-m);
   font-weight: 500;
-  line-height: 1.1;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
   text-wrap: pretty;
 }
 
@@ -988,7 +1008,7 @@ p.hero__lead { text-wrap: normal; }
   border-radius: 50%;
   font-size: calc(23px * var(--up));
   font-weight: 400;
-  line-height: 1;
+  line-height: var(--lh-flat);
   transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
               background 0.2s ease, color 0.2s ease;
 }
@@ -1041,8 +1061,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: calc(15px * var(--up));
   font-weight: 300;
-  line-height: 1.5;
-  letter-spacing: 0;
+  line-height: var(--lh-text-m);
+  letter-spacing: var(--ls-text);
   text-wrap: pretty;
 }
 .questions-answer p:last-child { margin-bottom: 0; }
@@ -1053,7 +1073,7 @@ p.hero__lead { text-wrap: normal; }
     padding-top: 80px;
     padding-bottom: 53px;
   }
-  .questions-head h2 { line-height: 1.02; }
+  .questions-head h2 { line-height: var(--lh-head); }
 
   .questions-trigger {
     min-height: 82px;
@@ -1061,7 +1081,7 @@ p.hero__lead { text-wrap: normal; }
     gap: 13px;
   }
   .questions-number { width: 33px; height: 22px; font-size: 12px; }
-  .questions-item h3 { font-size: clamp(1rem, 0.9375rem + 0.2778vw, 1.1875rem); line-height: 1.07; }
+  .questions-item h3 { font-size: clamp(1rem, 0.9375rem + 0.2778vw, 1.1875rem); line-height: var(--lh-title); }
   .questions-plus { width: 32px; height: 32px; font-size: 20px; }
   .questions-panel > div { margin-left: 46px; }
   .questions-answer p { font-size: 15px; }
@@ -1093,7 +1113,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo, var(--font-ui));
   font-size: var(--fs-m);
   font-weight: 800;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ls-text);
   text-decoration: none;
 }
 
@@ -1102,7 +1122,7 @@ p.hero__lead { text-wrap: normal; }
   color: rgba(255, 255, 255, 0.55);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.5;
+  line-height: var(--lh-text-m);
 }
 
 .footer__col {
@@ -1116,7 +1136,7 @@ p.hero__lead { text-wrap: normal; }
   color: rgba(255, 255, 255, 0.4);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 700;
-  letter-spacing: 0.22em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
 }
 
@@ -1181,7 +1201,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.75rem, 0.5714rem + 0.7619vw, 1.5rem);
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
 }
@@ -1191,8 +1211,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   margin: 0;
   color: #8a8a8a;
 }
@@ -1203,7 +1223,7 @@ p.hero__lead { text-wrap: normal; }
   margin: clamp(0.875rem, 0.6964rem + 0.7619vw, 1.625rem) 0 0;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: var(--muted);
 }
 
@@ -1256,7 +1276,7 @@ p.hero__lead { text-wrap: normal; }
   position: absolute;
   margin: 0;
   text-align: center;
-  line-height: 1.25;
+  line-height: var(--lh-lead);
   opacity: 0;
 }
 .venn-pillar b {
@@ -1265,7 +1285,7 @@ p.hero__lead { text-wrap: normal; }
      это один уровень иерархии внутри блока. */
   font-size: clamp(1.125rem, 1.0417rem + 0.3704vw, 1.375rem);
   font-weight: 500;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--ls-title);
   color: var(--text);
 }
 .venn-pillar i {
@@ -1322,8 +1342,8 @@ p.hero__lead { text-wrap: normal; }
      после последней буквы строки и сбивал оптический центр. */
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 500;
-  line-height: 1.16;
-  letter-spacing: 0;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-text);
 }
 
 /* Подписи лежат поверх WebGL-канваса: доли секунды кадра бывают
@@ -1361,8 +1381,8 @@ p.hero__lead { text-wrap: normal; }
   /* 22px — как подписи опор */
   font-size: clamp(1.125rem, 1.0417rem + 0.3704vw, 1.375rem);
   font-weight: 400;
-  line-height: 1.28;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-title);
   color: var(--text);
 }
 
@@ -1382,7 +1402,7 @@ p.hero__lead { text-wrap: normal; }
   color: #0e0404;
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ls-btn);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -1468,7 +1488,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -1478,8 +1498,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   margin: 0;
   /* 30@360 → 68@1440 */
 }
@@ -1561,7 +1581,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: var(--muted);
 }
 
@@ -1573,7 +1593,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: var(--muted);
 }
 
@@ -1667,7 +1687,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.72);
 }
@@ -1677,8 +1697,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   margin: 0;
   /* 32@360 → 76@1440 */
 }
@@ -1690,7 +1710,7 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: rgba(255, 255, 255, 0.82);
 }
 
@@ -1713,8 +1733,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1.2;
+  letter-spacing: var(--ls-btn);
+  line-height: var(--lh-lead);
   text-align: center;
   text-transform: uppercase;
   text-decoration: none;
@@ -1757,7 +1777,7 @@ p.hero__lead { text-wrap: normal; }
 .venn-issue {
   position: absolute;
   margin: 0;
-  line-height: 1.25;
+  line-height: var(--lh-lead);
   opacity: 0;
   white-space: nowrap;
 }
@@ -1765,7 +1785,7 @@ p.hero__lead { text-wrap: normal; }
   display: block;
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 500;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--ls-text);
   color: #ff5a5f;
 }
 .venn-issue i {
@@ -1798,7 +1818,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 0.35em;
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8a8a8a;
 }
@@ -1806,7 +1826,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0;
   font-size: clamp(0.6875rem, 0.6696rem + 0.0794vw, 0.8438rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: #8a8a8a;
 }
 /* Правая колонка — состояние «вместе»: она и есть результат */
@@ -1848,7 +1868,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.75rem, 0.5714rem + 0.7619vw, 1.5rem);
   font-size: clamp(0.8125rem, 0.7905rem + 0.0939vw, 1.0625rem);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #b3131a;
 }
@@ -1858,8 +1878,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   margin: 0;
 }
 
@@ -1869,7 +1889,7 @@ p.hero__lead { text-wrap: normal; }
           clamp(1.75rem, 1.1964rem + 2.3619vw, 4.0625rem);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: #6b655c;
 }
 
@@ -1898,8 +1918,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-m);
   font-weight: 600;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
   text-transform: uppercase;
 }
 
@@ -1907,7 +1927,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: #4a443c;
 }
 
@@ -1965,7 +1985,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 0.85em;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: #4a443c;
 }
 .services-answer p:last-of-type { margin-bottom: clamp(1.25rem, 0.9833rem + 0.7407vw, 1.75rem); }
@@ -1984,7 +2004,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 0.3em;
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8a8377;
 }
@@ -2005,7 +2025,7 @@ p.hero__lead { text-wrap: normal; }
   color: #16120d;
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 500;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ls-btn);
   text-decoration: none;
   text-transform: uppercase;
   transition: background 0.28s ease, color 0.28s ease;
@@ -2171,7 +2191,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -2180,8 +2200,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   margin: 0;
 }
 
@@ -2190,7 +2210,7 @@ p.hero__lead { text-wrap: normal; }
   margin: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem) 0 0;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-s);
   color: var(--muted);
 }
 
@@ -2221,8 +2241,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.75rem, 1.2857rem + 1.981vw, 3.9375rem);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.035em;
+  line-height: var(--lh-flat);
+  letter-spacing: var(--ls-head);
   font-variant-numeric: tabular-nums;
 }
 
@@ -2232,7 +2252,7 @@ p.hero__lead { text-wrap: normal; }
   margin-top: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: var(--lh-lead);
   color: var(--muted);
 }
 
@@ -2272,15 +2292,15 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.375rem, 0.3036rem + 0.3048vw, 0.6875rem);
   font-size: var(--fs-m);
   font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-title);
 }
 
 .case-step__t {
   margin: 0;
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-s);
   color: var(--muted);
 }
 
@@ -2367,7 +2387,7 @@ p.hero__lead { text-wrap: normal; }
   margin: clamp(1.125rem, 0.9643rem + 0.6857vw, 1.8125rem) 0 0;
   font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
   font-weight: 300;
-  line-height: 1.3;
+  line-height: var(--lh-text-s);
   color: #fff;
 }
 .card__act span { border-bottom: 1px solid rgba(255, 255, 255, 0.38); }
@@ -2515,7 +2535,7 @@ p.hero__lead { text-wrap: normal; }
   { position: relative; z-index: 1; }
 
 /* Ядро: текст в четыре строки, без подписи */
-.venn-sec--flat .venn-core b { line-height: 1.18; }
+.venn-sec--flat .venn-core b { line-height: var(--lh-title); }
 
 /* ============================================================
    Бегущая строка клиентов · механика Osmo
@@ -2542,8 +2562,8 @@ p.hero__lead { text-wrap: normal; }
   text-align: center;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.35;
-  letter-spacing: 0.02em;
+  line-height: var(--lh-text-s);
+  letter-spacing: var(--ls-text);
   color: rgba(255, 255, 255, 0.45);
 }
 
@@ -2575,8 +2595,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.375rem, 1.0179rem + 1.5238vw, 2.875rem);
   font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-head);
   white-space: nowrap;
   color: rgba(22, 18, 13, 0.78);
   transition: color 0.3s ease;
@@ -2636,8 +2656,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.125rem, 1.0417rem + 0.3704vw, 1.375rem);
   font-weight: 400;
-  line-height: 1.22;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-head);
   color: var(--text);
 }
 
@@ -2845,7 +2865,7 @@ p.hero__lead { text-wrap: normal; }
   /* 14px на 360 -> 18px на 1440: компактная строка, не заголовок */
   font-size: clamp(0.875rem, 0.7917rem + 0.3704vw, 1.125rem);
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--ls-title);
   fill: rgba(255, 255, 255, 0.82);
 }
 /* Точки-разделители красные — единственный акцент в полосе.
@@ -2924,7 +2944,7 @@ p.hero__lead { text-wrap: normal; }
   align-items: flex-start;
   overflow: hidden;
   height: 1em;
-  line-height: 1;
+  line-height: var(--lh-flat);
   vertical-align: baseline;
 }
 .odo__reel {
@@ -2955,7 +2975,7 @@ p.hero__lead { text-wrap: normal; }
 .odo__reel span {
   flex: none;
   height: 1em;
-  line-height: 1;
+  line-height: var(--lh-flat);
   text-align: center;
   font-variant-numeric: tabular-nums;
 }
@@ -3014,8 +3034,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.02;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 
 .leaks-sub {
@@ -3026,7 +3046,7 @@ p.hero__lead { text-wrap: normal; }
   justify-self: end;
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: #6b655c;
 }
 
@@ -3106,8 +3126,8 @@ p.hero__lead { text-wrap: normal; }
   /* 24px при карточке 301 -> 34px при 850 */
   font-size: clamp(1.0625rem, 1.1575rem + 1.821cqw, 2.125rem);
   font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
   color: #fff;
 }
 .leak__num { font: inherit; color: inherit; }
@@ -3116,7 +3136,7 @@ p.hero__lead { text-wrap: normal; }
   margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-s);
   color: rgba(255, 255, 255, 0.82);
 }
 
@@ -3199,7 +3219,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 0.5em;
   font-size: var(--fs-m);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-m);
   color: #9a948c;
 }
 .bridge__text {
@@ -3209,8 +3229,8 @@ p.hero__lead { text-wrap: normal; }
      карточек, 24px на 1440. Между ним и --fs-h3 (46px) в шкале пусто. */
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 500;
-  line-height: 1.32;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-title);
   color: #16120d;
 }
 
@@ -3236,7 +3256,7 @@ p.hero__lead { text-wrap: normal; }
   color: #fff;
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.02em;
+  letter-spacing: var(--ls-btn);
   text-transform: uppercase;
   text-decoration: none;
   white-space: nowrap;
@@ -3306,7 +3326,7 @@ p.hero__lead { text-wrap: normal; }
   /* Без красного и без широкой разрядки: надзаголовок тихий */
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.5);
 }
@@ -3316,15 +3336,15 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h3);
   font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 .approach__sub {
   margin: 0;
   max-width: 44ch;
   font-size: var(--fs-m);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: var(--muted);
 }
 
@@ -3356,17 +3376,25 @@ p.hero__lead { text-wrap: normal; }
   display: flex;
   flex-direction: column;
   /* Две карточки в кадре и краешек третьей — как в референсе */
-  width: clamp(13rem, 6rem + 21vw, 24rem);
+  --step-w: clamp(13rem, 6rem + 21vw, 24rem);
+  width: var(--step-w);
+  /* Пропорция из макета: 384 × 291. Именно min-height, а не
+     aspect-ratio: на 4K кегли крупнее, и жёсткая высота срезала
+     последнюю строку вместо того, чтобы дать карточке подрасти. */
+  min-height: calc(var(--step-w) * 291 / 384);
   padding: clamp(1.125rem, 0.9821rem + 0.6095vw, 1.75rem);
   border-radius: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.25rem);
   border: 1px solid transparent;
 }
 
-/* Три ступени по светлоте: белая, серая, красная */
+/* Три ступени: светлая с «солнцем», тёмная, светлая с «зарёй».
+   Графика — из макета, собрана из тех же слоёв. */
 .step--light {
-  background: #f2f0ec;
+  background: #f2f0ec url("assets/cards/approach-1.jpg") center / cover no-repeat;
   color: #16120d;
 }
+/* Графика занимает правый верх — строку туда не пускаем */
+.step--light .step__name { max-width: 82%; }
 .step--light .step__num  { border-color: rgba(22, 18, 13, 0.22); color: rgba(22, 18, 13, 0.62); }
 .step--light .step__name { color: #16120d; }
 .step--light .step__text { color: #6b655c; }
@@ -3376,25 +3404,14 @@ p.hero__lead { text-wrap: normal; }
   border-color: rgba(255, 255, 255, 0.08);
 }
 
-/* Фон — та же картинка, что на первой карточке «Ситуации»:
-   собственный градиент выбивался из палитры. */
-.step--red {
+.step--dawn {
   border-color: transparent;
-  background: #1a0305 url("assets/cards/card-1.jpg") center / cover no-repeat;
+  background: #f2f0ec url("assets/cards/approach-3.jpg") center / cover no-repeat;
+  color: #16120d;
 }
-/* Затемнение под текстом, чтобы он читался поверх фотографии */
-.step--red::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  background: linear-gradient(180deg,
-    rgba(0, 0, 0, 0.15) 0%,
-    rgba(0, 0, 0, 0.35) 46%,
-    rgba(0, 0, 0, 0.72) 100%);
-}
-.step--red > * { position: relative; z-index: 1; }
+.step--dawn .step__num  { border-color: rgba(22, 18, 13, 0.22); color: rgba(22, 18, 13, 0.62); }
+.step--dawn .step__name { color: #16120d; }
+.step--dawn .step__text { color: #6b655c; }
 
 .step__num {
   align-self: flex-start;
@@ -3403,11 +3420,14 @@ p.hero__lead { text-wrap: normal; }
   justify-content: center;
   min-width: 2.5em;
   padding: 0.35em 0.75em;
-  margin-bottom: clamp(2rem, 1.5rem + 2.1333vw, 4rem);
+  /* Отступ из макета: 60px при карточке 291. Он постоянный, чтобы
+     заголовки всех трёх карточек стояли на одной линии. */
+  margin-bottom: clamp(1.75rem, 1.25rem + 2.1333vw, 3.75rem);
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 999px;
   font-size: var(--fs-s);
   font-weight: 400;
+  line-height: var(--lh-title);
   color: rgba(255, 255, 255, 0.72);
 }
 .step__name {
@@ -3415,15 +3435,15 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
   color: #fff;
 }
 .step__text {
   margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-s);
   color: rgba(255, 255, 255, 0.82);
 }
 
@@ -3448,8 +3468,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 
 
@@ -3513,7 +3533,7 @@ p.hero__lead { text-wrap: normal; }
   margin-bottom: clamp(1.25rem, 1rem + 1.0667vw, 2rem);
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.08em;
+  letter-spacing: var(--ls-text);
   color: rgba(255, 255, 255, 0.72);
 }
 .source__name {
@@ -3521,15 +3541,15 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
   color: #fff;
 }
 .source__text {
   margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-s);
   color: rgba(255, 255, 255, 0.82);
 }
 .fan__card--light .source__num  { color: rgba(22, 18, 13, 0.6); }
@@ -3559,8 +3579,11 @@ p.hero__lead { text-wrap: normal; }
 .frame__lede {
   display: grid;
   grid-template-rows: auto 1fr auto;
-  gap: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  gap: var(--pill-gap);
 }
+/* Отступ держит сама пилюля — иначе к gap прибавляется её margin */
+.frame__lede > .frame__eyebrow,
+.frame__lede > .approach__eyebrow { margin-bottom: 0; }
 /* Заголовок с подзаголовком идут одним блоком по центру колонки,
    мелкие подписи прижаты к её краям. */
 .sources__mid { align-self: center; }
@@ -3575,7 +3598,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0;
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
 }
 .frame__sub {
@@ -3584,13 +3607,13 @@ p.hero__lead { text-wrap: normal; }
   max-width: 46ch;
   font-size: var(--fs-m);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
 }
 .frame__note {
   margin: 0;
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
 }
 
@@ -3612,7 +3635,7 @@ p.hero__lead { text-wrap: normal; }
 /* Без красного и без разрядки: надзаголовок тихий */
 .approach .frame__eyebrow {
   color: rgba(255, 255, 255, 0.5);
-  letter-spacing: 0.06em;
+  letter-spacing: var(--ls-text);
 }
 .approach .frame__sub     { color: var(--muted); }
 
@@ -3638,7 +3661,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0;
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.16em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: var(--mark);
   pointer-events: none;
@@ -3666,7 +3689,7 @@ p.hero__lead { text-wrap: normal; }
   display: flex;
   align-items: center;
   gap: 0.6em;
-  letter-spacing: 0.1em;
+  letter-spacing: var(--ls-text);
   text-transform: none;
 }
 .venn-tick__dot {
@@ -3758,14 +3781,14 @@ p.hero__lead { text-wrap: normal; }
 .stack__area { display: block; }
 .stack__list { width: 100%; }
 
-.stack__head { display: grid; gap: 0.5rem; }
+.stack__head { display: grid; gap: 0; }
 .stack__title {
   margin: 0;
   font-family: var(--font-logo);
   font-size: var(--fs-h3);
   font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 
 
@@ -3837,8 +3860,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.25rem, 1.0714rem + 0.7619vw, 2rem);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.02em;
+  line-height: var(--lh-flat);
+  letter-spacing: var(--ls-title);
   color: rgba(22, 18, 13, 0.45);
 }
 .stack__name {
@@ -3846,15 +3869,15 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.14;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
 }
 .stack__text {
   margin: 0.45rem 0 0;
   max-width: 56ch;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: #6b655c;
 }
 
@@ -3916,7 +3939,7 @@ p.hero__lead { text-wrap: normal; }
     max-width: none;
     text-align: center;
     font-family: var(--font-ui);
-    line-height: 1.28;
+    line-height: var(--lh-text-m);
     text-wrap: balance;
   }
 }
@@ -4012,8 +4035,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-ui);
   font-size: var(--fs-s);
   font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1;
+  letter-spacing: var(--ls-btn);
+  line-height: var(--lh-flat);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -4034,7 +4057,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -4042,7 +4065,7 @@ p.hero__lead { text-wrap: normal; }
   margin: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem) 0 0.4em;
   font-size: var(--fs-s);
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -4051,8 +4074,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   font-weight: 500;
-  line-height: 1.24;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-title);
   text-wrap: pretty;
 }
 
@@ -4102,15 +4125,15 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h3);
   font-weight: 400;
-  line-height: 1.06;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
   text-wrap: balance;
 }
 .quizform__sub {
   margin: 0.7em 0 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: rgba(255, 255, 255, 0.82);
 }
 
@@ -4124,7 +4147,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 0.75em;
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -4133,8 +4156,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 500;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-lead);
+  letter-spacing: var(--ls-title);
 }
 
 .quizform__opts {
@@ -4163,7 +4186,7 @@ p.hero__lead { text-wrap: normal; }
 .quizform__opt-label {
   font-size: var(--fs-m);
   font-weight: 400;
-  letter-spacing: -0.01em;
+  letter-spacing: var(--ls-title);
 }
 .quizform__opt-go {
   font-size: var(--fs-s);
@@ -4181,7 +4204,7 @@ p.hero__lead { text-wrap: normal; }
   border-top: 1px solid rgba(22, 18, 13, 0.12);
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: #6b655c;
 }
 .quizform__talk {
@@ -4220,7 +4243,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.45);
 }
@@ -4229,8 +4252,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 
 .why__grid {
@@ -4261,8 +4284,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.375rem, 1.1607rem + 0.9143vw, 2.25rem);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-flat);
+  letter-spacing: var(--ls-head);
   color: #fff;
 }
 .why__name {
@@ -4270,14 +4293,14 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.16;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
 }
 .why__text {
   margin: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem) 0 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: rgba(255, 255, 255, 0.78);
 }
 
@@ -4319,7 +4342,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
   font-size: var(--fs-s);
   font-weight: 400;
-  letter-spacing: 0.14em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -4328,15 +4351,15 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h2);
   font-weight: 400;
-  line-height: 1.04;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
 }
 .cases__sub {
   margin: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
   max-width: 52ch;
   font-size: var(--fs-m);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: #6b655c;
 }
 
@@ -4376,7 +4399,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
   font-size: var(--fs-s);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -4385,14 +4408,14 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.75rem, 1.4643rem + 1.219vw, 3rem);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-flat);
+  letter-spacing: var(--ls-head);
 }
 .ccard__lead {
   margin: 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: #6b655c;
 }
 
@@ -4406,14 +4429,14 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.16;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
 }
 .ccard__meta {
   margin: 0.3em 0 0;
   font-size: var(--fs-s);
   font-weight: 300;
-  line-height: 1.4;
+  line-height: var(--lh-text-s);
   color: #8d8880;
 }
 
@@ -4427,13 +4450,13 @@ p.hero__lead { text-wrap: normal; }
   padding-top: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
   border-top: 1px solid rgba(22, 18, 13, 0.1);
   font-size: var(--fs-s);
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
 }
 .ccard__ba dt,
 .cmodal__ba dt {
   margin: 0;
   font-weight: 500;
-  letter-spacing: 0;
+  letter-spacing: var(--ls-text);
   text-transform: none;
   color: #8d8880;
   white-space: nowrap;
@@ -4484,8 +4507,8 @@ p.hero__lead { text-wrap: normal; }
   color: #fff;
   font-size: var(--fs-s);
   font-weight: 500;
-  letter-spacing: 0.02em;
-  line-height: 1;
+  letter-spacing: var(--ls-btn);
+  line-height: var(--lh-flat);
   text-transform: uppercase;
   white-space: nowrap;
   transition: background 0.24s ease;
@@ -4564,7 +4587,7 @@ p.hero__lead { text-wrap: normal; }
   margin: 0 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
   font-size: var(--fs-s);
   font-weight: 500;
-  letter-spacing: 0.12em;
+  letter-spacing: var(--ls-text);
   text-transform: uppercase;
   color: #8d8880;
 }
@@ -4573,14 +4596,14 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: var(--fs-h3);
   font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.0345em;
+  line-height: var(--lh-flat);
+  letter-spacing: var(--ls-head);
 }
 .cmodal__lead {
   margin: 0;
   font-size: var(--fs-m);
   font-weight: 300;
-  line-height: 1.45;
+  line-height: var(--lh-text-m);
   color: #6b655c;
 }
 .cmodal__name {
@@ -4588,8 +4611,8 @@ p.hero__lead { text-wrap: normal; }
   font-family: var(--font-logo);
   font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
   font-weight: 600;
-  line-height: 1.16;
-  letter-spacing: -0.01em;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
 }
 .cmodal__meta {
   margin: 0;
@@ -4741,16 +4764,19 @@ p.hero__lead { text-wrap: normal; }
   align-self: flex-start;
   justify-self: start;
   width: fit-content;
-  padding: 0.55em 0.95em;
+  /* Пилюля никогда не прижимается к тексту под собой */
+  margin-bottom: var(--pill-gap);
+  padding: 0.5em 1.1em;
   border: 1px solid;
   border-radius: 999px;
   background: transparent;
   font-family: var(--font-ui);
-  font-size: clamp(0.75rem, 0.7083rem + 0.1852vw, 0.875rem);
+  /* Без капса и без разрядки: пилюля — тихая подпись, а не крик */
+  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
   font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-text);
+  text-transform: none;
 }
 /* На тёмном — светлая обводка, на светлом — тёмная */
 .approach__eyebrow,
