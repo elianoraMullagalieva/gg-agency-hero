@@ -628,138 +628,155 @@
 
 
 
-<!-- ===== 13 / Отзывы · видео-отзывы и скрины переписок ===== -->
-<section class="reviews" id="reviews" aria-labelledby="reviews-title">
+<!-- ============================================================
+     НИЖНЯЯ ПОЛОВИНА · от «Отзывов» до подвала.
+     Общий механизм появления: секция с data-stage получает .is-in,
+     когда входит в экран, и теряет его, когда её снова прокрутили
+     вверх — поэтому каждое появление можно посмотреть заново.
+     Внутри .rv — элементы, которые выезжают; порядок задаёт --d (мс).
+     ============================================================ -->
+
+<!-- ===== 13 / Отзывы · лента страхов ===== -->
+<section class="reviews" id="reviews" aria-labelledby="reviews-title" data-stage>
   <div class="reviews__head">
-    <p class="reviews__eyebrow">Отзывы</p>
-    <h2 class="reviews__title" id="reviews-title">
-      С&nbsp;чем к&nbsp;нам приходили<br />— и&nbsp;что вышло
-    </h2>
+    <div>
+      <p class="reviews__eyebrow rv" style="--d:0">Отзывы</p>
+      <h2 class="reviews__title rv" id="reviews-title" style="--d:90">
+        С&nbsp;чем к&nbsp;нам приходили<br />— и&nbsp;что вышло
+      </h2>
+    </div>
+    <p class="reviews__note rv" style="--d:180">
+      Четыре страха, с&nbsp;которыми приходят чаще всего.
+      Люди на&nbsp;видео&nbsp;— те, кто через них прошёл.
+    </p>
   </div>
 
-  <ul class="reviews__grid" role="list">
-    <li class="vreview">
-      <!-- Файл подставляется в src у .vreview__media (video/img) -->
+  <ul class="reviews__strip" role="list">
+    <!-- Файл подставляется в .vreview__media: <video> или <img>,
+         кадр 4:5, тёмный низ — под цитатой лежит градиент. -->
+    <li class="vreview rv" style="--d:120">
       <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: онлайн-школа"></div>
+        <p class="vreview__tag">Страх 01</p>
         <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: онлайн-школа">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
-          </svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
         </button>
+        <p class="vreview__quote">«Боялась отдавать продажи чужим людям»</p>
       </div>
-      <p class="vreview__tag">Страх</p>
-      <p class="vreview__quote">«Боялась отдавать продажи чужим людям»</p>
       <p class="vreview__caption">Видео-отзыв · онлайн-школа</p>
     </li>
-
-    <li class="vreview">
+    <li class="vreview rv" style="--d:220">
       <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: эксперт"></div>
+        <p class="vreview__tag">Страх 02</p>
         <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: эксперт">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
-          </svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
         </button>
+        <p class="vreview__quote">«Мы уже обжигались на&nbsp;подрядчиках»</p>
       </div>
-      <p class="vreview__tag">Страх</p>
-      <p class="vreview__quote">«Мы уже обжигались на подрядчиках»</p>
       <p class="vreview__caption">Видео-отзыв · эксперт</p>
     </li>
-
-    <li class="vreview">
+    <li class="vreview rv" style="--d:320">
       <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: продюсер"></div>
+        <p class="vreview__tag">Страх 03</p>
         <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: продюсер">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
-          </svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
         </button>
+        <p class="vreview__quote">«Думали, что придётся уволить своих менеджеров»</p>
       </div>
-      <p class="vreview__tag">Страх</p>
-      <p class="vreview__quote">«Думали, что придётся уволить своих менеджеров»</p>
       <p class="vreview__caption">Видео-отзыв · продюсер</p>
     </li>
-
-    <li class="vreview">
+    <li class="vreview rv" style="--d:420">
       <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва"></div>
+        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: зарубежный проект"></div>
+        <p class="vreview__tag">Страх 04</p>
         <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: зарубежный проект">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/>
-          </svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
         </button>
+        <p class="vreview__quote">«Не&nbsp;верили, что продажи пойдут без запуска»</p>
       </div>
-      <p class="vreview__tag">Страх</p>
-      <p class="vreview__quote">«Не верили, что продажи пойдут без запуска»</p>
       <p class="vreview__caption">Видео-отзыв · зарубежный проект</p>
     </li>
   </ul>
 
-  <p class="reviews__sub">Скрины переписок</p>
-
-  <!-- Лента с автопрокруткой: initShots() в main.js -->
-  <div class="shots" data-shots aria-label="Скриншоты переписок">
-    <ul class="shots__track" role="list">
-      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 1"></div></li>
-      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 2"></div></li>
-      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 3"></div></li>
-      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 4"></div></li>
-      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 5"></div></li>
-      <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 6"></div></li>
-    </ul>
+  <div class="reviews__shots rv" style="--d:520">
+    <p class="reviews__sub">Скрины переписок</p>
+    <!-- Бесшовная лента: вторая копия дорожки нужна для стыка,
+         движение — одна CSS-анимация, без таймеров. -->
+    <div class="shots" aria-label="Скриншоты переписок">
+      <ul class="shots__track" role="list">
+        <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 1"></div></li>
+        <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 2"></div></li>
+        <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 3"></div></li>
+        <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 4"></div></li>
+        <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 5"></div></li>
+        <li class="shot"><div class="shot__media" role="img" aria-label="Скриншот переписки 6"></div></li>
+      </ul>
+      <ul class="shots__track" role="list" aria-hidden="true">
+        <li class="shot"><div class="shot__media"></div></li>
+        <li class="shot"><div class="shot__media"></div></li>
+        <li class="shot"><div class="shot__media"></div></li>
+        <li class="shot"><div class="shot__media"></div></li>
+        <li class="shot"><div class="shot__media"></div></li>
+        <li class="shot"><div class="shot__media"></div></li>
+      </ul>
+    </div>
   </div>
 </section>
 
-<!-- ===== 11 / Услуги · светлый аккордеон ===== -->
-
-<!-- ===== Почему с нами по-другому ===== -->
-<section class="why" id="why" aria-labelledby="why-title">
+<!-- ===== Почему с нами по-другому · реестр строк ===== -->
+<section class="why" id="why" aria-labelledby="why-title" data-stage>
   <div class="why__head">
-    <p class="why__eyebrow">Почему с&nbsp;нами по-другому</p>
-    <h2 class="why__title" id="why-title">
+    <p class="why__eyebrow rv" style="--d:0">Почему с&nbsp;нами по-другому</p>
+    <h2 class="why__title rv" id="why-title" style="--d:90">
       Не&nbsp;«менеджеры в&nbsp;аренду»,<br />а&nbsp;партнёр по&nbsp;выручке
     </h2>
   </div>
 
-  <ul class="why__grid" role="list">
-    <li class="why__card" style="--i:0">
-      <p class="why__value">фикс&nbsp;+&nbsp;%</p>
-      <h3 class="why__name">Зарабатываем<br />вместе с&nbsp;вами</h3>
-      <p class="why__text">Часть оплаты&nbsp;— процент от&nbsp;выручки отдела. Нам невыгодно раздувать бюджет: мы&nbsp;растём, только когда растёте вы.</p>
+  <ol class="ledger" role="list">
+    <li class="ledger__row" style="--d:200">
+      <span class="ledger__idx">01</span>
+      <p class="ledger__value"><span>фикс&nbsp;+&nbsp;%</span></p>
+      <h3 class="ledger__name">Зарабатываем вместе с&nbsp;вами</h3>
+      <p class="ledger__text">Часть оплаты&nbsp;— процент от&nbsp;выручки отдела. Нам невыгодно раздувать бюджет: мы&nbsp;растём, только когда растёте вы.</p>
     </li>
-    <li class="why__card" style="--i:1">
-      <p class="why__value">70–80%</p>
-      <h3 class="why__name">Система, а<br />не&nbsp;эксперимент</h3>
-      <p class="why__text">Ядро отдела&nbsp;— стандарт, отработанный на&nbsp;130+ проектах. Остальное настраиваем под ваш продукт и&nbsp;аудиторию.</p>
+    <li class="ledger__row" style="--d:320">
+      <span class="ledger__idx">02</span>
+      <p class="ledger__value"><span>70–80%</span></p>
+      <h3 class="ledger__name">Система, а&nbsp;не&nbsp;эксперимент</h3>
+      <p class="ledger__text">Ядро отдела&nbsp;— стандарт, отработанный на&nbsp;130+ проектах. Остальное настраиваем под ваш продукт и&nbsp;аудиторию.</p>
     </li>
-    <li class="why__card" style="--i:2">
-      <p class="why__value">1 неделя</p>
-      <h3 class="why__name">РОП в&nbsp;ваших<br />цифрах сразу</h3>
-      <p class="why__text">Не&nbsp;ждём старта продаж: с&nbsp;первой недели разбираем воронку и&nbsp;CRM и&nbsp;держим связь с&nbsp;вами и&nbsp;командой.</p>
+    <li class="ledger__row" style="--d:440">
+      <span class="ledger__idx">03</span>
+      <p class="ledger__value"><span>1&nbsp;неделя</span></p>
+      <h3 class="ledger__name">РОП в&nbsp;ваших цифрах сразу</h3>
+      <p class="ledger__text">Не&nbsp;ждём старта продаж: с&nbsp;первой недели разбираем воронку и&nbsp;CRM и&nbsp;держим связь с&nbsp;вами и&nbsp;командой.</p>
     </li>
-    <li class="why__card" style="--i:3">
-      <p class="why__value">15–20%</p>
-      <h3 class="why__name">База&nbsp;— отдельный<br />источник денег</h3>
-      <p class="why__text">Всегда включаем работу с&nbsp;базой: те, кто уже был у&nbsp;вас, стабильно дают дополнительную выручку каждый месяц.</p>
+    <li class="ledger__row" style="--d:560">
+      <span class="ledger__idx">04</span>
+      <p class="ledger__value"><span>15–20%</span></p>
+      <h3 class="ledger__name">База&nbsp;— отдельный источник денег</h3>
+      <p class="ledger__text">Всегда включаем работу с&nbsp;базой: те, кто уже был у&nbsp;вас, стабильно дают дополнительную выручку каждый месяц.</p>
     </li>
-  </ul>
+  </ol>
 </section>
 
-
-<!-- ===== Кейсы · превью с раскрытием ===== -->
-<section class="cases" id="cases-grid" aria-labelledby="cases-title">
+<!-- ===== Кейсы · рваная сетка карточек ===== -->
+<section class="cases" id="cases-grid" aria-labelledby="cases-title" data-stage>
   <div class="cases__head">
-    <p class="cases__eyebrow">Кейсы</p>
-    <h2 class="cases__title" id="cases-title">130+ отделов продаж<br />за&nbsp;четыре года</h2>
-    <p class="cases__sub">
+    <div>
+      <p class="cases__eyebrow rv" style="--d:0">Кейсы</p>
+      <h2 class="cases__title rv" id="cases-title" style="--d:90">130+ отделов продаж<br />за&nbsp;четыре года</h2>
+    </div>
+    <p class="cases__sub rv" style="--d:180">
       Проекты в&nbsp;ТОП-1% Геткурса, отделы, которые выросли в&nbsp;разы,
       и&nbsp;школы, которые построили системные продажи с&nbsp;нуля.
     </p>
   </div>
 
   <ul class="cases__grid" role="list">
-    <li class="ccard" style="--i:0">
+    <li class="ccard ccard--light rv" style="--d:160">
       <button class="ccard__btn" type="button" aria-haspopup="dialog">
         <p class="ccard__tag">Построение</p>
         <p class="ccard__value">1 млн ₽</p>
@@ -775,7 +792,7 @@
         <span class="ccard__more" aria-hidden="true">Подробнее</span>
       </button>
     </li>
-    <li class="ccard" style="--i:1">
+    <li class="ccard ccard--dark rv" style="--d:260">
       <button class="ccard__btn" type="button" aria-haspopup="dialog">
         <p class="ccard__tag">Оптимизация → построение</p>
         <p class="ccard__value">×2</p>
@@ -791,7 +808,7 @@
         <span class="ccard__more" aria-hidden="true">Подробнее</span>
       </button>
     </li>
-    <li class="ccard" style="--i:2">
+    <li class="ccard ccard--red rv" style="--d:360">
       <button class="ccard__btn" type="button" aria-haspopup="dialog">
         <p class="ccard__tag">Аутсорс → построение</p>
         <p class="ccard__value">×6</p>
@@ -807,7 +824,7 @@
         <span class="ccard__more" aria-hidden="true">Подробнее</span>
       </button>
     </li>
-    <li class="ccard" style="--i:3">
+    <li class="ccard ccard--light rv" style="--d:460">
       <button class="ccard__btn" type="button" aria-haspopup="dialog">
         <p class="ccard__tag">Оптимизация</p>
         <p class="ccard__value">×8</p>
@@ -823,7 +840,7 @@
         <span class="ccard__more" aria-hidden="true">Подробнее</span>
       </button>
     </li>
-    <li class="ccard" style="--i:4">
+    <li class="ccard ccard--light rv" style="--d:560">
       <button class="ccard__btn" type="button" aria-haspopup="dialog">
         <p class="ccard__tag">Аудит → аутсорс</p>
         <p class="ccard__value">+30%</p>
@@ -839,7 +856,7 @@
         <span class="ccard__more" aria-hidden="true">Подробнее</span>
       </button>
     </li>
-    <li class="ccard" style="--i:5">
+    <li class="ccard ccard--dark rv" style="--d:660">
       <button class="ccard__btn" type="button" aria-haspopup="dialog">
         <p class="ccard__tag">Построение</p>
         <p class="ccard__value">10%</p>
@@ -857,7 +874,7 @@
     </li>
   </ul>
 
-  <div class="cases__foot">
+  <div class="cases__foot rv" style="--d:760">
     <p class="cases__note">Подробно&nbsp;— 30+ проектов по&nbsp;четырём форматам работы</p>
     <a class="cases__cta" href="#">
       <span class="cases__cta-label">Смотреть все кейсы</span>
@@ -883,149 +900,347 @@
   </div>
 </div>
 
-<section class="services" id="services" aria-labelledby="services-title">
-  <div class="services-head">
-    <h2 class="services-title" id="services-title">Нужен конкретный формат?</h2>
-    <p class="services-sub">
-      Если уже понимаете, что вам нужно. Если не&nbsp;уверены&nbsp;—
-      начните с&nbsp;разбора выше.
+<!-- ===== Как работаем · график выручки, который выпрямляется по скроллу ===== -->
+<section class="path" id="path" aria-labelledby="path-title">
+  <div class="path__sticky">
+    <div class="path__head">
+      <div>
+        <p class="path__eyebrow">Как работаем</p>
+        <h2 class="path__title" id="path-title">Постоянные продажи<br />за&nbsp;три месяца</h2>
+      </div>
+      <p class="path__sub">
+        Реальные изменения в&nbsp;цифрах видны с&nbsp;середины второго месяца.
+        Дальше&nbsp;— рост по&nbsp;плану, а&nbsp;не&nbsp;«мы&nbsp;рядом».
+      </p>
+    </div>
+
+    <!-- График: слева пики запусков, справа ровная растущая линия.
+         Граница между ними едет вместе с прокруткой — прошлое
+         «выпрямляется» по мере того, как проходят этапы. -->
+    <div class="path__chart">
+      <canvas class="path__canvas" aria-hidden="true"></canvas>
+      <p class="path__axis"><span>Запуск</span><span>Запуск</span><span>Запуск</span><span>Каждый месяц</span></p>
+      <p class="path__legend" aria-live="polite"><span class="path__legend-k">Выручка</span><span class="path__legend-v" data-path-legend>зависит от&nbsp;даты запуска</span></p>
+    </div>
+
+    <ol class="path__stages" role="list">
+      <li class="path__stage" style="--i:0">
+        <p class="path__when">Неделя 1</p>
+        <h3 class="path__name">Аудит и&nbsp;диагностика</h3>
+        <p class="path__text">Считаем воронку по&nbsp;цифрам: заявки, конверсии, средний чек, цикл сделки. Слушаем звонки, читаем переписки, разбираем CRM&nbsp;— и&nbsp;находим, где именно теряются деньги.</p>
+        <p class="path__result"><span>Результат</span>Зоны потерь, посчитанные в&nbsp;деньгах, и&nbsp;план на&nbsp;30–90&nbsp;дней</p>
+      </li>
+      <li class="path__stage" style="--i:1">
+        <p class="path__when">Неделя 2</p>
+        <h3 class="path__name">План работ</h3>
+        <p class="path__text">Раскладываем три месяца по&nbsp;неделям под ваш проект: вашу команду, ваш продукт, вашу CRM&nbsp;— а&nbsp;не&nbsp;по&nbsp;типовому шаблону.</p>
+        <p class="path__result"><span>Результат</span>План с&nbsp;ответственными и&nbsp;сроками, которые реально выполнимы</p>
+      </li>
+      <li class="path__stage" style="--i:2">
+        <p class="path__when">Месяцы 1–3</p>
+        <h3 class="path__name">Внедрение</h3>
+        <p class="path__text">Месяц&nbsp;1&nbsp;— РОП заходит с&nbsp;первого дня, найм и&nbsp;настройка CRM идут параллельно. Месяц&nbsp;2&nbsp;— полный состав работает по&nbsp;регламентам, включается контроль качества и&nbsp;работа с&nbsp;базой. Месяц&nbsp;3&nbsp;— финансовая аналитика и&nbsp;KPI по&nbsp;фактическим цифрам.</p>
+        <p class="path__result"><span>Результат</span>Работающий отдел: люди, CRM, регламенты и&nbsp;цифры&nbsp;— а&nbsp;не&nbsp;документ, который некому исполнять</p>
+      </li>
+      <li class="path__stage" style="--i:3">
+        <p class="path__when">С&nbsp;4-го месяца</p>
+        <h3 class="path__name">Рост</h3>
+        <p class="path__text">Система построена&nbsp;— дальше план на&nbsp;полгода с&nbsp;конкретными целями по&nbsp;выручке. Мы&nbsp;строим не&nbsp;для того, чтобы сдать и&nbsp;уйти.</p>
+        <p class="path__result"><span>Результат</span>Сопровождение с&nbsp;измеримыми целями</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ===== Что остаётся у вас · четыре колонки и стопка документов ===== -->
+<section class="keep" id="keep" aria-labelledby="keep-title" data-stage>
+  <div class="keep__head">
+    <div>
+      <p class="keep__eyebrow rv" style="--d:0">Что остаётся у&nbsp;вас</p>
+      <h2 class="keep__title rv" id="keep-title" style="--d:90">Не&nbsp;менеджеры на&nbsp;удалёнке,<br />а&nbsp;собранная система</h2>
+    </div>
+
+    <!-- Четыре документа лежат стопкой со сдвигом. По скроллу слои
+         расходятся веером, при наведении — раскрываются целиком.
+         Сюда встанут обезличенные скрины из реальных проектов,
+         пропорция 3:4, светлый лист на тёмном или белом фоне. -->
+    <ul class="docs rv" role="list" style="--d:200" data-docs>
+      <li class="doc" style="--i:0"><div class="doc__sheet" role="img" aria-label="Дашборд собственника"></div></li>
+      <li class="doc" style="--i:1"><div class="doc__sheet" role="img" aria-label="Отчёт РОПа"></div></li>
+      <li class="doc" style="--i:2"><div class="doc__sheet" role="img" aria-label="Воронка в amoCRM"></div></li>
+      <li class="doc" style="--i:3"><div class="doc__sheet" role="img" aria-label="Регламент отдела"></div></li>
+    </ul>
+    <p class="keep__docnote rv" style="--d:320">Обезличенные документы из&nbsp;реальных проектов: дашборд собственника, отчёт РОПа, воронка в&nbsp;amoCRM, регламент отдела</p>
+  </div>
+
+  <div class="keep__cols">
+    <div class="keep__col" style="--d:240">
+      <h3 class="keep__name">Команда</h3>
+      <ul class="keep__list" role="list">
+        <li>Структура и&nbsp;роли без пересечений и&nbsp;дыр</li>
+        <li>Найм и&nbsp;замена&nbsp;— от&nbsp;вакансии до&nbsp;выхода на&nbsp;работу</li>
+        <li>Онбординг: менеджер выходит на&nbsp;результат по&nbsp;программе, а&nbsp;не&nbsp;«в&nbsp;бой»</li>
+      </ul>
+    </div>
+    <div class="keep__col" style="--d:360">
+      <h3 class="keep__name">Система</h3>
+      <ul class="keep__list" role="list">
+        <li>CRM и&nbsp;воронка: этапы, поля, автоматизации</li>
+        <li>Регламенты по&nbsp;сделкам, заявкам и&nbsp;просрочкам</li>
+        <li>Скрипты с&nbsp;отработкой возражений</li>
+      </ul>
+    </div>
+    <div class="keep__col" style="--d:480">
+      <h3 class="keep__name">Деньги</h3>
+      <ul class="keep__list" role="list">
+        <li>Повторные касания: ни&nbsp;одна заявка без следующего шага</li>
+        <li>Работа с&nbsp;базой: сегменты, возврат, повторные продажи</li>
+        <li>Мотивация и&nbsp;планы, которые люди понимают</li>
+      </ul>
+    </div>
+    <div class="keep__col" style="--d:600">
+      <h3 class="keep__name">Контроль</h3>
+      <ul class="keep__list" role="list">
+        <li>Проверка звонков и&nbsp;переписок по&nbsp;критериям</li>
+        <li>Ежедневная отчётность по&nbsp;каждому в&nbsp;отделе</li>
+        <li>Финансовая аналитика: конверсии, выручка на&nbsp;менеджера</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Ангелина и команда ===== -->
+<section class="people" id="team-people" aria-labelledby="people-title" data-stage>
+  <div class="people__lead">
+    <!-- Фото Ангелины: вертикальный кадр 3:4, ≥ 1200×1600, спокойный
+         фон, взгляд в камеру. Вставляется <img> внутрь .people__photo. -->
+    <div class="people__photo rv" style="--d:0">
+      <div class="people__img" role="img" aria-label="Фото Ангелины Глазковой"></div>
+    </div>
+    <div class="people__quote">
+      <p class="people__eyebrow rv" style="--d:120">Основательница</p>
+      <h2 class="people__title rv" id="people-title" style="--d:200">
+        «Я&nbsp;строю отделы продаж, которые работают без меня и&nbsp;без вас.
+        Моя задача&nbsp;— чтобы деньги в&nbsp;кассе были каждый месяц,
+        а&nbsp;не&nbsp;два раза в&nbsp;год».
+      </h2>
+      <p class="people__who rv" style="--d:300">
+        <strong>Ангелина Глазкова</strong>
+        основательница GG&nbsp;Agency, лично разбирает воронки и&nbsp;CRM по&nbsp;каждому проекту
+      </p>
+      <a class="people__cta rv" href="#" style="--d:380">
+        <span class="people__cta-label">Мой канал о&nbsp;продажах</span>
+        <span class="people__cta-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z" fill="currentColor"/></svg></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="people__team">
+    <div class="people__teamhead">
+      <h3 class="people__teamtitle rv" style="--d:0">За&nbsp;каждым проектом&nbsp;— живые люди</h3>
+      <p class="people__teamsub rv" style="--d:90">Не&nbsp;безликий колл-центр, а&nbsp;команда, которая ведёт ограниченное число проектов.</p>
+    </div>
+    <!-- Три фото команды: горизонтальные кадры 4:3 с рабочих
+         созвонов или из офиса, без постановочных улыбок. -->
+    <ul class="crew" role="list">
+      <li class="crew__item rv" style="--d:160">
+        <div class="crew__img" role="img" aria-label="Фото: РОП и ассистент"></div>
+        <h4 class="crew__name">РОП и&nbsp;ассистент</h4>
+        <p class="crew__text">Ведут коммуникацию с&nbsp;вами с&nbsp;первой недели и&nbsp;управляют командой по&nbsp;цифрам, а&nbsp;не&nbsp;по&nbsp;ощущениям.</p>
+      </li>
+      <li class="crew__item rv" style="--d:260">
+        <div class="crew__img" role="img" aria-label="Фото: менеджеры по продажам"></div>
+        <h4 class="crew__name">Менеджеры по&nbsp;продажам</h4>
+        <p class="crew__text">Работают с&nbsp;заявками в&nbsp;чатах, на&nbsp;звонках и&nbsp;диагностиках&nbsp;— по&nbsp;вашим скриптам и&nbsp;регламентам.</p>
+      </li>
+      <li class="crew__item rv" style="--d:360">
+        <div class="crew__img" role="img" aria-label="Фото: лидорубы и ОКК"></div>
+        <h4 class="crew__name">Лидорубы и&nbsp;ОКК</h4>
+        <p class="crew__text">Квалифицируют базу и&nbsp;проверяют качество каждого звонка и&nbsp;каждой переписки.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== Отбор · экран, разрезанный надвое ===== -->
+<section class="fit" id="fit" aria-labelledby="fit-title" data-stage>
+  <div class="fit__half fit__half--yes">
+    <p class="fit__eyebrow rv" style="--d:0">Отбор</p>
+    <h2 class="fit__title rv" id="fit-title" style="--d:90">Мы&nbsp;работаем<br />не&nbsp;со&nbsp;всеми</h2>
+    <p class="fit__label rv" style="--d:200">Нам подходят те, у&nbsp;кого</p>
+    <ul class="fit__list" role="list">
+      <li class="rv" style="--d:280">Продукт уже подтверждён продажами&nbsp;— есть на&nbsp;чём строить систему</li>
+      <li class="rv" style="--d:400">Есть готовность менять процессы, а&nbsp;не&nbsp;«дайте менеджеров, подождём»</li>
+      <li class="rv" style="--d:520">Амбиция вырасти в&nbsp;разы, а&nbsp;не&nbsp;продержаться ещё один запуск</li>
+    </ul>
+  </div>
+  <div class="fit__half fit__half--no">
+    <p class="fit__sub rv" style="--d:140">
+      Если продукт ещё не&nbsp;подтверждён продажами или результат нужен
+      без изменений в&nbsp;команде и&nbsp;процессах&nbsp;— мы&nbsp;не&nbsp;подходим
+      друг другу, и&nbsp;честнее сказать об&nbsp;этом сразу.
+    </p>
+    <p class="fit__label rv" style="--d:260">Результата не&nbsp;будет, если</p>
+    <ul class="fit__list" role="list">
+      <li class="rv" style="--d:340">Ищете самый дешёвый вариант на&nbsp;рынке</li>
+      <li class="rv" style="--d:460">Не&nbsp;готовы делегировать управление отделом</li>
+      <li class="rv" style="--d:580">Нужен разовый набор менеджеров без цели расти дальше</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== С чего начать · три панели, раскрываются вбок ===== -->
+<section class="start" id="start" aria-labelledby="start-title" data-stage>
+  <div class="start__head">
+    <div>
+      <p class="start__eyebrow rv" style="--d:0">Формат и&nbsp;стоимость</p>
+      <h2 class="start__title rv" id="start-title" style="--d:90">С&nbsp;чего начать</h2>
+    </div>
+    <p class="start__sub rv" style="--d:180">
+      Не&nbsp;нужно сразу подписываться на&nbsp;три месяца. Можно начать
+      с&nbsp;малого&nbsp;— и&nbsp;решить, когда увидите цифры.
     </p>
   </div>
 
-  <div class="services-list">
-    <article class="services-item">
-      <button class="services-trigger" type="button" aria-expanded="false" aria-controls="s-panel-1" id="s-trigger-1">
-        <h3>Аудит отдела продаж</h3>
-        <p class="services-note">
-          Самостоятельная диагностика без обязательств по&nbsp;дальнейшей работе:
-          воронка, CRM, звонки и&nbsp;переписки, отчётность, работа с&nbsp;базой.
-          Документ и&nbsp;созвон по&nbsp;итогам.
-        </p>
-        <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
+  <div class="panels rv" style="--d:260" data-panels>
+    <article class="panel panel--light is-open" data-panel>
+      <button class="panel__head" type="button" aria-expanded="true">
+        <span class="panel__num">01</span>
+        <span class="panel__name">Аудит отдела продаж</span>
+        <span class="panel__term">5 рабочих дней</span>
       </button>
-      <div class="services-panel" id="s-panel-1" role="region" aria-labelledby="s-trigger-1"><div class="services-answer">
-        <dl class="services-facts">
-          <div><dt>Срок</dt><dd>5–7 дней</dd></div>
-          <div><dt>Формат</dt><dd>документ + созвон</dd></div>
-          <div><dt>Обязательства</dt><dd>нет</dd></div>
-        </dl>
-        <p>Смотрим, где именно теряются деньги: разбираем записи звонков и переписки,
-          считаем конверсию каждого менеджера, проверяем настройку CRM и работу с базой.</p>
-        <p>На выходе — документ с найденными точками потерь и планом, что чинить
-          в первую очередь. Созвон, чтобы разобрать выводы и ответить на вопросы.</p>
-        <a class="services-cta" href="#">Получить консультацию</a>
-      </div></div>
+      <div class="panel__body">
+        <div class="panel__inner">
+          <p class="panel__for"><span>Для кого</span>Если хотите увидеть, где именно теряются деньги, до&nbsp;того как во&nbsp;что-то вкладываться.</p>
+          <ul class="panel__list" role="list">
+            <li>Разбор отдела изнутри: CRM, звонки и&nbsp;переписки, мотивация, отчётность, работа с&nbsp;базой</li>
+            <li>Документ с&nbsp;найденными точками потерь и&nbsp;планом на&nbsp;30&nbsp;дней</li>
+            <li>Созвон-разбор с&nbsp;вами и&nbsp;командой</li>
+          </ul>
+          <p class="panel__note">Без обязательств по&nbsp;дальнейшей работе</p>
+        </div>
+      </div>
     </article>
 
-    <article class="services-item">
-      <button class="services-trigger" type="button" aria-expanded="false" aria-controls="s-panel-2" id="s-trigger-2">
-        <h3>Отдел продаж<br />на период запуска</h3>
-        <p class="services-note">
-          Готовая команда&nbsp;— менеджеры, РОП, лидорубы, ОКК&nbsp;— под конкретное
-          окно продаж. Подготовка 5–7&nbsp;дней, весь цикл около месяца.
-        </p>
-        <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
+    <article class="panel panel--dark" data-panel>
+      <button class="panel__head" type="button" aria-expanded="false">
+        <span class="panel__num">02</span>
+        <span class="panel__name">Построение отдела</span>
+        <span class="panel__term">2–3 месяца</span>
       </button>
-      <div class="services-panel" id="s-panel-2" role="region" aria-labelledby="s-trigger-2"><div class="services-answer">
-        <dl class="services-facts">
-          <div><dt>Подготовка</dt><dd>5–7 дней</dd></div>
-          <div><dt>Весь цикл</dt><dd>около месяца</dd></div>
-          <div><dt>Команда</dt><dd>под ваш объём</dd></div>
-        </dl>
-        <p>Собираем команду под конкретное окно продаж: менеджеры, руководитель,
-          лидорубы и контроль качества. Пишем скрипты под ваш продукт, настраиваем
-          воронку и отчётность.</p>
-        <p>Вы получаете работающий отдел к старту запуска, без найма и обучения
-          с нуля. После окончания — передаём наработки и статистику.</p>
-        <a class="services-cta" href="#">Получить консультацию</a>
-      </div></div>
+      <div class="panel__body">
+        <div class="panel__inner">
+          <p class="panel__for"><span>Для кого</span>Если продажи держатся на&nbsp;запусках, на&nbsp;вас или на&nbsp;одном сильном менеджере.</p>
+          <ul class="panel__list" role="list">
+            <li>РОП в&nbsp;ваших цифрах с&nbsp;первого дня, найм и&nbsp;настройка CRM параллельно</li>
+            <li>Регламенты, скрипты, контроль качества, работа с&nbsp;базой</li>
+            <li>Формат под задачу: с&nbsp;нуля, пересборка текущего отдела или отдел на&nbsp;период запуска (подготовка 5–7&nbsp;дней)</li>
+          </ul>
+          <p class="panel__note">Реальные изменения в&nbsp;цифрах&nbsp;— с&nbsp;середины второго месяца</p>
+        </div>
+      </div>
     </article>
 
-    <article class="services-item">
-      <button class="services-trigger" type="button" aria-expanded="false" aria-controls="s-panel-3" id="s-trigger-3">
-        <h3>Оптимизация<br />текущего отдела</h3>
-        <p class="services-note">
-          Команда и&nbsp;CRM уже есть, но&nbsp;результата нет&nbsp;— точечно
-          донастраиваем то, что работает не&nbsp;так, без остановки продаж.
-        </p>
-        <span class="services-more">Подробнее <i aria-hidden="true">→</i></span>
+    <article class="panel panel--red" data-panel>
+      <button class="panel__head" type="button" aria-expanded="false">
+        <span class="panel__num">03</span>
+        <span class="panel__name">Сопровождение</span>
+        <span class="panel__term">С 4-го месяца</span>
       </button>
-      <div class="services-panel" id="s-panel-3" role="region" aria-labelledby="s-trigger-3"><div class="services-answer">
-        <dl class="services-facts">
-          <div><dt>Срок</dt><dd>2–3 месяца</dd></div>
-          <div><dt>Остановка</dt><dd>не требуется</dd></div>
-          <div><dt>Дальше</dt><dd>план на полгода</dd></div>
-        </dl>
-        <p>Не ломаем то, что уже работает. Находим узкие места и чиним их по очереди:
-          скрипты, регламенты, мотивацию, контроль качества, работу с базой.</p>
-        <p>Обучаем вашего руководителя вести отдел дальше самостоятельно
-          и передаём управление с планом на полгода вперёд.</p>
-        <a class="services-cta" href="#">Получить консультацию</a>
-      </div></div>
+      <div class="panel__body">
+        <div class="panel__inner">
+          <p class="panel__for"><span>Для кого</span>Если отдел уже работает и&nbsp;нужен рост по&nbsp;плану, а&nbsp;не&nbsp;«мы&nbsp;рядом».</p>
+          <ul class="panel__list" role="list">
+            <li>План на&nbsp;полгода с&nbsp;конкретными целями по&nbsp;выручке</li>
+            <li>Еженедельные цифры, контроль качества, замена и&nbsp;обучение людей</li>
+            <li>Фикс&nbsp;+ процент от&nbsp;выручки отдела: чем больше оборот, тем меньше доля фикса</li>
+          </ul>
+          <p class="panel__note">Мы&nbsp;зарабатываем, когда зарабатываете вы</p>
+        </div>
+      </div>
     </article>
+  </div>
+
+  <div class="start__foot rv" style="--d:380">
+    <p class="start__price">Точную сумму называем после аудита, когда понятен объём. До&nbsp;старта можно посмотреть один из&nbsp;текущих проектов изнутри: CRM, отчёты, работу команды.</p>
+    <a class="start__cta" href="#quiz">
+      <span class="start__cta-label">Начать с&nbsp;разбора</span>
+      <span class="start__cta-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z" fill="currentColor"/></svg></span>
+    </a>
   </div>
 </section>
 
 <!-- ===== Частые вопросы · структура из проекта Кэмпа ===== -->
-<section class="questions-section" id="questions" aria-labelledby="questions-title">
+<section class="questions-section" id="questions" aria-labelledby="questions-title" data-stage>
   <div class="questions-head">
-    <h2 id="questions-title">Частые<br /><span>вопросы</span></h2>
+    <h2 id="questions-title" class="rv" style="--d:0">Частые<br /><span>вопросы</span></h2>
   </div>
 
   <div class="questions-list" aria-label="Частые вопросы">
-          <article class="questions-item">
+          <article class="questions-item rv" style="--d:120">
             <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-1" id="q-trigger-1"><span class="questions-number">01</span><h3>Сколько это стоит?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
             <div class="questions-panel" id="q-panel-1" role="region" aria-labelledby="q-trigger-1"><div class="questions-answer">
-              <p>Стоимость зависит от задачи: построение отдела с нуля, оптимизация действующего или сопровождение.</p>
+              <p>Стоимость зависит от задачи: построение отдела с нуля, оптимизация действующего или сопровождение. Фикс зависит от оборота, поэтому точную сумму называем после аудита: до него это была бы цифра с потолка.</p>
               <p>На разборе считаем под ваши цифры — выручку, средний чек и объём базы. Без созвона и обязательств.</p>
             </div></div>
           </article>
-          <article class="questions-item">
+          <article class="questions-item rv" style="--d:200">
             <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-2" id="q-trigger-2"><span class="questions-number">02</span><h3>Сколько времени занимает?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
             <div class="questions-panel" id="q-panel-2" role="region" aria-labelledby="q-trigger-2"><div class="questions-answer">
               <p>Отдел под запуск — подготовка 5–7 дней, весь цикл около месяца.</p>
-              <p>Построение и оптимизация — 2–3 месяца до системной работы, дальше сопровождение с планом на полгода.</p>
+              <p>Построение и оптимизация — 2–3 месяца до системной работы, реальные изменения в цифрах с середины второго месяца. Дальше сопровождение с планом на полгода.</p>
             </div></div>
           </article>
-          <article class="questions-item">
+          <article class="questions-item rv" style="--d:280">
             <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-3" id="q-trigger-3"><span class="questions-number">03</span><h3>У нас уже есть менеджеры. Их придётся уволить?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
             <div class="questions-panel" id="q-panel-3" role="region" aria-labelledby="q-trigger-3"><div class="questions-answer">
-              <p>Нет. Сначала смотрим, кто и как продаёт: разбираем звонки, переписки и конверсию каждого.</p>
-              <p>Чаще проблема не в людях, а в отсутствии системы — скриптов, регламентов и контроля.</p>
+              <p>Нет. Сначала работаем с теми, кто есть: разбираем диалоги, даём регламенты и скрипты, обучаем.</p>
+              <p>Менять предлагаем только тех, кто не тянет после обучения, — и сами закрываем найм.</p>
             </div></div>
           </article>
-          <article class="questions-item">
+          <article class="questions-item rv" style="--d:360">
             <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-4" id="q-trigger-4"><span class="questions-number">04</span><h3>Мы обжигались на подрядчиках. Чем вы отличаетесь?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
             <div class="questions-panel" id="q-panel-4" role="region" aria-labelledby="q-trigger-4"><div class="questions-answer">
-              <p>Мы не сдаём «отдел под ключ» и не исчезаем. Выстраиваем систему, обучаем руководителя и передаём управление с планом на полгода вперёд.</p>
-              <p>За 4 года — 130+ отделов продаж. Метрики открываем на разборе.</p>
+              <p>Вы видите всё с первой недели: CRM, отчёты, записи звонков. Часть нашей оплаты — процент от выручки, так что нам невыгодно работать вполсилы.</p>
+              <p>И до старта можно посмотреть, как устроен один из текущих проектов изнутри.</p>
             </div></div>
           </article>
-          <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-5" id="q-trigger-5"><span class="questions-number">05</span><h3>Работаете с зарубежной аудиторией?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+          <article class="questions-item rv" style="--d:440">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-5" id="q-trigger-5"><span class="questions-number">05</span><h3>Что, если не сработает?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
             <div class="questions-panel" id="q-panel-5" role="region" aria-labelledby="q-trigger-5"><div class="questions-answer">
-              <p>Да. Работали с проектами на русскоязычную аудиторию за рубежом и со смешанными рынками.</p>
+              <p>Поэтому мы и начинаем с аудита: вы видите, где теряются деньги и сколько, до того как вкладываться в построение.</p>
+              <p>В работе — еженедельные цифры, по которым видно, идёт ли рост, а не отчёты «мы стараемся».</p>
+            </div></div>
+          </article>
+          <article class="questions-item rv" style="--d:520">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-6" id="q-trigger-6"><span class="questions-number">06</span><h3>Сколько нужно заявок, чтобы это окупилось?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-6" role="region" aria-labelledby="q-trigger-6"><div class="questions-answer">
+              <p>Отдел продаж окупается, когда есть поток заявок или база, с которой можно работать.</p>
+              <p>Если продукт ещё не подтверждён продажами — честно скажем, что рано, и подскажем, с чего начать.</p>
+            </div></div>
+          </article>
+          <article class="questions-item rv" style="--d:600">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-7" id="q-trigger-7"><span class="questions-number">07</span><h3>Работаете с зарубежной аудиторией?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-7" role="region" aria-labelledby="q-trigger-7"><div class="questions-answer">
+              <p>Да. Работают русскоязычные менеджеры со свободным английским — у нас есть проекты с аудиторией в США и Европе.</p>
               <p>Разница в каналах и часовых поясах — система продаж остаётся той же.</p>
             </div></div>
           </article>
-          <article class="questions-item">
-            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-6" id="q-trigger-6"><span class="questions-number">06</span><h3>Мы не онлайн-школа. Подойдёт?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
-            <div class="questions-panel" id="q-panel-6" role="region" aria-labelledby="q-trigger-6"><div class="questions-answer">
-              <p>Подойдёт, если продаёте через личный контакт: консалтинг, услуги, экспертные продукты.</p>
-              <p>Не подойдёт для розницы и маркетплейсов — там другая механика.</p>
+          <article class="questions-item rv" style="--d:680">
+            <button class="questions-trigger" type="button" aria-expanded="false" aria-controls="q-panel-8" id="q-trigger-8"><span class="questions-number">08</span><h3>Мы не онлайн-школа. Подойдёт?</h3><span class="questions-plus" aria-hidden="true">+</span></button>
+            <div class="questions-panel" id="q-panel-8" role="region" aria-labelledby="q-trigger-8"><div class="questions-answer">
+              <p>Работаем с экспертными проектами и онлайн-продуктами: наставничество, консультации, премиальные программы. Если продаёте через заявки и переписку — скорее всего, подойдёт.</p>
+              <p>Не подойдёт для розницы и маркетплейсов — там другая механика. Точнее скажем на разборе.</p>
             </div></div>
           </article>
   </div>
 </section>
 
-<!-- ===== 14 / Разбор · финальный CTA ===== -->
-
-<!-- ===== Футер ===== -->
 <!-- ===== Опросник перед подвалом ===== -->
-<section class="quizform" id="quiz" aria-labelledby="quizform-title">
-  <article class="quizform__card">
+<section class="quizform" id="quiz" aria-labelledby="quizform-title" data-stage>
+  <article class="quizform__card rv" style="--d:0">
     <div class="quizform__lede">
-      <div class="quizform__visual" aria-hidden="true"></div>
+      <div class="quizform__visual" aria-hidden="true"><canvas class="quizform__fx"></canvas></div>
       <h2 class="quizform__title" id="quizform-title">
         Узнайте, где утекают ваши деньги
       </h2>
@@ -1036,64 +1251,80 @@
     </div>
 
     <div class="quizform__body">
-      <p class="quizform__step">Вопрос 1 из&nbsp;8</p>
-      <h3 class="quizform__q">Как у&nbsp;вас сейчас идут продажи?</h3>
+      <p class="quizform__step rv" style="--d:200">Вопрос 1 из&nbsp;8</p>
+      <h3 class="quizform__q rv" style="--d:280">Как у&nbsp;вас сейчас идут продажи?</h3>
       <ul class="quizform__opts" role="list">
-          <li>
+          <li class="rv" style="--d:360">
             <a class="quizform__opt" href="#">
               <span class="quizform__opt-label">Запусками</span>
               <span class="quizform__opt-go">→ в&nbsp;бот</span>
             </a>
           </li>
-          <li>
+          <li class="rv" style="--d:440">
             <a class="quizform__opt" href="#">
               <span class="quizform__opt-label">Постоянно</span>
               <span class="quizform__opt-go">→ в&nbsp;бот</span>
             </a>
           </li>
-          <li>
+          <li class="rv" style="--d:520">
             <a class="quizform__opt" href="#">
               <span class="quizform__opt-label">И так, и так</span>
               <span class="quizform__opt-go">→ в&nbsp;бот</span>
             </a>
           </li>
       </ul>
-      <p class="quizform__note">
+      <p class="quizform__note rv" style="--d:600">
         Остальные 7&nbsp;вопросов&nbsp;— в&nbsp;Telegram, ответ сразу откроет бота
       </p>
-      <p class="quizform__talk">
+      <p class="quizform__talk rv" style="--d:660">
         Хотите сразу поговорить? <a href="#">Напишите Ангелине</a>
       </p>
     </div>
   </article>
 </section>
 
-<footer class="footer">
+<!-- ===== Подвал · слово во весь экран, поднимающееся снизу ===== -->
+<footer class="footer" id="footer" data-stage>
   <div class="footer__inner">
-    <div class="footer__brand">
+    <div class="footer__brand rv" style="--d:0">
       <a class="footer__logo" href="#">GG AGENCY</a>
       <p class="footer__tagline">
-        Системные продажи для онлайн-школ<br />и экспертных проектов
+        Постоянные продажи для онлайн-школ<br />и&nbsp;экспертных проектов
       </p>
+      <a class="footer__cta" href="#quiz">
+        <span class="footer__cta-label">Где вы теряете деньги</span>
+        <span class="footer__cta-meta">3&nbsp;минуты →</span>
+      </a>
     </div>
 
-    <nav class="footer__col" aria-label="Разделы">
+    <nav class="footer__col rv" aria-label="Разделы" style="--d:100">
       <p class="footer__label">Разделы</p>
-      <a href="#">Построение постоянных продаж</a>
-      <a href="#">Кейсы</a>
-      <a href="#">С кем мы работаем</a>
-      <a href="#">Другие услуги</a>
-      <a href="#">Команда</a>
+      <a href="#leaks">Где утекают деньги</a>
+      <a href="#approach">Как это работает</a>
+      <a href="#cases-grid">Кейсы</a>
+      <a href="#path">Как работаем</a>
+      <a href="#start">Формат и&nbsp;стоимость</a>
+      <a href="#team-people">Команда</a>
     </nav>
 
-    <div class="footer__col">
+    <div class="footer__col rv" style="--d:200">
       <p class="footer__label">Связаться</p>
       <a href="#">Telegram</a>
       <a href="#">Instagram</a>
-      <a href="mailto:hello@ggagency.ru">hello@ggagency.ru</a>
+      <a href="mailto:hello@gg-agency.ru">hello@gg-agency.ru</a>
     </div>
   </div>
+
+  <div class="footer__word" aria-hidden="true">
+    <span class="footer__word-text" data-footer-word>GG&nbsp;AGENCY</span>
+  </div>
+
+  <div class="footer__legal">
+    <p>© GG Agency, 2026</p>
+    <p><a href="#">Реквизиты</a><a href="#">Политика конфиденциальности</a></p>
+  </div>
 </footer>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>

@@ -1829,7 +1829,7 @@
   initApproach();
   [].forEach.call(document.querySelectorAll(".sources"), initFan);
   initStacks();
-  initWhy();
+  /* initWhy() снят: блок «Почему» появляется общим механизмом data-stage */
   initCases();
   initCards();
   initOdometer();
@@ -1918,4 +1918,371 @@
   } else {
     window.addEventListener("resize", schedule);
   }
+})();
+
+
+/* ============================================================
+   НИЖНЯЯ ПОЛОВИНА · движение блоков от «Отзывов» до подвала.
+   Один принцип на всё: прокрутка и наблюдатели пишут числа в
+   CSS-переменные или классы, геометрию считает CSS. Canvas — только
+   для графика и пиксельного дождя, и только пока блок на экране.
+   Всё, что привязано к прокрутке, отматывается назад так же,
+   как идёт вперёд: значения считаются от положения, а не от времени.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var still = matchMedia("(prefers-reduced-motion: reduce)");
+  function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+
+  /* ---------- Дирижёр: rAF-цикл, живущий пока есть подписчики в кадре.
+     Каждый блок регистрирует функцию, которая получает время кадра
+     и сама решает, что считать. Один цикл на всех — один reflow. */
+  var subs = [], raf = 0, prevT = 0;
+  function tick(now) {
+    raf = 0;
+    var dt = prevT ? Math.min(0.032, (now - prevT) / 1000) : 0.016;
+    prevT = now;
+    var alive = false;
+    for (var i = 0; i < subs.length; i++) if (subs[i](dt, now)) alive = true;
+    if (alive) raf = requestAnimationFrame(tick); else prevT = 0;
+  }
+  function wake() { if (!raf) raf = requestAnimationFrame(tick); }
+  function onScroll(fn) { subs.push(fn); }
+  window.addEventListener("scroll", wake, { passive: true });
+  window.addEventListener("resize", wake);
+  function near(r, pad) { return r.bottom > -(pad || 0) && r.top < window.innerHeight + (pad || 0); }
+
+  /* ============================================================
+     Появление секций. Секция с data-stage получает .is-in, когда
+     её видно на 12%; когда её прокрутили назад так, что она снова
+     целиком ниже экрана, класс снимается — появление можно
+     посмотреть ещё раз. При уходе вверх ничего не меняем: иначе
+     блок мерцал бы при каждом возврате.
+     ============================================================ */
+  function initStages() {
+    var stages = [].slice.call(document.querySelectorAll("[data-stage]"));
+    if (!stages.length) return;
+    if (!("IntersectionObserver" in window) || still.matches) {
+      stages.forEach(function (s) { s.classList.add("is-in"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        if (e.isIntersecting) e.target.classList.add("is-in");
+        else if (e.boundingClientRect.top > 0) e.target.classList.remove("is-in");
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+    stages.forEach(function (s) { io.observe(s); });
+  }
+
+  /* ============================================================
+     Реестр «Почему по-другому»: строки наклоняются от скорости
+     прокрутки и возвращаются пружиной. Скорость сглаживается,
+     угол ограничен ±5°.
+     ============================================================ */
+  function initLedgerPush() {
+    var sec = document.querySelector(".why");
+    if (!sec || still.matches) return;
+    var lastY = window.scrollY, vel = 0, push = 0;
+    onScroll(function (dt) {
+      var r = sec.getBoundingClientRect();
+      if (!near(r, 100)) { lastY = window.scrollY; return false; }
+      var y = window.scrollY;
+      var v = (y - lastY) / Math.max(dt, 0.008);
+      lastY = y;
+      vel += (v - vel) * 0.2;
+      var target = Math.max(-5, Math.min(5, vel / 260));
+      push += (target - push) * 0.14;
+      vel *= 0.86;
+      if (Math.abs(push) < 0.02 && Math.abs(vel) < 1) { push = 0; vel = 0; }
+      sec.style.setProperty("--push", push.toFixed(3));
+      return push !== 0;
+    });
+  }
+
+  /* ============================================================
+     Как работаем · график выручки. Прокрутка блока ведёт курсор
+     по оси времени: слева от курсора кривая уже «выпрямлена» и
+     растёт, справа — ещё пики запусков. Этапы под графиком
+     переключаются по тому же прогрессу, у активного заполняется
+     верхняя линия.
+     ============================================================ */
+  function initPath() {
+    var sec = document.querySelector(".path");
+    if (!sec) return;
+    var canvas = sec.querySelector(".path__canvas");
+    var ctx = canvas && canvas.getContext("2d");
+    var stages = [].slice.call(sec.querySelectorAll(".path__stage"));
+    var axis = [].slice.call(sec.querySelectorAll(".path__axis span"));
+    var legend = sec.querySelector("[data-path-legend]");
+    if (!ctx || !stages.length) return;
+
+    var LEGEND = [
+      "зависит от даты запуска",
+      "разложена по неделям",
+      "идёт по регламентам",
+      "растёт по плану"
+    ];
+    var n = stages.length;
+    var wide = matchMedia("(min-width: 901px)");
+    var lock = false;
+    var dpr = 1, W = 0, H = 0;
+    var shown = -1, drawnP = -1, seenP = 0;
+
+    function measure() {
+      lock = wide.matches && !still.matches;
+      if (lock) sec.style.height = (window.innerHeight * (1 + n * 0.7)) + "px";
+      else sec.style.height = "";
+      var r = canvas.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.max(1, Math.round(r.width * dpr));
+      var h = Math.max(1, Math.round(r.height * dpr));
+      if (w !== W || h !== H) { W = w; H = h; canvas.width = W; canvas.height = H; drawnP = -1; }
+    }
+
+    function progress() {
+      if (still.matches) return 1;
+      var r = sec.getBoundingClientRect(), vh = window.innerHeight;
+      if (lock) return clamp01(-r.top / Math.max(1, (sec.offsetHeight - vh) * 0.92));
+      /* Без фиксации: ход идёт, пока секция проходит через экран */
+      return clamp01((vh * 0.7 - r.top) / Math.max(1, r.height * 0.85));
+    }
+
+    /* Пики запусков: три всплеска, между ними почти ноль */
+    function spiky(x) {
+      var y = 0.06;
+      var peaks = [0.16, 0.44, 0.72];
+      for (var i = 0; i < peaks.length; i++) {
+        var d = (x - peaks[i]) / 0.032;
+        y += Math.exp(-d * d) * (0.86 - i * 0.05);
+        /* Хвост после пика: касса пустеет не мгновенно */
+        var t = (x - peaks[i]) / 0.11;
+        if (t > 0) y += Math.exp(-t * t) * 0.16;
+      }
+      return y;
+    }
+    /* Ровная выручка: растёт, с лёгкой рябью месяцев */
+    function steady(x) {
+      return 0.3 + 0.5 * x + Math.sin(x * 38) * 0.018;
+    }
+    function smooth(a, b, x) { var t = clamp01((x - a) / (b - a)); return t * t * (3 - 2 * t); }
+
+    function draw(p) {
+      var w = W / dpr, h = H / dpr;
+      var padT = h * 0.22, padB = h * 0.16, span = h - padT - padB;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, w, h);
+
+      var c = -0.05 + p * 1.15;      // курсор выходит за края: в начале всё пики, в конце всё ровно
+      var N = 240;
+      var pts = new Array(N + 1);
+      for (var i = 0; i <= N; i++) {
+        var x = i / N;
+        var s = 1 - smooth(c - 0.05, c + 0.05, x);   // слева от курсора — 1
+        var y = spiky(x) * (1 - s) + steady(x) * s;
+        pts[i] = [x * w, padT + (1 - Math.min(1, y)) * span];
+      }
+
+      // Заливка под кривой: красная у линии, гаснет книзу
+      var g = ctx.createLinearGradient(0, padT, 0, h);
+      g.addColorStop(0, "rgba(172,12,15,0.55)");
+      g.addColorStop(0.55, "rgba(125,5,16,0.22)");
+      g.addColorStop(1, "rgba(3,3,3,0)");
+      ctx.beginPath();
+      ctx.moveTo(0, h);
+      for (i = 0; i <= N; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.lineTo(w, h);
+      ctx.closePath();
+      ctx.fillStyle = g;
+      ctx.fill();
+
+      // Линия
+      ctx.beginPath();
+      for (i = 0; i <= N; i++) { if (i) ctx.lineTo(pts[i][0], pts[i][1]); else ctx.moveTo(pts[i][0], pts[i][1]); }
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "rgba(255,255,255,0.92)";
+      ctx.lineJoin = "round";
+      ctx.stroke();
+
+      // Курсор: вертикальная линия и точка на кривой
+      var cx = clamp01(c) * w;
+      var idx = Math.round(clamp01(c) * N);
+      var cy = pts[idx][1];
+      ctx.beginPath();
+      ctx.moveTo(cx, padT * 0.55);
+      ctx.lineTo(cx, h - padB * 0.4);
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255,255,255,0.28)";
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 5, 0, Math.PI * 2);
+      ctx.fillStyle = "#fff";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 11, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255,255,255,0.14)";
+      ctx.fill();
+
+      // Подписи оси: пройденные запуски гаснут
+      for (i = 0; i < axis.length; i++) {
+        var ax = i / axis.length + 0.02;
+        var passed = ax < c;
+        axis[i].style.color = passed && i < axis.length - 1
+          ? "rgba(255,255,255,0.18)" : (i === axis.length - 1 && passed ? "#fff" : "rgba(255,255,255,0.4)");
+      }
+    }
+
+    function stage(p) {
+      var seg = 1 / n;
+      var act = Math.min(n - 1, Math.floor(p / seg + 1e-6));
+      if (p >= 1) act = n - 1;
+      for (var i = 0; i < n; i++) {
+        var fill = clamp01((p - i * seg) / seg);
+        stages[i].style.setProperty("--fill", fill.toFixed(3));
+        stages[i].classList.toggle("is-active", i === act);
+      }
+      if (act !== shown) { shown = act; if (legend) legend.innerHTML = LEGEND[act]; }
+    }
+
+    onScroll(function () {
+      var r = sec.getBoundingClientRect();
+      if (!near(r, 200)) return false;
+      var p = progress();
+      if (Math.abs(p - drawnP) > 0.0005) { measure(); draw(p); stage(p); drawnP = p; }
+      return false;
+    });
+
+    function reset() { measure(); drawnP = -1; wake(); }
+    window.addEventListener("resize", reset);
+    if (wide.addEventListener) wide.addEventListener("change", reset);
+    if (still.addEventListener) still.addEventListener("change", reset);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(reset);
+    reset();
+  }
+
+  /* ============================================================
+     Что остаётся у вас: стопка документов расходится по мере
+     того, как блок въезжает в экран. Наведение раскрывает
+     стопку целиком (это в CSS).
+     ============================================================ */
+  function initDocs() {
+    var sec = document.querySelector(".keep");
+    var docs = sec && sec.querySelector("[data-docs]");
+    if (!sec || !docs || still.matches) return;
+    var last = -1;
+    onScroll(function () {
+      var r = docs.getBoundingClientRect(), vh = window.innerHeight;
+      if (!near(r, 200)) return false;
+      var s = clamp01((vh * 0.9 - r.top) / (vh * 0.55));
+      s = s * s * (3 - 2 * s);
+      if (Math.abs(s - last) > 0.002) { sec.style.setProperty("--spread", s.toFixed(3)); last = s; }
+      return false;
+    });
+    wake();
+  }
+
+  /* ============================================================
+     С чего начать: панели. Клик или наведение открывает панель,
+     остальные складываются. На телефоне — только клик.
+     ============================================================ */
+  function initPanels() {
+    var box = document.querySelector("[data-panels]");
+    if (!box) return;
+    var panels = [].slice.call(box.querySelectorAll("[data-panel]"));
+    var wide = matchMedia("(min-width: 801px)");
+    function open(target, toggle) {
+      panels.forEach(function (p) {
+        var on = p === target && !(toggle && p.classList.contains("is-open") && !wide.matches);
+        p.classList.toggle("is-open", on);
+        p.querySelector(".panel__head").setAttribute("aria-expanded", on ? "true" : "false");
+      });
+    }
+    panels.forEach(function (p) {
+      p.querySelector(".panel__head").addEventListener("click", function () { open(p, true); });
+      p.addEventListener("pointerenter", function (e) {
+        if (wide.matches && e.pointerType === "mouse") open(p, false);
+      });
+    });
+  }
+
+  /* ============================================================
+     Подвал: слово поднимается снизу по мере въезда подвала.
+     ============================================================ */
+  function initFooterWord() {
+    var footer = document.querySelector(".footer");
+    var word = footer && footer.querySelector(".footer__word");
+    if (!footer || !word || still.matches) return;
+    var last = -1;
+    onScroll(function () {
+      var r = word.getBoundingClientRect(), vh = window.innerHeight;
+      if (!near(r, 200)) return false;
+      var s = clamp01((vh - r.top) / (r.height * 1.1));
+      s = 1 - Math.pow(1 - s, 2);
+      if (Math.abs(s - last) > 0.002) { footer.style.setProperty("--rise", s.toFixed(3)); last = s; }
+      return false;
+    });
+    wake();
+  }
+
+  /* ============================================================
+     Опросник: светлый пиксельный дождь на красной панели. Тот же
+     приём, что в «Утечках»: сетка и бегущая волна, ячейки крупнее.
+     ============================================================ */
+  function initQuizFx() {
+    var canvas = document.querySelector(".quizform__fx");
+    var ctx = canvas && canvas.getContext("2d");
+    if (!ctx || still.matches) return;
+    var CELLS = 26, STEP = 12, WAVE = { length: 220, speed: 110 };
+    var dpr = 1, W = 0, H = 0, cols = 0, rows = 0, seen = false, raf = 0, start = performance.now();
+
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+      if (w === W && h === H) return;
+      W = w; H = h; canvas.width = W; canvas.height = H;
+      STEP = r.width / CELLS; cols = CELLS + 1; rows = Math.ceil(r.height / STEP) + 1;
+    }
+    function frame(now) {
+      raf = 0;
+      if (!seen || document.hidden) return;
+      resize();
+      var t = (now - start) / 1000, phase = t * (WAVE.speed / 1000), hPx = H / dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W / dpr, hPx);
+      for (var y = 0; y < rows; y++) {
+        var py = y * STEP, k = py / hPx;
+        var vert = Math.pow(1 - k, 2.2);
+        if (vert <= 0.004) continue;
+        for (var x = 0; x < cols; x++) {
+          var px = x * STEP;
+          var w1 = Math.sin((px + py) / WAVE.length - phase * Math.PI * 2);
+          var w2 = Math.cos(py / (WAVE.length * 0.6) + phase * Math.PI);
+          var wave = (w1 * 0.6 + w2 * 0.4) * 0.5 + 0.5;
+          var a = vert * (0.5 + wave * 0.5) * 0.42;
+          if (a < 0.012) continue;
+          var sz = STEP * (0.12 + vert * 0.6);
+          ctx.fillStyle = "rgba(255,255,255," + a.toFixed(3) + ")";
+          ctx.fillRect(px + (STEP - sz) / 2, py + (STEP - sz) / 2, sz, sz);
+        }
+      }
+      raf = requestAnimationFrame(frame);
+    }
+    function go() { if (!raf && seen && !document.hidden) raf = requestAnimationFrame(frame); }
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) { seen = es[0].isIntersecting; go(); }, { rootMargin: "100px" }).observe(canvas);
+    } else { seen = true; go(); }
+    document.addEventListener("visibilitychange", go);
+    window.addEventListener("resize", go);
+  }
+
+  initStages();
+  initLedgerPush();
+  initPath();
+  initDocs();
+  initPanels();
+  initFooterWord();
+  initQuizFx();
+  wake();
 })();
