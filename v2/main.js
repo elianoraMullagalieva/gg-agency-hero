@@ -401,6 +401,98 @@
     requestAnimationFrame(frame);
   }
 
+  /* Пиксельный дождь. Та же механика, что у букв на первом экране:
+     сетка и бегущая волна. Отличий три — ячейки квадратные, шаг
+     мельче (карточка в пять раз уже экрана, и крупная сетка в ней
+     читалась как брак), и градиент перевёрнут: густо сверху,
+     редеет книзу, будто пиксели сыплются вниз. */
+  function initPixelFall(canvas) {
+    var ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    var CELLS = 24;                      // ячеек по ширине карточки
+    var STEP = 13;                       // считается от ширины в resize()
+    var WAVE = { length: 232, speed: 120 };
+    var RED  = "231,26,33";
+
+    var dpr = 1, W = 0, H = 0, cols = 0, rows = 0;
+    var running = true, raf = 0, seen = true;
+
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.max(1, Math.round(r.width * dpr));
+      var h = Math.max(1, Math.round(r.height * dpr));
+      if (w === W && h === H) return;
+      W = w; H = h;
+      canvas.width = W; canvas.height = H;
+      // Шаг от ширины карточки: на 4К она втрое шире, и сетка
+      // с постоянным шагом превращалась в мелкую рябь
+      STEP = r.width / CELLS;
+      cols = CELLS + 1;
+      rows = Math.ceil(r.height / STEP) + 1;
+    }
+
+    var start = performance.now();
+
+    function frame(now) {
+      raf = 0;
+      if (!running) return;
+      resize();
+
+      var t = (now - start) / 1000;
+      var phase = t * (WAVE.speed / 1000);
+      var hPx = H / dpr;
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W / dpr, H / dpr);
+
+      for (var y = 0; y < rows; y++) {
+        var py = y * STEP;
+        // Густо у верхнего края, к низу сходит на нет
+        var k = py / hPx;
+        var vert = Math.pow(1 - k, 1.9);
+        // У самой кромки тише: иначе сетка упирается в пилюли
+        // и номер с тегом тонут в ней
+        vert *= 0.34 + Math.min(1, k / 0.15) * 0.66;
+        if (vert <= 0.004) continue;
+        for (var x = 0; x < cols; x++) {
+          var px = x * STEP;
+          var w1 = Math.sin((px + py) / WAVE.length - phase * Math.PI * 2);
+          var w2 = Math.cos(py / (WAVE.length * 0.6) + phase * Math.PI);
+          var wave = (w1 * 0.6 + w2 * 0.4) * 0.5 + 0.5;
+
+          // Волна только подсвечивает; уровень задаёт высота,
+          // иначе сетка читается как рябь, а не как градиент
+          var a = vert * (0.58 + wave * 0.42);
+          if (a < 0.012) continue;
+          var sz = STEP * (0.1 + vert * 0.64);
+          ctx.fillStyle = "rgba(" + RED + "," + a.toFixed(3) + ")";
+          ctx.fillRect(px + (STEP - sz) / 2, py + (STEP - sz) / 2, sz, sz);
+        }
+      }
+      if (seen) raf = requestAnimationFrame(frame);
+    }
+    function wake() { if (!raf && running && seen) raf = requestAnimationFrame(frame); }
+
+    // Считаем только пока карточка на экране — их на странице несколько
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        seen = es[0].isIntersecting;
+        wake();
+      }, { rootMargin: "200px" }).observe(canvas);
+    }
+    document.addEventListener("visibilitychange", function () {
+      running = !document.hidden;
+      wake();
+    });
+    window.addEventListener("resize", wake);
+
+    resize();
+    wake();
+  }
+
+
   /* ---------- Мобильное меню ---------- */
 
   function initMenu() {
@@ -1732,6 +1824,7 @@
   initQuestions();
   initServices();
   [].forEach.call(document.querySelectorAll(".leaks"), initLeaks);
+  [].forEach.call(document.querySelectorAll(".leak__fx"), initPixelFall);
   initVennMark();
   initApproach();
   [].forEach.call(document.querySelectorAll(".sources"), initFan);
