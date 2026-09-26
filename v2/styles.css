@@ -3464,8 +3464,10 @@ p.hero__lead { text-wrap: normal; }
   padding: 0;
   list-style: none;
   width: 100%;
-  /* Высота под крупные вертикальные карточки плюс запас на наклон */
-  aspect-ratio: 660 / 430;
+  /* Высота под крупные вертикальные карточки плюс запас на наклон.
+     Запас был вдвое больше нужного — на низких экранах он съедал
+     ширину карточек, и текст упирался в соседнюю. */
+  aspect-ratio: 660 / 385;
 }
 .fan__card {
   position: absolute;
@@ -3477,8 +3479,8 @@ p.hero__lead { text-wrap: normal; }
      накрывала заголовок, и читать было нечего. */
   /* Шаг 33%: при 26% соседка срезала 46% ширины карточки
      и заголовок читался как «Воронки и окна про…». */
-  left: calc(var(--i) * 30%);
-  width: 40%;
+  left: calc(var(--i) * 31%);
+  width: 38%;
   aspect-ratio: 300 / 360;
   display: flex;
   flex-direction: column;
@@ -3487,6 +3489,11 @@ p.hero__lead { text-wrap: normal; }
   rotate: var(--r);
   transform-origin: 50% 90%;
   opacity: 0;
+}
+/* Соседняя карточка накрывает правый край: у всех, кроме последней,
+   держим текст левее зоны перекрытия — иначе слово режется пополам. */
+.fan__card:not(:last-child) {
+  padding-right: calc(clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem) + 7%);
 }
 .fan__card--light { --y: 9%;  --r: -6deg; background: #f2f0ec; color: #16120d; }
 .fan__card--grey  { --y: 0%;  --r:  3deg; background: #1b1b1c; }
@@ -4644,7 +4651,49 @@ p.hero__lead { text-wrap: normal; }
   align-items: center;
   margin-top: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem);
 }
-.sources--center .fan { max-width: 52rem; margin-inline: auto; }
+.sources--center .fan { max-width: 58rem; margin-inline: auto; }
+
+/* Источники · фиксация скролла. Раньше ход считался от верха секции,
+   а карточки лежат в её низу: к моменту, когда до них доезжаешь,
+   веер уже собран. Теперь блок прилипает, и подъём ведёт прокрутка —
+   быстрее крутишь, быстрее встают. Высоту секции задаёт main.js. */
+.sources--lock { padding-block: 0; }
+.sources--lock .sources__sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Поля тут тише обычных: экран один, и всё, что уходит в отступы,
+     отнимается у карточек — на 720px они иначе сжимались до 227px
+     и заголовок «Воронки и окна продаж» не влезал в строку. */
+  padding-block: clamp(1rem, 2.5svh, 2.5rem);
+  /* Карточки стартуют ниже своего места — за край их не выпускаем */
+  overflow: hidden;
+}
+.sources--lock .frame__side { margin-top: clamp(1rem, 3svh, 2.5rem); }
+/* На узких экранах веер — обычная колонка, фиксация там не нужна */
+@media (max-width: 720px) {
+  .sources--lock { padding-block: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem); }
+  .sources--lock .sources__sticky {
+    position: static;
+    height: auto;
+    padding-block: 0;
+    overflow: visible;
+  }
+  .sources--lock .frame__side { margin-top: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sources--lock { padding-block: clamp(3.5rem, 2.2321rem + 5.4127vw, 8.75rem); }
+  .sources--lock .sources__sticky {
+    position: static;
+    height: auto;
+    padding-block: 0;
+    overflow: visible;
+  }
+  .sources--lock .frame__side { margin-top: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem); }
+}
 
 /* Стопка · заголовок по центру, как просили для всех блоков-двойников */
 .stack__head { text-align: center; }

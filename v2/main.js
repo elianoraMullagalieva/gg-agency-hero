@@ -1230,50 +1230,111 @@
   /* Веер источников. Положение карточек считается от прокрутки, а не
      проигрывается один раз: при движении вверх ход отыгрывает назад,
      и посмотреть его можно сколько угодно. */
+  /* Веер источников · фиксация скролла.
+     Прежде ход считался от верха секции — а карточки лежат в её низу,
+     и к моменту, когда до них доезжаешь, веер уже собран. Теперь блок
+     прилипает и прокрутка ведёт подъём: у каждой карточки свой отрезок
+     хода, внутри него сначала движение, потом остановка — прочесть.
+     Скорость задаёт сам скролл: крутишь быстрее — карточки встают
+     быстрее, отматываешь назад — так же разъезжаются. */
   function initFan(sec) {
     if (!sec) return;
+    var fan   = sec.querySelector(".fan");
+    var stick = sec.querySelector(".sources__sticky");
+    var lede  = sec.querySelector(".frame__lede");
+    var side  = sec.querySelector(".frame__side");
     var cards = [].slice.call(sec.querySelectorAll(".fan__card"));
-    if (!cards.length) return;
+    if (!fan || !cards.length) return;
 
     var still = matchMedia("(prefers-reduced-motion: reduce)");
-    if (still.matches) {
+    var flat  = matchMedia("(max-width: 720px)");
+
+    var n = cards.length, raf = 0, prev = 0, on = false;
+    /* Экрана прокрутки на одну карточку и доля этого отрезка,
+       которая уходит на движение. Остальное карточка стоит — это
+       и есть время на чтение. */
+    var STEP = 0.7, MOVE = 0.52;
+    var seg = 1 / n;
+
+    function rest() {
+      sec.style.height = "";
+      fan.style.width = "";
       cards.forEach(function (c) { c.style.opacity = 1; c.style.transform = "none"; });
-      return;
     }
 
-    var n = cards.length, raf = 0;
+    function measure() {
+      on = !(still.matches || flat.matches) && !!stick;
+      if (!on) { rest(); return; }
 
-    function paint() {
-      var r = sec.getBoundingClientRect();
-      var vh = window.innerHeight;
-      /* 0 — блок только показался снизу, 1 — он стоит по центру экрана.
-         Дальше карточки уже собраны и просто едут вместе со страницей. */
-      var t = (vh * 0.92 - r.top) / (vh * 0.58);
-      t = Math.min(Math.max(t, 0), 1);
+      /* Веер не должен вылезать за прилипший экран: если по высоте
+         не помещается — ужимаем его по ширине, пропорция та же. */
+      if (lede && side) {
+        var sc = getComputedStyle(stick), ss = getComputedStyle(side);
+        var free = stick.clientHeight
+                 - parseFloat(sc.paddingTop) - parseFloat(sc.paddingBottom)
+                 - lede.offsetHeight - (parseFloat(ss.marginTop) || 0);
+        var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
+        var wByH = free / (385 / 660);
+        var w = Math.min(rem * 58, side.clientWidth, wByH);
+        fan.style.width = Math.max(rem * 16, w) + "px";
+      }
+      sec.style.height = (window.innerHeight * (1 + n * STEP)) + "px";
+    }
 
+    function goal() {
+      var r = sec.getBoundingClientRect(), vh = window.innerHeight;
+      var span = Math.max(1, sec.offsetHeight - vh);
+      /* Ход начинается ещё на въезде блока: иначе под заголовком
+         целый экран пустого места, пока секция не прилипнет.
+         0.94 — последняя карточка успевает встать до расфиксации. */
+      var pre = vh * 0.45;
+      var p = (pre - r.top) / (pre + span * 0.94);
+      return Math.min(Math.max(p, 0), 1);
+    }
+
+    /* Пружина по времени, как в стопке: цель задаёт прокрутка,
+       доводит её пружина — отсюда и мягкий перелёт, и то, что при
+       быстром скролле карточка догоняет цель заметно резвее. */
+    var K = 170, C = 22.5;
+    var st = cards.map(function () { return { y: 1, v: 0 }; });
+
+    function paint(dt) {
+      var p = goal();
       for (var i = 0; i < n; i++) {
-        // Каждая следующая трогается позже: веер раскрывается по одной
-        var local = Math.min(Math.max(t * (n + 0.8) - i * 0.9, 0), 1);
-        var e = 1 - Math.pow(1 - local, 3);
-        var over = Math.sin(Math.min(local, 1) * Math.PI) * 0.006;
-        var y = (1 - e - over) * 118;
-        cards[i].style.transform = "translate3d(0," + y.toFixed(2) + "%,0)";
-        cards[i].style.opacity = Math.min(1, local * 2.2).toFixed(3);
+        var local = (p - i * seg) / (seg * MOVE);
+        local = Math.min(Math.max(local, 0), 1);
+        var to = 1 - local;
+        var a = (to - st[i].y) * K - st[i].v * C;
+        st[i].v += a * dt;
+        st[i].y += st[i].v * dt;
+        if (Math.abs(to - st[i].y) < 0.0004 && Math.abs(st[i].v) < 0.004) {
+          st[i].y = to; st[i].v = 0;
+        }
+        cards[i].style.transform = "translate3d(0," + (st[i].y * 118).toFixed(2) + "%,0)";
+        cards[i].style.opacity = Math.min(1, (1 - st[i].y) * 2.4).toFixed(3);
       }
     }
 
-    function loop() {
-      paint();
+    function loop(now) {
+      var dt = prev ? Math.min(0.032, (now - prev) / 1000) : 0.016;
+      prev = now;
+      if (on) paint(dt);
       var r = sec.getBoundingClientRect();
-      if (r.bottom > -200 && r.top < window.innerHeight + 200) {
+      if (on && r.bottom > -200 && r.top < window.innerHeight + 200) {
         raf = requestAnimationFrame(loop);
-      } else { raf = 0; }
+      } else { raf = 0; prev = 0; }
     }
     function wake() { if (!raf) raf = requestAnimationFrame(loop); }
 
-    paint();
+    measure();
+    if (on) paint(0.016);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(function () { measure(); wake(); });
+    }
     window.addEventListener("scroll", wake, { passive: true });
-    window.addEventListener("resize", wake);
+    window.addEventListener("resize", function () { measure(); wake(); });
+    if (still.addEventListener) still.addEventListener("change", function () { measure(); wake(); });
+    if (flat.addEventListener)  flat.addEventListener("change",  function () { measure(); wake(); });
     wake();
   }
 
