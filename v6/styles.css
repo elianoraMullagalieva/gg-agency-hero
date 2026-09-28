@@ -5439,6 +5439,9 @@ p.hero__lead { text-wrap: normal; }
   .cases__foot { flex-direction: column; align-items: flex-start; }
 }
 
+/* В окне кейса ленты цифр стоят на значении сразу */
+.cmodal .nr__d > i { --v: var(--n); transition: none; }
+
 /* ============================================================
    Подвал · последнее, что видит человек. Сверху колонки, снизу —
    слово GG AGENCY во всю ширину, обрезанное нижней кромкой экрана.
@@ -5866,3 +5869,196 @@ p.hero__lead { text-wrap: normal; }
 }
 /* Когда канвас рисует, сам текст прозрачный и служит только разметке */
 .footer__word.is-canvas .footer__word-text { color: transparent; }
+
+/* ============================================================
+   v6 · приёмы из библиотеки, переработанные под контент.
+   Правило отбора: движение помогает сканировать, а не мешает.
+   Ничего не размывает текст, ничего не наклоняет карточки с текстом.
+   ============================================================ */
+
+/* ---------- Заголовки: строки из-под маски ----------
+   Настоящие строки (по переносам), каждая выезжает из-под нижней
+   кромки с шагом 110 мс. Нижний отступ у маски — под спуски букв. */
+.lm-line { display: block; overflow: hidden; padding-bottom: 0.14em; margin-bottom: -0.14em; }
+.lm-line > i {
+  display: block;
+  font-style: normal;
+  transform: translate3d(0, 108%, 0);
+  transition: transform 0.3s var(--ease-rev);
+}
+[data-stage].is-in .lm-line > i {
+  transform: none;
+  transition: transform 0.9s var(--ease-out) calc(var(--d, 0) * 1ms + var(--i, 0) * 110ms);
+}
+/* Заголовок с разбивкой не должен ещё и целиком ехать снизу */
+[data-stage] .rv.is-split { transform: none; }
+
+/* ---------- Фокус на строке (Focus List) ----------
+   Наведение на строку реестра или вопрос приглушает соседей.
+   Без размытия: размытый текст читать нельзя, а тут его читают. */
+@media (hover: hover) {
+  .ledger__row, .questions-item { transition: opacity 0.34s ease; }
+  .ledger:has(.ledger__row:hover) .ledger__row:not(:hover) { opacity: 0.42; }
+  .questions-list:has(.questions-item:hover) .questions-item:not(:hover) { opacity: 0.42; }
+}
+
+/* ---------- Цифры лентой (Number Roll) ----------
+   Каждый разряд — колонка 0…9, сдвинутая на нужное число em.
+   Пока секция не в кадре, все стоят на нуле; при входе едут к значению
+   (1.4 с), при уходе назад — возвращаются. Только CSS-переменные. */
+.nr { display: inline-flex; align-items: baseline; }
+.nr__d {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.nr__d > i {
+  display: block;
+  font-style: normal;
+  transform: translate3d(0, calc(var(--v, 0) * -1em), 0);
+  transition: transform 0.6s var(--ease-rev);
+}
+.nr__d > i > u { display: block; height: 1em; line-height: 1; text-decoration: none; }
+[data-stage].is-in .nr__d > i {
+  --v: var(--n);
+  transition: transform 1.4s var(--ease-out) calc(var(--d, 0) * 1ms + var(--k, 0) * 60ms + 200ms);
+}
+/* Реестр: величина была скрыта своей шторкой — с лентой она не нужна */
+.ledger__value { line-height: 1; padding-bottom: 0.08em; }
+
+/* ---------- Световое пятно под курсором (Spotlight) ----------
+   На тёмных карточках и панелях: мягкий свет следует за курсором.
+   Никаких рамок — только пятно. */
+.spot { position: relative; }
+.spot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(18rem circle at var(--sx, 50%) var(--sy, 50%), rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0) 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+@media (hover: hover) { .spot:hover::after { opacity: 1; } }
+
+/* ---------- Магнит на кнопках ----------
+   Кнопка тянется к курсору на 8px, надпись — на 45% от этого:
+   расслоение и даёт ощущение веса. */
+.mag { transition: transform 0.42s var(--ease-out); will-change: transform; }
+.mag > * { transition: transform 0.42s var(--ease-out), background 0.3s ease; }
+@media (hover: none) { .mag, .mag > * { transform: none !important; } }
+
+/* ---------- Подпись у курсора над видео ---------- */
+.vcur {
+  position: fixed;
+  left: 0; top: 0;
+  z-index: 60;
+  padding: 0.55em 1.1em;
+  border-radius: 999px;
+  background: #fff;
+  color: #16120d;
+  font-size: var(--fs-s);
+  font-weight: 500;
+  letter-spacing: var(--ls-btn);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.3s var(--ease-out);
+}
+.vcur.is-on { transform: translate(-50%, -50%) scale(1); }
+@media (hover: hover) {
+  .vreview__play { transition: transform 0.6s var(--ease-out), opacity 0.3s ease, box-shadow 0.6s ease; }
+  .vreview:hover .vreview__play { opacity: 0; transform: scale(0.6); box-shadow: none; }
+}
+
+/* ---------- Лента скринов: инерция вместо ровного хода ----------
+   Ход даёт main.js: скролл страницы подталкивает ленту, наведение
+   плавно замедляет её, а не останавливает рывком. */
+.shots__track { animation: none; transform: translate3d(var(--x, 0px), 0, 0); will-change: transform; }
+
+/* ---------- Окно кейса вырастает из карточки ---------- */
+.cmodal__win { animation: none; transform-origin: 0 0; }
+
+/* ---------- Копирование почты ---------- */
+.footer__mail { display: inline-flex; align-items: center; gap: 0.6em; }
+.footer__copy {
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.footer__copy svg { width: 46%; }
+.footer__copy:hover { background: #fff; color: #16120d; border-color: #fff; }
+.footer__copy-done {
+  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  color: rgba(255, 255, 255, 0.55);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.3s ease, transform 0.3s var(--ease-out);
+}
+.footer__mail.is-copied .footer__copy-done { opacity: 1; transform: none; }
+
+/* ---------- Зерно на тёмных секциях ----------
+   Темнота как материал, а не как заливка: шум генерирует браузер
+   (feTurbulence), поверх — прыгает шагами, как плёнка. */
+.grain { position: relative; }
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.055;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+  animation: grainJitter 0.7s steps(4) infinite;
+}
+@keyframes grainJitter {
+  0%   { transform: translate(0, 0); }
+  25%  { transform: translate(-3%, 2%); }
+  50%  { transform: translate(2%, -3%); }
+  75%  { transform: translate(-1%, -1%); }
+  100% { transform: translate(3%, 3%); }
+}
+.grain > * { position: relative; z-index: 1; }
+
+/* ---------- График: курсор можно тащить ---------- */
+.path__chart { touch-action: pan-y; cursor: grab; }
+.path__chart.is-hold { cursor: grabbing; }
+.path__hint {
+  position: absolute;
+  right: 0.25rem;
+  top: 0.9rem;
+  margin: 0;
+  font-size: var(--fs-s);
+  color: rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.path__chart.is-hold .path__hint, .path__chart.is-used .path__hint { opacity: 0; }
+
+/* ---------- Отбор: граница следит за курсором ---------- */
+.fit__half--no { clip-path: polygon(calc(10% + var(--cut, 0%)) 0, 100% 0, 100% 100%, calc(0% - var(--cut, 0%)) 100%); transition: clip-path 0.6s var(--ease-out); }
+@media (max-width: 800px) { .fit__half--no { clip-path: polygon(0 6vw, 100% 0, 100% 100%, 0 100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .lm-line > i, .nr__d > i { transform: none !important; transition: none !important; }
+  .ledger:has(.ledger__row:hover) .ledger__row:not(:hover),
+  .questions-list:has(.questions-item:hover) .questions-item:not(:hover) { opacity: 1; }
+  .grain::before { animation: none; }
+  .mag, .mag > * { transform: none !important; }
+  .vcur { display: none; }
+}
