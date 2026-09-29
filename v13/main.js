@@ -350,9 +350,20 @@
 
     var start = performance.now();
     var running = true;
+    /* Сетка букв — около 1600 вызовов fillText на кадр. Раньше она
+       рисовалась всегда, даже когда первый экран давно прокручен,
+       и отнимала время у блоков ниже. */
+    var seen = true, looping = true;
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (es) {
+        seen = es[0].isIntersecting;
+        if (seen && running && !looping) { looping = true; requestAnimationFrame(frame); }
+      }, { rootMargin: "100px" }).observe(canvas);
+    }
 
     function frame(now) {
-      if (!running) return;
+      if (!running || !seen) { looping = false; return; }
+      looping = true;
       resize();
 
       var t = (now - start) / 1000;
@@ -431,7 +442,7 @@
     var img = ctx.createImageData(GW, GH), px = img.data;
     var seed = (canvas.getBoundingClientRect().left % 97) / 97 * 6.28;
     var mx = 0.6, my = 0.1, tx = 0.6, ty = 0.1, ms = 0, ts = 0;
-    var seen = false, raf = 0, start = performance.now();
+    var seen = false, raf = 0, start = performance.now(), lastT = 0;
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     function sm(a, b, x) { var t = (x - a) / (b - a); t = t < 0 ? 0 : (t > 1 ? 1 : t); return t * t * (3 - 2 * t); }
@@ -439,8 +450,11 @@
     function frame(now) {
       raf = 0;
       if (!seen || document.hidden) return;
+      // 30 кадров в секунду: свет медленный, разницы не видно
+      if (now - lastT < 30) { raf = requestAnimationFrame(frame); return; }
+      lastT = now;
       var t = (now - start) / 1000;
-      mx += (tx - mx) * 0.05; my += (ty - my) * 0.05; ms += (ts - ms) * 0.04;
+      mx += (tx - mx) * 0.1; my += (ty - my) * 0.1; ms += (ts - ms) * 0.08;
       // два пятна дышат у верхней кромки, третье идёт за курсором
       var ax = 0.64 + Math.sin(t * 0.23 + seed) * 0.16, ay = -0.04 + Math.cos(t * 0.19 + seed) * 0.05;
       var bx = 0.22 + Math.cos(t * 0.17 + seed * 1.7) * 0.14, by = 0.06 + Math.sin(t * 0.21 + seed) * 0.06;
@@ -1250,10 +1264,14 @@
         var h = free * 0.47;
         peek = (free - h) / (n - 1);
         // В полоску должна целиком влезать цифра
-        var minPeek = rem * 3;
+        // В щель целиком входят номер и название с воздухом снизу
+        var nm = cards[0].querySelector(".stack__name");
+        /* Карточки лежат с наклоном в разные стороны: у левого края соседние
+           кромки сходятся на ~3% ширины. Этот запас входит в щель. */
+        var minPeek = nm ? nm.offsetTop + nm.offsetHeight + rem + cards[0].offsetWidth * 0.03 : rem * 3;
         if (peek < minPeek) { peek = minPeek; h = free - (n - 1) * peek; }
         cards.forEach(function (c) {
-          c.style.height = Math.max(rem * 11, h) + "px";
+          c.style.height = Math.max(rem * 8.5, h) + "px";
           c.style.minHeight = "0";
           c.style.setProperty("--peek", peek.toFixed(1) + "px");
         });
@@ -1305,6 +1323,7 @@
         var y = st[i].y * (window.innerHeight * 0.62);
         cards[i].style.transform =
           "translate3d(0," + y.toFixed(2) + "px,0) rotate(" + TILT[i % TILT.length] + "deg)";
+        if (i > 0) cards[i - 1].style.setProperty("--cov", Math.min(1, Math.max(0, (1 - st[i].y) * 1.7)).toFixed(3));
       }
     }
 
