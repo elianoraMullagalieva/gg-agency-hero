@@ -6984,3 +6984,8 @@ html.has-reveal #quiz {
 }
 .people__title { max-width: 22ch; }
 .stack__num { letter-spacing: var(--ls-head); }
+
+/* Фраза в блоке «Пройдите тест»: четыре строки кеглем 31px —
+   при 1.02 они слипались. Возвращён межстрочный 1.14, трекинг
+   заголовочный. */
+.bridge__lead { line-height: var(--lh-title); }
