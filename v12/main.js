@@ -1245,7 +1245,9 @@
       var rem = parseFloat(getComputedStyle(document.documentElement).fontSize);
 
       if (free > rem * 16) {
-        var h = free * 0.62;
+        // Карточка забирает 52% полосы: щель стала выше, в ней помещаются
+        // пилюля с номером и название с воздухом сверху и снизу
+        var h = free * 0.47;
         peek = (free - h) / (n - 1);
         // В полоску должна целиком влезать цифра
         var minPeek = rem * 3;

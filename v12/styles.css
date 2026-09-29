@@ -7134,3 +7134,147 @@ html.has-reveal #quiz {
 @media (max-width: 640px) {
   .staff { scroll-padding-inline: var(--gutter); }
 }
+
+
+/* ============================================================
+   Стопка «Отдел продаж» · композиция карточки, вторая редакция.
+   Номер стоит в пилюле — той же, что на карточках утечек и подхода.
+   Сверху больше воздуха. Счётчик внизу убран: он повторял номер.
+   В правом верхнем углу две точки — метка, как на плашках опросника.
+   ============================================================ */
+.stack__card {
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: clamp(0.875rem, 0.6rem + 1.2vw, 1.75rem);
+  align-items: center;
+  padding: clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem) clamp(1.375rem, 1.0714rem + 1.2952vw, 2.75rem)
+           clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem);
+}
+.stack__card::before { content: none; }
+.stack__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: center;
+  min-width: 2.75em;
+  padding: 0.4em 0.85em;
+  border: 1px solid rgba(22, 18, 13, 0.22);
+  border-radius: 999px;
+  font-family: var(--font-ui);
+  font-size: var(--fs-s);
+  font-weight: 400;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-text);
+  color: rgba(22, 18, 13, 0.62);
+}
+.stack__card:nth-child(3) .stack__num,
+.stack__card:last-child .stack__num { border-color: rgba(255, 255, 255, 0.28); color: rgba(255, 255, 255, 0.72); }
+.stack__name { align-self: center; padding-right: 2.5rem; }
+.stack__text {
+  grid-column: 2;
+  margin-top: clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem);
+}
+/* Две точки — в правом верхнем углу, на одной линии с номером */
+.stack__card::after,
+.stack__card:last-child::after {
+  inset: calc(clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem) + 0.75em) clamp(1.375rem, 1.0714rem + 1.2952vw, 2.75rem) auto auto;
+}
+@media (max-width: 900px) {
+  .stack__card, .stack__card:last-child { min-height: 0 !important; }
+  .stack__text { grid-column: 1 / -1; }
+}
+
+/* Стопка на низких окнах: верхнее поле считается от высоты экрана,
+   чтобы название в щели не касалось следующей карточки */
+@media (min-width: 901px) {
+  .stack__card { padding-top: clamp(1.375rem, 3.6svh, 2.5rem); }
+  .stack__card::after,
+  .stack__card:last-child::after { top: calc(clamp(1.375rem, 3.6svh, 2.5rem) + 0.75em); }
+}
+
+/* Стопка: текст карточки начинается ниже щели — в сложенной стопке
+   видны только номер и название, обрезанных строк нет */
+@media (min-width: 901px) {
+  .stack__text {
+    margin-top: max(1.5rem, calc(var(--peek) - clamp(1.375rem, 3.6svh, 2.5rem) - 0.4rem));
+  }
+}
+
+/* ============================================================
+   Команда: три портрета и карточка состава отдела в одном ряду.
+   Ряд занят целиком: портреты слева, справа угольная карточка
+   с ролями, которые работают на каждом проекте.
+   ============================================================ */
+.team-row {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 1.2fr);
+  align-items: stretch;
+  gap: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.625rem);
+}
+.team-row .staff { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; }
+.team-row .staff__item:nth-child(2) { margin-top: 0; }
+.roles {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(1.125rem, 0.9821rem + 0.6095vw, 1.75rem);
+  border-radius: var(--radius);
+  background: #141313;
+  color: #fff;
+}
+.roles__pill {
+  display: inline-flex;
+  align-self: flex-start;
+  margin: 0 0 auto;
+  padding: 0.5em 1.1em;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  line-height: var(--lh-title);
+}
+.roles__list { margin: clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem) 0 0; padding: 0; list-style: none; }
+.roles__item { padding: clamp(0.75rem, 0.65rem + 0.43vw, 1.125rem) 0; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+.roles__item:last-child { padding-bottom: 0; }
+.roles__name {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-m);
+  font-weight: 600;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+}
+.roles__text {
+  margin: 0.35em 0 0;
+  font-size: var(--fs-s);
+  font-weight: 300;
+  line-height: var(--lh-text-s);
+  color: rgba(255, 255, 255, 0.72);
+  text-wrap: pretty;
+}
+/* Планшет: портреты в ряд, карточка состава — под ними, роли в три колонки */
+@media (max-width: 1100px) {
+  .team-row { grid-template-columns: minmax(0, 1fr); }
+  .roles__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(1rem, 0.5714rem + 1.8286vw, 2.875rem); }
+  .roles__item:last-child { padding-bottom: clamp(0.75rem, 0.65rem + 0.43vw, 1.125rem); }
+  .roles__pill { margin-bottom: 0; }
+}
+@media (max-width: 640px) {
+  .team-row { display: block; }
+  .roles { margin-top: 1.25rem; }
+  .roles__list { display: block; }
+}
+
+/* Карточка состава — ровно по высоте портретов, подписи под фото
+   остаются ниже её кромки. Высота считается от ширины ряда. */
+.people__team { container-type: inline-size; }
+.team-row { --g: clamp(0.75rem, 0.6071rem + 0.6095vw, 1.625rem); gap: var(--g); }
+@media (min-width: 1101px) {
+  .roles {
+    align-self: start;
+    height: calc(4 / 3 * (((100cqw - var(--g)) * 3 / 4.2 - 2 * var(--g)) / 3));
+  }
+}
+@media (max-width: 1100px) {
+  .roles { margin-top: clamp(0.75rem, 0.5rem + 1.0667vw, 1.5rem); }
+}
