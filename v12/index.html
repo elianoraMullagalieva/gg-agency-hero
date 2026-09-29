@@ -1315,6 +1315,71 @@
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<!-- ===== Форма заявки · окно =====
+     Открывается кнопками «Получить консультацию». Заявка уходит
+     сообщением в Telegram. Настройки — в form-config.js. -->
+<div class="lead" id="lead" role="dialog" aria-modal="true" aria-labelledby="lead-title" hidden>
+  <div class="lead__veil" data-lead-close></div>
+  <div class="lead__win" role="document">
+    <button class="lead__close" type="button" data-lead-close aria-label="Закрыть">
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="1.6" fill="none"/></svg>
+    </button>
+
+    <div class="lead__panel" data-glow data-origin="top" data-gain="0.9">
+      <p class="lead__pill">Консультация</p>
+      <div>
+        <h2 class="lead__title" id="lead-title">Разберём ваш отдел продаж</h2>
+        <p class="lead__sub">Оставьте контакт&nbsp;— напишем в&nbsp;рабочие часы, с&nbsp;10 до&nbsp;20 по&nbsp;Москве.</p>
+      </div>
+    </div>
+
+    <form class="lead__form" id="leadForm" novalidate>
+      <label class="lead__fld">
+        <span>Как к&nbsp;вам обращаться</span>
+        <input type="text" name="name" autocomplete="name" required maxlength="80" />
+      </label>
+      <label class="lead__fld">
+        <span>Telegram или телефон</span>
+        <input type="text" name="contact" autocomplete="tel" required maxlength="80" placeholder="@username или +7…" />
+      </label>
+      <label class="lead__fld">
+        <span>Проект <i>необязательно</i></span>
+        <input type="text" name="project" maxlength="160" placeholder="Название или ссылка" />
+      </label>
+      <label class="lead__fld">
+        <span>Что сейчас с&nbsp;продажами <i>необязательно</i></span>
+        <textarea name="note" rows="2" maxlength="600"></textarea>
+      </label>
+      <!-- Ловушка для ботов: человек это поле не видит -->
+      <input class="lead__trap" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+      <div class="lead__consent">
+        <label><input type="checkbox" name="c1" required /><span>Соглашаюсь с&nbsp;<a href="privacy.html" target="_blank" rel="noopener">Политикой конфиденциальности</a></span></label>
+        <label><input type="checkbox" name="c2" required /><span>Соглашаюсь <a href="mailing.html" target="_blank" rel="noopener">получать информационные и&nbsp;рекламные сообщения</a> (рассылки в&nbsp;Telegram, email и&nbsp;других каналах)</span></label>
+        <label><input type="checkbox" name="c3" required /><span>Я&nbsp;согласен(а) на&nbsp;<a href="consent.html" target="_blank" rel="noopener">обработку моих персональных данных</a>. С&nbsp;Политикой обработки персональных данных ознакомлен(а)</span></label>
+      </div>
+
+      <div class="lead__foot">
+        <button class="start__cta lead__send" type="submit" disabled>
+          <span class="start__cta-label">Отправить заявку</span>
+          <span class="start__cta-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z" fill="currentColor"/></svg></span>
+        </button>
+        <p class="lead__status" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+
+    <div class="lead__done" hidden>
+      <h3>Заявка отправлена</h3>
+      <p>Напишем вам в&nbsp;рабочие часы. Пока можно пройти разбор&nbsp;— он&nbsp;покажет, где отдел теряет выручку.</p>
+      <a class="start__cta" href="#quiz" data-lead-close>
+        <span class="start__cta-label">Пройти разбор</span>
+        <span class="start__cta-icon" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3779 0C11.7214 0.000234861 12 0.279723 12 0.624023V1.52441L11.248 2.27734C11.2308 2.29042 11.2137 2.30478 11.1982 2.32031L9.52246 4H11.999V12H8.99902V4.52441L1.54004 12L0 10.4561L7.19336 3.24707C7.58511 2.85416 7.30726 2.18262 6.75293 2.18262H0.0517578V0H11.3779Z" fill="currentColor"/></svg></span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<script src="form-config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js"></script>
 

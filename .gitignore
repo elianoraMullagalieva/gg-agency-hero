@@ -1,3 +1,7 @@
 .DS_Store
 *.log
 deploy/secrets.env
+
+# Токен Telegram-бота для формы заявки
+form-config.js
+**/form-config.js

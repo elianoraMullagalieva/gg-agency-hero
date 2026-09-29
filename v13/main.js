@@ -3116,3 +3116,99 @@
   document.addEventListener("visibilitychange", function () { raf = 0; ask(); });
   ask();
 })();
+
+/* ============================================================
+   Форма заявки: окно, проверка полей, отправка в Telegram.
+   Настройки лежат в form-config.js (в git его нет):
+     window.GG_FORM = { token: "…", chat: "…" }
+   или, если есть свой сервер-посредник:
+     window.GG_FORM = { endpoint: "https://…" }
+   ============================================================ */
+(function () {
+  "use strict";
+  var modal = document.getElementById("lead");
+  var form = document.getElementById("leadForm");
+  if (!modal || !form) return;
+  var win = modal.querySelector(".lead__win");
+  var done = modal.querySelector(".lead__done");
+  var send = form.querySelector(".lead__send");
+  var status = form.querySelector(".lead__status");
+  var cfg = window.GG_FORM || {};
+  var last = null, from = "";
+
+  function open(trigger) {
+    last = trigger || null;
+    from = trigger ? (trigger.textContent || "").replace(/\s+/g, " ").trim() : "";
+    form.hidden = false; done.hidden = true;
+    modal.hidden = false;
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", onKey);
+    setTimeout(function () { var f = form.querySelector("input[name=name]"); if (f) f.focus({ preventScroll: true }); }, 60);
+  }
+  function close() {
+    modal.hidden = true;
+    document.body.style.overflow = "";
+    document.removeEventListener("keydown", onKey);
+    if (last && last.focus) last.focus({ preventScroll: true });
+  }
+  function onKey(e) {
+    if (e.key === "Escape") { close(); return; }
+    if (e.key !== "Tab") return;
+    var f = [].filter.call(win.querySelectorAll("button, [href], input:not(.lead__trap), textarea"), function (el) { return el.offsetParent !== null && !el.disabled; });
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]) { e.preventDefault(); f[f.length - 1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length - 1]) { e.preventDefault(); f[0].focus(); }
+  }
+
+  document.addEventListener("click", function (e) {
+    var t = e.target.closest && e.target.closest(".hero__cta, .nav__cta, .sheet__cta, [data-lead]");
+    if (t) { e.preventDefault(); open(t); return; }
+    var c = e.target.closest && e.target.closest("[data-lead-close]");
+    if (c && modal.contains(c)) { if (c.tagName !== "A") e.preventDefault(); close(); }
+  });
+
+  function ready() {
+    var ok = form.name.value.trim().length > 1 && form.contact.value.trim().length > 3 &&
+             form.c1.checked && form.c2.checked && form.c3.checked;
+    send.disabled = !ok;
+    return ok;
+  }
+  form.addEventListener("input", ready);
+  form.addEventListener("change", ready);
+
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    if (!ready() || form.company.value) return;   // заполненная ловушка — бот
+    var lines = [
+      "<b>Заявка с сайта GG Agency</b>",
+      "",
+      "<b>Имя:</b> " + esc(form.name.value.trim()),
+      "<b>Контакт:</b> " + esc(form.contact.value.trim())
+    ];
+    if (form.project.value.trim()) lines.push("<b>Проект:</b> " + esc(form.project.value.trim()));
+    if (form.note.value.trim()) lines.push("<b>Что с продажами:</b> " + esc(form.note.value.trim()));
+    lines.push("", "Согласия: политика, рассылки, обработка данных — отмечены");
+    if (from) lines.push("Кнопка: " + esc(from));
+    lines.push("Страница: " + esc(location.href.split("#")[0]));
+    var text = lines.join("\n");
+
+    var url, body;
+    if (cfg.endpoint) { url = cfg.endpoint; body = { text: text }; }
+    else if (cfg.token && cfg.chat) { url = "https://api.telegram.org/bot" + cfg.token + "/sendMessage"; body = { chat_id: cfg.chat, text: text, parse_mode: "HTML", disable_web_page_preview: true }; }
+    else { status.textContent = "Форма ещё не подключена. Напишите нам в Telegram."; return; }
+
+    send.disabled = true; status.textContent = "Отправляем…";
+    fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) })
+      .then(function (r) { return r.json().catch(function () { return { ok: r.ok }; }); })
+      .then(function (d) {
+        if (d && d.ok === false) throw new Error(d.description || "error");
+        form.reset(); status.textContent = ""; form.hidden = true; done.hidden = false;
+      })
+      .catch(function () {
+        status.textContent = "Не получилось отправить. Попробуйте ещё раз или напишите нам в Telegram.";
+        ready();
+      });
+  });
+})();

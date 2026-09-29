@@ -220,7 +220,7 @@ p, li { text-wrap: pretty; }
 .nav__menu a {
   position: relative;
   color: var(--text);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   line-height: var(--lh-text-s);
   text-decoration: none;
@@ -244,7 +244,7 @@ p, li { text-wrap: pretty; }
   border-radius: 999px;
   color: var(--text);
   font-family: var(--font-num);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   /* Regular: вторичная кнопка не должна спорить с основной (500) */
   font-weight: 400;
   letter-spacing: var(--ls-btn);
@@ -333,7 +333,7 @@ p, li { text-wrap: pretty; }
   border-radius: 999px;
   color: #0e0404;
   font-family: var(--font-ui);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 500;
   letter-spacing: var(--ls-btn);
   text-transform: uppercase;
@@ -735,7 +735,7 @@ p.hero__lead { text-wrap: normal; }
 .expert__role {
   margin: 0.25rem 0 0;
   font-family: var(--font-ui);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   line-height: var(--lh-text-s);
   color: #757575;
@@ -984,7 +984,7 @@ p.hero__lead { text-wrap: normal; }
   border: 1px solid rgba(22, 18, 13, 0.3);
   border-radius: 999px;
   font-family: var(--font-num);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 500;
   line-height: var(--lh-flat);
 }
@@ -1224,7 +1224,7 @@ p.hero__lead { text-wrap: normal; }
   color: var(--text);
 }
 .venn-pillar i {
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-style: normal;
   font-weight: 300;
   color: #fff;
@@ -1286,7 +1286,7 @@ p.hero__lead { text-wrap: normal; }
    Тень не меняет палитру — она лишь затемняет подложку под глифами. */
 /* Теней на текстах схемы нет — по требованию макета. */
 .venn-core i {
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-style: normal;
   font-weight: 300;
   opacity: 0.82;
@@ -1335,7 +1335,7 @@ p.hero__lead { text-wrap: normal; }
   border-radius: 999px;
   background: #fff;
   color: #0e0404;
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 500;
   letter-spacing: var(--ls-btn);
   text-transform: uppercase;
@@ -1356,7 +1356,7 @@ p.hero__lead { text-wrap: normal; }
 
 .quiz__meta {
   margin: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem) 0 0;
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   color: var(--muted);
 }
@@ -1467,7 +1467,7 @@ p.hero__lead { text-wrap: normal; }
            clamp(1.125rem, 0.9643rem + 0.7143vw, 1.625rem);
   border-radius: 999px;
   font-family: var(--font-ui);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 500;
   letter-spacing: var(--ls-btn);
   line-height: var(--lh-lead);
@@ -1714,7 +1714,7 @@ p.hero__lead { text-wrap: normal; }
 
 .case-kicker {
   margin: 0 0 clamp(0.75rem, 0.6071rem + 0.6095vw, 1.375rem);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 400;
   letter-spacing: var(--ls-text);
   text-transform: uppercase;
@@ -1775,7 +1775,7 @@ p.hero__lead { text-wrap: normal; }
   display: block;
   max-width: 22ch;
   margin-top: clamp(0.5rem, 0.4286rem + 0.3048vw, 0.8125rem);
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   line-height: var(--lh-lead);
   color: var(--muted);
@@ -1823,7 +1823,7 @@ p.hero__lead { text-wrap: normal; }
 
 .case-step__t {
   margin: 0;
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   line-height: var(--lh-text-s);
   color: var(--muted);
@@ -1910,7 +1910,7 @@ p.hero__lead { text-wrap: normal; }
   align-items: baseline;
   gap: 0.4em;
   margin: clamp(1.125rem, 0.9643rem + 0.6857vw, 1.8125rem) 0 0;
-  font-size: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
+  font-size: var(--fs-s);
   font-weight: 300;
   line-height: var(--lh-text-s);
   color: #fff;
@@ -3772,7 +3772,7 @@ p.hero__lead { text-wrap: normal; }
   background: transparent;
   font-family: var(--font-ui);
   /* Без капса и без разрядки: пилюля — тихая подпись, а не крик */
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   font-weight: 400;
   line-height: var(--lh-title);
   letter-spacing: var(--ls-text);
@@ -3930,7 +3930,7 @@ p.hero__lead { text-wrap: normal; }
   background: transparent;
   color: #6b655c;
   font-family: var(--font-ui);
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   font-weight: 400;
   line-height: var(--lh-title);
   letter-spacing: var(--ls-text);
@@ -5622,7 +5622,7 @@ p.hero__lead { text-wrap: normal; }
   border: 1px solid rgba(22, 18, 13, 0.22);
   border-radius: 999px;
   color: #6b655c;
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   font-weight: 400;
   line-height: var(--lh-title);
 }
@@ -5663,7 +5663,7 @@ p.hero__lead { text-wrap: normal; }
   border-radius: 999px;
   background: #16120d;
   color: #fff;
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   line-height: var(--lh-title);
   animation: askPill 0.6s var(--ease-out);
 }
@@ -6002,7 +6002,7 @@ p.hero__lead { text-wrap: normal; }
 .footer__copy svg { width: 46%; }
 .footer__copy:hover { background: #fff; color: #16120d; border-color: #fff; }
 .footer__copy-done {
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   color: rgba(255, 255, 255, 0.55);
   opacity: 0;
   transform: translateX(-4px);
@@ -6170,7 +6170,7 @@ p.hero__lead { text-wrap: normal; }
   padding: 0.5em 1.1em;
   border: 1px solid rgba(22, 18, 13, 0.22);
   border-radius: 999px;
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   line-height: var(--lh-title);
   color: #6b655c;
 }
@@ -6340,7 +6340,7 @@ p.hero__lead { text-wrap: normal; }
   border: 1px solid rgba(22, 18, 13, 0.22);
   border-radius: 999px;
   font-family: var(--font-ui);
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   line-height: var(--lh-title);
   color: #6b655c;
 }
@@ -6840,7 +6840,7 @@ html.has-reveal #quiz {
   gap: 0.6em;
   margin: 0.875rem 0 0;
   padding-inline: var(--gutter);
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   font-weight: 400;
   line-height: 1;
   color: currentColor;
@@ -7230,7 +7230,7 @@ html.has-reveal #quiz {
   border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 999px;
   color: rgba(255, 255, 255, 0.72);
-  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  font-size: var(--fs-pill);
   line-height: var(--lh-title);
 }
 .roles__list { margin: clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem) 0 0; padding: 0; list-style: none; }
@@ -7365,3 +7365,209 @@ html.has-reveal #quiz {
   .start__head > div { grid-column: 1 / 3; }
   .start__sub { grid-column: 3; justify-self: start; max-width: 36ch; }
 }
+
+
+
+/* ============================================================
+   Два правила набора на весь сайт
+   ------------------------------------------------------------
+   1. Минимальный кегль. Читаемый текст — не мельче 15px на любом
+      экране; пилюли и служебные метки — 14px на телефоне и 15px
+      от ноутбука. На широких мониторах мелкий текст растёт дальше,
+      до 18px, вместе с сеткой.
+   2. Переносы. Последняя строка не бывает короткой: заголовки,
+      лиды и тексты карточек выравниваются по длине строк (balance),
+      длинные абзацы не оставляют висячих слов (pretty).
+   ============================================================ */
+:root {
+  --fs-s: clamp(0.9375rem, 0.9167rem + 0.0926vw, 1.125rem);
+  --fs-pill: clamp(0.875rem, 0.8542rem + 0.0926vw, 1rem);
+}
+html .card__num, html .card__tag, html .step__num, html .source__num,
+html .questions-number, html .vreview__tag, html .pstep__tag, html .roles__pill,
+html .ask__count, html .footer__copy-done, html .ccard__ava-mono,
+html .path__axis, html .kx__word sup { font-size: var(--fs-pill); }
+html .kx__word sup { margin-top: 0.5em; }
+html .leak__text, html .step__text, html .source__text, html .stack__num,
+html .ledger__idx, html .expert__role, html .clients__lead,
+html .footer__col a, html .footer__legal, html .footer__legal a,
+html .questions-answer p { font-size: var(--fs-s); }
+html .questions-answer p { font-size: var(--fs-m); }
+
+h1, h2, h3, h4,
+.leaks-sub, .approach__sub, .frame__sub, .reviews__note, .cases__sub, .path__sub,
+.people__teamsub, .start__sub, .fit__sub, .bridge__lead, .bridge__note,
+.ask__lede, .ask__sub, .ask__lead, .ask__title, .people__title, .people__who,
+.leak__text, .step__text, .source__text, .stack__text, .card__note, .card__lead,
+.ledger__name, .ledger__text, .ccard__lead, .ccard__meta, .vreview__quote,
+.path__text, .path__result, .kx__list li, .roles__text, .fit__list li,
+.pstep__text, .pstep__note, .pstep__list li, .terms__name, .terms__text,
+.footer__tagline, .keep__docnote, .hero__lead, .stat__label { text-wrap: balance; }
+.questions-answer p, .legal__text p, .legal__text li { text-wrap: pretty; }
+
+html .footer__time, html .footer__docs { text-wrap: balance; }
+
+/* Короткая подпись моста — в одну строку */
+.bridge__note { max-width: none; }
+
+
+/* ============================================================
+   Форма заявки · окно. Та же плашка, что у опросника: слева
+   угольная панель со светом, справа поля. Поля — строка с линией
+   снизу, без рамок. Кегль полей 16px: iOS не приближает страницу.
+   ============================================================ */
+.lead[hidden] { display: none; }
+.lead {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: clamp(0.75rem, 0.5rem + 1.0667vw, 1.75rem);
+}
+.lead__veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 3, 3, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: cmVeil 0.3s ease forwards;
+}
+.lead__win {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+  gap: clamp(1.25rem, 0.9821rem + 1.1429vw, 2.375rem);
+  width: min(100%, 64rem);
+  max-height: calc(100svh - 1.5rem);
+  overflow-y: auto;
+  padding: clamp(0.875rem, 0.7rem + 0.75vw, 1.5rem);
+  border-radius: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  background: #f5f5f5;
+  color: #16120d;
+  animation: leadIn 0.6s var(--ease-out) forwards;
+}
+@keyframes leadIn {
+  from { opacity: 0; transform: translate3d(0, 1.5rem, 0) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+.lead__close {
+  position: absolute;
+  z-index: 3;
+  top: clamp(1.25rem, 1rem + 1.0667vw, 2.25rem);
+  right: clamp(1.25rem, 1rem + 1.0667vw, 2.25rem);
+  display: grid;
+  place-items: center;
+  width: 2.5rem; height: 2.5rem;
+  padding: 0;
+  border: 1px solid rgba(22, 18, 13, 0.16);
+  border-radius: 50%;
+  background: #f5f5f5;
+  color: #16120d;
+  cursor: pointer;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.lead__close svg { width: 38%; }
+.lead__close:hover { transform: rotate(90deg); }
+
+.lead__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 100%;
+  padding: clamp(1.25rem, 1rem + 1.0667vw, 2.25rem);
+  border-radius: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem);
+  background: #141313;
+  color: #fff;
+}
+.lead__pill {
+  align-self: flex-start;
+  margin: 0;
+  padding: 0.5em 1.1em;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: var(--fs-pill);
+  line-height: var(--lh-title);
+}
+.lead__title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
+  text-wrap: balance;
+}
+.lead__sub { margin: 0.7em 0 0; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-m); color: rgba(255, 255, 255, 0.8); text-wrap: balance; }
+
+.lead__form, .lead__done {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.5rem, 0.3rem + 0.85vw, 1.25rem) clamp(0.5rem, 0.3rem + 0.85vw, 1.25rem) clamp(0.5rem, 0.3rem + 0.85vw, 1.25rem) 0;
+  padding-top: clamp(2.5rem, 2rem + 2.1vw, 4rem);
+}
+.lead__fld { display: block; margin-bottom: clamp(1rem, 0.85rem + 0.64vw, 1.5rem); }
+.lead__fld > span { display: block; font-size: var(--fs-s); color: #6b655c; }
+.lead__fld > span i { font-style: normal; color: #a19b92; }
+.lead__fld input, .lead__fld textarea {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.55em 0 0.6em;
+  border: 0;
+  border-bottom: 1px solid rgba(22, 18, 13, 0.28);
+  border-radius: 0;
+  background: transparent;
+  color: #16120d;
+  font-family: var(--font-ui);
+  font-size: max(1rem, var(--fs-m));
+  font-weight: 400;
+  line-height: 1.3;
+  outline: none;
+  resize: none;
+  transition: border-color 0.3s ease;
+}
+.lead__fld input::placeholder, .lead__fld textarea::placeholder { color: #b5afa6; }
+.lead__fld input:focus, .lead__fld textarea:focus { border-bottom-color: #16120d; box-shadow: 0 1px 0 #16120d; }
+.lead__fld.is-bad input { border-bottom-color: #16120d; box-shadow: 0 2px 0 #16120d; }
+.lead__trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+
+.lead__consent { display: grid; gap: 0.7rem; margin: 0.25rem 0 clamp(1.25rem, 1rem + 1.0667vw, 2rem); }
+.lead__consent label { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.7rem; align-items: start; cursor: pointer; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-s); color: #6b655c; }
+.lead__consent input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.25rem; height: 1.25rem;
+  margin: 0.05em 0 0;
+  border: 1px solid rgba(22, 18, 13, 0.4);
+  border-radius: 0.3rem;
+  background: #fff center / 70% no-repeat;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.lead__consent input:checked {
+  border-color: #16120d;
+  background-color: #16120d;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6.2l2.6 2.6L10 3.4' fill='none' stroke='%23fff' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.lead__consent a { color: #16120d; text-decoration: none; border-bottom: 1px solid rgba(22, 18, 13, 0.35); }
+
+.lead__foot { display: flex; align-items: center; flex-wrap: wrap; gap: 0.75rem 1.25rem; }
+.lead__send { border: 0; padding: 0; background: none; cursor: pointer; font: inherit; }
+.lead__send[disabled] { cursor: not-allowed; opacity: 0.35; transform: none !important; }
+.lead__status { margin: 0; font-size: var(--fs-s); color: #6b655c; }
+.lead__done[hidden] { display: none; }
+.lead__done { justify-content: center; align-items: flex-start; gap: 1rem; }
+.lead__done h3 { margin: 0; font-family: var(--font-logo); font-size: var(--fs-h3); font-weight: 400; line-height: var(--lh-head); letter-spacing: var(--ls-head); }
+.lead__done p { margin: 0 0 0.5rem; max-width: 40ch; font-size: var(--fs-m); font-weight: 300; line-height: var(--lh-text-m); color: #6b655c; text-wrap: balance; }
+
+@media (max-width: 800px) {
+  .lead { place-items: end center; padding: 0; }
+  .lead__win { grid-template-columns: minmax(0, 1fr); gap: 0; width: 100%; max-height: 94svh; border-radius: 1.25rem 1.25rem 0 0; }
+  .lead__panel { min-height: 0; gap: 1.25rem; }
+  .lead__form, .lead__done { padding: 1.5rem 0.25rem 0.75rem; }
+}
+@media (prefers-reduced-motion: reduce) { .lead__veil, .lead__win { animation: none; } }
