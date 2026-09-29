@@ -7278,3 +7278,30 @@ html.has-reveal #quiz {
 @media (max-width: 1100px) {
   .roles { margin-top: clamp(0.75rem, 0.5rem + 1.0667vw, 1.5rem); }
 }
+
+/* Карточка состава: текст не помещался в высоту портрета. В ряд она
+   встаёт только от 1301px и шире; высота — минимум по портрету,
+   при нехватке растёт. Ниже 1301px карточка идёт под портретами. */
+@media (min-width: 1101px) {
+  .roles { height: auto; align-self: stretch; }
+}
+@media (min-width: 1301px) {
+  .team-row { grid-template-columns: minmax(0, 3fr) minmax(0, 1.5fr); }
+  .roles {
+    align-self: start;
+    min-height: calc(4 / 3 * (((100cqw - var(--g)) * 3 / 4.5 - 2 * var(--g)) / 3));
+  }
+  .roles__list { margin-top: 1.25rem; }
+  .roles__item { padding: 0.75rem 0; }
+}
+@media (max-width: 1300px) {
+  .team-row { grid-template-columns: minmax(0, 1fr); }
+  .roles { margin-top: clamp(0.75rem, 0.5rem + 1.0667vw, 1.5rem); }
+  .roles__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(1rem, 0.5714rem + 1.8286vw, 2.875rem); }
+  .roles__item:last-child { padding-bottom: clamp(0.75rem, 0.65rem + 0.43vw, 1.125rem); }
+  .roles__pill { margin-bottom: 0; }
+  .team-row .staff { grid-template-columns: repeat(3, minmax(0, 22rem)); }
+}
+@media (max-width: 640px) {
+  .roles__list { display: block; }
+}
