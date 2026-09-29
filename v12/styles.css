@@ -7054,3 +7054,9 @@ html.has-reveal #quiz {
 
 /* Стопка: текст не должен упираться в нижнюю линию со счётчиком */
 .stack__card { padding-bottom: clamp(4.25rem, 3.75rem + 2.1333vw, 5.5rem); }
+
+/* Подвал: четыре ссылки на документы переносятся, а не теснятся */
+.footer__legal .footer__docs { flex-wrap: wrap; gap: 0.5rem 1.5em; justify-content: flex-end; }
+@media (max-width: 900px) {
+  .footer__legal .footer__docs { justify-content: flex-start; flex-basis: 100%; }
+}
