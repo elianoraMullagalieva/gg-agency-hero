@@ -957,7 +957,10 @@
     <!-- Фото Ангелины: вертикальный кадр 3:4, ≥ 1200×1600, спокойный
          фон, взгляд в камеру. Вставляется <img> внутрь .people__photo. -->
     <div class="people__photo rv" style="--d:0">
-      <div class="people__img" role="img" aria-label="Фото Ангелины Глазковой"></div>
+      <picture class="people__img">
+        <source srcset="assets/team/angelina.webp" type="image/webp" />
+        <img src="assets/team/angelina.jpg" alt="Ангелина Глазкова, основательница GG Agency" width="1200" height="1600" loading="lazy" />
+      </picture>
     </div>
     <div class="people__quote">
       <p class="people__eyebrow rv" style="--d:120">Основательница</p>
@@ -984,19 +987,33 @@
     </div>
     <!-- Три фото команды: горизонтальные кадры 4:3 с рабочих
          созвонов или из офиса, без постановочных улыбок. -->
-    <ul class="crew" role="list">
+    <ul class="staff" role="list">
+      <li class="staff__item rv" style="--d:120">
+        <picture class="staff__img"><source srcset="assets/team/mira.webp" type="image/webp" /><img src="assets/team/mira.jpg" alt="Мира, проджект-менеджер" width="853" height="1137" loading="lazy" /></picture>
+        <p class="staff__name">Мира</p>
+        <p class="staff__role">проджект-менеджер</p>
+      </li>
+      <li class="staff__item rv" style="--d:220">
+        <picture class="staff__img"><source srcset="assets/team/natasha.webp" type="image/webp" /><img src="assets/team/natasha.jpg" alt="Наташа, руководитель отдела продаж" width="900" height="1200" loading="lazy" /></picture>
+        <p class="staff__name">Наташа</p>
+        <p class="staff__role">РОП</p>
+      </li>
+      <li class="staff__item rv" style="--d:320">
+        <picture class="staff__img"><source srcset="assets/team/oksana.webp" type="image/webp" /><img src="assets/team/oksana.jpg" alt="Оксана, руководитель отдела продаж" width="900" height="1200" loading="lazy" /></picture>
+        <p class="staff__name">Оксана</p>
+        <p class="staff__role">РОП</p>
+      </li>
+    </ul>
+    <ul class="crew crew--text" role="list">
       <li class="crew__item rv" style="--d:160">
-        <div class="crew__img" role="img" aria-label="Фото: РОП и ассистент"></div>
         <h4 class="crew__name">РОП и&nbsp;ассистент</h4>
         <p class="crew__text">Ведут коммуникацию с&nbsp;вами с&nbsp;первой недели и&nbsp;управляют командой по&nbsp;цифрам, а&nbsp;не&nbsp;по&nbsp;ощущениям.</p>
       </li>
       <li class="crew__item rv" style="--d:260">
-        <div class="crew__img" role="img" aria-label="Фото: менеджеры по продажам"></div>
         <h4 class="crew__name">Менеджеры по&nbsp;продажам</h4>
         <p class="crew__text">Работают с&nbsp;заявками в&nbsp;чатах, на&nbsp;звонках и&nbsp;диагностиках&nbsp;— по&nbsp;вашим скриптам и&nbsp;регламентам.</p>
       </li>
       <li class="crew__item rv" style="--d:360">
-        <div class="crew__img" role="img" aria-label="Фото: лидорубы и ОКК"></div>
         <h4 class="crew__name">Лидорубы и&nbsp;ОКК</h4>
         <p class="crew__text">Квалифицируют базу и&nbsp;проверяют качество каждого звонка и&nbsp;каждой переписки.</p>
       </li>

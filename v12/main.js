@@ -3000,7 +3000,7 @@
    ============================================================ */
 (function () {
   "use strict";
-  var RAILS = ".leaks-rail, .approach__rail, .reviews__strip, .situation .cards";
+  var RAILS = ".leaks-rail, .approach__rail, .reviews__strip, .situation .cards, .staff";
   var ICON = '<svg viewBox="0 0 28 10" fill="none" aria-hidden="true"><path d="M0 5h26M22 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var items = [];
 
