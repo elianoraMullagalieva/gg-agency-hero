@@ -561,68 +561,54 @@ setTimeout(function () { if (!window.__stagesReady) document.documentElement.cla
      ============================================================ -->
 
 <!-- ===== 13 / Отзывы · лента страхов ===== -->
+<!-- ===== Отзывы · четыре страха строками =====
+     Блок держится на типографике: четыре цитаты крупным кеглем.
+     Наводишь на строку — рядом с курсором всплывает кадр видео.
+     Пока видео нет, блок не выглядит пустым. -->
 <section class="reviews" id="reviews" aria-labelledby="reviews-title" data-stage>
   <div class="reviews__head">
     <div>
       <p class="reviews__eyebrow rv" style="--d:0">Отзывы</p>
-      <h2 class="reviews__title rv" id="reviews-title" style="--d:90">
-        С&nbsp;чем к&nbsp;нам приходили<br />— и&nbsp;что вышло
-      </h2>
+      <h2 class="reviews__title rv" id="reviews-title" style="--d:90">С&nbsp;чем к&nbsp;нам приходили<br />— и&nbsp;что вышло</h2>
     </div>
-    <p class="reviews__note rv" style="--d:180">
-      Четыре страха, с&nbsp;которыми приходят чаще всего.
-      Люди на&nbsp;видео&nbsp;— те, кто через них прошёл.
-    </p>
+    <p class="reviews__note rv" style="--d:180">Четыре страха, с&nbsp;которыми приходят чаще всего. Люди на&nbsp;видео&nbsp;— те, кто через них прошёл.</p>
   </div>
 
-  <ul class="reviews__strip" role="list">
-    <!-- Файл подставляется в .vreview__media: <video> или <img>,
-         кадр 4:5, тёмный низ — под цитатой лежит градиент. -->
-    <li class="vreview rv" style="--d:120">
-      <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: онлайн-школа"></div>
-        <p class="vreview__tag">Страх 01</p>
-        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: онлайн-школа">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
-        </button>
-        <p class="vreview__quote">«Боялась отдавать продажи чужим людям»</p>
-      </div>
-      <p class="vreview__caption">Видео-отзыв · онлайн-школа</p>
+  <ol class="fears" role="list">
+    <li class="fear rv" style="--d:200">
+      <button class="fear__row" type="button" data-fear="0" aria-label="Смотреть видео-отзыв: онлайн-школа">
+        <span class="fear__n">01</span>
+        <span class="fear__q">«Боялась отдавать продажи чужим людям»</span>
+        <span class="fear__who">онлайн-школа</span>
+        <span class="fear__play" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg></span>
+      </button>
     </li>
-    <li class="vreview rv" style="--d:220">
-      <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: эксперт"></div>
-        <p class="vreview__tag">Страх 02</p>
-        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: эксперт">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
-        </button>
-        <p class="vreview__quote">«Мы уже обжигались на&nbsp;подрядчиках»</p>
-      </div>
-      <p class="vreview__caption">Видео-отзыв · эксперт</p>
+    <li class="fear rv" style="--d:310">
+      <button class="fear__row" type="button" data-fear="1" aria-label="Смотреть видео-отзыв: эксперт">
+        <span class="fear__n">02</span>
+        <span class="fear__q">«Мы уже обжигались на&nbsp;подрядчиках»</span>
+        <span class="fear__who">эксперт</span>
+        <span class="fear__play" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg></span>
+      </button>
     </li>
-    <li class="vreview rv" style="--d:320">
-      <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: продюсер"></div>
-        <p class="vreview__tag">Страх 03</p>
-        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: продюсер">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
-        </button>
-        <p class="vreview__quote">«Думали, что придётся уволить своих менеджеров»</p>
-      </div>
-      <p class="vreview__caption">Видео-отзыв · продюсер</p>
+    <li class="fear rv" style="--d:420">
+      <button class="fear__row" type="button" data-fear="2" aria-label="Смотреть видео-отзыв: продюсер">
+        <span class="fear__n">03</span>
+        <span class="fear__q">«Думали, что придётся уволить своих менеджеров»</span>
+        <span class="fear__who">продюсер</span>
+        <span class="fear__play" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg></span>
+      </button>
     </li>
-    <li class="vreview rv" style="--d:420">
-      <div class="vreview__frame">
-        <div class="vreview__media" role="img" aria-label="Превью видео-отзыва: зарубежный проект"></div>
-        <p class="vreview__tag">Страх 04</p>
-        <button class="vreview__play" type="button" aria-label="Смотреть видео-отзыв: зарубежный проект">
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg>
-        </button>
-        <p class="vreview__quote">«Не&nbsp;верили, что продажи пойдут без запуска»</p>
-      </div>
-      <p class="vreview__caption">Видео-отзыв · зарубежный проект</p>
+    <li class="fear rv" style="--d:530">
+      <button class="fear__row" type="button" data-fear="3" aria-label="Смотреть видео-отзыв: зарубежный проект">
+        <span class="fear__n">04</span>
+        <span class="fear__q">«Не&nbsp;верили, что продажи пойдут без запуска»</span>
+        <span class="fear__who">зарубежный проект</span>
+        <span class="fear__play" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M8 5.14v13.72a.6.6 0 0 0 .92.51l10.72-6.86a.6.6 0 0 0 0-1.02L8.92 4.63a.6.6 0 0 0-.92.51Z" fill="currentColor"/></svg></span>
+      </button>
     </li>
-  </ul>
+  </ol>
+  <div class="fear-prev" aria-hidden="true" data-fear-prev><div class="fear-prev__item" data-fear="0"><!-- Сюда встанет превью или видео отзыва 1, кадр 4:5 --><div class="vreview__media"></div><p>Видео-отзыв · онлайн-школа</p></div><div class="fear-prev__item" data-fear="1"><!-- Сюда встанет превью или видео отзыва 2, кадр 4:5 --><div class="vreview__media"></div><p>Видео-отзыв · эксперт</p></div><div class="fear-prev__item" data-fear="2"><!-- Сюда встанет превью или видео отзыва 3, кадр 4:5 --><div class="vreview__media"></div><p>Видео-отзыв · продюсер</p></div><div class="fear-prev__item" data-fear="3"><!-- Сюда встанет превью или видео отзыва 4, кадр 4:5 --><div class="vreview__media"></div><p>Видео-отзыв · зарубежный проект</p></div></div>
 
   <div class="reviews__shots rv" style="--d:520">
     <p class="reviews__sub">Скрины переписок</p>
@@ -687,122 +673,104 @@ setTimeout(function () { if (!window.__stagesReady) document.documentElement.cla
 </section>
 
 <!-- ===== Кейсы · рваная сетка карточек ===== -->
+<!-- ===== Кейсы · одно число на весь блок =====
+     Слева число во весь рост. По умолчанию это «130+». Наводишь на
+     кейс — число перекатывается в его результат, подпись меняется.
+     Клик по строке раскрывает «было / стало» на месте, без окна. -->
 <section class="cases" id="cases-grid" aria-labelledby="cases-title" data-stage>
-  <div class="cases__head">
-    <div>
-      <p class="cases__eyebrow rv" style="--d:0">Кейсы</p>
-      <h2 class="cases__title cases__title--big rv" id="cases-title" style="--d:90" aria-label="130+ отделов продаж за четыре года"><span class="cases__big" aria-hidden="true">130+</span><span class="cases__rest" aria-hidden="true">отделов продаж<br />за&nbsp;четыре года</span></h2>
-    </div>
-    <p class="cases__sub rv" style="--d:180">
-      Проекты в&nbsp;ТОП-1% Геткурса, отделы, которые выросли в&nbsp;разы,
-      и&nbsp;школы, которые построили системные продажи с&nbsp;нуля.
-    </p>
+  <div class="cz__top">
+    <p class="cases__eyebrow rv" style="--d:0">Кейсы</p>
+    <h2 class="odo-a11y" id="cases-title">130+ отделов продаж за четыре года</h2>
+    <p class="cases__sub rv" style="--d:120">Проекты в&nbsp;ТОП-1% Геткурса, отделы, которые выросли в&nbsp;разы,
+      и&nbsp;школы, которые построили системные продажи с&nbsp;нуля.</p>
   </div>
 
-  <ul class="cases__grid" role="list">
-    <li class="ccard ccard--light rv" style="--d:160">
-      <button class="ccard__btn" type="button" aria-haspopup="dialog">
-        <span class="ccard__ava" aria-hidden="true" data-ava="plusball"><span class="ccard__ava-mono">+Б</span></span>
-        <p class="ccard__tag">Построение</p>
-        <p class="ccard__value">1 млн ₽</p>
-        <p class="ccard__lead">выручки за месяц&nbsp;— в&nbsp;школе, которая стартовала с&nbsp;нуля</p>
-        <div class="ccard__who">
-          <p class="ccard__name">Онлайн-школа «+Балл»</p>
-          <p class="ccard__meta">Подготовка к&nbsp;ЕГЭ · 3&nbsp;месяца</p>
-        </div>
-        <dl class="ccard__ba">
-          <dt>Было</dt><dd>4&nbsp;преподавателя, ни&nbsp;одного менеджера, ни&nbsp;CRM, ни&nbsp;одного лида</dd>
-          <dt>Стало</dt><dd>готовый отдел к&nbsp;старту учебного года, продление на&nbsp;полгода</dd>
-        </dl>
-        <span class="ccard__more" aria-hidden="true">Подробнее</span>
-      </button>
-    </li>
-    <li class="ccard ccard--dark rv" style="--d:260">
-      <button class="ccard__btn" type="button" aria-haspopup="dialog">
-        <span class="ccard__ava" aria-hidden="true" data-ava="gora"><img src="assets/clients/gora.jpg" alt="" width="320" height="320" loading="lazy" /></span>
-        <p class="ccard__tag">Оптимизация → построение</p>
-        <p class="ccard__value">×2</p>
-        <p class="ccard__lead">6&nbsp;млн ₽ чистыми новыми оплатами против 3&nbsp;млн ₽ на&nbsp;входе</p>
-        <div class="ccard__who">
-          <p class="ccard__name">GORA Academy</p>
-          <p class="ccard__meta">Онлайн-школа AI-профессий · в&nbsp;сопровождении</p>
-        </div>
-        <dl class="ccard__ba">
-          <dt>Было</dt><dd>продажи только в&nbsp;чатах, скрипты в&nbsp;избранном, нет единой CRM</dd>
-          <dt>Стало</dt><dd>звонки и&nbsp;вебинары, 52% выручки отдела&nbsp;— из&nbsp;холодной базы</dd>
-        </dl>
-        <span class="ccard__more" aria-hidden="true">Подробнее</span>
-      </button>
-    </li>
-    <li class="ccard ccard--red rv" style="--d:360">
-      <button class="ccard__btn" type="button" aria-haspopup="dialog" data-glow data-origin="top" data-gain="0.8">
-        <span class="ccard__ava" aria-hidden="true" data-ava="metodaizer"><img src="assets/clients/metodaizer.jpg" alt="" width="320" height="320" loading="lazy" /></span>
-        <p class="ccard__tag">Аутсорс → построение</p>
-        <p class="ccard__value">×6</p>
-        <p class="ccard__lead">рост выручки с&nbsp;начала работы, проект в&nbsp;ТОП-1% Геткурса</p>
-        <div class="ccard__who">
-          <p class="ccard__name">Илья Методайзер</p>
-          <p class="ccard__meta">«Реальный репетитор» · 2&nbsp;года+</p>
-        </div>
-        <dl class="ccard__ba">
-          <dt>Было</dt><dd>продажи на&nbsp;запусках силами подрядчика</dd>
-          <dt>Стало</dt><dd>свой отдел продаж, 90% выручки&nbsp;— через него, 20%+ с&nbsp;базы</dd>
-        </dl>
-        <span class="ccard__more" aria-hidden="true">Подробнее</span>
-      </button>
-    </li>
-    <li class="ccard ccard--light rv" style="--d:460">
-      <button class="ccard__btn" type="button" aria-haspopup="dialog">
-        <span class="ccard__ava" aria-hidden="true" data-ava=""><span class="ccard__ava-mono">Г</span></span>
-        <p class="ccard__tag">Оптимизация</p>
-        <p class="ccard__value">×8</p>
-        <p class="ccard__lead">рост выручки, 20% конверсии с&nbsp;холодного трафика</p>
-        <div class="ccard__who">
-          <p class="ccard__name">Гипнотерапевт</p>
-          <p class="ccard__meta">Обучение профессии, аудитория за&nbsp;рубежом · 1,5&nbsp;года+</p>
-        </div>
-        <dl class="ccard__ba">
-          <dt>Было</dt><dd>продавали сами эксперты</dd>
-          <dt>Стало</dt><dd>эксперты освобождены от&nbsp;продаж, воронка пересобрана</dd>
-        </dl>
-        <span class="ccard__more" aria-hidden="true">Подробнее</span>
-      </button>
-    </li>
-    <li class="ccard ccard--light rv" style="--d:560">
-      <button class="ccard__btn" type="button" aria-haspopup="dialog">
-        <span class="ccard__ava" aria-hidden="true" data-ava="lariba"><img src="assets/clients/lariba.jpg" alt="" width="320" height="320" loading="lazy" /></span>
-        <p class="ccard__tag">Аудит → аутсорс</p>
-        <p class="ccard__value">+30%</p>
-        <p class="ccard__lead">конверсии после правки одного скрипта</p>
-        <div class="ccard__who">
-          <p class="ccard__name">Мурад Ля&nbsp;Риба</p>
-          <p class="ccard__meta">Обучение на&nbsp;селлера WB/Ozon · 3&nbsp;запуска</p>
-        </div>
-        <dl class="ccard__ba">
-          <dt>Было</dt><dd>прошлый отдел продаж подвёл, проект был срочным</dd>
-          <dt>Стало</dt><dd>2&nbsp;млн ₽ за&nbsp;5&nbsp;дней с&nbsp;холодной базы</dd>
-        </dl>
-        <span class="ccard__more" aria-hidden="true">Подробнее</span>
-      </button>
-    </li>
-    <li class="ccard ccard--dark rv" style="--d:660">
-      <button class="ccard__btn" type="button" aria-haspopup="dialog">
-        <span class="ccard__ava" aria-hidden="true" data-ava="magnier"><img src="assets/clients/magnier.jpg" alt="" width="320" height="320" loading="lazy" /></span>
-        <p class="ccard__tag">Построение</p>
-        <p class="ccard__value">10%</p>
-        <p class="ccard__lead">конверсия с&nbsp;анкет с&nbsp;рилсов</p>
-        <div class="ccard__who">
-          <p class="ccard__name">Alex Magnier</p>
-          <p class="ccard__meta">Обучение профессии AI-архитектора · 4&nbsp;месяца</p>
-        </div>
-        <dl class="ccard__ba">
-          <dt>Было</dt><dd>заявки лежали десятками, часть оплаченных броней не&nbsp;отработана</dd>
-          <dt>Стало</dt><dd>система передана заказчику и&nbsp;работает без нас</dd>
-        </dl>
-        <span class="ccard__more" aria-hidden="true">Подробнее</span>
-      </button>
-    </li>
-  </ul>
+  <div class="cz" data-cz>
+    <div class="cz__big rv" style="--d:90" aria-hidden="true">
+      <p class="cz__num" data-cz-num data-default="130+">130+</p>
+      <p class="cz__cap" data-cz-cap data-default="отделов продаж за&nbsp;четыре года">отделов продаж за&nbsp;четыре года</p>
+    </div>
+    <ul class="cz__list" role="list">
+      <li class="cz__row rv" style="--d:200" data-value="1 млн ₽">
+        <button class="cz__head" type="button" aria-expanded="false" aria-controls="cz-body-1">
+          <span class="cz__ava"><b>+Б</b></span>
+          <span class="cz__who"><span class="cz__name">Онлайн-школа «+Балл»</span><span class="cz__meta">Подготовка к&nbsp;ЕГЭ · 3&nbsp;месяца</span></span>
+          <span class="cz__tag">Построение</span>
+          <span class="cz__val">1 млн ₽</span>
+          <span class="cz__plus" aria-hidden="true">+</span>
+        </button>
+        <div class="cz__body" id="cz-body-1" role="region"><div class="cz__inner">
+          <p class="cz__lead">выручки за месяц&nbsp;— в&nbsp;школе, которая стартовала с&nbsp;нуля</p>
+          <dl class="cz__ba"><div><dt>Было</dt><dd>4&nbsp;преподавателя, ни&nbsp;одного менеджера, ни&nbsp;CRM, ни&nbsp;одного лида</dd></div><div><dt>Стало</dt><dd>готовый отдел к&nbsp;старту учебного года, продление на&nbsp;полгода</dd></div></dl>
+        </div></div>
+      </li>
+      <li class="cz__row rv" style="--d:290" data-value="×2">
+        <button class="cz__head" type="button" aria-expanded="false" aria-controls="cz-body-2">
+          <span class="cz__ava"><img src="assets/clients/gora.jpg" alt="" width="320" height="320" loading="lazy" /></span>
+          <span class="cz__who"><span class="cz__name">GORA Academy</span><span class="cz__meta">Онлайн-школа AI-профессий · в&nbsp;сопровождении</span></span>
+          <span class="cz__tag">Оптимизация → построение</span>
+          <span class="cz__val">×2</span>
+          <span class="cz__plus" aria-hidden="true">+</span>
+        </button>
+        <div class="cz__body" id="cz-body-2" role="region"><div class="cz__inner">
+          <p class="cz__lead">6&nbsp;млн ₽ чистыми новыми оплатами против 3&nbsp;млн ₽ на&nbsp;входе</p>
+          <dl class="cz__ba"><div><dt>Было</dt><dd>продажи только в&nbsp;чатах, скрипты в&nbsp;избранном, нет единой CRM</dd></div><div><dt>Стало</dt><dd>звонки и&nbsp;вебинары, 52% выручки отдела&nbsp;— из&nbsp;холодной базы</dd></div></dl>
+        </div></div>
+      </li>
+      <li class="cz__row rv" style="--d:380" data-value="×6">
+        <button class="cz__head" type="button" aria-expanded="false" aria-controls="cz-body-3">
+          <span class="cz__ava"><img src="assets/clients/metodaizer.jpg" alt="" width="320" height="320" loading="lazy" /></span>
+          <span class="cz__who"><span class="cz__name">Илья Методайзер</span><span class="cz__meta">«Реальный репетитор» · 2&nbsp;года+</span></span>
+          <span class="cz__tag">Аутсорс → построение</span>
+          <span class="cz__val">×6</span>
+          <span class="cz__plus" aria-hidden="true">+</span>
+        </button>
+        <div class="cz__body" id="cz-body-3" role="region"><div class="cz__inner">
+          <p class="cz__lead">рост выручки с&nbsp;начала работы, проект в&nbsp;ТОП-1% Геткурса</p>
+          <dl class="cz__ba"><div><dt>Было</dt><dd>продажи на&nbsp;запусках силами подрядчика</dd></div><div><dt>Стало</dt><dd>свой отдел продаж, 90% выручки&nbsp;— через него, 20%+ с&nbsp;базы</dd></div></dl>
+        </div></div>
+      </li>
+      <li class="cz__row rv" style="--d:470" data-value="×8">
+        <button class="cz__head" type="button" aria-expanded="false" aria-controls="cz-body-4">
+          <span class="cz__ava"><b>Г</b></span>
+          <span class="cz__who"><span class="cz__name">Гипнотерапевт</span><span class="cz__meta">Обучение профессии, аудитория за&nbsp;рубежом · 1,5&nbsp;года+</span></span>
+          <span class="cz__tag">Оптимизация</span>
+          <span class="cz__val">×8</span>
+          <span class="cz__plus" aria-hidden="true">+</span>
+        </button>
+        <div class="cz__body" id="cz-body-4" role="region"><div class="cz__inner">
+          <p class="cz__lead">рост выручки, 20% конверсии с&nbsp;холодного трафика</p>
+          <dl class="cz__ba"><div><dt>Было</dt><dd>продавали сами эксперты</dd></div><div><dt>Стало</dt><dd>эксперты освобождены от&nbsp;продаж, воронка пересобрана</dd></div></dl>
+        </div></div>
+      </li>
+      <li class="cz__row rv" style="--d:560" data-value="+30%">
+        <button class="cz__head" type="button" aria-expanded="false" aria-controls="cz-body-5">
+          <span class="cz__ava"><img src="assets/clients/lariba.jpg" alt="" width="320" height="320" loading="lazy" /></span>
+          <span class="cz__who"><span class="cz__name">Мурад Ля&nbsp;Риба</span><span class="cz__meta">Обучение на&nbsp;селлера WB/Ozon · 3&nbsp;запуска</span></span>
+          <span class="cz__tag">Аудит → аутсорс</span>
+          <span class="cz__val">+30%</span>
+          <span class="cz__plus" aria-hidden="true">+</span>
+        </button>
+        <div class="cz__body" id="cz-body-5" role="region"><div class="cz__inner">
+          <p class="cz__lead">конверсии после правки одного скрипта</p>
+          <dl class="cz__ba"><div><dt>Было</dt><dd>прошлый отдел продаж подвёл, проект был срочным</dd></div><div><dt>Стало</dt><dd>2&nbsp;млн ₽ за&nbsp;5&nbsp;дней с&nbsp;холодной базы</dd></div></dl>
+        </div></div>
+      </li>
+      <li class="cz__row rv" style="--d:650" data-value="10%">
+        <button class="cz__head" type="button" aria-expanded="false" aria-controls="cz-body-6">
+          <span class="cz__ava"><img src="assets/clients/magnier.jpg" alt="" width="320" height="320" loading="lazy" /></span>
+          <span class="cz__who"><span class="cz__name">Alex Magnier</span><span class="cz__meta">Обучение профессии AI-архитектора · 4&nbsp;месяца</span></span>
+          <span class="cz__tag">Построение</span>
+          <span class="cz__val">10%</span>
+          <span class="cz__plus" aria-hidden="true">+</span>
+        </button>
+        <div class="cz__body" id="cz-body-6" role="region"><div class="cz__inner">
+          <p class="cz__lead">конверсия с&nbsp;анкет с&nbsp;рилсов</p>
+          <dl class="cz__ba"><div><dt>Было</dt><dd>заявки лежали десятками, часть оплаченных броней не&nbsp;отработана</dd></div><div><dt>Стало</dt><dd>система передана заказчику и&nbsp;работает без нас</dd></div></dl>
+        </div></div>
+      </li>
+    </ul>
+  </div>
 
   <div class="cases__foot rv" style="--d:760">
     <p class="cases__note">Подробно&nbsp;— 30+ проектов по&nbsp;четырём форматам работы</p>
@@ -1050,6 +1018,8 @@ setTimeout(function () { if (!window.__stagesReady) document.documentElement.cla
 <!-- ===== Отбор · экран, разрезанный надвое ===== -->
 <section class="fit" id="fit" aria-labelledby="fit-title" data-stage>
   <div class="fit__half fit__half--yes">
+    <!-- Вставка 1: фото или видео-петля 3:4, от 900×1200. Сюда: <img> или <video autoplay muted loop playsinline> -->
+    <figure class="fit__tile rv" style="--d:260" data-glow data-origin="top" data-gain="0.9" aria-hidden="true"></figure>
     <p class="fit__eyebrow rv" style="--d:0">Отбор</p>
     <h2 class="fit__title rv" id="fit-title" style="--d:90">Мы&nbsp;работаем<br />не&nbsp;со&nbsp;всеми</h2>
     <p class="fit__label rv" style="--d:200">Нам подходят те, у&nbsp;кого</p>
@@ -1060,6 +1030,8 @@ setTimeout(function () { if (!window.__stagesReady) document.documentElement.cla
     </ul>
   </div>
   <div class="fit__half fit__half--no">
+    <!-- Вставка 2: фон половины, видео-петля или фото 4:5, от 1200×1500, тёмное -->
+    <div class="fit__bg" data-glow data-origin="bottom" data-gain="0.75" aria-hidden="true"></div>
     <p class="fit__sub rv" style="--d:140">Если мы не&nbsp;подходим друг другу&nbsp;— честнее сказать об&nbsp;этом сразу.</p>
     <p class="fit__label rv" style="--d:260">Результата не&nbsp;будет, если</p>
     <ul class="fit__list" role="list">
@@ -1323,6 +1295,8 @@ setTimeout(function () { if (!window.__stagesReady) document.documentElement.cla
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<!-- Указатель раздела: узкая строка в правом поле, номер и название -->
+<div class="sidx" aria-hidden="true" data-sidx><span class="sidx__n" data-sidx-n>01</span><span class="sidx__t" data-sidx-t></span></div>
 <!-- ===== Форма заявки · окно =====
      Открывается кнопками «Получить консультацию». Заявка уходит
      сообщением в Telegram. Настройки — в form-config.js. -->

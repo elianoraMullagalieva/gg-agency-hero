@@ -7571,3 +7571,54 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
   .lead__form, .lead__done { padding: 1.5rem 0.25rem 0.75rem; }
 }
 @media (prefers-reduced-motion: reduce) { .lead__veil, .lead__win { animation: none; } }
+
+
+/* ============================================================
+   Зазор между «Источниками» и «Отделом продаж». Прилипший блок
+   источников был высотой в экран: на высоких мониторах веер не
+   заполнял его и под ним оставалась дыра. Теперь блок по высоте
+   равен своему содержимому (считает main.js), а верхнее поле
+   следующего блока меньше на 40%.
+   ============================================================ */
+@media (min-width: 721px) {
+  .sources--lock .sources__sticky { padding-bottom: 0.5rem; }
+}
+@media (min-width: 1001px) {
+  .stack--lock .stack__sticky {
+    --edge: max(3.75rem, 6.6svh);
+    --shift: calc(var(--edge) - 1.5rem);
+  }
+}
+
+
+/* ============================================================
+   Невысокие экраны (ноутбук с панелью закладок, окно 660–820px).
+   Блоки собраны плотнее, чтобы чаще помещаться в один экран:
+   меньше поля секций и отступы под шапками, ниже карточки тарифов.
+   Кегли и содержание не меняются.
+   ============================================================ */
+@media (min-width: 901px) and (max-height: 860px) {
+  :root {
+    --sec-pad: clamp(3.5rem, 10svh, 6.25rem);
+    --sec-pad-b: clamp(3.5rem, 10svh, 6.25rem);
+    --edge: max(4.5rem, 9svh);
+  }
+  .reviews__head, .why__head, .start__head, .keep__top, .cz__top { margin-bottom: clamp(1.5rem, 4svh, 2.75rem); }
+  .cases__grid { margin-top: clamp(1.5rem, 4svh, 2.75rem); }
+  .people__team { margin-top: clamp(2.5rem, 7svh, 4.5rem); }
+  .people__teamhead { margin-bottom: clamp(1.25rem, 3svh, 2rem); }
+  .terms, .cases__foot, .reviews__shots { margin-top: clamp(1.75rem, 5svh, 3rem); }
+  .ledger__row { padding-block: clamp(1.125rem, 3.2svh, 2rem); }
+  .pstep { min-height: 0; }
+  .pstep__tag { margin-bottom: clamp(1.25rem, 3.5svh, 2rem); }
+  .pstep__list { margin-top: clamp(0.875rem, 2.4svh, 1.5rem); }
+  .pstep__list li { padding-block: 0.6em; }
+  .pstep:nth-child(2) { margin-top: clamp(0.75rem, 2.2svh, 1.5rem); }
+  .pstep:nth-child(3) { margin-top: clamp(1.5rem, 4.4svh, 3rem); }
+  .fit__title { margin-bottom: clamp(1.25rem, 3.5svh, 2rem); }
+  .fit__list li { padding-block: clamp(0.75rem, 2svh, 1.125rem); }
+  .questions-head { padding-top: var(--sec-pad); padding-bottom: clamp(1.5rem, 4svh, 2.75rem); }
+  .questions-trigger { min-height: clamp(4.25rem, 10svh, 6rem); }
+  .ask__panel { min-height: clamp(18rem, 50svh, 30rem); }
+  .people__img img { max-height: 78svh; }
+}

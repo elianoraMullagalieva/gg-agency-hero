@@ -3136,3 +3136,36 @@
       });
   });
 })();
+
+/* ============================================================
+   «Источники»: прилипший блок по высоте равен содержимому и стоит
+   по центру экрана. На высоких мониторах под веером нет пустоты.
+   ============================================================ */
+(function () {
+  "use strict";
+  var sec = document.querySelector(".sources--lock");
+  var stick = sec && sec.querySelector(".sources__sticky");
+  var frame = stick && stick.querySelector(".frame");
+  if (!stick || !frame) return;
+  var wide = matchMedia("(min-width: 721px)");
+  var still = matchMedia("(prefers-reduced-motion: reduce)");
+  var t = 0;
+  function fit() {
+    stick.style.height = ""; stick.style.top = "";
+    if (!wide.matches || still.matches) return;
+    // даём основному скрипту пересчитать веер от полной высоты
+    window.dispatchEvent(new Event("gg:refit"));
+    var cs = getComputedStyle(stick), vh = window.innerHeight;
+    var pt = parseFloat(cs.paddingTop), pb = parseFloat(cs.paddingBottom);
+    var used = frame.offsetHeight + pt + pb;
+    if (used >= vh) return;                       // на низких окнах всё как было
+    stick.style.height = used + "px";
+    // верхнее поле уходит за край экрана только если блок не помещается с ним
+    stick.style.top = Math.max(0, (vh - used) / 2 - pt * 0.35) + "px";
+  }
+  function later() { clearTimeout(t); t = setTimeout(fit, 120); }
+  window.addEventListener("resize", later);
+  window.addEventListener("load", later);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
+  later();
+})();
