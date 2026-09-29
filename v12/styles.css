@@ -6989,3 +6989,68 @@ html.has-reveal #quiz {
    при 1.02 они слипались. Возвращён межстрочный 1.14, трекинг
    заголовочный. */
 .bridge__lead { line-height: var(--lh-title); }
+
+
+/* ============================================================
+   Адаптив: правки после прогона по ширинам 320–1180
+   ============================================================ */
+
+/* Стопка «Отдел продаж» без фиксации: последняя карточка уезжала
+   вниз на три шага лесенки и её резал следующий блок. Карточки
+   стоят обычной колонкой, высота — по содержимому. */
+@media (max-width: 900px) {
+  .stack__card,
+  .stack__card:last-child {
+    position: relative;
+    top: auto;
+    height: auto !important;
+    min-height: clamp(11rem, 9rem + 8vw, 14rem) !important;
+  }
+  .stack__card:last-child { margin-bottom: 0; }
+  .stack__text { text-wrap: pretty; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stack__card, .stack__card:last-child { position: relative; top: auto; }
+}
+
+/* Веер на планшете: повёрнутая первая карточка выходила за поле */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .sources--center .fan { max-width: 90%; }
+}
+
+/* Отзывы: четыре кадра в ряд держатся до 900px, дальше два.
+   На 1024 два кадра в ряд были высотой по 600px каждый. */
+@media (min-width: 901px) and (max-width: 1100px) {
+  .reviews__strip { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .vreview__quote { font-size: 0.9375rem; padding: 0.875rem; }
+  .vreview__tag { top: 0.75rem; left: 0.75rem; }
+}
+
+/* Кейсы: на 1001–1100 три колонки были тесны — пилюля формата
+   переносилась в две строки рядом с аватаркой */
+@media (min-width: 1001px) and (max-width: 1100px) {
+  .cases__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ccard:nth-child(3n + 2) { margin-top: 0; }
+  .ccard:nth-child(even) { margin-top: clamp(1.5rem, 0.9286rem + 2.4381vw, 4rem); }
+}
+.ccard__tag { white-space: nowrap; }
+@media (max-width: 380px) {
+  .ccard__tag { white-space: normal; }
+}
+
+/* График на узких экранах: подписи оси не переносятся,
+   подсказка про курсор уходит — она ложилась на линию курсора */
+.path__axis span { white-space: nowrap; }
+@media (max-width: 600px) {
+  .path__hint { display: none; }
+  .path__axis { font-size: 0.75rem; }
+}
+
+/* «Наш подход» на телефоне: заголовок первой карточки заходил
+   под красный круг */
+@media (max-width: 1000px) {
+  .step--light .step__name { max-width: 62%; }
+}
+
+/* Стопка: текст не должен упираться в нижнюю линию со счётчиком */
+.stack__card { padding-bottom: clamp(4.25rem, 3.75rem + 2.1333vw, 5.5rem); }
