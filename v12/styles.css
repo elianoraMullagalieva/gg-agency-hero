@@ -7305,3 +7305,22 @@ html.has-reveal #quiz {
 @media (max-width: 640px) {
   .roles__list { display: block; }
 }
+
+/* Команда из четырёх человек: портреты в один ряд во всю ширину,
+   карточка состава отдела — под ними, роли в три колонки */
+.team-row,
+.team-row .staff { grid-template-columns: none; }
+.team-row { display: block; }
+.team-row .staff { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.roles, .roles:not(#x) { height: auto; min-height: 0; margin-top: clamp(1.5rem, 1.0714rem + 1.8286vw, 3.375rem); }
+.roles__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(1rem, 0.5714rem + 1.8286vw, 2.875rem); margin-top: clamp(1.5rem, 1.2rem + 1.28vw, 2.5rem); }
+.roles__item, .roles__item:last-child { padding: clamp(0.75rem, 0.65rem + 0.43vw, 1.125rem) 0 0; }
+.roles__pill { margin-bottom: 0; }
+@media (max-width: 640px) {
+  .team-row .staff { grid-template-columns: none; }
+  .roles__list { display: block; }
+  .roles__item, .roles__item:last-child { padding-bottom: 0.875rem; }
+}
+@media (min-width: 641px) and (max-width: 1300px) {
+  .team-row .staff { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
