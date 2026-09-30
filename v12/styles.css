@@ -7737,3 +7737,11 @@ html.is-static .ask__q { margin-bottom: 2.5rem; }
 html.is-static .ask__q--final { margin-bottom: 0; }
 html.is-static .fl { transform: none !important; }
 html.is-static .footer__word-text { transform: translate3d(-50%, 0, 0) !important; }
+/* Figma не понимает радиальный градиент с прозрачным краем: в статике
+   свет карточек — линейный градиент от бордового к углю */
+html.is-static .leak--pix, html.is-static .has-glow,
+html.is-static .ask__panel, html.is-static .lead__panel {
+  background: linear-gradient(180deg, #6e0a10 0%, #2a0709 28%, #141313 55%) !important;
+}
+html.is-static .fan__card--grey, html.is-static .stack__card:nth-child(2) { background: #f5f5f5 !important; }
+html.is-static .ccard--light .ccard__btn { background: #f5f5f5 !important; }
