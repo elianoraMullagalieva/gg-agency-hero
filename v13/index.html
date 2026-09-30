@@ -15,6 +15,7 @@
    сразу, а если основной скрипт не ответил за 4 секунды — снимается. */
 document.documentElement.classList.add("js");
 if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
+if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });
 setTimeout(function () { if (!window.__stagesReady) document.documentElement.classList.remove("js"); }, 4000);
 </script>
 
