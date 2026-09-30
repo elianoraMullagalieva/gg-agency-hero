@@ -8258,3 +8258,77 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
 
 /* Указатель раздела снят по замечанию */
 .sidx { display: none !important; }
+
+
+/* ============================================================
+   Статический режим для съёмки в Figma: index.html?static
+   Всё, что на сайте появляется при прокрутке, здесь видно сразу;
+   прилипающие блоки стоят в потоке обычной высоты.
+   ============================================================ */
+html.is-static [data-stage] .rv,
+html.is-static [data-stage] .rv-line,
+html.is-static [data-stage] .ledger__idx,
+html.is-static [data-stage] .ledger__name,
+html.is-static [data-stage] .ledger__text,
+html.is-static [data-stage] .ledger__value span,
+html.is-static [data-stage] .terms__name,
+html.is-static [data-stage] .terms__text,
+html.is-static .kx__list li, html.is-static .kx__doc,
+html.is-static .lm-line > i, html.is-static .qw,
+html.is-static .fan__card, html.is-static .why__card,
+html.is-static .situation .card, html.is-static .step,
+html.is-static .questions-panel > div, html.is-static .ask__opt,
+html.is-static .path__text, html.is-static .path__result,
+html.is-static .stack__text, html.is-static .people__photo,
+html.is-static .cz__num, html.is-static .cz__cap {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  clip-path: none !important;
+  transition: none !important;
+  animation: none !important;
+}
+html.is-static .nr__d > i { --v: var(--n) !important; }
+html.is-static .ledger__row::after, html.is-static .terms__item::before,
+html.is-static .keep__col + .keep__col::before, html.is-static .kx__word::after { transform: none !important; }
+html.is-static .keep { --spread: 1; }
+html.is-static .footer { --rise: 1; }
+html.is-static .fit__half--no { --wipe: 1; }
+html.is-static .preloader, html.is-static .swipe-hint, html.is-static .fear-prev, html.is-static .vcur { display: none !important; }
+html.is-static .path__stage { opacity: 1 !important; }
+html.is-static .path__stage .path__text, html.is-static .path__stage .path__result { max-height: none !important; }
+html.is-static .questions-panel { grid-template-rows: 1fr !important; }
+html.is-static .ask__q { position: static !important; opacity: 1 !important; visibility: visible !important; }
+html.is-static .kx__panel { visibility: visible !important; position: static !important; }
+html.is-static .kx__stage { display: grid; gap: 2rem; }
+/* прилипание снято: секции обычной высоты */
+html.is-static .leaks, html.is-static .approach, html.is-static .sources--lock,
+html.is-static .stack--lock, html.is-static .path { height: auto !important; min-height: 0 !important; }
+html.is-static .leaks-sticky, html.is-static .approach__stick, html.is-static .sources__sticky,
+html.is-static .stack__sticky, html.is-static .path__sticky { position: static !important; height: auto !important; top: auto !important; overflow: visible !important; padding-top: var(--sec-pad) !important; }
+html.is-static .leaks-rail { transform: none !important; flex-wrap: wrap; width: auto; }
+html.is-static .approach__rail { overflow: visible !important; flex-wrap: wrap; }
+html.is-static .stack__list { height: auto !important; display: grid; gap: 1rem; }
+html.is-static .stack__card { position: static !important; transform: none !important; translate: none !important; height: auto !important; min-height: 12rem !important; --cov: 0; }
+html.is-static .fan { aspect-ratio: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+html.is-static .fan__card { position: static !important; width: auto; rotate: none; }
+html.is-static .cz__big { position: static; }
+html.is-static html, html.is-static body { overflow: visible; }
+html.is-static .footer { position: static !important; }
+html.is-static #quiz { margin-bottom: 0 !important; }
+html.is-static .hero__glyphs, html.is-static .hero__bg, html.is-static .footer__bg, html.is-static .leak__fx, html.is-static .glow-fx { display: none !important; }
+html.is-static .leak--pix, html.is-static .has-glow { background-image: radial-gradient(120% 70% at 50% -20%, #7a0c12 0%, rgba(20,19,19,0) 60%) !important; }
+html.is-static .hero { background: radial-gradient(70% 55% at 50% 100%, #5a060b 0%, #030303 70%) !important; }
+html.is-static .path__stage { display: block !important; opacity: 1 !important; }
+html.is-static .path__stages { grid-template-rows: auto !important; gap: 2rem !important; }
+html.is-static .path__when, html.is-static .path__name, html.is-static .path__text, html.is-static .path__result { grid-row: auto !important; grid-column: auto !important; margin-top: 0.75em; }
+html.is-static .kx__panel { grid-area: auto !important; }
+html.is-static .kx__word { opacity: 1 !important; }
+html.is-static .keep__count { display: none; }
+html.is-static .footer { position: relative !important; }
+html.is-static #quiz, html.is-static body > section:last-of-type { margin-bottom: 0 !important; }
+html.is-static .ask__stage { display: block !important; }
+html.is-static .ask__q { margin-bottom: 2.5rem; }
+html.is-static .ask__q--final { margin-bottom: 0; }
+html.is-static .fl { transform: none !important; }
+html.is-static .footer__word-text { transform: translate3d(-50%, 0, 0) !important; }

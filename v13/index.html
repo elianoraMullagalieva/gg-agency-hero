@@ -14,6 +14,7 @@
 /* Блоки, скрытые до прокрутки, открыты по умолчанию: класс js ставится
    сразу, а если основной скрипт не ответил за 4 секунды — снимается. */
 document.documentElement.classList.add("js");
+if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
 setTimeout(function () { if (!window.__stagesReady) document.documentElement.classList.remove("js"); }, 4000);
 </script>
 
