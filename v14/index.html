@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=10031400" />
+<link rel="stylesheet" href="styles.css?v=10031500" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -374,7 +374,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
           <p class="leak__text">Между ними касса пустая. Все ставки&nbsp;— на&nbsp;несколько недель в&nbsp;году: не&nbsp;зашёл оффер, просела реклама, эксперт выпал из&nbsp;графика&nbsp;— и&nbsp;полгода работы не&nbsp;окупились.</p>
         </div>
       </li>
-      <li class="leak leak--img leak--dark leak--bottom" style="--i:2; --bg2:url(assets/leaks/leak-3-2x.webp); --bg4:url(assets/leaks/leak-3-4x.webp)">
+      <li class="leak leak--img leak--dark leak--bottom leak--pills-grey" style="--i:2; --bg2:url(assets/leaks/leak-3-2x.webp); --bg4:url(assets/leaks/leak-3-4x.webp)">
         <div class="leak__tags">
           <span class="card__num">03</span>
           <span class="card__tag">сегментация</span>
@@ -406,12 +406,15 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 <!-- ===== Мост: от утечек к тесту ===== -->
 <section class="bridge" aria-labelledby="bridge-title" data-stage>
   <article class="ask__card bridge__plate rv" style="--d:0">
-    <div class="ask__panel" data-glow data-origin="top" data-gain="0.9">
-      <p class="ask__eyebrow">8&nbsp;вопросов в&nbsp;Telegram-боте</p>
-      <div class="ask__copy">
-        <h2 class="ask__lede" id="bridge-title">Пройдите тест</h2>
-        <p class="ask__sub">3&nbsp;минуты · без созвона и&nbsp;заявки · рекомендации сразу</p>
+    <div class="ask__panel ask__panel--phone">
+      <img class="phone__img" src="assets/bridge/phone.jpg" alt="" width="800" height="800" loading="lazy" decoding="async" />
+      <div class="phone__screen" aria-hidden="true">
+        <p class="phone__q phone__q--1">Как часто у&nbsp;вас проходят запуски?</p>
+        <p class="phone__a phone__a--1"><span>Раз в&nbsp;месяц</span></p>
+        <p class="phone__q phone__q--2">Сколько заявок в&nbsp;месяц?</p>
+        <p class="phone__a phone__a--2"><span>До&nbsp;100</span></p>
       </div>
+      <h2 class="sr-only" id="bridge-title">Пройдите тест</h2>
     </div>
     <div class="ask__body bridge__side">
       <p class="bridge__lead">
@@ -1367,7 +1370,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 
 <script src="form-config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="main.js?v=10031400"></script>
+<script src="main.js?v=10031500"></script>
 
 <script src="marquee.js"></script>
 </body>

@@ -7673,7 +7673,10 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
 .leaks--v14 .leak { aspect-ratio: 433 / 551; }
 .leaks--v14 .leak:nth-child(even) { translate: 0 -10%; }
 .leaks--v14 .leaks-sticky { gap: clamp(3.5rem, 9.5svh, 9.5rem); }
-.leaks--v14 .leaks-sub { max-width: 34ch; }
+.leaks--v14 .leaks-sub { max-width: 33rem; }
+/* Третья карточка: верх фото светлый, пилюли серые, как на светлых */
+.leak--img.leak--dark.leak--pills-grey .card__num,
+.leak--img.leak--dark.leak--pills-grey .card__tag { color: #6b6966; border-color: #6b6966; }
 /* Фото лежит фоном и всегда заполняет карточку целиком: при любой
    ширине пропорция та же, поэтому кадр не режется. Две плотности:
    обычный экран получает 866px, ретина и 4К — 1732px. */
@@ -7730,6 +7733,78 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
 @media (max-width: 900px) {
   .leaks--v14 .leak:nth-child(even) { translate: none; }
   .leaks--v14 .leaks-sub { max-width: 44ch; }
+}
+
+/* ============================================================
+   v14 · Мост «Пройдите тест»: вместо угольной панели — фото
+   телефона, на его экране по очереди проявляются вопрос и ответ.
+   Экран размечен в процентах от картинки, поэтому на любой ширине
+   строки лежат ровно на стекле.
+   ============================================================ */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.ask__panel--phone {
+  position: relative;
+  min-height: 0 !important;
+  padding: 0 !important;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #141313;
+  container-type: inline-size;
+}
+.phone__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Экран телефона: верхний левый угол стекла и его наклон */
+.phone__screen {
+  position: absolute;
+  left: 23.5%; top: 36%;
+  width: 54%; height: 54%;
+  padding: 0 0 0 1.5%;
+  transform-origin: 0 0;
+  transform: rotate(-4.4deg) skewX(3.2deg);
+  color: #fff;
+  font-family: var(--font-ui);
+  display: flex; flex-direction: column; align-items: flex-start; gap: 1.6cqw;
+  pointer-events: none;
+}
+.phone__q, .phone__a {
+  margin: 0;
+  max-width: 100%;
+  font-size: clamp(0.8125rem, 3.6cqw, 1.125rem);
+  line-height: 1.3;
+  font-weight: 300;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+  opacity: 0;
+  transform: translate3d(0, 0.5em, 0);
+  will-change: opacity, transform;
+}
+.phone__q { color: rgba(255, 255, 255, 0.92); max-width: 24ch; }
+.phone__a span {
+  display: inline-block;
+  padding: 0.45em 0.95em;
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  border-radius: 999px;
+  color: #fff;
+  font-weight: 400;
+}
+/* Цикл 12 с: первая пара видна в первой половине, вторая — во второй.
+   Ответ выходит с задержкой после вопроса, уходят вместе. */
+.phone__q--1 { animation: phoneQ1 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__a--1 { animation: phoneA1 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__q--2 { animation: phoneQ2 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__a--2 { animation: phoneA2 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+@keyframes phoneQ1 { 0%, 1% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 7%, 43% { opacity: 1; transform: none; } 48%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
+@keyframes phoneA1 { 0%, 15% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 21%, 43% { opacity: 1; transform: none; } 48%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
+@keyframes phoneQ2 { 0%, 51% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 57%, 93% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
+@keyframes phoneA2 { 0%, 65% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 71%, 93% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
+@media (prefers-reduced-motion: reduce) {
+  .phone__q, .phone__a { animation: none !important; }
+  .phone__q--1, .phone__a--1 { opacity: 1; transform: none; }
+}
+html.is-static .phone__q--1, html.is-static .phone__a--1 { animation: none !important; opacity: 1; transform: none; }
+html.is-static .phone__q--2, html.is-static .phone__a--2 { display: none; }
+html.is-static .ask__panel--phone { background: #141313 !important; }
+@media (max-width: 860px) {
+  .ask__panel--phone { aspect-ratio: 1 / 1; width: 100%; }
 }
 
 /* ============================================================
