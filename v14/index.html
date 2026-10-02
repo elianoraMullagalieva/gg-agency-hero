@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=10031600" />
+<link rel="stylesheet" href="styles.css?v=10031800" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -408,11 +408,27 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
   <article class="ask__card bridge__plate rv" style="--d:0">
     <div class="ask__panel ask__panel--phone">
       <img class="phone__img" src="assets/bridge/phone.jpg" alt="" width="800" height="800" loading="lazy" decoding="async" />
-      <div class="phone__screen" aria-hidden="true">
-        <p class="phone__q phone__q--1">Как часто у&nbsp;вас проходят запуски?</p>
-        <p class="phone__a phone__a--1"><span>Раз в&nbsp;месяц</span></p>
-        <p class="phone__q phone__q--2">Сколько заявок в&nbsp;месяц?</p>
-        <p class="phone__a phone__a--2"><span>До&nbsp;100</span></p>
+      <div class="phone__stage" aria-hidden="true">
+        <div class="phone__screen">
+          <div class="phone__scene phone__scene--a">
+            <p class="phone__eyebrow"><i></i>Разбор отдела · 8 вопросов</p>
+            <p class="phone__big"><span class="phone__num">15–20%</span></p>
+            <p class="phone__cap">выручки уходит в&nbsp;утечки каждый месяц</p>
+            <svg class="phone__ring" viewBox="0 0 120 120" fill="none">
+              <circle class="phone__ring-bg" cx="60" cy="60" r="52" />
+              <circle class="phone__ring-arc" cx="60" cy="60" r="52" />
+            </svg>
+          </div>
+          <div class="phone__scene phone__scene--b">
+            <p class="phone__eyebrow"><i></i>Где теряются деньги</p>
+            <ul class="phone__bars">
+              <li style="--v:0.92"><span>Ответ на&nbsp;заявку</span><b>7+&nbsp;ч</b><i></i></li>
+              <li style="--v:0.87"><span>База без сегментов</span><b>87%</b><i></i></li>
+              <li style="--v:0.18"><span>Касаний после «подумаю»</span><b>1</b><i></i></li>
+            </ul>
+            <p class="phone__cap phone__cap--b">Три из&nbsp;восьми утечек найдены</p>
+          </div>
+        </div>
       </div>
       <h2 class="sr-only" id="bridge-title">Пройдите тест</h2>
     </div>
@@ -896,10 +912,48 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
          Сюда встанут обезличенные скрины из реальных проектов,
          пропорция 3:4, светлый лист на тёмном или белом фоне. -->
     <ul class="docs rv" role="list" style="--d:200" data-docs>
-      <li class="doc" style="--i:0"><div class="doc__sheet" role="img" aria-label="Дашборд собственника"></div></li>
-      <li class="doc" style="--i:1"><div class="doc__sheet" role="img" aria-label="Отчёт РОПа"></div></li>
-      <li class="doc" style="--i:2"><div class="doc__sheet" role="img" aria-label="Воронка в amoCRM"></div></li>
-      <li class="doc" style="--i:3"><div class="doc__sheet" role="img" aria-label="Регламент отдела"></div></li>
+      <li class="doc" style="--i:0"><div class="doc__sheet" role="img" aria-label="Дашборд собственника">
+        <svg class="doc__svg" viewBox="0 0 120 160" fill="none">
+          <text x="12" y="20" class="doc__t">Дашборд</text><text x="12" y="31" class="doc__s">выручка · недели</text>
+          <g class="doc__cols">
+            <rect x="12" y="92" width="6" height="22" rx="1.5" /><rect x="22" y="84" width="6" height="30" rx="1.5" /><rect x="32" y="88" width="6" height="26" rx="1.5" /><rect x="42" y="76" width="6" height="38" rx="1.5" /><rect x="52" y="70" width="6" height="44" rx="1.5" /><rect x="62" y="62" width="6" height="52" rx="1.5" /><rect x="72" y="56" width="6" height="58" rx="1.5" /><rect x="82" y="48" width="6" height="66" rx="1.5" />
+          </g>
+          <polyline class="doc__line" points="15,86 25,78 35,82 45,70 55,64 65,56 75,50 85,42" />
+          <line x1="12" y1="114" x2="90" y2="114" class="doc__axis" />
+          <text x="12" y="134" class="doc__s">план</text><rect x="12" y="139" width="78" height="2" rx="1" class="doc__track" /><rect x="12" y="139" width="66" height="2" rx="1" class="doc__fill" />
+        </svg></div></li>
+      <li class="doc" style="--i:1"><div class="doc__sheet" role="img" aria-label="Отчёт РОПа">
+        <svg class="doc__svg" viewBox="0 0 120 160" fill="none">
+          <text x="12" y="20" class="doc__t">Отчёт РОПа</text><text x="12" y="31" class="doc__s">за день</text>
+          <g class="doc__rows">
+            <text x="12" y="56" class="doc__s">Звонки</text><rect x="12" y="60" width="78" height="2" rx="1" class="doc__track" /><rect x="12" y="60" width="64" height="2" rx="1" class="doc__fill" />
+            <text x="12" y="80" class="doc__s">Заявки</text><rect x="12" y="84" width="78" height="2" rx="1" class="doc__track" /><rect x="12" y="84" width="49" height="2" rx="1" class="doc__fill" />
+            <text x="12" y="104" class="doc__s">Созвоны</text><rect x="12" y="108" width="78" height="2" rx="1" class="doc__track" /><rect x="12" y="108" width="36" height="2" rx="1" class="doc__fill" />
+            <text x="12" y="128" class="doc__s">Оплаты</text><rect x="12" y="132" width="78" height="2" rx="1" class="doc__track" /><rect x="12" y="132" width="21" height="2" rx="1" class="doc__fill" />
+          </g>
+        </svg></div></li>
+      <li class="doc" style="--i:2"><div class="doc__sheet" role="img" aria-label="Воронка в amoCRM">
+        <svg class="doc__svg" viewBox="0 0 120 160" fill="none">
+          <text x="12" y="20" class="doc__t">Воронка</text><text x="12" y="31" class="doc__s">amoCRM · этапы</text>
+          <g class="doc__funnel">
+            <rect x="12" y="46" width="78" height="12" rx="2" /><text x="17" y="54.5" class="doc__f">Новая заявка</text>
+            <rect x="18" y="64" width="66" height="12" rx="2" /><text x="23" y="72.5" class="doc__f">Квалификация</text>
+            <rect x="24" y="82" width="54" height="12" rx="2" /><text x="29" y="90.5" class="doc__f">Созвон</text>
+            <rect x="30" y="100" width="42" height="12" rx="2" /><text x="35" y="108.5" class="doc__f">Счёт</text>
+            <rect x="36" y="118" width="30" height="12" rx="2" class="doc__funnel-last" /><text x="41" y="126.5" class="doc__f doc__f--w">Оплата</text>
+          </g>
+        </svg></div></li>
+      <li class="doc" style="--i:3"><div class="doc__sheet" role="img" aria-label="Регламент отдела">
+        <svg class="doc__svg" viewBox="0 0 120 160" fill="none">
+          <text x="12" y="20" class="doc__t">Регламент</text><text x="12" y="31" class="doc__s">отдел продаж</text>
+          <g class="doc__checks">
+            <rect x="12" y="50" width="8" height="8" rx="2" /><path d="M14 54l2 2 3.5-4" /><text x="26" y="57" class="doc__s">Ответ на заявку</text>
+            <rect x="12" y="70" width="8" height="8" rx="2" /><path d="M14 74l2 2 3.5-4" /><text x="26" y="77" class="doc__s">Касания до отказа</text>
+            <rect x="12" y="90" width="8" height="8" rx="2" /><path d="M14 94l2 2 3.5-4" /><text x="26" y="97" class="doc__s">Отчёт дня</text>
+            <rect x="12" y="110" width="8" height="8" rx="2" /><path d="M14 114l2 2 3.5-4" /><text x="26" y="117" class="doc__s">Контроль звонков</text>
+            <rect x="12" y="130" width="8" height="8" rx="2" /><path d="M14 134l2 2 3.5-4" /><text x="26" y="137" class="doc__s">Работа с базой</text>
+          </g>
+        </svg></div></li>
     </ul>
     <p class="keep__docnote rv" style="--d:320">Обезличенные документы из&nbsp;реальных проектов: дашборд собственника, отчёт РОПа, воронка в&nbsp;amoCRM, регламент отдела</p>
   </div>
@@ -1370,7 +1424,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 
 <script src="form-config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="main.js?v=10031500"></script>
+<script src="main.js?v=10031800"></script>
 
 <script src="marquee.js"></script>
 </body>

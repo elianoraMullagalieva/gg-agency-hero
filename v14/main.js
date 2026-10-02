@@ -3193,6 +3193,16 @@
   later();
 })();
 
+/* Телефон в мосте: масштаб сцены к ширине панели (картинка 800px) */
+(function () {
+  var panel = document.querySelector(".ask__panel--phone");
+  if (!panel) return;
+  function fit() { panel.style.setProperty("--k", (panel.clientWidth / 800).toFixed(4)); }
+  fit();
+  if ("ResizeObserver" in window) new ResizeObserver(fit).observe(panel);
+  else window.addEventListener("resize", fit);
+})();
+
 /* Статический режим: график на последнем этапе, всё в покое */
 (function () {
   if (!document.documentElement.classList.contains("is-static")) return;

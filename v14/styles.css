@@ -7736,10 +7736,11 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
 }
 
 /* ============================================================
-   v14 · Мост «Пройдите тест»: вместо угольной панели — фото
-   телефона, на его экране по очереди проявляются вопрос и ответ.
-   Экран размечен в процентах от картинки, поэтому на любой ширине
-   строки лежат ровно на стекле.
+   v14 · Мост «Пройдите тест»: фото телефона, на стекле — результат
+   разбора. Сцена сверстана в координатах самой картинки (800×800)
+   и уложена на экран проекцией matrix3d, снятой по четырём углам
+   стекла; масштаб панели задаёт --k (main.js), поэтому на любой
+   ширине строки лежат на экране одинаково.
    ============================================================ */
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .ask__panel--phone {
@@ -7749,63 +7750,116 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
   aspect-ratio: 1 / 1;
   overflow: hidden;
   background: #141313;
-  container-type: inline-size;
 }
 .phone__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-/* Экран телефона: верхний левый угол стекла и его наклон */
-.phone__screen {
-  position: absolute;
-  left: 23.5%; top: 36%;
-  width: 54%; height: 54%;
-  padding: 0 0 0 1.5%;
+.phone__stage {
+  position: absolute; left: 0; top: 0;
+  width: 800px; height: 800px;
   transform-origin: 0 0;
-  transform: rotate(-4.4deg) skewX(3.2deg);
-  color: #fff;
-  font-family: var(--font-ui);
-  display: flex; flex-direction: column; align-items: flex-start; gap: 1.6cqw;
+  transform: scale(var(--k, 0.54));
   pointer-events: none;
 }
-.phone__q, .phone__a {
-  margin: 0;
-  max-width: 100%;
-  font-size: clamp(0.8125rem, 3.6cqw, 1.125rem);
-  line-height: 1.3;
-  font-weight: 300;
-  letter-spacing: -0.01em;
-  text-wrap: balance;
-  opacity: 0;
-  transform: translate3d(0, 0.5em, 0);
-  will-change: opacity, transform;
-}
-.phone__q { color: rgba(255, 255, 255, 0.92); max-width: 24ch; }
-.phone__a span {
-  display: inline-block;
-  padding: 0.45em 0.95em;
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  border-radius: 999px;
+.phone__screen {
+  position: absolute; left: 0; top: 0;
+  width: 520px; height: 560px;
+  transform-origin: 0 0;
+  transform: matrix3d(0.930586, -0.0732601, 0, -9.15751e-05, 0.144219, 0.873936, 0, -0.000157581, 0, 0, 1, 0, 118, 240, 0, 1);
   color: #fff;
-  font-weight: 400;
+  font-family: var(--font-ui);
 }
-/* Цикл 12 с: первая пара видна в первой половине, вторая — во второй.
-   Ответ выходит с задержкой после вопроса, уходят вместе. */
-.phone__q--1 { animation: phoneQ1 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
-.phone__a--1 { animation: phoneA1 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
-.phone__q--2 { animation: phoneQ2 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
-.phone__a--2 { animation: phoneA2 12s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
-@keyframes phoneQ1 { 0%, 1% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 7%, 43% { opacity: 1; transform: none; } 48%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
-@keyframes phoneA1 { 0%, 15% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 21%, 43% { opacity: 1; transform: none; } 48%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
-@keyframes phoneQ2 { 0%, 51% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 57%, 93% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
-@keyframes phoneA2 { 0%, 65% { opacity: 0; transform: translate3d(0, 0.5em, 0); } 71%, 93% { opacity: 1; transform: none; } 98%, 100% { opacity: 0; transform: translate3d(0, -0.3em, 0); } }
+.phone__scene {
+  position: absolute; left: 44px; right: 40px; top: 92px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  opacity: 0;
+}
+.phone__eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin: 0 0 24px;
+  font-size: 28px; line-height: 1; font-weight: 300;
+  color: rgba(255, 255, 255, 0.62);
+  letter-spacing: -0.01em;
+}
+/* Живая точка: единственное красное — свечение, не текст */
+.phone__eyebrow i { width: 9px; height: 9px; border-radius: 50%; background: #ff3b2f; box-shadow: 0 0 10px 2px rgba(255, 59, 47, 0.55); }
+.phone__big { margin: 0; white-space: nowrap; }
+.phone__num { font-family: var(--font-logo); font-size: 92px; line-height: 0.95; font-weight: 400; letter-spacing: -0.035em; }
+.phone__unit { font-size: 30px; line-height: 1; font-weight: 300; color: rgba(255, 255, 255, 0.72); }
+.phone__cap { margin: 20px 0 0; font-size: 27px; line-height: 1.25; font-weight: 300; color: rgba(255, 255, 255, 0.72); max-width: 17ch; text-wrap: balance; }
+.phone__ring { position: absolute; right: -4px; top: 66px; width: 118px; height: 118px; }
+.phone__ring-bg { stroke: rgba(255, 255, 255, 0.16); stroke-width: 2; stroke-dasharray: 1 5; stroke-linecap: round; }
+.phone__ring-arc { stroke: #fff; stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 327; stroke-dashoffset: 327; transform: rotate(-90deg); transform-origin: 50% 50%; }
+.phone__bars { list-style: none; margin: 0; padding: 0; width: 100%; display: grid; gap: 20px; }
+.phone__bars li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; row-gap: 10px; align-items: baseline; font-size: 26px; line-height: 1.1; font-weight: 300; }
+.phone__bars li span { color: rgba(255, 255, 255, 0.78); }
+.phone__bars li b { font-weight: 400; font-variant-numeric: tabular-nums; }
+.phone__bars li i { grid-column: 1 / -1; display: block; height: 3px; border-radius: 2px; background: rgba(255, 255, 255, 0.14); position: relative; overflow: hidden; }
+.phone__bars li i::after { content: ""; position: absolute; inset: 0; background: #fff; border-radius: inherit; transform: scaleX(0); transform-origin: 0 50%; }
+.phone__cap--b { margin-top: 24px; max-width: none; }
+
+/* Цикл 11 с: сцена A — доля выручки, сцена B — три утечки */
+.phone__scene--a { animation: phSceneA 11s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__scene--b { animation: phSceneB 11s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__ring-arc { animation: phRing 11s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__bars li i::after { animation: phBar 11s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.phone__bars li:nth-child(2) i::after { animation-delay: 0.25s; }
+.phone__bars li:nth-child(3) i::after { animation-delay: 0.5s; }
+@keyframes phSceneA { 0% { opacity: 0; transform: translate3d(0, 14px, 0); } 6%, 42% { opacity: 1; transform: none; } 48%, 100% { opacity: 0; transform: translate3d(0, -10px, 0); } }
+@keyframes phSceneB { 0%, 50% { opacity: 0; transform: translate3d(0, 14px, 0); } 56%, 93% { opacity: 1; transform: none; } 99%, 100% { opacity: 0; transform: translate3d(0, -10px, 0); } }
+@keyframes phRing { 0%, 5% { stroke-dashoffset: 327; } 24%, 100% { stroke-dashoffset: 268; } }
+@keyframes phBar { 0%, 55% { transform: scaleX(0); } 70%, 100% { transform: scaleX(var(--v)); } }
 @media (prefers-reduced-motion: reduce) {
-  .phone__q, .phone__a { animation: none !important; }
-  .phone__q--1, .phone__a--1 { opacity: 1; transform: none; }
+  .phone__scene, .phone__ring-arc, .phone__bars li i::after { animation: none !important; }
+  .phone__scene--a { opacity: 1; }
+  .phone__ring-arc { stroke-dashoffset: 268; }
 }
-html.is-static .phone__q--1, html.is-static .phone__a--1 { animation: none !important; opacity: 1; transform: none; }
-html.is-static .phone__q--2, html.is-static .phone__a--2 { display: none; }
+html.is-static .phone__scene, html.is-static .phone__ring-arc, html.is-static .phone__bars li i::after { animation: none !important; }
+html.is-static .phone__scene--a { opacity: 1; }
+html.is-static .phone__scene--b { display: none; }
 html.is-static .ask__panel--phone { background: #141313 !important; }
 @media (max-width: 860px) {
   .ask__panel--phone { aspect-ratio: 1 / 1; width: 100%; }
 }
+
+/* ============================================================
+   v14 · «Что остаётся у вас»: четыре листа — не пустые заготовки,
+   а миниатюры настоящих документов: дашборд, отчёт, воронка,
+   регламент. Линии тонкие, серые; графика оживает при появлении.
+   ============================================================ */
+.doc__sheet { background-image: none; display: block; overflow: hidden; }
+.doc__svg { display: block; width: 100%; height: 100%; }
+.doc__t { font-family: var(--font-ui); font-size: 9px; font-weight: 500; fill: #16120d; letter-spacing: -0.01em; }
+.doc__s { font-family: var(--font-ui); font-size: 6.5px; font-weight: 300; fill: rgba(22, 18, 13, 0.55); }
+.doc__f { font-family: var(--font-ui); font-size: 6.2px; font-weight: 400; fill: rgba(22, 18, 13, 0.7); }
+.doc__f--w { fill: #fff; }
+.doc__track { fill: rgba(22, 18, 13, 0.1); }
+.doc__fill { fill: #16120d; transform-origin: 12px 0; transform: scaleX(0); transition: transform 1.1s var(--ease-out); }
+.doc__axis { stroke: rgba(22, 18, 13, 0.16); stroke-width: 1; }
+.doc__cols rect { fill: rgba(22, 18, 13, 0.1); transform-origin: 0 114px; transform: scaleY(0); transition: transform 0.9s var(--ease-out); }
+.doc__line { stroke: #16120d; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 140; stroke-dashoffset: 140; transition: stroke-dashoffset 1.4s var(--ease-out) 0.3s; }
+.doc__funnel rect { fill: rgba(22, 18, 13, 0.08); transform-origin: 51px 0; transform: scaleX(0.2); opacity: 0; transition: transform 0.8s var(--ease-out), opacity 0.6s ease; }
+.doc__funnel .doc__funnel-last { fill: #16120d; }
+.doc__checks rect { stroke: rgba(22, 18, 13, 0.3); stroke-width: 1; }
+.doc__checks path { stroke: #16120d; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 10; stroke-dashoffset: 10; transition: stroke-dashoffset 0.5s var(--ease-out); }
+.is-in .doc__fill { transform: scaleX(1); }
+.is-in .doc__cols rect { transform: scaleY(1); }
+.is-in .doc__line { stroke-dashoffset: 0; }
+.is-in .doc__funnel rect { transform: none; opacity: 1; }
+.is-in .doc__checks path { stroke-dashoffset: 0; }
+.is-in .doc__cols rect:nth-child(n) { transition-delay: calc(var(--n, 0) * 60ms + 200ms); }
+.is-in .doc__rows .doc__fill:nth-of-type(2) { transition-delay: 0.2s; }
+.is-in .doc__funnel rect:nth-of-type(2) { transition-delay: 0.1s; }
+.is-in .doc__funnel rect:nth-of-type(3) { transition-delay: 0.2s; }
+.is-in .doc__funnel rect:nth-of-type(4) { transition-delay: 0.3s; }
+.is-in .doc__funnel rect:nth-of-type(5) { transition-delay: 0.4s; }
+.is-in .doc__checks path:nth-of-type(2) { transition-delay: 0.15s; }
+.is-in .doc__checks path:nth-of-type(3) { transition-delay: 0.3s; }
+.is-in .doc__checks path:nth-of-type(4) { transition-delay: 0.45s; }
+.is-in .doc__checks path:nth-of-type(5) { transition-delay: 0.6s; }
+/* В раскрытом ряду каждый следующий лист сверху: заголовки у левого
+   края остаются на виду. */
+.doc { z-index: calc(var(--i) + 1); }
+html.is-static .doc__fill, html.is-static .doc__cols rect, html.is-static .doc__funnel rect { transform: none !important; opacity: 1 !important; }
+html.is-static .doc__line, html.is-static .doc__checks path { stroke-dashoffset: 0 !important; }
 
 /* ============================================================
    v14 · Заголовок «Какая у вас ситуация?» одним цветом, как
