@@ -3188,3 +3188,30 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(later);
   later();
 })();
+
+/* Статический режим: график на последнем этапе, всё в покое */
+(function () {
+  if (!document.documentElement.classList.contains("is-static")) return;
+  window.addEventListener("load", function () {
+    setTimeout(function () {
+      /* Цифры лентой при reduced-motion стоят на нуле — возвращаем текст */
+      document.querySelectorAll("[data-nr]").forEach(function (el) {
+        var a = el.querySelector(".odo-a11y"); if (a) el.textContent = a.textContent;
+      });
+      var st = document.querySelectorAll(".path__stage");
+      st.forEach(function (s, i) { s.classList.toggle("is-active", i === st.length - 1); s.style.setProperty("--fill", "1"); });
+      var lg = document.querySelector("[data-path-legend]"); if (lg) lg.textContent = "растёт по плану";
+      document.querySelectorAll(".fan__card").forEach(function (c) { c.style.transform = "none"; c.style.opacity = "1"; });
+      document.querySelectorAll(".leaks-rail, .approach__rail").forEach(function (r) { r.style.transform = "none"; r.scrollLeft = 0; });
+      window.dispatchEvent(new Event("resize"));
+      /* График рисуется только рядом с экраном: проходим страницу
+         до конца, даём ему дорисоваться и возвращаемся наверх. */
+      var y = 0, H = document.documentElement.scrollHeight, path = document.querySelector(".path");
+      (function step() {
+        if (y < H) { window.scrollTo(0, y); y += 500; setTimeout(step, 40); return; }
+        if (path) window.scrollTo(0, path.getBoundingClientRect().top + window.scrollY - 100);
+        setTimeout(function () { window.scrollTo(0, 0); document.documentElement.classList.add("is-static-ready"); }, 1200);
+      })();
+    }, 800);
+  });
+})();

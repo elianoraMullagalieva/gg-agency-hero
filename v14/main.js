@@ -1673,8 +1673,8 @@
                  - head.offsetHeight
                  - (parseFloat(sc.rowGap) || 0);
         // 1.128 — карточка плюс подъём чётных на 12.8% её высоты
-        var cardH = free / 1.128;
-        wByHeight = cardH * (301 / 379);
+        var cardH = free / 1.10;
+        wByHeight = cardH * (433 / 551);
       }
 
       /* Ведёт высота: карточка заполняет свободную полосу, и тогда
@@ -1690,13 +1690,13 @@
          пока низ карточки не встанет ровно на боковое поле. */
       function apply(px) {
         rail.style.setProperty("--leak-w", px.toFixed(2) + "px");
-        rail.style.paddingTop = (px * (379 / 301) * 0.128).toFixed(1) + "px";
+        rail.style.paddingTop = (px * (551 / 433) * 0.10).toFixed(1) + "px";
       }
       apply(w);
 
       if (stick) {
         var want = parseFloat(sc.paddingBottom) || 0;
-        var k = (301 / 379) / 1.128;          // насколько ширина меняет полную высоту
+        var k = (433 / 551) / 1.10;          // насколько ширина меняет полную высоту
         for (var pass = 0; pass < 4; pass++) {
           var card = rail.querySelector(".leak");
           if (!card) break;
@@ -2091,7 +2091,6 @@
       });
     }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
     stages.forEach(function (s) { io.observe(s); });
-    window.__stagesReady = true;
   }
 
   /* ============================================================
@@ -2654,7 +2653,7 @@
 
   /* ---------- Заголовки по строкам (Line Mask) ---------- */
   function splitLines() {
-    var sel = ".reviews__title, .why__title, .keep__title, .fit__title, .start__title, .people__teamtitle";
+    var sel = ".reviews__title, .why__title, .cases__title, .keep__title, .fit__title, .start__title, .people__teamtitle";
     [].forEach.call(document.querySelectorAll(sel), function (el) {
       if (still) return;
       var src = el.dataset.lmSrc || el.innerHTML;
@@ -2701,7 +2700,7 @@
 
   /* ---------- Цифры лентой (Number Roll) ---------- */
   function rolls() {
-    var sel = ".ccard__value, .ledger__value > span, .cases__big";
+    var sel = ".ccard__value, .ledger__value > span";
     [].forEach.call(document.querySelectorAll(sel), function (el) {
       if (el.dataset.nr) return;
       el.dataset.nr = "1";
@@ -3061,81 +3060,6 @@
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(check);
 })();
 
-
-/* ============================================================
-   v13 · «Что остаётся у вас»: указатель из четырёх слов.
-   ============================================================ */
-(function () {
-  "use strict";
-  var box = document.querySelector("[data-kx]");
-  if (!box) return;
-  var words = [].slice.call(box.querySelectorAll(".kx__word"));
-  var panels = [].slice.call(box.querySelectorAll(".kx__panel"));
-  var num = document.querySelector("[data-kx-n]");
-  var wide = matchMedia("(min-width: 1001px)");
-  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var cur = 0, fromScroll = -1, raf = 0;
-
-  function show(i) {
-    if (i === cur) return;
-    cur = i;
-    words.forEach(function (w, k) { w.classList.toggle("is-on", k === i); w.setAttribute("aria-selected", k === i ? "true" : "false"); });
-    panels.forEach(function (p, k) { p.classList.toggle("is-on", k === i); });
-    if (num) {
-      num.textContent = "0" + (i + 1);
-      num.classList.remove("is-swap"); void num.offsetWidth; num.classList.add("is-swap");
-    }
-  }
-  words.forEach(function (w, i) {
-    w.addEventListener("click", function () { show(i); });
-    w.addEventListener("focus", function () { show(i); });
-    w.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") show(i); });
-  });
-
-  /* Прокрутка ведёт указатель, пока блок проходит через экран.
-     Переключает только при смене своего индекса — наведение
-     не перебивается на каждом кадре. */
-  function tick() {
-    raf = 0;
-    if (!wide.matches || still) return;
-    var r = box.getBoundingClientRect(), vh = window.innerHeight;
-    if (r.bottom < 0 || r.top > vh) return;
-    var p = (vh * 0.78 - r.top) / (r.height + vh * 0.3);
-    var i = Math.max(0, Math.min(words.length - 1, Math.floor(p * words.length)));
-    if (i !== fromScroll) { fromScroll = i; show(i); }
-  }
-  function ask() { if (!raf) raf = requestAnimationFrame(tick); }
-  window.addEventListener("scroll", ask, { passive: true });
-  document.addEventListener("visibilitychange", function () { raf = 0; ask(); });
-  ask();
-})();
-
-/* ============================================================
-   v13 · «Отбор»: тёмная половина въезжает по прокрутке.
-   ============================================================ */
-(function () {
-  "use strict";
-  var fit = document.querySelector(".fit");
-  var no = fit && fit.querySelector(".fit__half--no");
-  if (!fit || !no) return;
-  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { no.style.setProperty("--wipe", "1"); return; }
-  var raf = 0, last = -1;
-  function tick() {
-    raf = 0;
-    var r = fit.getBoundingClientRect(), vh = window.innerHeight;
-    if (r.bottom < -100 || r.top > vh + 100) return;
-    var p = (vh * 0.92 - r.top) / (vh * 0.62);
-    p = p < 0 ? 0 : (p > 1 ? 1 : p);
-    p = 1 - Math.pow(1 - p, 3);
-    if (Math.abs(p - last) > 0.002) { no.style.setProperty("--wipe", p.toFixed(3)); last = p; }
-  }
-  function ask() { if (!raf) raf = requestAnimationFrame(tick); }
-  window.addEventListener("scroll", ask, { passive: true });
-  window.addEventListener("resize", ask);
-  document.addEventListener("visibilitychange", function () { raf = 0; ask(); });
-  ask();
-})();
-
 /* ============================================================
    Форма заявки: окно, проверка полей, отправка в Telegram.
    Настройки лежат в form-config.js (в git его нет):
@@ -3230,173 +3154,6 @@
         ready();
       });
   });
-})();
-
-/* ============================================================
-   КРЕАТИВНЫЙ СЛОЙ · скрипты
-   ============================================================ */
-(function () {
-  "use strict";
-  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var hover = matchMedia("(hover: hover)").matches;
-
-  /* Один обработчик прокрутки на все эффекты слоя */
-  var jobs = [], raf = 0;
-  function tick() { raf = 0; for (var i = 0; i < jobs.length; i++) jobs[i](); }
-  function ask() { if (!raf) raf = requestAnimationFrame(tick); }
-  window.addEventListener("scroll", ask, { passive: true });
-  window.addEventListener("resize", ask);
-  document.addEventListener("visibilitychange", function () { raf = 0; ask(); });
-
-  /* ---------- 1. Кейсы: число перекатывается ---------- */
-  (function () {
-    var box = document.querySelector("[data-cz]");
-    if (!box) return;
-    var num = box.querySelector("[data-cz-num]"), cap = box.querySelector("[data-cz-cap]");
-    var big = box.querySelector(".cz__big");
-    var rows = [].slice.call(box.querySelectorAll(".cz__row"));
-    var token = 0, shown = num.getAttribute("data-default"), back = 0;
-
-    function fit() {
-      num.style.fontSize = "";
-      var w = big.clientWidth, sw = num.scrollWidth;
-      if (sw > w && w > 0) num.style.fontSize = (parseFloat(getComputedStyle(num).fontSize) * w / sw * 0.98) + "px";
-    }
-    function set(value, caption) {
-      if (value === shown) return;
-      shown = value;
-      var my = ++token;
-      if (still) { num.textContent = value; cap.innerHTML = caption; fit(); return; }
-      num.classList.add("is-out"); cap.classList.add("is-out");
-      setTimeout(function () {
-        if (my !== token) return;
-        num.textContent = value; cap.innerHTML = caption; fit();
-        num.classList.remove("is-out"); num.classList.add("is-pre");
-        void num.offsetWidth;
-        num.classList.remove("is-pre"); cap.classList.remove("is-out");
-      }, 200);
-    }
-    function home() { set(num.getAttribute("data-default"), cap.getAttribute("data-default")); }
-
-    rows.forEach(function (row) {
-      var head = row.querySelector(".cz__head");
-      var lead = row.querySelector(".cz__lead").innerHTML;
-      function on() { clearTimeout(back); set(row.getAttribute("data-value"), lead); }
-      head.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") on(); });
-      head.addEventListener("focus", on);
-      head.addEventListener("click", function () {
-        var open = !row.classList.contains("is-open");
-        rows.forEach(function (r) { r.classList.remove("is-open"); r.querySelector(".cz__head").setAttribute("aria-expanded", "false"); });
-        if (open) { row.classList.add("is-open"); head.setAttribute("aria-expanded", "true"); on(); }
-      });
-    });
-    box.querySelector(".cz__list").addEventListener("pointerleave", function () {
-      back = setTimeout(function () { if (!box.querySelector(".cz__row.is-open")) home(); }, 250);
-    });
-    window.addEventListener("resize", fit);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-    fit();
-  })();
-
-  /* ---------- 2. Отзывы: кадр у курсора ---------- */
-  (function () {
-    var prev = document.querySelector("[data-fear-prev]");
-    var list = document.querySelector(".fears");
-    if (!prev || !list || !hover || still) return;
-    var items = [].slice.call(prev.querySelectorAll(".fear-prev__item"));
-    var x = 0, y = 0, tx = 0, ty = 0, on = false, run = 0, lastX = 0;
-    function loop() {
-      run = 0;
-      x += (tx - x) * 0.14; y += (ty - y) * 0.14;
-      var r = Math.max(-8, Math.min(8, (tx - x) * 0.06));
-      prev.style.setProperty("--x", x.toFixed(1) + "px");
-      prev.style.setProperty("--y", y.toFixed(1) + "px");
-      prev.style.setProperty("--r", r.toFixed(2) + "deg");
-      if (on || Math.abs(tx - x) > 0.5 || Math.abs(ty - y) > 0.5) run = requestAnimationFrame(loop);
-    }
-    list.addEventListener("pointermove", function (e) {
-      var row = e.target.closest(".fear__row");
-      var w = prev.offsetWidth, h = prev.offsetHeight;
-      tx = Math.min(window.innerWidth - w - 16, e.clientX + 28);
-      ty = Math.max(16, Math.min(window.innerHeight - h - 16, e.clientY + 36));
-      if (row) {
-        var k = row.getAttribute("data-fear");
-        items.forEach(function (it) { it.classList.toggle("is-on", it.getAttribute("data-fear") === k); });
-        if (!on) { on = true; x = tx; y = ty; prev.classList.add("is-on"); }
-      }
-      if (!run) run = requestAnimationFrame(loop);
-    }, { passive: true });
-    list.addEventListener("pointerleave", function () { on = false; prev.classList.remove("is-on"); });
-    window.addEventListener("scroll", function () { if (on) { on = false; prev.classList.remove("is-on"); } }, { passive: true });
-  })();
-
-  /* ---------- 3. Цитата проявляется по словам ---------- */
-  (function () {
-    var q = document.querySelector(".people__title");
-    if (!q || still) return;
-    /* Неразрывные пробелы остаются внутри слова: предлог не отрывается */
-    var text = q.textContent.replace(/[ \t\n\r]+/g, " ").trim();
-    q.setAttribute("aria-label", text.replace(/\u00a0/g, " "));
-    q.innerHTML = text.split(" ").map(function (w) { return '<span class="qw" aria-hidden="true">' + w + "</span>"; }).join(" ");
-    var words = [].slice.call(q.querySelectorAll(".qw")), n = words.length, last = -1;
-    jobs.push(function () {
-      var r = q.getBoundingClientRect(), vh = window.innerHeight;
-      if (r.bottom < -50 || r.top > vh + 50) return;
-      var p = (vh * 0.86 - r.top) / (vh * 0.5);
-      p = p < 0 ? 0 : (p > 1 ? 1 : p);
-      if (Math.abs(p - last) < 0.004) return;
-      last = p;
-      var head = p * (n + 4);
-      for (var i = 0; i < n; i++) {
-        var o = (head - i) / 4; o = o < 0 ? 0 : (o > 1 ? 1 : o);
-        words[i].style.opacity = (0.16 + o * 0.84).toFixed(3);
-      }
-    });
-  })();
-
-  /* ---------- «Отбор»: плитка едет медленнее страницы ---------- */
-  (function () {
-    var tile = document.querySelector(".fit__tile");
-    if (!tile || still) return;
-    var last = 1e9;
-    jobs.push(function () {
-      var r = tile.parentNode.getBoundingClientRect(), vh = window.innerHeight;
-      if (r.bottom < -100 || r.top > vh + 100) return;
-      var p = (r.top + r.height / 2 - vh / 2) / vh;      // −1 … 1
-      var y = Math.round(p * -46);
-      if (y !== last) { tile.style.setProperty("--py", y); last = y; }
-    });
-  })();
-
-  /* ---------- 5. Указатель раздела ---------- */
-  (function () {
-    var el = document.querySelector("[data-sidx]");
-    if (!el || still) return;
-    var nEl = el.querySelector("[data-sidx-n]"), tEl = el.querySelector("[data-sidx-t]");
-    var MAP = [["situation", "Ситуация"], ["leaks", "Утечки"], ["approach", "Подход"], ["sources-center", "Источники"],
-      ["team", "Отдел продаж"], ["reviews", "Отзывы"], ["why", "Почему мы"], ["cases-grid", "Кейсы"],
-      ["path", "Как работаем"], ["keep", "Что остаётся"], ["team-people", "Команда"], ["fit", "Отбор"],
-      ["start", "Стоимость"], ["questions", "Вопросы"], ["quiz", "Разбор"]];
-    var secs = MAP.map(function (m) { return document.getElementById(m[0]); });
-    var cur = -2;
-    jobs.push(function () {
-      var mid = window.innerHeight * 0.5, found = -1;
-      for (var i = 0; i < secs.length; i++) {
-        if (!secs[i]) continue;
-        var r = secs[i].getBoundingClientRect();
-        if (r.top <= mid && r.bottom > mid) { found = i; break; }
-      }
-      if (found === cur) return;
-      cur = found;
-      if (found < 0) { el.classList.remove("is-on"); return; }
-      nEl.textContent = (found < 9 ? "0" : "") + (found + 1);
-      tEl.textContent = MAP[found][1];
-      el.classList.add("is-on");
-      el.classList.remove("is-swap"); void el.offsetWidth; el.classList.add("is-swap");
-    });
-  })();
-
-  ask();
 })();
 
 /* ============================================================
