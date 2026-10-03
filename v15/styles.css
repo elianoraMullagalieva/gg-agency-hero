@@ -8027,7 +8027,7 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .cx__ring-arc { stroke-width: 2; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1.8s cubic-bezier(0.16, 1, 0.3, 1); }
 .cx__ring-arc--a { stroke: #fff; transition-delay: 0.5s; }
 .cx__ring-arc--b { stroke: rgba(255, 255, 255, 0.45); transition-delay: 0.9s; }
-.is-in .cx__ring-arc--a, html.is-static .cx__ring-arc--a { stroke-dashoffset: 10; }
+.is-in .cx__ring-arc--a, html.is-static .cx__ring-arc--a { stroke-dashoffset: var(--p, 10); }
 .is-in .cx__ring-arc--b, html.is-static .cx__ring-arc--b { stroke-dashoffset: 80; }
 .cx__ring-num { position: relative; font-family: var(--font-logo); font-size: clamp(1.125rem, 0.9rem + 0.9vw, 1.625rem); letter-spacing: var(--ls-head); line-height: 1; }
 .cx__legend { list-style: none; margin: clamp(0.875rem, 0.7rem + 0.7vw, 1.375rem) 0 0; padding: 0; display: grid; gap: 0.45rem; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-m); color: rgba(255, 255, 255, 0.78); }
@@ -8057,6 +8057,14 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .cx__shift svg { width: 1.5rem; height: 0.75rem; overflow: visible; }
 .cx__shift path { stroke: #16120d; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
 @media (prefers-reduced-motion: reduce) {
-  .cx__ring-arc--a { stroke-dashoffset: 10; } .cx__ring-arc--b { stroke-dashoffset: 80; } .cx__matrix i { transform: none; }
+  .cx__ring-arc--a { stroke-dashoffset: var(--p, 10); } .cx__ring-arc--b { stroke-dashoffset: 80; } .cx__matrix i { transform: none; }
 }
 @media (max-width: 480px) { .cx__shift li { grid-template-columns: 1fr; row-gap: 0.15rem; } .cx__shift svg { transform: rotate(90deg); } }
+
+/* Кейсы: два-три сильных факта под цифрой, у всех одинаково */
+.cx__facts { list-style: none; margin: clamp(1rem, 0.8rem + 0.9vw, 1.75rem) 0 0; padding: 0; display: grid; gap: 0.6rem; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-m); color: #6b655c; max-width: 34ch; }
+.cx__facts li { position: relative; padding-left: 1.1rem; }
+.cx__facts li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 0.45rem; height: 1px; background: currentColor; opacity: 0.7; }
+.ccard--dark .cx__facts, .ccard--red .cx__facts { color: rgba(255, 255, 255, 0.76); }
+.ccard--light .cx__ring-bg { stroke: rgba(22, 18, 13, 0.16); }
+.ccard--light .cx__ring-arc--a { stroke: #16120d; }
