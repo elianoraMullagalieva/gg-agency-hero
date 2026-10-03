@@ -7770,7 +7770,7 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
   font-family: var(--font-ui);
 }
 .phone__scene {
-  position: absolute; left: 40px; right: 40px; top: 112px;
+  position: absolute; left: 40px; right: 40px; top: 150px;
   display: flex; flex-direction: column; align-items: flex-start;
   opacity: 0;
 }
@@ -7819,7 +7819,8 @@ html.is-static .phone__scene--a { opacity: 1; }
 html.is-static .phone__scene--b { display: none; }
 html.is-static .ask__panel--phone { background: #141313 !important; }
 @media (max-width: 860px) {
-  .ask__panel--phone { aspect-ratio: 1 / 1; width: 100%; }
+  /* Телефон: сначала текст и кнопка, фото телефона — под ними */
+  .ask__panel--phone { aspect-ratio: 1 / 1; width: 100%; order: 2; }
 }
 
 /* ============================================================
@@ -7920,6 +7921,8 @@ html.is-static .doc__flow { display: none; }
 @media (max-width: 720px) {
   .fan__card--img { background-size: cover; background-position: center bottom; padding-bottom: clamp(10rem, 48vw, 15rem); }
 }
+/* Первая карточка: текст шире, как в макете (без запаса под соседку) */
+.fan__card--img:first-child { padding-right: clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem); }
 html.is-static .fan__card--img { background-image: var(--bg2) !important; }
 
 /* ============================================================
