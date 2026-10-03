@@ -8015,19 +8015,48 @@ html.is-static .hero { background: linear-gradient(180deg, #030303 45%, #3a0508 
 html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a0508 100%) !important; }
 
 /* ============================================================
-   v15 · Кейсы: под цифрой тонкая шкала «было → стало».
+   v15 · Кейсы: у каждого проекта свой язык цифр.
+   Методайзер — кольцо структуры выручки и путь «запуски → ровно»;
+   Гипнотерапевт — матрица 100 лидов и две стрелки «было → стало».
    ============================================================ */
-.ccard__spark { display: block; width: min(100%, 11rem); height: auto; margin: 0.35rem 0 0.9rem; overflow: visible; }
-.ccard__spark-track { stroke: rgba(22, 18, 13, 0.1); stroke-width: 1; stroke-linecap: round; }
-.ccard__spark-a { stroke: rgba(22, 18, 13, 0.32); stroke-width: 1.2; stroke-linecap: round; }
-.ccard__spark-b { stroke: #16120d; stroke-width: 1.6; stroke-linecap: round; }
-.ccard__spark-dot { fill: #16120d; }
-.ccard__sparkwrap { display: grid; grid-template-columns: 1fr auto; width: min(100%, 12rem); margin: 0.5rem 0 1rem; row-gap: 0.25rem; }
-.ccard__sparkwrap .ccard__spark { grid-column: 1 / -1; margin: 0; width: 100%; }
-.ccard__spark-l { font-size: var(--fs-s); font-weight: 300; line-height: 1.2; color: rgba(22, 18, 13, 0.55); }
-.ccard__spark-l--r { text-align: right; }
-.ccard--dark .ccard__spark-track, .ccard--red .ccard__spark-track { stroke: rgba(255, 255, 255, 0.14); }
-.ccard--dark .ccard__spark-a, .ccard--red .ccard__spark-a { stroke: rgba(255, 255, 255, 0.4); }
-.ccard--dark .ccard__spark-b, .ccard--red .ccard__spark-b { stroke: #fff; }
-.ccard--dark .ccard__spark-dot, .ccard--red .ccard__spark-dot { fill: #fff; }
-.ccard--dark .ccard__spark-l, .ccard--red .ccard__spark-l { color: rgba(255, 255, 255, 0.6); }
+.cx--split { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1rem; width: 100%; }
+.cx--split .ccard__value { margin-bottom: 0.25em; }
+.cx__ring { position: relative; width: clamp(5rem, 4rem + 4vw, 7.5rem); aspect-ratio: 1; flex: none; display: grid; place-items: center; }
+.cx__ring svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.cx__ring-bg { stroke: rgba(255, 255, 255, 0.16); stroke-width: 1.2; stroke-dasharray: 0.6 2.4; stroke-linecap: round; }
+.cx__ring-arc { stroke-width: 2; stroke-linecap: round; stroke-dasharray: 100; stroke-dashoffset: 100; transform: rotate(-90deg); transform-origin: 50% 50%; transition: stroke-dashoffset 1.8s cubic-bezier(0.16, 1, 0.3, 1); }
+.cx__ring-arc--a { stroke: #fff; transition-delay: 0.5s; }
+.cx__ring-arc--b { stroke: rgba(255, 255, 255, 0.45); transition-delay: 0.9s; }
+.is-in .cx__ring-arc--a, html.is-static .cx__ring-arc--a { stroke-dashoffset: 10; }
+.is-in .cx__ring-arc--b, html.is-static .cx__ring-arc--b { stroke-dashoffset: 80; }
+.cx__ring-num { position: relative; font-family: var(--font-logo); font-size: clamp(1.125rem, 0.9rem + 0.9vw, 1.625rem); letter-spacing: var(--ls-head); line-height: 1; }
+.cx__legend { list-style: none; margin: clamp(0.875rem, 0.7rem + 0.7vw, 1.375rem) 0 0; padding: 0; display: grid; gap: 0.45rem; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-m); color: rgba(255, 255, 255, 0.78); }
+.cx__legend li { display: flex; align-items: baseline; gap: 0.6rem; }
+.cx__sw { flex: none; width: 1.1rem; height: 2px; border-radius: 1px; transform: translateY(-0.25em); background: #fff; }
+.cx__sw--b { background: rgba(255, 255, 255, 0.45); }
+.cx__path { width: 100%; margin-top: clamp(1.25rem, 1rem + 1vw, 2rem); }
+.cx__path svg { display: block; width: 100%; height: clamp(2.75rem, 2.2rem + 2.2vw, 4rem); overflow: visible; }
+.cx__base { stroke: rgba(255, 255, 255, 0.18); stroke-width: 1; stroke-dasharray: 1 3; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.cx__spikes { stroke: rgba(255, 255, 255, 0.5); stroke-width: 1.3; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.cx__steady { stroke: #fff; stroke-width: 1.6; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.cx__end { fill: #fff; }
+.cx__div { stroke: rgba(255, 255, 255, 0.22); stroke-width: 1; stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
+.cx__path-l { display: grid; grid-template-columns: 41.3% 1fr; gap: 0.75rem; margin-top: 0.5rem; font-size: var(--fs-s); font-weight: 300; line-height: 1.25; color: rgba(255, 255, 255, 0.6); }
+.cx__path-l span:last-child { padding-left: 0.5rem; }
+/* Матрица лидов */
+.cx__matrix { display: grid; grid-template-columns: repeat(20, 1fr); gap: 0.3rem; width: 100%; max-width: 20rem; margin-top: clamp(1.25rem, 1rem + 1vw, 2rem); }
+.cx__matrix i { display: block; aspect-ratio: 1; border-radius: 50%; background: rgba(22, 18, 13, 0.1); transform: scale(0); transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) var(--t, 0s), background 0.6s ease var(--t, 0s); }
+.cx__matrix i.on { background: #16120d; }
+.is-in .cx__matrix i, html.is-static .cx__matrix i { transform: none; }
+.cx__cap { margin: 0.75rem 0 0; max-width: 30ch; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-m); color: #6b655c; }
+.cx__cap b { font-weight: 500; color: #16120d; }
+.cx__shift { list-style: none; margin: clamp(1rem, 0.8rem + 0.8vw, 1.5rem) 0 0; padding: 0; display: grid; gap: 0.55rem; font-size: var(--fs-s); font-weight: 300; line-height: var(--lh-text-m); color: #6b655c; }
+.cx__shift li { display: grid; grid-template-columns: auto 1.5rem auto; align-items: center; column-gap: 0.5rem; }
+.cx__shift li span:first-child { text-decoration: line-through; text-decoration-color: rgba(22, 18, 13, 0.3); text-decoration-thickness: 1px; }
+.cx__shift li span:last-child { color: #16120d; font-weight: 400; }
+.cx__shift svg { width: 1.5rem; height: 0.75rem; overflow: visible; }
+.cx__shift path { stroke: #16120d; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+@media (prefers-reduced-motion: reduce) {
+  .cx__ring-arc--a { stroke-dashoffset: 10; } .cx__ring-arc--b { stroke-dashoffset: 80; } .cx__matrix i { transform: none; }
+}
+@media (max-width: 480px) { .cx__shift li { grid-template-columns: 1fr; row-gap: 0.15rem; } .cx__shift svg { transform: rotate(90deg); } }

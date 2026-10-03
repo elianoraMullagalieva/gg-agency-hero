@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=10040300" />
+<link rel="stylesheet" href="styles.css?v=10040400" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -721,7 +721,6 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="plusball"><span class="ccard__ava-mono">+Б</span></span>
         <p class="ccard__tag">Построение</p>
         <p class="ccard__value">1 млн ₽</p>
-        <div class="ccard__sparkwrap"><span class="ccard__spark-l">0 ₽</span><span class="ccard__spark-l ccard__spark-l--r">1 млн ₽</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="8.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">выручки за месяц&nbsp;— в&nbsp;школе, которая стартовала с&nbsp;нуля</p>
         <div class="ccard__who">
           <p class="ccard__name">Онлайн-школа «+Балл»</p>
@@ -739,7 +738,6 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="gora"><img src="assets/clients/gora.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Оптимизация → построение</p>
         <p class="ccard__value">×2</p>
-        <div class="ccard__sparkwrap"><span class="ccard__spark-l">3 млн</span><span class="ccard__spark-l ccard__spark-l--r">6 млн</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="80.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">6&nbsp;млн ₽ чистыми новыми оплатами против 3&nbsp;млн ₽ на&nbsp;входе</p>
         <div class="ccard__who">
           <p class="ccard__name">GORA Academy</p>
@@ -756,12 +754,38 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
       <button class="ccard__btn" type="button" aria-haspopup="dialog" data-glow data-origin="top" data-gain="0.8">
         <span class="ccard__ava" aria-hidden="true" data-ava="metodaizer"><img src="assets/clients/metodaizer.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Аутсорс → построение</p>
-        <p class="ccard__value">×6</p>
-        <div class="ccard__sparkwrap"><span class="ccard__spark-l">старт</span><span class="ccard__spark-l ccard__spark-l--r">×6</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="27.2" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
-        <p class="ccard__lead">рост выручки с&nbsp;начала работы, проект в&nbsp;ТОП-1% Геткурса</p>
+        <div class="cx cx--split">
+          <div>
+            <p class="ccard__value">×6</p>
+            <p class="ccard__lead">рост выручки с&nbsp;начала работы</p>
+          </div>
+          <div class="cx__ring" aria-hidden="true">
+            <svg viewBox="0 0 100 100" fill="none">
+              <circle class="cx__ring-bg" cx="50" cy="50" r="42" pathLength="100"/>
+              <circle class="cx__ring-arc cx__ring-arc--a" cx="50" cy="50" r="42" pathLength="100"/>
+              <circle class="cx__ring-bg" cx="50" cy="50" r="32" pathLength="100"/>
+              <circle class="cx__ring-arc cx__ring-arc--b" cx="50" cy="50" r="32" pathLength="100"/>
+            </svg>
+            <span class="cx__ring-num">90%</span>
+          </div>
+        </div>
+        <ul class="cx__legend" aria-label="Структура выручки">
+          <li><i class="cx__sw cx__sw--a"></i>90% выручки&nbsp;— через отдел продаж</li>
+          <li><i class="cx__sw cx__sw--b"></i>20%+ стабильно с&nbsp;базы</li>
+        </ul>
+        <div class="cx__path" aria-hidden="true">
+          <svg viewBox="0 0 300 56" fill="none" preserveAspectRatio="none">
+            <line class="cx__base" x1="0" y1="50" x2="300" y2="50"/>
+            <path class="cx__spikes ink" pathLength="1" style="--t:.3s" d="M0 48 L10 46 L18 14 L26 46 L40 47 L48 12 L56 46 L70 47 L78 10 L86 46 L100 47 L108 8 L116 46 L124 46"/>
+            <path class="cx__steady ink" pathLength="1" style="--t:1.1s" d="M124 46 C150 44 170 38 196 32 C222 26 250 18 300 6"/>
+            <circle class="cx__end pop" style="--t:2.2s" cx="300" cy="6" r="3"/>
+            <line class="cx__div fade" style="--t:1s" x1="124" y1="2" x2="124" y2="54"/>
+          </svg>
+          <div class="cx__path-l"><span>4 запуска на&nbsp;аутсорсе · 9&nbsp;мес</span><span>свой отдел · 2&nbsp;года+</span></div>
+        </div>
         <div class="ccard__who">
           <p class="ccard__name">Илья Методайзер</p>
-          <p class="ccard__meta">«Реальный репетитор» · 2&nbsp;года+</p>
+          <p class="ccard__meta">«Реальный репетитор» · ТОП-1% Геткурса</p>
         </div>
         <dl class="ccard__ba">
           <dt>Было</dt><dd>продажи на&nbsp;запусках силами подрядчика</dd>
@@ -775,8 +799,13 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava=""><span class="ccard__ava-mono">Г</span></span>
         <p class="ccard__tag">Оптимизация</p>
         <p class="ccard__value">×8</p>
-        <div class="ccard__sparkwrap"><span class="ccard__spark-l">старт</span><span class="ccard__spark-l ccard__spark-l--r">×8</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="20.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
-        <p class="ccard__lead">рост выручки, 20% конверсии с&nbsp;холодного трафика</p>
+        <p class="ccard__lead">рост выручки за&nbsp;1,5&nbsp;года после аудита и&nbsp;перестройки отдела</p>
+        <div class="cx__matrix" aria-hidden="true"><i class="on" style="--t:0.25s"></i><i class="on" style="--t:0.27s"></i><i class="on" style="--t:0.29s"></i><i class="on" style="--t:0.30s"></i><i class="on" style="--t:0.32s"></i><i class="on" style="--t:0.34s"></i><i class="on" style="--t:0.36s"></i><i class="on" style="--t:0.38s"></i><i class="on" style="--t:0.39s"></i><i class="on" style="--t:0.41s"></i><i class="on" style="--t:0.43s"></i><i class="on" style="--t:0.45s"></i><i class="on" style="--t:0.47s"></i><i class="on" style="--t:0.48s"></i><i class="on" style="--t:0.50s"></i><i class="on" style="--t:0.52s"></i><i class="on" style="--t:0.54s"></i><i class="on" style="--t:0.56s"></i><i class="on" style="--t:0.57s"></i><i class="on" style="--t:0.59s"></i><i class="" style="--t:0.27s"></i><i class="" style="--t:0.28s"></i><i class="" style="--t:0.29s"></i><i class="" style="--t:0.30s"></i><i class="" style="--t:0.31s"></i><i class="" style="--t:0.32s"></i><i class="" style="--t:0.33s"></i><i class="" style="--t:0.34s"></i><i class="" style="--t:0.35s"></i><i class="" style="--t:0.36s"></i><i class="" style="--t:0.37s"></i><i class="" style="--t:0.38s"></i><i class="" style="--t:0.39s"></i><i class="" style="--t:0.40s"></i><i class="" style="--t:0.41s"></i><i class="" style="--t:0.42s"></i><i class="" style="--t:0.43s"></i><i class="" style="--t:0.44s"></i><i class="" style="--t:0.45s"></i><i class="" style="--t:0.46s"></i><i class="" style="--t:0.29s"></i><i class="" style="--t:0.30s"></i><i class="" style="--t:0.31s"></i><i class="" style="--t:0.32s"></i><i class="" style="--t:0.33s"></i><i class="" style="--t:0.34s"></i><i class="" style="--t:0.35s"></i><i class="" style="--t:0.36s"></i><i class="" style="--t:0.37s"></i><i class="" style="--t:0.38s"></i><i class="" style="--t:0.39s"></i><i class="" style="--t:0.40s"></i><i class="" style="--t:0.41s"></i><i class="" style="--t:0.42s"></i><i class="" style="--t:0.43s"></i><i class="" style="--t:0.44s"></i><i class="" style="--t:0.45s"></i><i class="" style="--t:0.46s"></i><i class="" style="--t:0.47s"></i><i class="" style="--t:0.48s"></i><i class="" style="--t:0.31s"></i><i class="" style="--t:0.32s"></i><i class="" style="--t:0.33s"></i><i class="" style="--t:0.34s"></i><i class="" style="--t:0.35s"></i><i class="" style="--t:0.36s"></i><i class="" style="--t:0.37s"></i><i class="" style="--t:0.38s"></i><i class="" style="--t:0.39s"></i><i class="" style="--t:0.40s"></i><i class="" style="--t:0.41s"></i><i class="" style="--t:0.42s"></i><i class="" style="--t:0.43s"></i><i class="" style="--t:0.44s"></i><i class="" style="--t:0.45s"></i><i class="" style="--t:0.46s"></i><i class="" style="--t:0.47s"></i><i class="" style="--t:0.48s"></i><i class="" style="--t:0.49s"></i><i class="" style="--t:0.50s"></i><i class="" style="--t:0.33s"></i><i class="" style="--t:0.34s"></i><i class="" style="--t:0.35s"></i><i class="" style="--t:0.36s"></i><i class="" style="--t:0.37s"></i><i class="" style="--t:0.38s"></i><i class="" style="--t:0.39s"></i><i class="" style="--t:0.40s"></i><i class="" style="--t:0.41s"></i><i class="" style="--t:0.42s"></i><i class="" style="--t:0.43s"></i><i class="" style="--t:0.44s"></i><i class="" style="--t:0.45s"></i><i class="" style="--t:0.46s"></i><i class="" style="--t:0.47s"></i><i class="" style="--t:0.48s"></i><i class="" style="--t:0.49s"></i><i class="" style="--t:0.50s"></i><i class="" style="--t:0.51s"></i><i class="" style="--t:0.52s"></i></div>
+        <p class="cx__cap"><b>20 из&nbsp;100</b> холодных лидов доходят до&nbsp;оплаты&nbsp;— конверсия 20%</p>
+        <ul class="cx__shift" aria-label="Что изменилось">
+          <li><span>Продавали эксперты</span><svg viewBox="0 0 24 12" aria-hidden="true"><path class="ink" pathLength="1" style="--t:.9s" d="M1 6h21m-5-5l5 5-5 5"/></svg><span>продают менеджеры</span></li>
+          <li><span>Воронка «как сложилось»</span><svg viewBox="0 0 24 12" aria-hidden="true"><path class="ink" pathLength="1" style="--t:1.2s" d="M1 6h21m-5-5l5 5-5 5"/></svg><span>пересобрана с&nbsp;маркетингом</span></li>
+        </ul>
         <div class="ccard__who">
           <p class="ccard__name">Гипнотерапевт</p>
           <p class="ccard__meta">Обучение профессии, аудитория за&nbsp;рубежом · 1,5&nbsp;года+</p>
@@ -793,7 +822,6 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="lariba"><img src="assets/clients/lariba.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Аудит → аутсорс</p>
         <p class="ccard__value">+30%</p>
-        <div class="ccard__sparkwrap"><span class="ccard__spark-l">было</span><span class="ccard__spark-l ccard__spark-l--r">+30%</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="123.2" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">конверсии после правки одного скрипта</p>
         <div class="ccard__who">
           <p class="ccard__name">Мурад Ля&nbsp;Риба</p>
@@ -811,7 +839,6 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="magnier"><img src="assets/clients/magnier.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Построение</p>
         <p class="ccard__value">10%</p>
-        <div class="ccard__sparkwrap"><span class="ccard__spark-l">анкета</span><span class="ccard__spark-l ccard__spark-l--r">10% в оплату</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="16.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">конверсия с&nbsp;анкет с&nbsp;рилсов</p>
         <div class="ccard__who">
           <p class="ccard__name">Alex Magnier</p>
