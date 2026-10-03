@@ -3239,3 +3239,24 @@
     }, 800);
   });
 })();
+
+
+/* «Не менеджеры в аренду»: ряд включается, когда его верх прошёл 85%
+   высоты экрана, и гаснет обратно при прокрутке вверх. */
+(function () {
+  var rows = [].slice.call(document.querySelectorAll(".why .ledger__row"));
+  if (!rows.length) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.classList.contains("is-static")) {
+    rows.forEach(function (r) { r.classList.add("is-row"); }); return;
+  }
+  var raf = 0;
+  function check() {
+    raf = 0;
+    var line = window.innerHeight * 0.85;
+    rows.forEach(function (r) { r.classList.toggle("is-row", r.getBoundingClientRect().top < line); });
+  }
+  function wake() { if (!raf) raf = requestAnimationFrame(check); }
+  window.addEventListener("scroll", wake, { passive: true });
+  window.addEventListener("resize", wake);
+  check();
+})();

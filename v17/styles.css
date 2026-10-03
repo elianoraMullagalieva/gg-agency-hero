@@ -8383,3 +8383,18 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .staff--slide.is-in .staff__item { animation: cardSlide var(--dur-in, 1.3s) var(--ease-out) both; animation-delay: calc(var(--i) * 130ms); }
 @media (prefers-reduced-motion: reduce) { .staff--slide .staff__item { opacity: 1; translate: none; animation: none; } }
 html.is-static .staff--slide .staff__item { opacity: 1 !important; translate: none !important; animation: none !important; }
+
+/* «Не менеджеры в аренду»: каждый ряд появляется сам, когда до него
+   доходит прокрутка, а не все разом при входе секции. */
+.why .ledger__row:not(.is-row) .ledger__idx,
+.why .ledger__row:not(.is-row) .ledger__name,
+.why .ledger__row:not(.is-row) .ledger__text { opacity: 0; transform: translate3d(0, 0.9rem, 0); transition-delay: 0s; }
+.why .ledger__row:not(.is-row) .ledger__value span { opacity: 0; transition-delay: 0s; }
+.why .ledger__row:not(.is-row) .nr__d > i { --v: 0; transition-delay: 0s; }
+.why .ledger__row:not(.is-row)::after { transform: scaleX(0); transition-delay: 0s; }
+.why .ledger__row.is-row .ledger__idx  { transition-delay: 60ms; }
+.why .ledger__row.is-row .ledger__name { transition-delay: 220ms; }
+.why .ledger__row.is-row .ledger__text { transition-delay: 340ms; }
+.why .ledger__row.is-row .nr__d > i { transition-delay: calc(var(--k, 0) * 60ms + 120ms); }
+@media (prefers-reduced-motion: reduce) { .why .ledger__row:not(.is-row) .ledger__idx, .why .ledger__row:not(.is-row) .ledger__name, .why .ledger__row:not(.is-row) .ledger__text, .why .ledger__row:not(.is-row) .ledger__value span { opacity: 1; transform: none; } .why .ledger__row:not(.is-row) .nr__d > i { --v: var(--n); } }
+html.is-static .why .ledger__row .ledger__idx, html.is-static .why .ledger__row .ledger__name, html.is-static .why .ledger__row .ledger__text, html.is-static .why .ledger__row .ledger__value span { opacity: 1 !important; transform: none !important; }
