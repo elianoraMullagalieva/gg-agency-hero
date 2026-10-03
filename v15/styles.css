@@ -8068,3 +8068,76 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .ccard--dark .cx__facts, .ccard--red .cx__facts { color: rgba(255, 255, 255, 0.76); }
 .ccard--light .cx__ring-bg { stroke: rgba(22, 18, 13, 0.16); }
 .ccard--light .cx__ring-arc--a { stroke: #16120d; }
+
+/* ============================================================
+   v15 · Кнопки: плашка и круг со стрелкой слитно, без зазора
+   ============================================================ */
+.people__cta, .start__cta, .cases__cta, .bridge__cta { gap: 0 !important; }
+
+/* ============================================================
+   v15 · Основательница: секция ростом с фото, фото без тёмного
+   подвала, имя вровень с нижним краем фото. Больше воздуха до
+   команды, заголовок команды в две строки, подпись — в две.
+   ============================================================ */
+.people { padding-top: 0; }
+.people__lead { align-items: stretch; }
+.people__photo { border-radius: 0 0 var(--radius) 0; }
+.people__img, .people__img img { aspect-ratio: auto; height: 100%; }
+.people__img img { object-position: 50% 15%; }
+.people__quote { display: flex; flex-direction: column; justify-content: space-between; padding: clamp(2.5rem, 2rem + 2vw, 4.5rem) 0 0.35rem; }
+.people__top { display: flex; flex-direction: column; align-items: flex-start; margin: auto 0; }
+.people__who { margin: clamp(2rem, 1.5rem + 2vw, 3.5rem) 0 0; }
+.people__team { margin-top: clamp(5rem, 3.5rem + 5vw, 9.5rem); }
+.people__teamsub { max-width: 42ch; }
+@media (max-width: 860px) { .people { padding-top: var(--sec-pad); } .people__photo { border-radius: var(--radius); } .people__img, .people__img img { aspect-ratio: 3 / 4; height: auto; } }
+
+/* Роли на светлом: без красной полосы, у каждой роли мини-схема */
+.roles--light, .roles--light:not(#x) { background: #fff; color: #16120d; border: 1px solid rgba(22, 18, 13, 0.08); }
+.roles--light .roles__pill { border-color: rgba(22, 18, 13, 0.2); color: #6b655c; }
+.roles--light .roles__item { border-top-color: rgba(22, 18, 13, 0.1); }
+.roles--light .roles__text { color: #6b655c; }
+.roles__fx { display: block; width: min(100%, 15rem); height: auto; margin: 0.25rem 0 clamp(1rem, 0.8rem + 0.8vw, 1.5rem); overflow: visible; }
+.rx__m { font-family: var(--font-ui); font-size: 6.5px; font-weight: 300; fill: rgba(22, 18, 13, 0.5); }
+.rx__track { stroke: rgba(22, 18, 13, 0.1); stroke-width: 1; stroke-linecap: round; }
+.rx__ink { stroke: #16120d; stroke-width: 1; stroke-linecap: round; }
+.rx__dot { fill: #16120d; }
+.rx__node { fill: #fff; stroke: #16120d; stroke-width: 1; }
+.rx__node--end { fill: #16120d; }
+.rx__grid circle { fill: rgba(22, 18, 13, 0.12); }
+.rx__grid circle.on { fill: #16120d; }
+
+/* ============================================================
+   v15 · Форма: шире, заголовок ближе к краю панели, согласия
+   темнее, поле «Проект» убрано
+   ============================================================ */
+.lead__win { width: min(100%, 72rem); }
+.lead__panel { padding-left: clamp(1rem, 0.8rem + 0.8vw, 1.5rem); }
+.lead__consent label { color: #5f5a52; }
+
+/* ============================================================
+   v15 · Кейсы: три варианта карточки на выбор.
+   A (ряд 1) — аватар с именем в шапке, тег справа.
+   B (ряд 2, слева и в центре) — тег сверху, аватар с именем внизу.
+   C (ряд 2, справа и далее) — шапка-полоса с заливкой и разделителем.
+   ============================================================ */
+.ccard .ccard__ava { position: static !important; width: clamp(3.25rem, 2.9rem + 1.5vw, 4.5rem); flex: none; }
+.cid { display: flex; align-items: center; gap: 0.9rem; min-width: 0; }
+.cid__t { min-width: 0; }
+.cid .ccard__name { margin: 0; }
+.cid .ccard__meta { margin-top: 0.15em; }
+.chead { width: 100%; margin-bottom: clamp(1.25rem, 1rem + 1.1vw, 2.25rem); }
+.chead__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.chead .ccard__tag, .chead--band .ccard__tag { margin: 0; }
+.cfoot { margin-top: auto; padding-top: clamp(1.25rem, 1rem + 1.1vw, 2.25rem); border-top: 1px solid rgba(22, 18, 13, 0.1); width: 100%; }
+.ccard--dark .cfoot, .ccard--red .cfoot { border-color: rgba(255, 255, 255, 0.16); }
+.ccard--b .cx__facts { margin-bottom: clamp(1.25rem, 1rem + 1.1vw, 2.25rem); }
+.chead--band {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  margin: calc(clamp(1.125rem, 0.9821rem + 0.6095vw, 1.75rem) * -1) calc(clamp(1.125rem, 0.9821rem + 0.6095vw, 1.75rem) * -1) clamp(1.25rem, 1rem + 1.1vw, 2.25rem);
+  padding: clamp(1rem, 0.85rem + 0.6vw, 1.5rem) clamp(1.125rem, 0.9821rem + 0.6095vw, 1.75rem);
+  background: rgba(22, 18, 13, 0.04); border-bottom: 1px solid rgba(22, 18, 13, 0.08);
+}
+.ccard--dark .chead--band, .ccard--red .chead--band { background: rgba(255, 255, 255, 0.06); border-bottom-color: rgba(255, 255, 255, 0.12); }
+.ccard--c .ccard__more { margin-top: auto; padding-top: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem); }
+.ccard .cx__ring { display: none; }
+.cx--split { display: block; }

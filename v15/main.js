@@ -3134,7 +3134,7 @@
       "<b>Имя:</b> " + esc(form.name.value.trim()),
       "<b>Контакт:</b> " + esc(form.contact.value.trim())
     ];
-    if (form.project.value.trim()) lines.push("<b>Проект:</b> " + esc(form.project.value.trim()));
+    if (form.project && form.project.value.trim()) lines.push("<b>Проект:</b> " + esc(form.project.value.trim()));
     if (form.note.value.trim()) lines.push("<b>Что с продажами:</b> " + esc(form.note.value.trim()));
     lines.push("", "Согласия: политика, рассылки, обработка данных — отмечены");
     if (from) lines.push("Кнопка: " + esc(from));
