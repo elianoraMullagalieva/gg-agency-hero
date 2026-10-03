@@ -7738,9 +7738,11 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
 /* ============================================================
    v14 · Мост «Пройдите тест»: фото телефона, на стекле — результат
    разбора. Сцена сверстана в координатах самой картинки (800×800)
-   и уложена на экран проекцией matrix3d, снятой по четырём углам
-   стекла; масштаб панели задаёт --k (main.js), поэтому на любой
-   ширине строки лежат на экране одинаково.
+   и уложена на экран проекцией matrix3d. Края стекла промерены
+   по пикселям: верх почти горизонтален (y ≈ 213 − 0.008x), левый
+   край x = 0.192y + 79, правый x = 0.218y + 584 — телефон наклонён
+   нижним краем к зрителю, строки остаются ровными и чуть растут
+   книзу. Масштаб панели задаёт --k (main.js).
    ============================================================ */
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .ask__panel--phone {
@@ -7761,14 +7763,14 @@ html .footer__time, html .footer__docs { text-wrap: balance; }
 }
 .phone__screen {
   position: absolute; left: 0; top: 0;
-  width: 520px; height: 560px;
+  width: 520px; height: 600px;
   transform-origin: 0 0;
-  transform: matrix3d(0.930586, -0.0732601, 0, -9.15751e-05, 0.144219, 0.873936, 0, -0.000157581, 0, 0, 1, 0, 118, 240, 0, 1);
+  transform: matrix3d(0.9704962, -0.01089144, 0, -1.361429e-05, 0.1771059, 0.9408797, 0, -4.765708e-05, 0, 0, 1, 0, 120.3288, 212.5968, 0, 1);
   color: #fff;
   font-family: var(--font-ui);
 }
 .phone__scene {
-  position: absolute; left: 44px; right: 40px; top: 92px;
+  position: absolute; left: 40px; right: 40px; top: 112px;
   display: flex; flex-direction: column; align-items: flex-start;
   opacity: 0;
 }
