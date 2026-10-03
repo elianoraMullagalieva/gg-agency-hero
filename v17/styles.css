@@ -8398,3 +8398,6 @@ html.is-static .staff--slide .staff__item { opacity: 1 !important; translate: no
 .why .ledger__row.is-row .nr__d > i { transition-delay: calc(var(--k, 0) * 60ms + 120ms); }
 @media (prefers-reduced-motion: reduce) { .why .ledger__row:not(.is-row) .ledger__idx, .why .ledger__row:not(.is-row) .ledger__name, .why .ledger__row:not(.is-row) .ledger__text, .why .ledger__row:not(.is-row) .ledger__value span { opacity: 1; transform: none; } .why .ledger__row:not(.is-row) .nr__d > i { --v: var(--n); } }
 html.is-static .why .ledger__row .ledger__idx, html.is-static .why .ledger__row .ledger__name, html.is-static .why .ledger__row .ledger__text, html.is-static .why .ledger__row .ledger__value span { opacity: 1 !important; transform: none !important; }
+
+/* Кнопки у тарифов 2 и 3 — как у первого шага */
+.pstep .pstep__cta { margin-top: auto; }

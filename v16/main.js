@@ -2496,7 +2496,8 @@
     sec.style.setProperty("--warm", (answers.length / TOTAL).toFixed(3));
     // ссылка в бота: ответы кодом, только латиница и цифры
     var code = answers.map(function (a) { return a.key + a.code; }).join("_");
-    link.href = base + (code ? (base.indexOf("?") > -1 ? "&" : "?") + "start=" + code : "");
+    window.GG_QUIZ = answers.map(function (a) { return { q: a.q, a: a.label }; });
+    if (link) link.href = base + (code ? (base.indexOf("?") > -1 ? "&" : "?") + "start=" + code : "");
   }
 
   function show(i) {
@@ -2533,7 +2534,7 @@
     if (i !== cur || i >= TOTAL) return;
     btn.classList.add("is-picked");
     answers = answers.slice(0, i);
-    answers.push({ key: q.getAttribute("data-q"), code: btn.getAttribute("data-v"), label: btn.textContent.trim() });
+    answers.push({ key: q.getAttribute("data-q"), code: btn.getAttribute("data-v"), label: btn.textContent.trim(), q: (q.querySelector(".ask__title") || {}).textContent || "" });
     setTimeout(function () { go(i + 1); }, still ? 0 : 180);
   });
 
@@ -3093,9 +3094,33 @@
   var cfg = window.GG_FORM || {};
   var last = null, from = "";
 
+  var ctx = {};
+  function clean(s) { return String(s || "").replace(/\s+/g, " ").trim(); }
+  /* Откуда заявка: какая форма, какая кнопка, в каком блоке, какой оффер */
+  function describe(t) {
+    var d = { form: "Окно «Разберём ваш отдел продаж»", button: "", place: "", offer: "", quiz: null };
+    if (!t) return d;
+    d.button = clean((t.querySelector(".start__cta-label, .ask__cta-label") || t).textContent);
+    if (t.closest(".nav")) d.place = "Шапка сайта";
+    else if (t.closest(".sheet")) d.place = "Мобильное меню";
+    else if (t.closest(".hero")) d.place = "Первый экран";
+    else {
+      var sec = t.closest("section, footer");
+      var hd = sec && sec.querySelector("h1, h2");
+      d.place = hd ? clean(hd.textContent) : (sec && sec.id ? sec.id : "");
+    }
+    var st = t.closest(".pstep");
+    if (st) d.offer = clean((st.querySelector(".pstep__tag") || {}).textContent) + " — " + clean((st.querySelector(".pstep__price") || {}).textContent);
+    if (t.getAttribute("data-form") === "quiz") {
+      d.form = "Квиз «Узнайте, где утекают ваши деньги»";
+      d.quiz = (window.GG_QUIZ || []).slice();
+    }
+    return d;
+  }
   function open(trigger) {
     last = trigger || null;
-    from = trigger ? (trigger.textContent || "").replace(/\s+/g, " ").trim() : "";
+    ctx = describe(trigger);
+    from = ctx.button;
     form.hidden = false; done.hidden = true;
     modal.hidden = false;
     document.body.style.overflow = "hidden";
@@ -3139,16 +3164,24 @@
     e.preventDefault();
     if (!ready() || form.company.value) return;   // заполненная ловушка — бот
     var lines = [
-      "<b>Заявка с сайта GG Agency</b>",
+      "<b>Новая заявка · GG Agency</b>",
       "",
       "<b>Имя:</b> " + esc(form.name.value.trim()),
       "<b>Контакт:</b> " + esc(form.contact.value.trim())
     ];
-    if (form.project && form.project.value.trim()) lines.push("<b>Проект:</b> " + esc(form.project.value.trim()));
-    if (form.note.value.trim()) lines.push("<b>Что с продажами:</b> " + esc(form.note.value.trim()));
+    if (form.note && form.note.value.trim()) lines.push("<b>Что с продажами:</b> " + esc(form.note.value.trim()));
+    lines.push("", "<b>Форма:</b> " + esc(ctx.form || "Окно заявки"));
+    if (ctx.button) lines.push("<b>Кнопка:</b> «" + esc(ctx.button) + "»");
+    if (ctx.place) lines.push("<b>Блок:</b> " + esc(ctx.place));
+    if (ctx.offer) lines.push("<b>Оффер:</b> " + esc(ctx.offer));
+    if (ctx.quiz && ctx.quiz.length) {
+      lines.push("", "<b>Ответы квиза:</b>");
+      ctx.quiz.forEach(function (a, i) { lines.push((i + 1) + ". " + esc(clean(a.q)) + " — <b>" + esc(a.a) + "</b>"); });
+    }
+    var qs = location.search.replace(/^\?/, "").split("&").filter(function (p) { return /^utm_|^yclid|^gclid/.test(p); });
+    if (qs.length) lines.push("", "<b>Метки:</b> " + esc(decodeURIComponent(qs.join(" · "))));
     lines.push("", "Согласия: политика, рассылки, обработка данных — отмечены");
-    if (from) lines.push("Кнопка: " + esc(from));
-    lines.push("Страница: " + esc(location.href.split("#")[0]));
+    lines.push("Сайт: " + esc((cfg.site ? cfg.site + " · " : "") + location.href.split("#")[0].split("?")[0]));
     var text = lines.join("\n");
 
     var url, body;
@@ -3164,7 +3197,7 @@
         form.reset(); status.textContent = ""; form.hidden = true; done.hidden = false;
       })
       .catch(function () {
-        status.textContent = "Не получилось отправить. Попробуйте ещё раз или напишите нам в Telegram.";
+        status.textContent = "Не получилось отправить. Попробуйте ещё раз через минуту.";
         ready();
       });
   });

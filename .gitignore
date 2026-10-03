@@ -5,3 +5,5 @@ deploy/secrets.env
 # Токен Telegram-бота для формы заявки
 form-config.js
 **/form-config.js
+gg-lead.php
+**/gg-lead.php
