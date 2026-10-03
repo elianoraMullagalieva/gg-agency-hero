@@ -7895,6 +7895,34 @@ html.is-static .doc__flow { display: none; }
 }
 
 /* ============================================================
+   Веер «Отдел продаж — это не только люди»: первые две карточки
+   с фоном из макета (воронка на угле, стеклянные папки на светлом).
+   Экспорт без скругления, скругляет сам сайт; пропорция карточки
+   300:360 совпадает с макетом 353:423, поэтому кадр не режется.
+   ============================================================ */
+.fan__card--img {
+  background-color: #141313;
+  background-image: var(--bg2);
+  background-image: -webkit-image-set(var(--bg2) 1x, var(--bg4) 2x);
+  background-image: image-set(var(--bg2) 1x, var(--bg4) 2x);
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.fan__card--grey.fan__card--img { background-color: #d3d4d6; color: #16120d; }
+.fan__card--grey.fan__card--img .source__num  { color: #6b6966; }
+.fan__card--grey.fan__card--img .source__name { color: #16120d; }
+.fan__card--grey.fan__card--img .source__text { color: #6b655c; }
+@media (min-width: 2200px) { .fan__card--img { background-image: var(--bg4); } }
+/* Телефон: карточки идут колонкой и становятся широкими — фото
+   не растягиваем, а кадрируем по нижнему краю и оставляем под
+   текстом полосу под картинку. */
+@media (max-width: 720px) {
+  .fan__card--img { background-size: cover; background-position: center bottom; padding-bottom: clamp(10rem, 48vw, 15rem); }
+}
+html.is-static .fan__card--img { background-image: var(--bg2) !important; }
+
+/* ============================================================
    Статический режим для съёмки в Figma: index.html?static
    Снимать с эмуляцией prefers-reduced-motion: reduce — тогда
    сайт сам встаёт в спокойное состояние, а этот блок лишь
