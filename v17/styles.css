@@ -8342,3 +8342,44 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .leak__media { position: absolute; left: 50%; top: 8%; width: 62%; aspect-ratio: 1 / 1.15; transform: translateX(-50%); z-index: 0; pointer-events: none; }
 .leak__media img, .leak__media video { display: block; width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
 .leak--media > .leak__tags, .leak--media > .leak__copy { position: relative; z-index: 1; }
+
+/* ============================================================
+   Утечки: всё внутри карточки масштабируется от её ширины
+   (пропорции макета 433px), кегль текста не мельче 15px.
+   ============================================================ */
+.leaks--v14 .leak__tags { padding: max(0.875rem, 4.5cqw); }
+.leaks--v14 .leak__copy { padding: 0 max(0.875rem, 4.5cqw) max(1.25rem, 7.2cqw); }
+.leaks--v14 .leak--top .leak__copy { padding-top: max(0.25rem, 1.5cqw); }
+.leaks--v14 .leak__name { font-size: clamp(1.25rem, 6.15cqw, 2.75rem); line-height: 1.14; }
+.leaks--v14 .leak__text { font-size: max(15px, 3.67cqw); line-height: 1.4; margin-top: max(0.5rem, 2.7cqw); }
+.leaks--v14 .card__num, .leaks--v14 .card__tag { font-size: max(0.8125rem, 3.4cqw); }
+
+/* Утечки на низких окнах: шапка ближе к карточкам, карточки крупнее */
+@media (min-width: 1001px) and (max-height: 920px) {
+  .leaks--v14 .leaks-sticky { gap: clamp(2rem, 5svh, 3.5rem); padding-top: calc(var(--shift) + 1rem); }
+}
+
+/* ============================================================
+   Наш подход: лента выходит к правому краю экрана, без дыры
+   у поля. В кадре ~2.4 карточки, последняя доезжает прокруткой.
+   Всё внутри карточки растёт вместе с ней.
+   ============================================================ */
+@media (min-width: 1001px) {
+  .approach__side { container-type: inline-size; }
+  .approach__rail { margin-right: calc(var(--gutter) * -1); padding-right: var(--gutter) !important; }
+  .approach__rail > .step { --step-w: clamp(17rem, calc((100cqw + var(--gutter)) / 2.4), 44rem); width: var(--step-w); min-height: calc(var(--step-w) * 291 / 384); container-type: inline-size; padding: max(1.125rem, 5.5cqw); }
+  .approach__rail .step__name { font-size: clamp(1.25rem, 6.2cqw, 2.6rem); line-height: 1.14; }
+  .approach__rail .step__text { font-size: max(15px, 3.9cqw); line-height: 1.42; }
+  .approach__rail .step__num { font-size: max(0.8125rem, 3.4cqw); }
+}
+
+/* Кристалл в «87% базы»: окно на верхние ~60% карточки, как в макете */
+.leak__media[data-leak-crystal] { left: 0; top: 3%; width: 100%; height: 61%; aspect-ratio: auto; transform: none; opacity: 0; transition: opacity 1.2s ease; }
+.leak__media[data-leak-crystal].is-ready { opacity: 1; }
+.leak__media[data-leak-crystal] canvas { display: block; width: 100%; height: 100%; mix-blend-mode: normal; }
+
+/* Команда: фото выезжают снизу по очереди, как карточки «Ситуации» */
+.staff--slide .staff__item { opacity: 0; translate: 0 46%; }
+.staff--slide.is-in .staff__item { animation: cardSlide var(--dur-in, 1.3s) var(--ease-out) both; animation-delay: calc(var(--i) * 130ms); }
+@media (prefers-reduced-motion: reduce) { .staff--slide .staff__item { opacity: 1; translate: none; animation: none; } }
+html.is-static .staff--slide .staff__item { opacity: 1 !important; translate: none !important; animation: none !important; }

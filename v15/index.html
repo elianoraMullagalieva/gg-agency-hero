@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=10040900" />
+<link rel="stylesheet" href="styles.css?v=10042600" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -994,23 +994,23 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
     <!-- Три фото команды: горизонтальные кадры 4:3 с рабочих
          созвонов или из офиса, без постановочных улыбок. -->
     <div class="team-row">
-    <ul class="staff" role="list">
-      <li class="staff__item rv" style="--d:120">
+    <ul class="staff staff--slide" role="list" data-stage>
+      <li class="staff__item" style="--i:0">
         <picture class="staff__img"><source srcset="assets/team/mira.webp" type="image/webp" /><img src="assets/team/mira.jpg" alt="Мира, проджект-менеджер" width="853" height="1137" loading="lazy" /></picture>
         <p class="staff__name">Мира</p>
         <p class="staff__role">проджект-менеджер</p>
       </li>
-      <li class="staff__item rv" style="--d:170">
+      <li class="staff__item" style="--i:1">
         <picture class="staff__img"><source srcset="assets/team/vika.webp" type="image/webp" /><img src="assets/team/vika.jpg" alt="Вика, проджект-менеджер" width="900" height="1200" loading="lazy" /></picture>
         <p class="staff__name">Вика</p>
         <p class="staff__role">проджект-менеджер</p>
       </li>
-      <li class="staff__item rv" style="--d:220">
+      <li class="staff__item" style="--i:2">
         <picture class="staff__img"><source srcset="assets/team/natasha.webp?v=2" type="image/webp" /><img src="assets/team/natasha.jpg?v=2" alt="Наташа, руководитель отдела продаж" width="900" height="1200" loading="lazy" /></picture>
         <p class="staff__name">Наташа</p>
         <p class="staff__role">РОП</p>
       </li>
-      <li class="staff__item rv" style="--d:320">
+      <li class="staff__item" style="--i:3">
         <picture class="staff__img"><source srcset="assets/team/oksana.webp" type="image/webp" /><img src="assets/team/oksana.jpg" alt="Оксана, руководитель отдела продаж" width="900" height="1200" loading="lazy" /></picture>
         <p class="staff__name">Оксана</p>
         <p class="staff__role">РОП</p>
@@ -1410,7 +1410,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 
 <script src="form-config.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-<script src="main.js?v=10040700"></script>
+<script src="main.js?v=10042200"></script>
 
 <script src="marquee.js"></script>
 </body>

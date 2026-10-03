@@ -1710,7 +1710,17 @@
 
       /* v14: карточки на 13% компактнее, чем позволяет полоса —
          под лентой остаётся воздух, как в макете. */
-      if (sec.classList.contains("leaks--v14")) { w = w * 0.87; apply(w); }
+      if (sec.classList.contains("leaks--v14")) {
+        /* Ширина от экрана: в кадре ~3.35 карточки, четвёртая всегда
+           выглядывает и доезжает прокруткой. Не уже 380px, чтобы текст
+           не наезжал на фото, и не выше свободной полосы по высоте. */
+        var want = Math.min(900, Math.max(380, (vw - gut - 3 * gap) / 3.35));
+        var byH = wByHeight * 0.96;
+        /* Четвёртая карточка не должна целиком помещаться в кадр */
+        var peekMin = (vw - gut - 3 * gap) / 3.55;
+        w = Math.max(340, peekMin, Math.min(want, byH));
+        apply(w);
+      }
 
       // Сколько ленты не влезло: последняя карточка должна встать
       // ровно по правому полю сетки.
@@ -3228,27 +3238,4 @@
       })();
     }, 800);
   });
-})();
-
-
-/* v17 · Медиа в карточке утечек: ищем leak-3.webm → .mp4 → .gif */
-(function () {
-  var slot = document.querySelector("[data-leak-media]");
-  if (!slot) return;
-  var base = slot.getAttribute("data-leak-media");
-  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-  function tryVideo(ext, next) {
-    var v = document.createElement("video");
-    v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = !still; v.preload = "metadata";
-    v.setAttribute("muted", ""); v.setAttribute("playsinline", "");
-    v.onloadeddata = function () { slot.appendChild(v); if (!still) v.play().catch(function () {}); };
-    v.onerror = next;
-    v.src = base + "." + ext;
-  }
-  function tryGif() {
-    var i = new Image(); i.alt = ""; i.decoding = "async";
-    i.onload = function () { slot.appendChild(i); };
-    i.src = base + ".gif";
-  }
-  tryVideo("webm", function () { tryVideo("mp4", tryGif); });
 })();
