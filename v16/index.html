@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=10041400" />
+<link rel="stylesheet" href="styles.css?v=10041700" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -1058,30 +1058,26 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
       без изменений в&nbsp;команде&nbsp;— честнее сказать об&nbsp;этом сразу.
     </p>
   </div>
-  <div class="fl2 fl2--gem">
-    <div class="fl2__cols rv" style="--d:260">
-      <p class="fl2__col fl2__col--yes">Нам подходят те, у&nbsp;кого</p>
-      <span class="fl2__axis" aria-hidden="true"><svg viewBox="0 0 2 100" preserveAspectRatio="none"><line class="ink" pathLength="1" style="--t:.3s" x1="1" y1="0" x2="1" y2="100"/></svg></span>
-      <p class="fl2__col fl2__col--no">Результата не&nbsp;будет, если</p>
-    </div>
-    <div class="fl2__gem" data-crystal aria-hidden="true"><canvas></canvas></div>
-    <ol class="fl2__rows" role="list">
-      <li class="fl2__row">
-        <p class="fl2__yes rv" style="--d:340"><span class="fl2__n">01</span>Продукт уже подтверждён продажами&nbsp;— есть на&nbsp;чём строить систему</p>
-        <span class="fl2__dot pop" style="--t:.9s" aria-hidden="true"></span>
-        <p class="fl2__no rv" style="--d:420">Ищете самый дешёвый вариант на&nbsp;рынке</p>
-      </li>
-      <li class="fl2__row">
-        <p class="fl2__yes rv" style="--d:500"><span class="fl2__n">02</span>Есть готовность менять процессы, а&nbsp;не&nbsp;«дайте менеджеров, подождём»</p>
-        <span class="fl2__dot pop" style="--t:1.1s" aria-hidden="true"></span>
-        <p class="fl2__no rv" style="--d:580">Не&nbsp;готовы делегировать управление отделом</p>
-      </li>
-      <li class="fl2__row">
-        <p class="fl2__yes rv" style="--d:660"><span class="fl2__n">03</span>Амбиция вырасти в&nbsp;разы, а&nbsp;не&nbsp;продержаться ещё один запуск</p>
-        <span class="fl2__dot pop" style="--t:1.3s" aria-hidden="true"></span>
-        <p class="fl2__no rv" style="--d:740">Нужен разовый набор менеджеров без цели расти дальше</p>
-      </li>
-    </ol>
+  <div class="duo">
+    <article class="duo__card duo__card--yes rv" style="--d:260">
+      <p class="duo__tab">Работаем вместе</p>
+      <p class="duo__lead">Нам подходят те, у&nbsp;кого</p>
+      <ol class="duo__list" role="list">
+        <li class="rv" style="--d:380"><span class="duo__n">01</span><span>Продукт уже подтверждён продажами&nbsp;— есть на&nbsp;чём строить систему</span></li>
+        <li class="rv" style="--d:480"><span class="duo__n">02</span><span>Есть готовность менять процессы, а&nbsp;не&nbsp;«дайте менеджеров, подождём»</span></li>
+        <li class="rv" style="--d:580"><span class="duo__n">03</span><span>Амбиция вырасти в&nbsp;разы, а&nbsp;не&nbsp;продержаться ещё один запуск</span></li>
+      </ol>
+    </article>
+    <div class="duo__gem" data-crystal aria-hidden="true"><canvas></canvas></div>
+    <article class="duo__card duo__card--no rv" style="--d:340">
+      <p class="duo__tab">Не&nbsp;сработаемся</p>
+      <p class="duo__lead">Результата не&nbsp;будет, если</p>
+      <ol class="duo__list" role="list">
+        <li class="rv" style="--d:460"><span class="duo__n">01</span><span>Ищете самый дешёвый вариант на&nbsp;рынке</span></li>
+        <li class="rv" style="--d:560"><span class="duo__n">02</span><span>Не&nbsp;готовы делегировать управление отделом</span></li>
+        <li class="rv" style="--d:660"><span class="duo__n">03</span><span>Нужен разовый набор менеджеров без цели расти дальше</span></li>
+      </ol>
+    </article>
   </div>
 </section>
 
@@ -1407,6 +1403,6 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 <script src="main.js?v=10040700"></script>
 
 <script src="marquee.js"></script>
-<script src="crystal.js?v=10041500" defer></script>
+<script src="crystal.js?v=10041600" defer></script>
 </body>
 </html>

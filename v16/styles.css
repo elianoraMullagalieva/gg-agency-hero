@@ -8282,3 +8282,49 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .fl2__gem canvas { display: block; width: 100%; height: 100%; }
 .fl2--gem .fl2__dot { opacity: 0.6; }
 @media (max-width: 720px) { .fl2__gem { position: static; transform: none; width: 100%; height: 16rem; margin-bottom: 1rem; } }
+
+/* ============================================================
+   v16 · Отбор: две карточки-папки. Слева светлая «Работаем
+   вместе», справа угольная «Не сработаемся». Текст по левому
+   краю в обеих. Кристалл стоит в зазоре и заходит на края карт.
+   ============================================================ */
+.duo { --gap: clamp(9rem, 5rem + 10vw, 16rem); --tab: clamp(2.25rem, 2rem + 0.8vw, 2.75rem); --r: var(--radius);
+  position: relative; display: grid; grid-template-columns: minmax(0, 1fr) var(--gap) minmax(0, 1fr); align-items: stretch; padding-top: var(--tab); }
+.duo__card { position: relative; background: #f5f5f5; color: #16120d; border-radius: 0 var(--r) var(--r) var(--r);
+  padding: clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); padding-top: clamp(1.25rem, 1rem + 1vw, 2rem); }
+.duo__card--yes { grid-column: 1; }
+.duo__card--no { grid-column: 3; background: #141313; color: #fff; }
+/* язычок папки с вогнутым углом */
+.duo__tab { position: absolute; left: 0; bottom: 100%; margin: 0; height: var(--tab); display: flex; align-items: center;
+  padding: 0 clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); background: inherit; border-radius: var(--r) var(--r) 0 0;
+  font-size: var(--fs-s); font-weight: 500; letter-spacing: 0.01em; white-space: nowrap; }
+.duo__tab::after { content: ""; position: absolute; left: 100%; bottom: 0; width: var(--r); height: var(--r);
+  background: radial-gradient(circle at 100% 0, transparent calc(var(--r) - 0.5px), #f5f5f5 var(--r)); }
+.duo__card--no .duo__tab::after { background: radial-gradient(circle at 100% 0, transparent calc(var(--r) - 0.5px), #141313 var(--r)); }
+.duo__lead { margin: 0 0 clamp(1.25rem, 1rem + 1vw, 2rem); font-size: var(--fs-s); font-weight: 300; color: #8d8880; }
+.duo__card--no .duo__lead { color: rgba(255, 255, 255, 0.5); }
+.duo__list { list-style: none; margin: 0; padding: 0; }
+.duo__list li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: baseline;
+  padding: clamp(1rem, 0.85rem + 0.6vw, 1.5rem) 0; border-top: 1px solid rgba(22, 18, 13, 0.1);
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem); line-height: var(--lh-text-m); font-weight: 300; text-wrap: balance; }
+.duo__card--no .duo__list li { border-top-color: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.82); }
+.duo__n { font-size: var(--fs-s); color: #a19b92; font-variant-numeric: tabular-nums; }
+.duo__card--no .duo__n { color: rgba(255, 255, 255, 0.38); }
+/* кристалл: шире своей колонки, заходит на края обеих карточек */
+.duo__gem { grid-column: 2; grid-row: 1; position: relative; z-index: 2; align-self: center;
+  width: calc(var(--gap) + 8rem); margin-left: -4rem; aspect-ratio: 0.72; opacity: 0; transition: opacity 1.2s ease; pointer-events: none; }
+.duo__gem.is-ready { opacity: 1; }
+.duo__gem canvas { display: block; width: 100%; height: 100%; }
+.duo__card--yes { padding-right: clamp(3rem, 2rem + 3vw, 5.5rem); }
+.duo__card--no { padding-left: clamp(3rem, 2rem + 3vw, 5.5rem); }
+.duo__card--no .duo__tab { padding-left: clamp(3rem, 2rem + 3vw, 5.5rem); }
+@media (max-width: 900px) {
+  .duo { grid-template-columns: minmax(0, 1fr); row-gap: calc(var(--tab) + 1rem); }
+  .duo__card--yes, .duo__card--no { grid-column: 1; padding: clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); }
+  .duo__card--no .duo__tab { padding-left: clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); }
+  .duo__gem { grid-column: 1; grid-row: auto; width: 60%; margin: -1rem auto -1rem; max-width: 18rem; }
+}
+/* Отбор: поля карточек одинаковые, язычки на одной линии с текстом */
+.duo__card--yes, .duo__card--no { padding-left: clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); padding-right: clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); }
+.duo__card--no .duo__tab { padding-left: clamp(1.5rem, 1.2rem + 1.4vw, 2.75rem); }
+@media (max-width: 900px) { .duo__gem { width: 42%; max-width: 10rem; margin: -0.5rem auto; } }
