@@ -109,15 +109,34 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 <footer class="stats">
     <div class="stats__inner">
       <div class="stat">
-        <span class="stat__value">1%</span>
+        <div class="stat__row">
+          <span class="stat__value">1%</span>
+          <svg class="stat__fx stat__fx--ring" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <circle class="stat__ring-bg" cx="22" cy="22" r="18"/>
+            <circle class="stat__ring-arc" cx="22" cy="22" r="18" pathLength="100"/>
+            <circle class="stat__ring-tip" cx="22" cy="4" r="2"/>
+          </svg>
+        </div>
         <span class="stat__label">наши проекты входят в&nbsp;Топ 1% Геткурса</span>
       </div>
       <div class="stat">
-        <span class="stat__value">130+</span>
+        <div class="stat__row">
+          <span class="stat__value">130+</span>
+          <svg class="stat__fx stat__fx--bars" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <rect x="2" y="30" width="3" height="12" rx="1" style="--n:0"/><rect x="8" y="26" width="3" height="16" rx="1" style="--n:1"/><rect x="14" y="28" width="3" height="14" rx="1" style="--n:2"/><rect x="20" y="20" width="3" height="22" rx="1" style="--n:3"/><rect x="26" y="16" width="3" height="26" rx="1" style="--n:4"/><rect x="32" y="12" width="3" height="30" rx="1" style="--n:5"/><rect x="38" y="4" width="3" height="38" rx="1" style="--n:6"/>
+          </svg>
+        </div>
         <span class="stat__label">отделов продаж построено за&nbsp;4 года</span>
       </div>
       <div class="stat">
-        <span class="stat__value">×4-8</span>
+        <div class="stat__row">
+          <span class="stat__value">×4-8</span>
+          <svg class="stat__fx stat__fx--line" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+            <line class="stat__base" x1="2" y1="40" x2="42" y2="40"/>
+            <path class="stat__curve" pathLength="1" d="M2 38 C10 37 16 34 22 28 C28 22 32 12 42 6"/>
+            <circle class="stat__end" cx="42" cy="6" r="2"/>
+          </svg>
+        </div>
         <span class="stat__label">рост выручки в&nbsp;долгосрочной&nbsp;работе</span>
       </div>
     </div>
@@ -721,6 +740,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="plusball"><span class="ccard__ava-mono">+Б</span></span>
         <p class="ccard__tag">Построение</p>
         <p class="ccard__value">1 млн ₽</p>
+        <div class="ccard__sparkwrap"><span class="ccard__spark-l">0 ₽</span><span class="ccard__spark-l ccard__spark-l--r">1 млн ₽</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="8.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">выручки за месяц&nbsp;— в&nbsp;школе, которая стартовала с&nbsp;нуля</p>
         <div class="ccard__who">
           <p class="ccard__name">Онлайн-школа «+Балл»</p>
@@ -738,6 +758,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="gora"><img src="assets/clients/gora.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Оптимизация → построение</p>
         <p class="ccard__value">×2</p>
+        <div class="ccard__sparkwrap"><span class="ccard__spark-l">3 млн</span><span class="ccard__spark-l ccard__spark-l--r">6 млн</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="80.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">6&nbsp;млн ₽ чистыми новыми оплатами против 3&nbsp;млн ₽ на&nbsp;входе</p>
         <div class="ccard__who">
           <p class="ccard__name">GORA Academy</p>
@@ -755,6 +776,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="metodaizer"><img src="assets/clients/metodaizer.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Аутсорс → построение</p>
         <p class="ccard__value">×6</p>
+        <div class="ccard__sparkwrap"><span class="ccard__spark-l">старт</span><span class="ccard__spark-l ccard__spark-l--r">×6</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="27.2" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">рост выручки с&nbsp;начала работы, проект в&nbsp;ТОП-1% Геткурса</p>
         <div class="ccard__who">
           <p class="ccard__name">Илья Методайзер</p>
@@ -772,6 +794,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava=""><span class="ccard__ava-mono">Г</span></span>
         <p class="ccard__tag">Оптимизация</p>
         <p class="ccard__value">×8</p>
+        <div class="ccard__sparkwrap"><span class="ccard__spark-l">старт</span><span class="ccard__spark-l ccard__spark-l--r">×8</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="20.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">рост выручки, 20% конверсии с&nbsp;холодного трафика</p>
         <div class="ccard__who">
           <p class="ccard__name">Гипнотерапевт</p>
@@ -789,6 +812,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="lariba"><img src="assets/clients/lariba.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Аудит → аутсорс</p>
         <p class="ccard__value">+30%</p>
+        <div class="ccard__sparkwrap"><span class="ccard__spark-l">было</span><span class="ccard__spark-l ccard__spark-l--r">+30%</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="123.2" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">конверсии после правки одного скрипта</p>
         <div class="ccard__who">
           <p class="ccard__name">Мурад Ля&nbsp;Риба</p>
@@ -806,6 +830,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
         <span class="ccard__ava" aria-hidden="true" data-ava="magnier"><img src="assets/clients/magnier.jpg" alt="" width="320" height="320" loading="lazy" /></span>
         <p class="ccard__tag">Построение</p>
         <p class="ccard__value">10%</p>
+        <div class="ccard__sparkwrap"><span class="ccard__spark-l">анкета</span><span class="ccard__spark-l ccard__spark-l--r">10% в оплату</span><svg class="ccard__spark" viewBox="0 0 160 20" fill="none" aria-hidden="true"><line class="ccard__spark-track" x1="0" y1="4" x2="160" y2="4"/><line class="ccard__spark-a grow" style="--t:.4s" x1="0" y1="4" x2="16.0" y2="4"/><line class="ccard__spark-track" x1="0" y1="14" x2="160" y2="14"/><line class="ccard__spark-b grow" style="--t:.65s" x1="0" y1="14" x2="160.0" y2="14"/><circle class="ccard__spark-dot pop" style="--t:1.2s" cx="160.0" cy="14" r="2"/></svg></div>
         <p class="ccard__lead">конверсия с&nbsp;анкет с&nbsp;рилсов</p>
         <div class="ccard__who">
           <p class="ccard__name">Alex Magnier</p>
