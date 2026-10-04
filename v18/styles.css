@@ -8632,7 +8632,7 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .people__img img { object-position: 50% 72%; }
 
 /* Третья карточка стала тёмной с картинкой и легла вплотную к «Офферам»:
-   слово «тариф» упиралось в её край. Отодвигаем на полтора процента. */
+   слово «тариф» упиралось в её край. Отодвигаем на три с половиной процента. */
 @media (min-width: 721px) {
-  .fan__card:nth-child(3) { left: calc(2 * 31% + 1.6%); }
+  .fan__card:nth-child(3) { left: calc(2 * 31% + 3.6%); }
 }
