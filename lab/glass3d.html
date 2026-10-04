@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Стекло и хром · Three.js</title>
+<style>
+  html,body{margin:0;background:#0a0a0a;font-family:system-ui,sans-serif}
+  .row{display:grid;grid-template-columns:1fr 1fr;min-height:100vh}
+  .cell{position:relative;overflow:hidden;min-height:100vh}
+  .cell--light{background:radial-gradient(90% 70% at 40% 35%,#ffffff 0%,#f1e6ea 40%,#dccbd3 75%,#cdb8c2 100%)}
+  .cell--dark{background:#020202}
+  .cell canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .cap{position:absolute;left:24px;bottom:20px;font-size:13px;letter-spacing:.02em;opacity:.55}
+  .cell--light .cap{color:#3a2b31}.cell--dark .cap{color:#fff}
+  @media(max-width:800px){.row{grid-template-columns:1fr}.cell{min-height:80vh}}
+</style>
+</head>
+<body>
+<div class="row">
+  <div class="cell cell--light" id="key"><span class="cap">Перламутровый ключ</span></div>
+  <div class="cell cell--dark" id="phone"><span class="cap">Хромовый телефон</span></div>
+</div>
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+
+/* Студийное окружение: яркие софтбоксы-полосы на тёмном/светлом фоне.
+   Именно они дают резкие блики по рёбрам, как на референсах. */
+function studio(renderer, { base = 0.02, tint = [1, 1, 1], strips }) {
+  const w = 1024, h = 512, d = new Float32Array(w * h * 4);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const u = x / w, v = y / h; const c = [base * tint[0], base * tint[1], base * tint[2]];
+    for (const [pu, pv, pw, ph, power, col] of strips) {
+      const dx = Math.min(Math.abs(u - pu), 1 - Math.abs(u - pu)) / pw, dy = (v - pv) / ph;
+      const g = Math.exp(-Math.pow(dx, 8) - Math.pow(dy, 8)) * power;
+      c[0] += g * col[0]; c[1] += g * col[1]; c[2] += g * col[2];
+    }
+    const i = (y * w + x) * 4; d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = 1;
+  }
+  const t = new THREE.DataTexture(d, w, h, THREE.RGBAFormat, THREE.FloatType);
+  t.mapping = THREE.EquirectangularReflectionMapping; t.needsUpdate = true;
+  const pmrem = new THREE.PMREMGenerator(renderer);
+  return pmrem.fromEquirectangular(t).texture;
+}
+
+function stage(host, exposure) {
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = exposure;
+  renderer.setClearColor(0x000000, 0);
+  host.prepend(renderer.domElement);
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(24, 1, 0.1, 100);
+  camera.position.set(0, 0, 16);
+  return { renderer, scene, camera };
+}
+
+/* ── Ключ ── */
+function keyGeometry() {
+  const s = new THREE.Shape();
+  s.moveTo(-0.32, 0.55);
+  s.absarc(-0.5, 1.35, 0.72, Math.PI * 1.3, Math.PI * 0.62, true);
+  s.absarc(0.25, 1.78, 0.62, Math.PI * 1.0, Math.PI * 0.12, true);
+  s.absarc(0.72, 1.05, 0.58, Math.PI * 0.5, -Math.PI * 0.4, true);
+  s.lineTo(0.3, 0.45);
+  [[0.3, 0.15], [0.55, 0.05], [0.55, -0.18], [0.3, -0.28], [0.3, -0.55], [0.52, -0.65], [0.52, -0.9], [0.3, -1.0], [0.3, -1.3], [0.48, -1.4], [0.48, -1.62], [0.3, -1.72], [0.3, -2.25]].forEach(p => s.lineTo(p[0], p[1]));
+  s.absarc(0.0, -2.25, 0.3, 0, -Math.PI, true);
+  s.lineTo(-0.3, 0.45);
+  s.lineTo(-0.32, 0.55);
+  const hole = new THREE.Path(); hole.absarc(-0.3, 1.45, 0.3, 0, Math.PI * 2, true); s.holes.push(hole);
+  const g = new THREE.ExtrudeGeometry(s, { depth: 0.05, bevelEnabled: true, bevelThickness: 0.34, bevelSize: 0.16, bevelSegments: 24, curveSegments: 64 });
+  g.center(); g.computeVertexNormals();
+  return g;
+}
+
+{
+  const host = document.getElementById('key');
+  const { renderer, scene, camera } = stage(host, 1.0);
+  scene.environment = studio(renderer, { base: 0.22, tint: [1, 0.85, 0.92], strips: [
+    [0.15, 0.30, 0.10, 0.18, 6, [1, 1, 1]], [0.55, 0.25, 0.06, 0.30, 5, [1, 0.55, 0.78]],
+    [0.82, 0.55, 0.05, 0.25, 5, [0.55, 0.8, 1]], [0.38, 0.75, 0.25, 0.05, 3, [0.85, 0.6, 1]],
+    [0.68, 0.40, 0.03, 0.40, 4, [1, 0.9, 0.6]] ] });
+  const mat = new THREE.MeshPhysicalMaterial({
+    color: 0xfbe3ec, metalness: 0.75, roughness: 0.08,
+    iridescence: 1, iridescenceIOR: 2.0, iridescenceThicknessRange: [300, 1200],
+    clearcoat: 1, clearcoatRoughness: 0.02, envMapIntensity: 1.1
+  });
+  const key = new THREE.Mesh(keyGeometry(), mat);
+  const pivot = new THREE.Group(); pivot.add(key); pivot.rotation.z = -0.5; scene.add(pivot);
+  function fit() { const r = host.getBoundingClientRect(); renderer.setSize(r.width, r.height, false); camera.aspect = r.width / r.height; camera.updateProjectionMatrix(); pivot.scale.setScalar(Math.min(1, camera.aspect * 1.25)); }
+  new ResizeObserver(fit).observe(host); fit();
+  const t0 = performance.now();
+  renderer.setAnimationLoop(() => {
+    const t = (performance.now() - t0) / 1000;
+    key.rotation.y = Math.sin(t * 0.55) * 0.75;
+    key.rotation.x = 0.35 + Math.sin(t * 0.37) * 0.1;
+    pivot.position.y = Math.sin(t * 0.8) * 0.12;
+    renderer.render(scene, camera);
+  });
+}
+
+/* ── Телефон ── */
+{
+  const host = document.getElementById('phone');
+  const { renderer, scene, camera } = stage(host, 1.0);
+  scene.environment = studio(renderer, { base: 0.0, strips: [
+    [0.12, 0.35, 0.05, 0.30, 14, [1, 1, 1]], [0.40, 0.20, 0.14, 0.04, 9, [1, 0.97, 0.92]],
+    [0.70, 0.50, 0.03, 0.35, 10, [0.9, 0.95, 1]], [0.92, 0.62, 0.06, 0.08, 6, [1, 0.85, 0.75]] ] });
+  const chrome = new THREE.MeshPhysicalMaterial({ color: 0xeef0f3, metalness: 1, roughness: 0.04, clearcoat: 1, clearcoatRoughness: 0.02, iridescence: 0.35, iridescenceIOR: 1.4, envMapIntensity: 1.3 });
+  const glass = new THREE.MeshPhysicalMaterial({ color: 0x08090b, metalness: 0.1, roughness: 0.22, clearcoat: 1, clearcoatRoughness: 0.03, envMapIntensity: 0.7 });
+  const lensGlass = new THREE.MeshPhysicalMaterial({ color: 0x050608, metalness: 0.8, roughness: 0.02, clearcoat: 1, envMapIntensity: 2 });
+  const phone = new THREE.Group();
+  phone.add(new THREE.Mesh(new RoundedBoxGeometry(2.2, 4.5, 0.34, 12, 0.32), chrome));
+  const rr = (w, h, r) => { const p = new THREE.Shape(), x = -w / 2, y = -h / 2;
+    p.moveTo(x + r, y); p.lineTo(x + w - r, y); p.quadraticCurveTo(x + w, y, x + w, y + r); p.lineTo(x + w, y + h - r); p.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    p.lineTo(x + r, y + h); p.quadraticCurveTo(x, y + h, x, y + h - r); p.lineTo(x, y + r); p.quadraticCurveTo(x, y, x + r, y); return new THREE.ShapeGeometry(p, 24); };
+  const back = new THREE.Mesh(rr(2.02, 4.32, 0.28), glass); back.position.z = 0.172; phone.add(back);
+  const bump = new THREE.Mesh(new RoundedBoxGeometry(0.74, 1.12, 0.09, 8, 0.04), glass); bump.position.set(-0.58, 1.52, 0.22); phone.add(bump);
+  const ringG = new THREE.TorusGeometry(0.19, 0.035, 24, 64);
+  const lensG = new THREE.CircleGeometry(0.17, 48);
+  [[-0.58, 1.78], [-0.58, 1.27]].forEach(([x, y]) => {
+    const r = new THREE.Mesh(ringG, chrome); r.position.set(x, y, 0.27); phone.add(r);
+    const l = new THREE.Mesh(lensG, lensGlass); l.position.set(x, y, 0.272); phone.add(l);
+  });
+  const flash = new THREE.Mesh(new THREE.CircleGeometry(0.05, 24), new THREE.MeshBasicMaterial({ color: 0xfff2dc })); flash.position.set(-0.36, 1.52, 0.27); phone.add(flash);
+  scene.add(phone);
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(512, 512), 0.32, 0.5, 0.88); composer.addPass(bloom);
+  composer.addPass(new OutputPass());
+  function fit() { const r = host.getBoundingClientRect(); renderer.setSize(r.width, r.height, false); composer.setSize(r.width, r.height); camera.aspect = r.width / r.height; camera.updateProjectionMatrix(); phone.scale.setScalar(Math.min(1, camera.aspect * 1.15)); }
+  new ResizeObserver(fit).observe(host); fit();
+  const t0 = performance.now();
+  renderer.setAnimationLoop(() => {
+    const t = (performance.now() - t0) / 1000;
+    phone.rotation.y = -0.45 + Math.sin(t * 0.45) * 0.6;
+    phone.rotation.x = -0.12 + Math.sin(t * 0.33) * 0.06;
+    phone.rotation.z = -0.32;
+    phone.position.y = Math.sin(t * 0.8) * 0.1;
+    composer.render();
+  });
+}
+</script>
+</body>
+</html>
