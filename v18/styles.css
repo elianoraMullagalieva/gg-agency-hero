@@ -8520,3 +8520,5 @@ html.is-static .totop, html.is-static .cookie { display: none !important; }
   .orb__dots, .orb__grid { display: none; }
 }
 html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { position: static !important; height: auto !important; }
+/* Скругление карточек — как у веера «Отдел продаж — это не только люди» */
+.orb__card { border-radius: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem); }
