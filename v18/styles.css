@@ -8568,3 +8568,8 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .path__gem { display: inline-block; width: 0.9em; height: 1.15em; margin-left: 0.18em; vertical-align: -0.2em; opacity: 0; transition: opacity 1s ease; }
 .path__gem.is-ready { opacity: 1; }
 .path__gem canvas { display: block; width: 100%; height: 100%; }
+
+/* Кристалл справа от «продажи», высотой в обе строки и чуть ниже */
+.path__l1 { position: relative; display: inline-block; }
+.path__gem { position: absolute; left: calc(100% + clamp(1.5rem, 1rem + 1vw, 2.5rem)); top: -0.1em; width: 1.75em; height: 2.55em; margin: 0; vertical-align: top; pointer-events: none; }
+@media (max-width: 720px) { .path__gem { width: 1.3em; height: 1.9em; left: calc(100% + 0.6rem); } }

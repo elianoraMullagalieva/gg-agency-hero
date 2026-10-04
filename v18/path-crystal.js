@@ -77,7 +77,7 @@
       renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.9;
       renderer.outputEncoding = THREE.sRGBEncoding;
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50); camera.position.set(0, 0, 6.2);
+      var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50); camera.position.set(0, 0, 5.4);
       var env = environment();
       var root = new THREE.Group(); scene.add(root);
       function shard(scale, x, z, tilt, angle, seedTurn) {
