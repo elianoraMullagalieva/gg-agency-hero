@@ -8591,3 +8591,11 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
     width: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 2.6); height: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 3.6); margin: 0; z-index: 20; }
 }
 @media (max-width: 900px) { .path__sub .path__gem { display: none; } }
+
+/* Вариант: кристалл ровно по центру шапки, на линии центров заголовка и подписи */
+.path__gempin { display: none; }
+@media (min-width: 901px) {
+  .path__gempin { display: block; grid-column: 1 / -1; grid-row: 2; justify-self: center; align-self: center; width: 0; height: 0; position: relative; z-index: 20; }
+  .path__gempin .path__gem { position: absolute; left: 50%; top: 50%; right: auto; transform: translate(-50%, -50%);
+    width: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 2.6); height: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 3.6); margin: 0; }
+}
