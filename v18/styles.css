@@ -8578,3 +8578,16 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .path__gem { left: calc(100% + clamp(1.5rem, 1rem + 1vw, 2.5rem) - 0.425em); top: -0.625em; width: 2.6em; height: 3.6em; z-index: 20; }
 .path__head, .path__head > div, .path__title, .path__sticky { overflow: visible !important; }
 @media (max-width: 720px) { .path__gem { width: 1.95em; height: 2.7em; left: calc(100% + 0.6rem - 0.33em); top: -0.45em; } }
+
+/* Шапка графика: центр заголовка и центр подписи на одной линии,
+   кристалл стоит слева от подписи */
+@media (min-width: 901px) {
+  .path__head { grid-template-rows: auto auto; align-items: center; row-gap: 0; }
+  .path__head > div { display: contents; }
+  .path__head .path__eyebrow { grid-column: 1; grid-row: 1; justify-self: start; }
+  .path__head .path__title { grid-column: 1; grid-row: 2; }
+  .path__head .path__sub { grid-column: 2; grid-row: 2; align-self: center; position: relative; }
+  .path__sub .path__gem { position: absolute; left: auto; right: calc(100% + clamp(1rem, 0.5rem + 1.2vw, 2rem)); top: 50%; transform: translateY(-50%);
+    width: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 2.6); height: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 3.6); margin: 0; z-index: 20; }
+}
+@media (max-width: 900px) { .path__sub .path__gem { display: none; } }
