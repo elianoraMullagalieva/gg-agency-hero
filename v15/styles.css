@@ -8212,7 +8212,7 @@ html.is-static .footer { background: linear-gradient(180deg, #030303 55%, #3a050
 .leaks--v14 .leak--top .leak__copy { padding-top: max(0.25rem, 1.5cqw); }
 .leaks--v14 .leak__name { font-size: clamp(1.25rem, 6.15cqw, 2.75rem); line-height: 1.14; }
 .leaks--v14 .leak__text { font-size: max(15px, 3.67cqw); line-height: 1.4; margin-top: max(0.5rem, 2.7cqw); }
-.leaks--v14 .card__num, .leaks--v14 .card__tag { font-size: max(0.8125rem, 3.4cqw); }
+.leaks--v14 .card__num, .leaks--v14 .card__tag { font-size: max(0.875rem, 3.4cqw); }
 
 /* Утечки на низких окнах: шапка ближе к карточкам, карточки крупнее */
 @media (min-width: 1001px) and (max-height: 920px) {
@@ -8256,3 +8256,13 @@ html.is-static .why .ledger__row .ledger__idx, html.is-static .why .ledger__row 
 
 /* Кнопки у тарифов 2 и 3 — как у первого шага */
 .pstep .pstep__cta { margin-top: auto; }
+
+.pstep .pstep__note + .pstep__cta { margin-top: clamp(1rem, 0.8rem + 0.8vw, 1.5rem); }
+
+/* Веер на планшете: карточки узкие, текст длиннее фото-«окна».
+   Под текстом мягкая подложка в цвет карточки, предмет внизу виден. */
+@media (min-width: 721px) and (max-width: 1100px) {
+  .fan__card--img { background-image: linear-gradient(180deg, var(--fan-bg) 0%, var(--fan-bg) 64%, transparent 84%), var(--bg2) !important; background-size: 100% 100%, 100% 100% !important; }
+  .fan__card--light.fan__card--img { --fan-bg: #000; }
+  .fan__card--grey.fan__card--img { --fan-bg: #dfe0e3; }
+}
