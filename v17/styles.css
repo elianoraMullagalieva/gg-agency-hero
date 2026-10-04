@@ -8417,3 +8417,41 @@ html.is-static .why .ledger__row .ledger__idx, html.is-static .why .ledger__row 
   .fan__card--img { background-image: linear-gradient(180deg, var(--fan-bg) 0%, var(--fan-bg) 52%, transparent 66%), var(--bg2) !important; }
   .fan { aspect-ratio: 660 / 470; }
 }
+
+/* ============================================================
+   Кнопка «наверх»: тот же чёрный круг со стрелкой, что у кнопок,
+   стрелка повёрнута вверх. Появляется после первого экрана.
+   ============================================================ */
+.totop { position: fixed; right: clamp(1rem, 0.7rem + 1vw, 1.75rem); bottom: clamp(1rem, 0.7rem + 1vw, 1.75rem); z-index: 60;
+  display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: #16120d; color: #fff;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14), 0 10px 24px -10px rgba(0, 0, 0, 0.45);
+  opacity: 0; transform: translate3d(0, 0.75rem, 0); pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.totop svg { width: 34%; transform: rotate(-45deg); transition: transform 0.3s var(--ease-out); }
+.totop.is-on { opacity: 1; transform: none; pointer-events: auto; }
+.totop:hover { transform: translate3d(0, -4px, 0); }
+.totop:hover svg { transform: rotate(-45deg) translate(1px, -1px); }
+.totop:focus-visible { outline: 2px solid #16120d; outline-offset: 3px; }
+body.has-cookie .totop { bottom: calc(clamp(1rem, 0.7rem + 1vw, 1.75rem) + var(--cookie-h, 0px) + 0.75rem); }
+
+/* Плашка cookies: компактная, внизу слева, не перекрывает контент */
+.cookie { position: fixed; left: clamp(1rem, 0.7rem + 1vw, 1.75rem); bottom: clamp(1rem, 0.7rem + 1vw, 1.75rem); z-index: 61;
+  display: flex; align-items: center; gap: 1rem; max-width: min(34rem, calc(100vw - 2rem));
+  padding: 0.875rem 0.875rem 0.875rem 1.25rem; border-radius: var(--radius); background: #141313; color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 18px 40px -18px rgba(0, 0, 0, 0.6);
+  animation: cookieIn 0.7s var(--ease-out) both; }
+.cookie[hidden] { display: none; }
+.cookie__text { margin: 0; font-size: var(--fs-s); line-height: 1.4; font-weight: 300; }
+.cookie__text a { color: #fff; text-decoration: none; border-bottom: 1px solid rgba(255, 255, 255, 0.35); }
+.cookie__ok { flex: none; height: 2.5rem; padding: 0 1.25rem; border: 0; border-radius: 999px; background: #fff; color: #16120d;
+  font: inherit; font-size: var(--fs-s); font-weight: 500; cursor: pointer; transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.cookie__ok:hover { transform: translate3d(0, -2px, 0); }
+.cookie.is-out { animation: cookieOut 0.4s ease forwards; }
+@keyframes cookieIn { from { opacity: 0; transform: translate3d(0, 1rem, 0); } to { opacity: 1; transform: none; } }
+@keyframes cookieOut { to { opacity: 0; transform: translate3d(0, 0.75rem, 0); } }
+@media (max-width: 600px) {
+  .cookie { right: 1rem; max-width: none; flex-direction: column; align-items: stretch; gap: 0.75rem; padding: 1rem; }
+  .cookie__ok { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .totop, .cookie { transition: none; animation: none; } }
+html.is-static .totop, html.is-static .cookie { display: none !important; }

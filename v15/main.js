@@ -3293,3 +3293,32 @@
   window.addEventListener("resize", wake);
   check();
 })();
+
+
+/* Кнопка «наверх» и плашка cookies */
+(function () {
+  var btn = document.querySelector("[data-totop]");
+  var bar = document.querySelector("[data-cookie]");
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (btn) {
+    var raf = 0;
+    function check() { raf = 0; btn.classList.toggle("is-on", window.scrollY > window.innerHeight * 0.9); }
+    window.addEventListener("scroll", function () { if (!raf) raf = requestAnimationFrame(check); }, { passive: true });
+    btn.addEventListener("click", function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); });
+    check();
+  }
+  if (bar) {
+    var KEY = "gg-cookie-ok", seen = false;
+    try { seen = localStorage.getItem(KEY) === "1"; } catch (e) {}
+    function place() { document.body.style.setProperty("--cookie-h", bar.offsetHeight + "px"); }
+    if (!seen) {
+      setTimeout(function () { bar.hidden = false; document.body.classList.add("has-cookie"); place(); }, 1200);
+      window.addEventListener("resize", function () { if (!bar.hidden) place(); });
+    }
+    bar.querySelector("[data-cookie-ok]").addEventListener("click", function () {
+      try { localStorage.setItem(KEY, "1"); } catch (e) {}
+      bar.classList.add("is-out");
+      setTimeout(function () { bar.hidden = true; document.body.classList.remove("has-cookie"); }, still ? 0 : 400);
+    });
+  }
+})();
