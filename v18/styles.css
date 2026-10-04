@@ -8628,5 +8628,5 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .duo3__card--no .duo3__n { color: rgba(255, 255, 255, 0.4); }
 @media (max-width: 800px) { .duo3 { grid-template-columns: minmax(0, 1fr); row-gap: calc(var(--tab) + 1rem); } }
 /* Основательница: блок на 10% выше, в кадре меньше потолка, больше Ангелины */
-@media (min-width: 861px) { .people__lead { min-height: calc(25.5rem + 10vw); } }
+@media (min-width: 861px) { .people__lead { min-height: calc(30.2rem + 10vw); } }
 .people__img img { object-position: 50% 72%; }
