@@ -8599,3 +8599,31 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
   .path__gempin .path__gem { position: absolute; left: 50%; top: 50%; right: auto; transform: translate(-50%, -50%);
     width: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 2.6); height: calc(clamp(1.75rem, 1.0714rem + 3.0159vw, 3.625rem) * 3.6); margin: 0; }
 }
+
+/* ============================================================
+   v18 · Отбор: гибрид. Карточка-папка с язычком и вогнутым углом
+   (как раньше), сверху плашка под фото, заголовок лежит на плашке.
+   ============================================================ */
+.duo3 { --tab: clamp(2.25rem, 2rem + 0.8vw, 2.75rem); --r: var(--radius); --pad: clamp(1.25rem, 1rem + 1.2vw, 2.25rem);
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem); padding-top: var(--tab); }
+.duo3__card { position: relative; display: flex; flex-direction: column; padding: var(--pad); border-radius: 0 var(--r) var(--r) var(--r); background: #f5f5f5; color: #16120d; }
+.duo3__card--no { background: #141313; color: #fff; }
+.duo3__tab { position: absolute; left: 0; bottom: 100%; height: var(--tab); display: flex; align-items: center; padding: 0 var(--pad); background: inherit;
+  border-radius: var(--r) var(--r) 0 0; font-size: var(--fs-s); font-variant-numeric: tabular-nums; color: #8d8880; }
+.duo3__card--no .duo3__tab { color: rgba(255, 255, 255, 0.5); }
+.duo3__tab::after { content: ""; position: absolute; left: 100%; bottom: 0; width: var(--r); height: var(--r); background: radial-gradient(circle at 100% 0, transparent calc(var(--r) - 0.5px), #f5f5f5 var(--r)); }
+.duo3__card--no .duo3__tab::after { background: radial-gradient(circle at 100% 0, transparent calc(var(--r) - 0.5px), #141313 var(--r)); }
+.duo3__plate { position: relative; display: flex; align-items: flex-end; aspect-ratio: 16 / 8; padding: var(--pad); border-radius: calc(var(--r) - 0.25rem); overflow: hidden;
+  background: linear-gradient(135deg, #e6e6e6, #d6d6d6) center / cover no-repeat; }
+.duo3__card--no .duo3__plate { background: linear-gradient(135deg, #252323, #1c1b1b) center / cover no-repeat; }
+.duo3__plate[style*="--photo"] { background-image: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.55) 100%), var(--photo); }
+.duo3__plate[style*="--photo"] .duo3__title { color: #fff; }
+.duo3__title { position: relative; margin: 0; font-family: var(--font-logo); font-size: var(--fs-h3); font-weight: 400; line-height: var(--lh-head); letter-spacing: var(--ls-head); }
+.duo3__list { list-style: none; margin: clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem) 0 0; padding: 0; }
+.duo3__list li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: baseline; padding: clamp(0.875rem, 0.75rem + 0.5vw, 1.25rem) 0; border-top: 1px solid rgba(22, 18, 13, 0.1);
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem); line-height: var(--lh-text-m); font-weight: 300; text-wrap: balance; }
+.duo3__list li:first-child { border-top: 0; }
+.duo3__card--no .duo3__list li { border-top-color: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.86); }
+.duo3__n { font-size: var(--fs-s); color: #a19b92; font-variant-numeric: tabular-nums; }
+.duo3__card--no .duo3__n { color: rgba(255, 255, 255, 0.4); }
+@media (max-width: 800px) { .duo3 { grid-template-columns: minmax(0, 1fr); row-gap: calc(var(--tab) + 1rem); } }
