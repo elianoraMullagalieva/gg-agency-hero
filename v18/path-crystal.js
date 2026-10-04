@@ -77,7 +77,7 @@
       renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.9;
       renderer.outputEncoding = THREE.sRGBEncoding;
       var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50); camera.position.set(0, 0, 5.4);
+      var camera = new THREE.PerspectiveCamera(18, 1, 0.1, 60); camera.position.set(0, 0, 14.3);
       var env = environment();
       var root = new THREE.Group(); scene.add(root);
       function shard(scale, x, z, tilt, angle, seedTurn) {
@@ -117,8 +117,8 @@
         var dt = Math.min((now - last) / 1000, 0.1); last = now; t += dt;
         resize();
         cx += (targetX - cx) * 0.05; cy += (targetY - cy) * 0.05;
-        root.rotation.y = still ? 0.6 : t * 0.7; root.rotation.x = 0.12;
-        root.position.y = still ? 0 : Math.sin(t * 1.1) * 0.06;
+        root.rotation.y = still ? 0.6 : t * 0.45; root.rotation.x = 0.03;
+        root.position.y = still ? 0 : Math.sin(t * 0.8) * 0.03;
         root.updateMatrixWorld(true);
         root.traverse(function (o) { if (o.material && o.material.uniforms) o.material.uniforms.uWorldRotation.value.setFromMatrix4(new THREE.Matrix4().extractRotation(o.matrixWorld)); });
         renderer.render(scene, camera);

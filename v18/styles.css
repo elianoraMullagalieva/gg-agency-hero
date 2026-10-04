@@ -8573,3 +8573,8 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .path__l1 { position: relative; display: inline-block; }
 .path__gem { position: absolute; left: calc(100% + clamp(1.5rem, 1rem + 1vw, 2.5rem)); top: -0.1em; width: 1.75em; height: 2.55em; margin: 0; vertical-align: top; pointer-events: none; }
 @media (max-width: 720px) { .path__gem { width: 1.3em; height: 1.9em; left: calc(100% + 0.6rem); } }
+
+/* Кристалл: холст с запасом, чтобы грани не срезались; поверх всего; на 10% меньше */
+.path__gem { left: calc(100% + clamp(1.5rem, 1rem + 1vw, 2.5rem) - 0.425em); top: -0.625em; width: 2.6em; height: 3.6em; z-index: 20; }
+.path__head, .path__head > div, .path__title, .path__sticky { overflow: visible !important; }
+@media (max-width: 720px) { .path__gem { width: 1.95em; height: 2.7em; left: calc(100% + 0.6rem - 0.33em); top: -0.45em; } }
