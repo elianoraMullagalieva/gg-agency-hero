@@ -8406,8 +8406,14 @@ html.is-static .why .ledger__row .ledger__idx, html.is-static .why .ledger__row 
 
 /* Веер на планшете: карточки узкие, текст длиннее фото-«окна».
    Под текстом мягкая подложка в цвет карточки, предмет внизу виден. */
-@media (min-width: 721px) and (max-width: 1100px) {
+@media (min-width: 721px) and (max-width: 1100px) and (orientation: portrait) {
   .fan__card--img { background-image: linear-gradient(180deg, var(--fan-bg) 0%, var(--fan-bg) 64%, transparent 84%), var(--bg2) !important; background-size: 100% 100%, 100% 100% !important; }
   .fan__card--light.fan__card--img { --fan-bg: #000; }
   .fan__card--grey.fan__card--img { --fan-bg: #dfe0e3; }
+}
+@media (min-width: 721px) and (max-width: 1100px) and (orientation: portrait) {
+  .fan__card { aspect-ratio: 300 / 440; }
+  .fan__card--img { background-size: 100% 100%, 100% auto !important; background-position: top, center bottom !important; background-repeat: no-repeat !important; background-color: var(--fan-bg) !important; }
+  .fan__card--img { background-image: linear-gradient(180deg, var(--fan-bg) 0%, var(--fan-bg) 52%, transparent 66%), var(--bg2) !important; }
+  .fan { aspect-ratio: 660 / 470; }
 }
