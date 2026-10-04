@@ -77,37 +77,61 @@
   var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
+  function ring(P, E, cx, y, cz, r, m, closed) {
+    var base = P.length, j;
+    for (j = 0; j < m; j++) { var a = j / m * Math.PI * 2; P.push([cx + Math.cos(a) * r, y, cz + Math.sin(a) * r]); }
+    if (closed !== false) for (j = 0; j < m; j++) E.push([base + j, base + (j + 1) % m]);
+    return base;
+  }
+  function box(P, E, x, z, w, h, y0) {      // каркас параллелепипеда
+    var b = P.length, d = w / 2;
+    [[-d, -d], [d, -d], [d, d], [-d, d]].forEach(function (q) { P.push([x + q[0], y0, z + q[1]]); });
+    [[-d, -d], [d, -d], [d, d], [-d, d]].forEach(function (q) { P.push([x + q[0], y0 - h, z + q[1]]); });
+    for (var k = 0; k < 4; k++) { E.push([b + k, b + (k + 1) % 4]); E.push([b + 4 + k, b + 4 + (k + 1) % 4]); E.push([b + k, b + 4 + k]); }
+    return b + 4;
+  }
   function build(kind) {
-    var P = [], E = [], i, j, a, b;
-    if (kind === "funnel") {                       // кольца, сужающиеся книзу
-      for (i = 0; i < 9; i++) {
-        var y = -0.8 + i * 0.2, r = 0.95 - i * 0.075, base = P.length, m = 48;
-        for (j = 0; j < m; j++) { a = j / m * Math.PI * 2; P.push([Math.cos(a) * r, y, Math.sin(a) * r]); }
-        for (j = 0; j < m; j++) E.push([base + j, base + (j + 1) % m]);
-      }
-    } else if (kind === "sphere") {                // сфера из точек + экватор
-      var n = 380, g = Math.PI * (3 - Math.sqrt(5));
-      for (i = 0; i < n; i++) { var yy = 1 - (i / (n - 1)) * 2, rr = Math.sqrt(1 - yy * yy), th = g * i; P.push([Math.cos(th) * rr * 0.95, yy * 0.95, Math.sin(th) * rr * 0.95]); }
-      var eb = P.length; for (j = 0; j < 64; j++) { a = j / 64 * Math.PI * 2; P.push([Math.cos(a) * 1.08, 0, Math.sin(a) * 1.08]); }
-      for (j = 0; j < 64; j++) E.push([eb + j, eb + (j + 1) % 64]);
-      var mb = P.length; for (j = 0; j < 64; j++) { a = j / 64 * Math.PI * 2; P.push([0, Math.cos(a) * 1.08, Math.sin(a) * 1.08]); }
-      for (j = 0; j < 64; j++) E.push([mb + j, mb + (j + 1) % 64]);
-    } else if (kind === "net") {                   // сеть узлов: роли и связи
-      var cnt = 42, gg = Math.PI * (3 - Math.sqrt(5));
-      for (i = 0; i < cnt; i++) { var uy = 1 - (i / (cnt - 1)) * 2, us = Math.sqrt(1 - uy * uy), ut = gg * i, ur = i % 3 ? 0.95 : 0.55; P.push([Math.cos(ut) * us * ur, uy * ur, Math.sin(ut) * us * ur]); }
-      for (i = 0; i < P.length; i++) {
-        var near = [];
-        for (j = 0; j < P.length; j++) if (j !== i) { var ddx = P[i][0] - P[j][0], ddy = P[i][1] - P[j][1], ddz = P[i][2] - P[j][2]; near.push([ddx * ddx + ddy * ddy + ddz * ddz, j]); }
-        near.sort(function (x, y) { return x[0] - y[0]; });
-        for (var q2 = 0; q2 < 3; q2++) if (i < near[q2][1]) E.push([i, near[q2][1]]);
-      }
-    } else {                                       // двойная спираль со ступенями
-      var st = 120, b1 = 0, b2 = st + 1;
-      for (i = 0; i <= st; i++) { var ht = i / st, ha = ht * Math.PI * 4, hr = 0.42 + ht * 0.4; P.push([Math.cos(ha) * hr, 0.9 - ht * 1.8, Math.sin(ha) * hr]); if (i) E.push([b1 + i - 1, b1 + i]); }
-      for (i = 0; i <= st; i++) { var ht2 = i / st, ha2 = ht2 * Math.PI * 4 + Math.PI, hr2 = 0.42 + ht2 * 0.4; P.push([Math.cos(ha2) * hr2, 0.9 - ht2 * 1.8, Math.sin(ha2) * hr2]); if (i) E.push([b2 + i - 1, b2 + i]); }
-      for (i = 0; i <= st; i += 5) E.push([b1 + i, b2 + i]);
+    var P = [], E = [], N = [], path = [], i, j;
+    if (kind === "net") {
+      // Команда: три яруса ролей. Сверху 1 управляет, в середине 3 продают, внизу 5 квалифицируют
+      var tiers = [[-0.7, 0, 1], [0.0, 0.55, 3], [0.7, 0.9, 5]], idx = [];
+      tiers.forEach(function (t, ti) {
+        ring(P, E, 0, t[0], 0, Math.max(t[1], 0.001), 64, ti > 0).toString();
+        var row = [];
+        for (j = 0; j < t[2]; j++) { var a = j / t[2] * Math.PI * 2 + ti * 0.4; var p = P.length; P.push([Math.cos(a) * t[1], t[0], Math.sin(a) * t[1]]); N.push(p); row.push(p); }
+        idx.push(row);
+      });
+      idx[1].forEach(function (p) { E.push([idx[0][0], p]); });
+      idx[2].forEach(function (p, k) { E.push([idx[1][k % 3], p]); });
+      return { P: P, E: E, N: N, accent: idx[0][0], path: null };
     }
-    return { P: P, E: E, dots: kind === "sphere" || kind === "net", accent: kind === "helix" ? 0 : (kind === "funnel" ? P.length - 1 : (kind === "net" ? 21 : 3)) };
+    if (kind === "funnel") {
+      // Процесс продажи: пять этапов-колец, заявка проходит сверху вниз
+      var lv = [0.95, 0.76, 0.58, 0.42, 0.28];
+      lv.forEach(function (r, k) { ring(P, E, 0, -0.8 + k * 0.4, 0, r, 64); });
+      for (j = 0; j <= 160; j++) { var t = j / 160, a2 = t * Math.PI * 6, r2 = 0.9 - t * 0.66, p2 = P.length; P.push([Math.cos(a2) * r2, -0.8 + t * 1.6, Math.sin(a2) * r2]); path.push(p2); }
+      return { P: P, E: E, N: [], accent: path[0], path: path, ghost: true };
+    }
+    if (kind === "sphere") {
+      // Управление: дашборд — сетка и столбики отчётности
+      var g = 3, step = 0.5, off = -step * (g - 1) / 2, H = [0.3, 0.5, 0.42, 0.62, 0.78, 0.7, 0.95, 1.15, 1.4];
+      for (i = 0; i <= g; i++) { var a3 = P.length; P.push([off - step / 2 + i * step, 0.75, off - step / 2]); P.push([off - step / 2 + i * step, 0.75, off - step / 2 + g * step]); E.push([a3, a3 + 1]);
+                                 var b3 = P.length; P.push([off - step / 2, 0.75, off - step / 2 + i * step]); P.push([off - step / 2 + g * step, 0.75, off - step / 2 + i * step]); E.push([b3, b3 + 1]); }
+      var tops = [];
+      for (i = 0; i < g; i++) for (j = 0; j < g; j++) { tops.push(box(P, E, off + i * step, off + j * step, step * 0.5, H[i * g + j] * 1.1, 0.75)); }
+      return { P: P, E: E, N: [], accent: tops[8], path: null };
+    }
+    // Мотивация и план: ступени вверх и кольцо-цель
+    var n = 6, sw = 0.32, sh = 0.26, depth = 0.5, x0 = -0.95, y0 = 0.8;
+    for (i = 0; i < n; i++) {
+      var x = x0 + i * sw, y = y0 - i * sh, q = P.length;
+      P.push([x, y, -depth], [x, y - sh, -depth], [x + sw, y - sh, -depth], [x, y, depth], [x, y - sh, depth], [x + sw, y - sh, depth]);
+      E.push([q, q + 1], [q + 1, q + 2], [q + 3, q + 4], [q + 4, q + 5], [q, q + 3], [q + 1, q + 4], [q + 2, q + 5]);
+      var c = P.length; P.push([x + sw * 0.5, y - sh, 0]); path.push(c);
+    }
+    var goal = ring(P, E, x0 + n * sw + 0.05, y0 - n * sh - 0.05, 0, 0.18, 40);
+    var gc = P.length; P.push([x0 + n * sw + 0.05, y0 - n * sh - 0.05, 0]); path.push(gc);
+    return { P: P, E: E, N: path.slice(0, -1), accent: path[0], path: path, steps: true };
   }
 
   var items = canvases.map(function (cv) {
@@ -133,15 +157,26 @@
     c.globalAlpha = 0.42; c.beginPath();
     it.m.E.forEach(function (e) { var a = pr[e[0]], b = pr[e[1]]; c.moveTo(a[0], a[1]); c.lineTo(b[0], b[1]); });
     c.stroke();
-    if (it.m.dots) pr.forEach(function (p) { c.globalAlpha = 0.25 + 0.55 * (1 - (p[2] + 1.1) / 2.2); c.beginPath(); c.arc(p[0], p[1], dpr * 1.05, 0, 6.283); c.fill(); });
-    var ac = pr[it.m.accent]; c.globalAlpha = 1; c.fillStyle = "#e8231b"; c.shadowColor = "rgba(232,35,27,.7)"; c.shadowBlur = 8 * dpr;
-    c.beginPath(); c.arc(ac[0], ac[1], dpr * 2.6, 0, 6.283); c.fill(); c.shadowBlur = 0;
+    if (it.m.ghost && it.m.path) {           // тонкий пунктир пути заявки
+      c.globalAlpha = 0.18; c.setLineDash([2 * dpr, 4 * dpr]); c.beginPath();
+      it.m.path.forEach(function (k, n) { var p = pr[k]; if (n) c.lineTo(p[0], p[1]); else c.moveTo(p[0], p[1]); }); c.stroke(); c.setLineDash([]);
+    }
+    c.globalAlpha = 0.85;
+    it.m.N.forEach(function (k) { var p = pr[k]; c.beginPath(); c.arc(p[0], p[1], dpr * 2.1, 0, 6.283); c.fill(); });
+    var ak = it.m.accent;
+    if (it.m.path) {
+      var L = it.m.path.length, cyc = it.m.steps ? 5 : 3.6, ph = (t % cyc) / cyc;
+      if (it.m.steps) ak = it.m.path[Math.min(L - 1, Math.floor(ph * (L + 1)))];
+      else ak = it.m.path[Math.min(L - 1, Math.floor(ph * L))];
+    }
+    var ac = pr[ak]; c.globalAlpha = 1; c.fillStyle = "#e8231b"; c.shadowColor = "rgba(232,35,27,.7)"; c.shadowBlur = 8 * dpr;
+    c.beginPath(); c.arc(ac[0], ac[1], dpr * 2.8, 0, 6.283); c.fill(); c.shadowBlur = 0;
   }
 
   var sec = document.querySelector(".orb"), visible = false, raf = 0, t0 = performance.now(), last = 0;
   function frame(now) {
     raf = 0; if (!visible || document.hidden) return;
-    if (now - last > 32) { last = now; var t = (now - t0) / 1000; items.forEach(function (it) { if (parseFloat(it.cv.parentNode.style.opacity || "1") > 0.02) draw(it, t + it.m.P.length * 0.01); }); }
+    if (now - last > 32) { last = now; var t = (now - t0) / 1000; items.forEach(function (it) { if (parseFloat(it.cv.parentNode.style.opacity || "1") > 0.02) draw(it, t); }); }
     if (!still) raf = requestAnimationFrame(frame);
   }
   function wake() { if (!raf) raf = requestAnimationFrame(frame); }

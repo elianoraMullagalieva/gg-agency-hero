@@ -8557,3 +8557,9 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .duo2__n { font-size: var(--fs-s); color: #a19b92; font-variant-numeric: tabular-nums; }
 .duo2__card--no .duo2__n { color: rgba(255, 255, 255, 0.4); }
 @media (max-width: 800px) { .duo2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* Карусель: графика меньше и тише, карточки чередуются светлая/тёмная */
+.orb__fx { width: 58%; top: 13%; opacity: 0.9; }
+.orb__card:nth-child(even) { background: #141313; color: #fff; box-shadow: 0 30px 60px -36px rgba(22, 18, 13, 0.55); }
+.orb__card:nth-child(even) .orb__text { color: rgba(255, 255, 255, 0.7); }
+.orb__card:nth-child(even) .orb__num { opacity: 0.5; }
