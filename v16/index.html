@@ -1416,7 +1416,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
   <p class="cookie__text">Мы&nbsp;используем cookies, чтобы сайт работал корректно и&nbsp;чтобы понимать, как им&nbsp;пользуются. Подробнее&nbsp;— в&nbsp;<a href="privacy.html" target="_blank" rel="noopener">политике конфиденциальности</a>.</p>
   <button class="cookie__ok" type="button" data-cookie-ok>Понятно</button>
 </div>
-<script>window.GG_FORM = { endpoint: "https://elianora21.beget.tech/gg-lead.php", site: "v16" };</script>
+<script>window.GG_FORM = { endpoint: /github\.io$|^localhost$|^127\./.test(location.hostname) ? "" : "gg-lead.php", site: "v16" };</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="main.js?v=10043600"></script>
 
