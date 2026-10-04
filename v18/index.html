@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@100..900&family=Manrope:wght@400;700&display=swap" rel="stylesheet" />
 
-<link rel="stylesheet" href="styles.css?v=10050300" />
+<link rel="stylesheet" href="styles.css?v=10050600" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -541,25 +541,25 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
       <ul class="orb__list" role="list">
         <li class="orb__card orb__card--light" style="--k:0">
           <span class="orb__num">04</span>
-          <span class="orb__mark" aria-hidden="true">+</span>
+          <canvas class="orb__fx" data-shape="net" aria-hidden="true"></canvas>
           <h3 class="orb__name">Команда</h3>
           <p class="orb__text">Постоянная, с&nbsp;разведёнными ролями: кто квалифицирует, кто продаёт, кто управляет.</p>
         </li>
         <li class="orb__card orb__card--grey" style="--k:1">
           <span class="orb__num">05</span>
-          <span class="orb__mark" aria-hidden="true">+</span>
+          <canvas class="orb__fx" data-shape="funnel" aria-hidden="true"></canvas>
           <h3 class="orb__name">Процесс продажи</h3>
           <p class="orb__text">Скорость ответа, квалификация, скрипты, касания, дожим.</p>
         </li>
         <li class="orb__card orb__card--dark" style="--k:2">
           <span class="orb__num">06</span>
-          <span class="orb__mark" aria-hidden="true">+</span>
+          <canvas class="orb__fx" data-shape="sphere" aria-hidden="true"></canvas>
           <h3 class="orb__name">Управление</h3>
           <p class="orb__text">CRM, регламенты, отчётность, контроль качества, автоматизация рутины.</p>
         </li>
         <li class="orb__card orb__card--ink" style="--k:3">
           <span class="orb__num">07</span>
-          <span class="orb__mark" aria-hidden="true">+</span>
+          <canvas class="orb__fx" data-shape="helix" aria-hidden="true"></canvas>
           <h3 class="orb__name">Мотивация и&nbsp;план</h3>
           <p class="orb__text">Декомпозиция, ступени, KPI, ФОТ в&nbsp;пределах 8–12%.</p>
         </li>
@@ -1071,24 +1071,23 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
       без изменений в&nbsp;команде&nbsp;— честнее сказать об&nbsp;этом сразу.
     </p>
   </div>
-  <div class="duo">
-    <article class="duo__card duo__card--yes rv" style="--d:260">
-      <p class="duo__tab">Работаем вместе</p>
-      <p class="duo__lead">Нам подходят те, у&nbsp;кого</p>
-      <ol class="duo__list" role="list">
-        <li class="rv" style="--d:380"><span class="duo__n">01</span><span>Продукт уже подтверждён продажами&nbsp;— есть на&nbsp;чём строить систему</span></li>
-        <li class="rv" style="--d:480"><span class="duo__n">02</span><span>Есть готовность менять процессы, а&nbsp;не&nbsp;«дайте менеджеров, подождём»</span></li>
-        <li class="rv" style="--d:580"><span class="duo__n">03</span><span>Амбиция вырасти в&nbsp;разы, а&nbsp;не&nbsp;продержаться ещё один запуск</span></li>
+  <div class="duo2">
+    <article class="duo2__card duo2__card--yes rv" style="--d:260">
+      <h3 class="duo2__title">Работаем вместе</h3>
+      <div class="duo2__plate" data-bg="yes" aria-hidden="true"></div>
+      <ol class="duo2__list" role="list">
+        <li><span class="duo2__n">01</span><span>Продукт уже подтверждён продажами&nbsp;— есть на&nbsp;чём строить систему</span></li>
+        <li><span class="duo2__n">02</span><span>Есть готовность менять процессы, а&nbsp;не&nbsp;«дайте менеджеров, подождём»</span></li>
+        <li><span class="duo2__n">03</span><span>Амбиция вырасти в&nbsp;разы, а&nbsp;не&nbsp;продержаться ещё один запуск</span></li>
       </ol>
     </article>
-    <div class="duo__gem" data-crystal aria-hidden="true"><canvas></canvas></div>
-    <article class="duo__card duo__card--no rv" style="--d:340">
-      <p class="duo__tab">Не&nbsp;сработаемся</p>
-      <p class="duo__lead">Результата не&nbsp;будет, если</p>
-      <ol class="duo__list" role="list">
-        <li class="rv" style="--d:460"><span class="duo__n">01</span><span>Ищете самый дешёвый вариант на&nbsp;рынке</span></li>
-        <li class="rv" style="--d:560"><span class="duo__n">02</span><span>Не&nbsp;готовы делегировать управление отделом</span></li>
-        <li class="rv" style="--d:660"><span class="duo__n">03</span><span>Нужен разовый набор менеджеров без цели расти дальше</span></li>
+    <article class="duo2__card duo2__card--no rv" style="--d:360">
+      <h3 class="duo2__title">Не&nbsp;сработаемся</h3>
+      <div class="duo2__plate" data-bg="no" aria-hidden="true"></div>
+      <ol class="duo2__list" role="list">
+        <li><span class="duo2__n">01</span><span>Ищете самый дешёвый вариант на&nbsp;рынке</span></li>
+        <li><span class="duo2__n">02</span><span>Не&nbsp;готовы делегировать управление отделом</span></li>
+        <li><span class="duo2__n">03</span><span>Нужен разовый набор менеджеров без цели расти дальше</span></li>
       </ol>
     </article>
   </div>
@@ -1428,8 +1427,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
 <script src="main.js?v=10043600"></script>
 
 <script src="marquee.js"></script>
-<script src="crystal.js?v=10041600" defer></script>
 <script src="leak-crystal.js?v=10042900" defer></script>
-<script src="orbit.js?v=10050200" defer></script>
+<script src="orbit.js?v=10050600" defer></script>
 </body>
 </html>

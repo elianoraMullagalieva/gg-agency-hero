@@ -8522,3 +8522,38 @@ html.is-static .totop, html.is-static .cookie { display: none !important; }
 html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { position: static !important; height: auto !important; }
 /* Скругление карточек — как у веера «Отдел продаж — это не только люди» */
 .orb__card { border-radius: clamp(0.75rem, 0.6429rem + 0.4571vw, 1.1875rem); }
+
+/* Карусель: в верхней части карточки — тонкий линейный 3D-объект,
+   название и текст внизу, как в референсе */
+.orb__card { justify-content: flex-end; text-align: left; align-items: flex-start; }
+.orb__num { left: clamp(1.25rem, 1rem + 1vw, 2rem); transform: none; }
+.orb__fx { position: absolute; left: 50%; top: 9%; width: 84%; aspect-ratio: 1; transform: translateX(-50%); pointer-events: none; }
+.orb__name { max-width: none; font-size: clamp(1.375rem, 1.1rem + 1.1vw, 2rem); position: relative; }
+.orb__text { position: relative; left: auto; right: auto; bottom: auto; margin-top: 0.6rem; text-wrap: pretty; }
+
+/* Все карточки одного светлого оттенка — разнообразие даёт графика */
+.orb__card, .orb__card--light, .orb__card--grey, .orb__card--dark, .orb__card--ink {
+  background: #f5f5f5; color: #16120d;
+  box-shadow: 0 0 0 1px rgba(22, 18, 13, 0.06), 0 30px 60px -38px rgba(22, 18, 13, 0.35); }
+.orb__text { color: #6b655c; opacity: 1; }
+.orb__num { opacity: 0.45; }
+
+/* ============================================================
+   v18 · Отбор: две карточки рядом без дыры. Крупный заголовок,
+   под ним плашка под фон (картинку подставим), ниже три пункта.
+   ============================================================ */
+.duo2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem); }
+.duo2__card { display: flex; flex-direction: column; padding: clamp(1.25rem, 1rem + 1.2vw, 2.25rem); border-radius: var(--radius); background: #f5f5f5; color: #16120d; }
+.duo2__card--no { background: #141313; color: #fff; }
+.duo2__title { margin: 0; font-family: var(--font-logo); font-size: var(--fs-h3); font-weight: 400; line-height: var(--lh-head); letter-spacing: var(--ls-head); }
+.duo2__plate { margin: clamp(1.25rem, 1rem + 1vw, 2rem) 0 clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem); aspect-ratio: 16 / 7; border-radius: calc(var(--radius) - 0.25rem);
+  background: linear-gradient(135deg, #e9e9e9, #dcdcdc); background-size: cover; background-position: center; }
+.duo2__card--no .duo2__plate { background: linear-gradient(135deg, #232121, #1b1a1a); background-size: cover; background-position: center; }
+.duo2__list { list-style: none; margin: 0; padding: 0; }
+.duo2__list li { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr); align-items: baseline; padding: clamp(0.875rem, 0.75rem + 0.5vw, 1.25rem) 0; border-top: 1px solid rgba(22, 18, 13, 0.1);
+  font-size: clamp(1.0625rem, 0.95rem + 0.5vw, 1.375rem); line-height: var(--lh-text-m); font-weight: 300; text-wrap: balance; }
+.duo2__list li:first-child { border-top: 0; }
+.duo2__card--no .duo2__list li { border-top-color: rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.86); }
+.duo2__n { font-size: var(--fs-s); color: #a19b92; font-variant-numeric: tabular-nums; }
+.duo2__card--no .duo2__n { color: rgba(255, 255, 255, 0.4); }
+@media (max-width: 800px) { .duo2 { grid-template-columns: minmax(0, 1fr); } }
