@@ -8563,3 +8563,8 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .orb__card:nth-child(even) { background: #141313; color: #fff; box-shadow: 0 30px 60px -36px rgba(22, 18, 13, 0.55); }
 .orb__card:nth-child(even) .orb__text { color: rgba(255, 255, 255, 0.7); }
 .orb__card:nth-child(even) .orb__num { opacity: 0.5; }
+
+/* «Постоянные продажи»: маленький красный кристалл справа от заголовка */
+.path__gem { display: inline-block; width: 0.9em; height: 1.15em; margin-left: 0.18em; vertical-align: -0.2em; opacity: 0; transition: opacity 1s ease; }
+.path__gem.is-ready { opacity: 1; }
+.path__gem canvas { display: block; width: 100%; height: 100%; }
