@@ -6,6 +6,8 @@
   var sec = document.querySelector(".orb");
   if (!sec) return;
   if (matchMedia("(prefers-reduced-motion: reduce)").matches || document.documentElement.classList.contains("is-static")) return;
+  // Телефон: карусель — обычная лента со свайпом, как «Какая у вас ситуация?»
+  if (matchMedia("(max-width: 720px)").matches) return;
   var cards = [].slice.call(sec.querySelectorAll(".orb__card"));
   var dots = [].slice.call(sec.querySelectorAll(".orb__dots i"));
   var n = cards.length;

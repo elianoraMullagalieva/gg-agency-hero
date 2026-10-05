@@ -8733,3 +8733,116 @@ html.is-static .duo3__pill { opacity: 0.5 !important; }
   -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%); mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%); }
 .orb__arc { height: 40%; opacity: 0.62; }
 .orb__arc { opacity: 0.55; }
+
+/* Телефон: без живого поля под руками (лишний WebGL-контекст в карусели)
+   — мягкое свечение градиентом; фон плашек «Отбора» не плывёт,
+   чтобы не перерисовывать их каждый кадр. */
+@media (max-width: 900px), (pointer: coarse) {
+  .orb__arc { background: radial-gradient(90% 120% at 50% 110%, rgba(170, 14, 22, 0.75) 0%, rgba(110, 8, 14, 0.35) 45%, transparent 75%); opacity: 0.8; }
+  .duo3__plate--img { animation: none !important; background-size: cover; background-position: center; }
+}
+
+/* ============================================================
+   Правки по телефону
+   ============================================================ */
+/* Эксперт: подпись — самый мелкий текст сайта (как на пилюлях),
+   имя — текст M; аватар по высоте текста задаёт main.js. */
+.expert { grid-template-columns: auto minmax(0, 1fr); max-width: 24rem; }
+.expert__role { font-size: var(--fs-pill); margin-top: 0.2rem; }
+.expert__photo { flex: none; }
+
+/* Блок с телефоном: вводный текст крупнее на 15% — иначе спорит
+   с мелким текстом под ним */
+@media (max-width: 720px) {
+  .bridge__lead { font-size: calc(clamp(1.25rem, 0.9167rem + 1.4815vw, 2.25rem) * 1.15); }
+}
+
+@media (max-width: 560px) {
+  /* «Какая у вас ситуация?»: без длинных кнопок внизу карточек */
+  .situation .card__act { display: none; }
+
+  /* Утечки: карточки выше, текст не налезает на картинку.
+     Картинка прижата к своему краю, фон карточки добирает остальное. */
+  .leaks--v14 .leak { aspect-ratio: 433 / 720; }
+  .leaks--v14 .leak--img { background-size: 100% auto; }
+  .leaks--v14 .leak--img.leak--top { background-position: center bottom; }
+  .leaks--v14 .leak--img.leak--bottom { background-position: center top; }
+}
+
+/* «Отдел продаж» на телефоне: лента со свайпом. Карточки по очереди
+   выплывают, когда блок встал в экран, дальше листаются пальцем. */
+@media (max-width: 720px) {
+  .orb { height: auto; }
+  .orb__sticky { position: static; height: auto; padding-block: var(--sec-pad, 4rem); }
+  .orb__stage { height: auto; perspective: none; --cw: min(19rem, 78vw); }
+  .orb__grid, .orb__dots { display: none; }
+  .orb__list { position: static; display: flex; gap: 0.75rem; transform: none;
+    margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter);
+    overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--gutter); scrollbar-width: none; }
+  .orb__list::-webkit-scrollbar { display: none; }
+  .orb__card { position: relative; left: auto; top: auto; margin: 0; flex: 0 0 var(--cw); width: var(--cw); height: auto; aspect-ratio: 353 / 423;
+    scroll-snap-align: start; transform: none !important;
+    opacity: 0; translate: 2.5rem 0; transition: opacity 0.7s ease, translate 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: calc(var(--k) * 0.12s + 0.1s); }
+  .orb.is-in .orb__card { opacity: 1 !important; translate: 0 0; }
+}
+html.is-static .orb__card { opacity: 1 !important; translate: none !important; }
+
+/* Подпись эксперта: перебиваем общий список мелкого текста (html .expert__role) */
+html body .expert__role { font-size: var(--fs-pill); }
+
+/* ============================================================
+   «Путь» на телефоне: этапы — отдельные карточки. Срок — мелкая
+   пилюля, название и результат одним крупным кеглем, результат
+   в своей плашке. Этапы проявляются по одному при прокрутке
+   (.is-seen ставит main.js), график ниже.
+   ============================================================ */
+@media (max-width: 720px) {
+  .path__chart { height: 9.5rem; }
+  .path__stages { display: grid; gap: 0.75rem; }
+  .path__stage { padding: 1.25rem; border-radius: var(--radius); background: rgba(255, 255, 255, 0.045);
+    border: 1px solid rgba(255, 255, 255, 0.08); }
+  .path__stage::before, .path__stage::after { display: none; }
+  .path__when { display: inline-flex; align-items: center; margin: 0 0 var(--pill-gap); padding: 0.45em 0.9em;
+    border: 1px solid rgba(255, 255, 255, 0.22); border-radius: 999px; font-size: var(--fs-pill); line-height: 1.2; color: rgba(255, 255, 255, 0.7); }
+  .path__name { font-size: 1.25rem; font-weight: 500; line-height: 1.2; }
+  .path__text { margin-top: 0.55rem; font-size: var(--fs-s); line-height: 1.45; color: rgba(255, 255, 255, 0.62); }
+  .path__result { margin-top: 1rem; padding: 0.9rem 1rem 1rem; border: 0; border-radius: calc(var(--radius) - 0.35rem);
+    background: rgba(255, 255, 255, 0.07); font-size: 1.25rem; font-weight: 500; line-height: 1.2; color: #fff; }
+  .path__result span { margin-bottom: 0.45rem; font-size: var(--fs-pill); font-weight: 400; color: rgba(255, 255, 255, 0.5); }
+
+  .path__stages .path__stage.rv { opacity: 0 !important; transform: translate3d(0, 1.25rem, 0) !important;
+    transition: opacity 0.6s var(--ease-out), transform 0.7s var(--ease-out) !important; transition-delay: 0s !important; }
+  .path__stages .path__stage.rv.is-seen { opacity: 1 !important; transform: none !important; }
+}
+html.is-static .path__stages .path__stage.rv { opacity: 1 !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) { .path__stages .path__stage.rv { opacity: 1 !important; transform: none !important; } }
+
+/* Тёмная карточка «Шаг 3»: кнопка белая, текст и стрелка чёрные —
+   чёрная кнопка на чёрном сливалась с фоном */
+.pstep--dark .start__cta-label,
+.pstep--dark .start__cta-icon { background: #fff; color: #16120d; }
+.pstep--dark .start__cta:hover .start__cta-label,
+.pstep--dark .start__cta:hover .start__cta-icon,
+.pstep--dark .start__cta:focus-visible .start__cta-label,
+.pstep--dark .start__cta:focus-visible .start__cta-icon { background: #e9e9e9; color: #16120d; }
+
+/* Условия под тарифами: больше воздуха до первой линии */
+.terms { margin-top: clamp(3.5rem, 2.4rem + 4.6vw, 7rem); }
+
+/* «Что строим» на телефоне: четыре аккуратные карточки с пилюлями
+   01–04 вместо сплошного списка */
+@media (max-width: 720px) {
+  .keep__cols { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; counter-reset: keep; }
+  .keep__col, .keep__col:first-child { padding: 1.25rem; border-radius: var(--radius); background: #f5f5f5; counter-increment: keep; }
+  .keep__col + .keep__col::before { display: none; }
+  .keep__col::after { content: "0" counter(keep); position: absolute; top: 1.25rem; right: 1.25rem; padding: 0.45em 0.9em;
+    border: 1px solid rgba(22, 18, 13, 0.22); border-radius: 999px; font-size: var(--fs-pill); line-height: 1.2; color: #6b6966; }
+  .keep__name { margin-bottom: 0.9rem; padding-right: 4rem; font-size: 1.25rem; font-weight: 500; min-height: 1.9rem; display: flex; align-items: center; }
+  .keep__list { gap: 0; }
+  .keep__list li { padding: 0.7rem 0 0.7rem 1.1em; border-top: 1px solid rgba(22, 18, 13, 0.08); }
+  .keep__list li::before { top: calc(0.7rem + 0.62em); }
+}
+@media (max-width: 720px) {
+  .keep__cols .keep__col:nth-child(n) { padding: 1.25rem; }
+}

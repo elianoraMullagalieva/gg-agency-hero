@@ -39,7 +39,7 @@
       var renderer;
       try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); } catch (e) { return; }
       renderer.setClearColor(0x000000, 0);
-      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 2));
+      renderer.setPixelRatio(Math.min(devicePixelRatio || 1, innerWidth < 900 ? 1.5 : 2));
       renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.0;
       renderer.outputEncoding = THREE.sRGBEncoding;
       var scene = new THREE.Scene();

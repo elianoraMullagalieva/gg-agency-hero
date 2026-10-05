@@ -12,7 +12,11 @@
 (function () {
   "use strict";
 
-  var MAX_DPR = 2;
+  /* Телефон: поле из крупных квадратных точек не теряет вида при dpr 1,
+     а полноэкранный холст при dpr 3 в 9 раз дороже — на обратном скролле
+     подвал и первый экран клали видеочип. */
+  var SMALL = matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+  var MAX_DPR = SMALL ? 1 : 2;
 
   var VERT_SRC =
     "attribute vec2 a_pos;" +
@@ -250,8 +254,11 @@
       }, { rootMargin: "200px" }).observe(canvas);
     }
 
+    var lastDraw = 0;
     function frame(now) {
       if (!running || !inView) return;
+      if (SMALL && now - lastDraw < 32) { requestAnimationFrame(frame); return; }
+      lastDraw = now;
       resize();
       gl.uniform1f(U.uTime, ((now - start) / 1000) * speed);
       gl.uniform2f(U.uMouse, mouse.x, mouse.y);
@@ -912,7 +919,7 @@
   // Тот же фон переиспользуется в блоке схемы
   document.querySelectorAll(".hero__glyphs").forEach(initGlyphs);
 
-  document.querySelectorAll(".hero__bg, .footer__bg, .orb__arc").forEach(initArc);
+  document.querySelectorAll(SMALL ? ".hero__bg, .footer__bg" : ".hero__bg, .footer__bg, .orb__arc").forEach(initArc);
 /* Аккордеон услуг — та же механика, что у вопросов. */
 /* Поочерёдное появление строк «Где утекают деньги». */
 /* Кейс: цифры докручиваются от нуля при появлении секции. */
@@ -3038,7 +3045,7 @@
    ============================================================ */
 (function () {
   "use strict";
-  var RAILS = ".leaks-rail, .approach__rail, .reviews__strip, .situation .cards, .staff";
+  var RAILS = ".leaks-rail, .approach__rail, .reviews__strip, .situation .cards, .staff, .orb__list";
   var ICON = '<svg viewBox="0 0 28 10" fill="none" aria-hidden="true"><path d="M0 5h26M22 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   var items = [];
 
@@ -3323,4 +3330,25 @@
       setTimeout(function () { bar.hidden = true; document.body.classList.remove("has-cookie"); }, still ? 0 : 400);
     });
   }
+})();
+
+/* Аватар эксперта ровно по высоте текста рядом (имя + подпись) */
+(function () {
+  var fig = document.querySelector(".expert"); if (!fig) return;
+  var ph = fig.querySelector(".expert__photo"), body = fig.querySelector(".expert__body");
+  if (!ph || !body) return;
+  function fit() { var h = Math.round(body.getBoundingClientRect().height); if (h) { ph.style.width = h + "px"; ph.style.height = h + "px"; } }
+  fit();
+  if ("ResizeObserver" in window) new ResizeObserver(fit).observe(body);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+})();
+
+/* «Путь» на телефоне: этапы проявляются по одному, когда доходят до экрана */
+(function () {
+  var st = [].slice.call(document.querySelectorAll(".path__stage"));
+  if (!st.length || !("IntersectionObserver" in window)) { st.forEach(function (s) { s.classList.add("is-seen"); }); return; }
+  var io = new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("is-seen"); io.unobserve(e.target); } });
+  }, { rootMargin: "0px 0px -18% 0px", threshold: 0.15 });
+  st.forEach(function (s) { io.observe(s); });
 })();
