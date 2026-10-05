@@ -8636,3 +8636,29 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 @media (min-width: 721px) {
   .fan__card:nth-child(3) { left: calc(2 * 31% + 3.6%); }
 }
+
+/* Плашки «Работаем вместе / Не сработаемся»: фоны и пилюли из макета. */
+.duo3__plate--img { background-size: cover; background-position: center; background-repeat: no-repeat; }
+.duo3__plate--img[data-bg="yes"] { background-image: url(assets/duo/duo-yes-2x.webp); }
+.duo3__plate--img[data-bg="no"]  { background-image: url(assets/duo/duo-no-2x.webp); }
+@media (max-width: 560px) {
+  .duo3__plate--img[data-bg="yes"] { background-image: url(assets/duo/duo-yes-1x.webp); }
+  .duo3__plate--img[data-bg="no"]  { background-image: url(assets/duo/duo-no-1x.webp); }
+}
+@media (min-width: 1700px), (min-resolution: 2.5dppx) and (min-width: 900px) {
+  .duo3__plate--img[data-bg="yes"] { background-image: url(assets/duo/duo-yes-3x.webp); }
+  .duo3__plate--img[data-bg="no"]  { background-image: url(assets/duo/duo-no-3x.webp); }
+}
+.duo3__plate--img .duo3__title { color: #fff; }
+.duo3__pill {
+  position: absolute;
+  top: clamp(0.75rem, 0.6rem + 0.6vw, 1.35rem);
+  right: clamp(0.75rem, 0.6rem + 0.6vw, 1.35rem);
+  padding: 0.5em 0.95em;
+  border: 1px solid rgba(225, 225, 225, 0.9);
+  border-radius: 999px;
+  color: #e1e1e1;
+  font-size: var(--fs-s);
+  line-height: 1.2;
+  white-space: nowrap;
+}
