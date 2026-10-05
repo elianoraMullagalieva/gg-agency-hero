@@ -8662,3 +8662,8 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
   line-height: 1.2;
   white-space: nowrap;
 }
+
+/* Отбор целиком в экран: отступ до карточек −40%, плашка ниже, пилюли тише. */
+.fit--ledger .fit__head { margin-bottom: clamp(1.8rem, 1.32rem + 2.04vw, 3.6rem); }
+.duo3__plate { aspect-ratio: 16 / 6; }
+.duo3__pill { opacity: 0.5; }
