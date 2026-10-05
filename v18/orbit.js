@@ -66,33 +66,6 @@
   var orb = document.querySelector(".orb");
   if (orb) orbit(orb, orb.querySelector(".orb__stage"), [].slice.call(orb.querySelectorAll(".orb__card")), [].slice.call(orb.querySelectorAll(".orb__dots i")));
 
-  // «Какая у вас ситуация?» на телефоне
-  var sit = document.querySelector(".situation");
-  if (sit && matchMedia("(max-width: 560px)").matches) {
-    var head = sit.querySelector(".situation__head"), list = sit.querySelector(".cards");
-    if (head && list) {
-      var sticky = document.createElement("div");
-      sticky.className = "situation__sticky";
-      sit.insertBefore(sticky, head);
-      sticky.appendChild(head);
-      sticky.appendChild(list);
-      var dotsBox = document.createElement("div");
-      dotsBox.className = "orb__dots situation__dots";
-      dotsBox.setAttribute("aria-hidden", "true");
-      var cs = [].slice.call(list.querySelectorAll(":scope > .card"));
-      cs.forEach(function () { dotsBox.appendChild(document.createElement("i")); });
-      sticky.appendChild(dotsBox);
-      sit.classList.add("situation--orb");
-      var hint = sit.querySelector(".swipe-hint"); if (hint) hint.remove();
-      // ширина карточки — из высоты, что осталась под шапкой
-      var fit = function () {
-        var h = list.getBoundingClientRect().height;
-        var w = Math.min(window.innerWidth * 0.74, h * 0.64);
-        list.style.setProperty("--cw", Math.round(w) + "px");
-      };
-      orbit(sit, list, cs, [].slice.call(dotsBox.children), fit);
-    }
-  }
 })();
 
 /* Линейные 3D-объекты в карточках: тонкие линии и точки, медленное

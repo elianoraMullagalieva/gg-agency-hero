@@ -51,7 +51,8 @@
   --fs-h1: clamp(2.75rem, 2rem + 3.1vw, 4.8125rem);
   --fs-h2: clamp(2.125rem, 1.6rem + 2.2vw, 3.625rem);
   /* Заголовок второго порядка — на 20% меньше H2 */
-  --fs-h3: clamp(1.375rem, 0.875rem + 2.2222vw, 2.875rem);
+  /* +1px по просьбе Эли: «Узнайте, где утекают…», «Как у вас сейчас…» и все H3 */
+  --fs-h3: calc(clamp(1.375rem, 0.875rem + 2.2222vw, 2.875rem) + 1px);
   --fs-m: clamp(1rem, 0.9583rem + 0.1852vw, 1.125rem);
   --fs-s: clamp(0.8125rem, 0.7917rem + 0.0926vw, 0.875rem);
 
@@ -2225,7 +2226,7 @@ p.hero__lead { text-wrap: normal; }
   :root {
     --fs-h1: clamp(4.8125rem, 3.5rem + 1.4583vw, 7rem);
     --fs-h2: clamp(3.625rem, 2.65rem + 1.0833vw, 5.25rem);
-    --fs-h3: clamp(2.875rem, 2.125rem + 0.8333vw, 4.1875rem);
+    --fs-h3: calc(clamp(2.875rem, 2.125rem + 0.8333vw, 4.1875rem) + 1px);
     /* Мелкие ступени тоже растут: блоки на 4К увеличиваются, а текст
        оставался 14/18px — отношение заголовка к тексту уезжало
        с 3.2:1 до 4.7:1, и абзац растягивался на 200 знаков в строку. */
@@ -9009,3 +9010,101 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
   .pstep .start__cta-label { font-size: var(--fs-s); }
 }
 .roles__item { align-content: start; }
+
+/* Сенсорные экраны: касание видеоотзыва — не наведение. Без этого
+   кадр увеличивался, а кнопка play пряталась, и отзыв «дёргался»
+   при первой попытке пролистать. */
+@media (hover: none) {
+  .vreview:hover .vreview__media { transform: none; }
+  .vreview:hover .vreview__play { opacity: 1; transform: none; }
+  .vreview__media { transition: none; }
+}
+
+/* Подсказка над лентой — вплотную к карточкам */
+.swipe-hint--top { margin: 0 0 0.6rem !important; }
+
+@media (max-width: 720px) {
+  /* Отступы между блоками на телефоне — на 12% больше */
+  :root { --sec-pad: clamp(3.95rem, 12.3svh, 7rem); --sec-pad-b: clamp(3.95rem, 12.3svh, 7rem); }
+  /* После «Смотреть все кейсы» больше воздуха */
+  .cases { padding-bottom: calc(var(--sec-pad-b) * 1.2) !important; }
+  /* «Отдел продаж» с карточками — снова по центру экрана, а до веера
+     ближе за счёт нижнего поля веера */
+  .orb__sticky { justify-content: center !important; padding-top: var(--gutter) !important; }
+  .sources--center { padding-bottom: 0.5rem !important; }
+}
+
+/* Утечки на телефоне: карточки компактнее, ближе к подзаголовку */
+@media (max-width: 560px) {
+  .leaks--v14 .leaks-sticky { gap: 1.25rem !important; }
+  .leaks--v14 .leak { flex: 0 0 min(70vw, 17rem) !important; width: min(70vw, 17rem) !important; aspect-ratio: 433 / 680; }
+}
+
+/* Подсказка: только пальчик, без кружка, в цвет подписи */
+.swipe-hint__dot { width: auto; height: auto; background: none; box-shadow: none; border-radius: 0; }
+.swipe-hint__dot svg { width: 1.5rem; height: 1.5rem; }
+.swipe-hint { color: #6b655c; }
+.approach .swipe-hint, .leaks--dark .swipe-hint, .cases .swipe-hint { color: rgba(255, 255, 255, 0.6); }
+
+/* Утечки: четвёртая карточка с длинным текстом — чуть выше общей,
+   чтобы текст не касался рук */
+@media (max-width: 560px) {
+  .leaks--v14 .leak { aspect-ratio: 433 / 700; }
+}
+
+/* Подвал на телефоне: пункты меню плотнее, слово GG AGENCY во всю
+   ширину (та же анимация букв), под ним больше воздуха */
+@media (max-width: 767px) {
+  .footer__col a { min-height: 2.1rem; }
+  .footer__col { gap: 0; }
+  .footer__label { margin-bottom: 0.35rem; }
+  .footer__word { height: 23vw; }
+  .footer__word-text { font-size: 17.6vw; }
+  .footer__legal { padding-top: 1.75rem; }
+}
+
+/* Утечки, карточка 04: руки ниже и мельче, текст их не касается */
+@media (max-width: 560px) {
+  .leaks--v14 .leak--img[style*="leak-4"] { background-size: 92% auto; background-position: center 112%; }
+}
+
+/* Утечки, карточка 04: руки ещё ниже и мельче */
+@media (max-width: 560px) {
+  .leaks--v14 .leak--img[style*="leak-4"] { background-size: 78% auto; background-position: 60% 118%; }
+}
+@media (max-width: 560px) {
+  .leaks--v14 .leak--img[style*="leak-4"] { background-size: 100% auto; background-position: center bottom; }
+  .leaks--v14 .leak--img[style*="leak-4"] .leak__copy { padding-bottom: 2.5rem;
+    background: linear-gradient(180deg, #f5f5f5 0%, #f5f5f5 78%, rgba(245, 245, 245, 0) 100%); position: relative; z-index: 1; }
+}
+@media (max-width: 560px) {
+  .leaks--v14 .leak--img[style*="leak-4"] .leak__copy { padding-bottom: 3rem;
+    background: linear-gradient(180deg, #f5f5f5 0%, #f5f5f5 calc(100% - 3rem), rgba(245, 245, 245, 0) 100%); }
+}
+/* Первый экран, телефон: стекло под цифрами — середина между прежним
+   и насыщенным; плашка доходит до низа первого экрана */
+@media (max-width: 720px) {
+  .stats__inner { background: rgba(255, 255, 255, 0.045); border-color: rgba(255, 255, 255, 0.09);
+    backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 0 40px rgba(255, 255, 255, 0.04); }
+}
+@media (max-width: 720px) {
+  .stats { padding-bottom: 0 !important; }
+  .stats__inner { border-bottom: 0; border-radius: 10px 10px 0 0; }
+}
+/* Подсказка над лентой: без кружка, вплотную к карточкам, край — по карточкам */
+.swipe-hint__dot { background: none !important; box-shadow: none !important; width: auto !important; height: auto !important; }
+.swipe-hint--top { margin: 0 0 0.35rem !important; }
+.leaks--v14 .swipe-hint--top { margin-top: 0 !important; }
+
+/* Телефон и планшет · сведение стилей к шкале:
+   H2 34 · H3 24 · H4 22/500 · H5 17/500 (имена, мелкие карточки) ·
+   M 16/300 · S 15/300 · пилюли 13/400 */
+@media (max-width: 900px) {
+  .path__title { font-size: var(--fs-h2) !important; }
+  .ccard__name, .staff__name, .ledger__name, .roles__name, .vreview__quote, .expert__name {
+    font-size: 1.0625rem !important; font-weight: 500 !important; line-height: 1.14; letter-spacing: var(--ls-title); }
+}
+@media (max-width: 720px) {
+  .duo3__pill { font-size: var(--fs-pill); }
+}
