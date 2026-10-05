@@ -3074,9 +3074,6 @@ p.hero__lead { text-wrap: normal; }
     radial-gradient(118% 92% at 62% -8%,
       #d0101c 0%, #8e0a12 30%, #3a060b 62%, #0d0304 86%, #060202 100%); }
 
-  72%  { opacity: 1; translate: 0 -0.6%; }   /* перелёт как в эталоне */
-  100% { opacity: 1; translate: 0 0; }
-}
 @media (prefers-reduced-motion: reduce) {
   .fan__card { opacity: 1; animation: none; }
 }
