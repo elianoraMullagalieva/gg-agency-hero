@@ -9216,3 +9216,15 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
 .shots.is-drag { cursor: grabbing; }
 .shots img { -webkit-user-drag: none; pointer-events: none; }
 .shot__btn { cursor: inherit; }
+
+/* Адаптив: раскрытый веер документов не шире своей колонки (1024) */
+.docs { container-type: inline-size; }
+.doc { width: min(clamp(8rem, 5.5rem + 8vw, 12rem), 28cqw); }
+
+/* Узкие телефоны (до 359): кнопки помещаются в ширину */
+@media (max-width: 359px) {
+  :root { --btn-h: 2.9rem; }
+  .hero__cta-label, .start__cta-label, .cases__cta-label, .people__cta-label, .ask__cta-label { padding: 0 1.1em !important; font-size: 0.8125rem !important; letter-spacing: 0.01em; }
+  .people__cta-label { white-space: normal; text-align: center; line-height: 1.1; }
+  .cases__note { overflow-wrap: anywhere; }
+}
