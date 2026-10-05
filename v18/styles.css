@@ -8699,3 +8699,37 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 }
 html.is-static .duo3__list li { opacity: 1 !important; translate: none !important; }
 html.is-static .duo3__pill { opacity: 0.5 !important; }
+
+/* ============================================================
+   Карусель «Отдел продаж»: картинки из макета вместо линейной графики.
+   Текст сверху, картинка на всю карточку. Во второй карточке под руками
+   тонкой полупрозрачной дугой идёт поле точек из первого экрана:
+   руки лежат поверх в режиме lighten — чёрный фон картинки пропускает
+   свечение, а светлые руки остаются своего цвета.
+   ============================================================ */
+.orb__card { justify-content: flex-start; overflow: hidden; isolation: isolate;
+  padding: calc(var(--cw) * 0.064); }
+.orb__card, .orb__card--light, .orb__card--grey, .orb__card--dark, .orb__card--ink { background: #d3d4d6; }
+.orb__card:nth-child(even) { background: #000; }
+.orb__num { top: calc(var(--cw) * 0.062); left: calc(var(--cw) * 0.064); padding: 0; border: 0; border-radius: 0; z-index: 2; }
+.orb__name { margin-top: calc(var(--cw) * 0.145); z-index: 2; }
+.orb__text { margin-top: 0.45rem; z-index: 2; max-width: 30ch; }
+.orb__img { position: absolute; inset: 0; z-index: 1; background: center / cover no-repeat; pointer-events: none; }
+.orb__card:nth-child(1) .orb__img { background-image: url(assets/orb/orb-1-2x.webp); }
+.orb__card:nth-child(2) .orb__img { background-image: url(assets/orb/orb-2-2x.webp); mix-blend-mode: lighten; }
+.orb__card:nth-child(3) .orb__img { background-image: url(assets/orb/orb-3-2x.webp); }
+.orb__card:nth-child(4) .orb__img { background-image: url(assets/orb/orb-4-2x.webp); }
+@media (min-width: 1800px), (min-resolution: 2.5dppx) and (min-width: 900px) {
+  .orb__card:nth-child(1) .orb__img { background-image: url(assets/orb/orb-1-4x.webp); }
+  .orb__card:nth-child(2) .orb__img { background-image: url(assets/orb/orb-2-4x.webp); }
+  .orb__card:nth-child(3) .orb__img { background-image: url(assets/orb/orb-3-4x.webp); }
+  .orb__card:nth-child(4) .orb__img { background-image: url(assets/orb/orb-4-4x.webp); }
+}
+.orb__arc { position: absolute; left: 0; bottom: 0; z-index: 0; display: block; width: 100%; height: 52%;
+  opacity: 0.55; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to top, #000 35%, transparent 100%); mask-image: linear-gradient(to top, #000 35%, transparent 100%); }
+/* Свечение под руками — тонкая полоса у нижнего края, без заливки */
+.orb__arc { height: 30%; opacity: 0.42;
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%); mask-image: linear-gradient(to top, #000 0%, rgba(0,0,0,0.6) 45%, transparent 100%); }
+.orb__arc { height: 40%; opacity: 0.62; }
+.orb__arc { opacity: 0.55; }

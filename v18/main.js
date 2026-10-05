@@ -185,7 +185,9 @@
       // число ячеек — движение читалось как замедленное. Держим
       // сетку крупной, чтобы декор и амплитуда были видны.
       var k = clampN(cssWidth / 1440, 1.15, 1.25);
-      return Math.max(3, baseCell * k);
+      // Маленький холст (карточка карусели) просит точки мельче: data-cell.
+      var kc = parseFloat(canvas.getAttribute("data-cell")) || 1;
+      return Math.max(2, baseCell * k * kc);
     }
 
     function applyCell() {
@@ -910,7 +912,7 @@
   // Тот же фон переиспользуется в блоке схемы
   document.querySelectorAll(".hero__glyphs").forEach(initGlyphs);
 
-  document.querySelectorAll(".hero__bg, .footer__bg").forEach(initArc);
+  document.querySelectorAll(".hero__bg, .footer__bg, .orb__arc").forEach(initArc);
 /* Аккордеон услуг — та же механика, что у вопросов. */
 /* Поочерёдное появление строк «Где утекают деньги». */
 /* Кейс: цифры докручиваются от нуля при появлении секции. */
