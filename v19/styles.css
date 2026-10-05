@@ -9136,3 +9136,27 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
 @media (max-width: 900px) {
   .path .path__stages .path__stage.rv:not(.is-active), .path .path__stages .path__stage:not(.is-active) { opacity: 0 !important; transform: translate3d(0, 0.9rem, 0) !important; }
 }
+
+/* v19 · «Листайте вправо» по левому краю — на одной линии с заголовком */
+.swipe-hint, .swipe-hint--top { justify-content: flex-start !important; padding-inline: var(--gutter) !important; flex-direction: row-reverse; }
+.swipe-hint--flush { padding-inline: 0 !important; }
+.swipe-hint, .swipe-hint--top { padding-inline: 0 !important; align-self: stretch !important; width: auto !important; margin-left: 0 !important; margin-right: 0 !important; }
+.swipe-hint, .swipe-hint--top { flex-direction: row !important; justify-content: flex-start !important; }
+.swipe-hint__dot { order: -1; }
+
+/* Утечки на телефоне: карточки шире, но следующая всегда выглядывает;
+   в 04 картинка целиком, без подложки под текстом */
+@media (max-width: 560px) {
+  .leaks--v14 .leak { flex: 0 0 min(calc(100vw - var(--gutter) - 3.5rem), 21rem) !important; width: min(calc(100vw - var(--gutter) - 3.5rem), 21rem) !important; aspect-ratio: 433 / 660; }
+  .leaks--v14 .leak--img[style*="leak-4"] .leak__copy { background: none; padding-bottom: 0; }
+}
+/* Карточки-ленты на телефоне — одной ширины: +5% к прежней, соседняя выглядывает */
+@media (max-width: 560px) {
+  .leaks--v14 .leak, .situation .cards > .card { flex: 0 0 min(73.5vw, 17.9rem) !important; width: min(73.5vw, 17.9rem) !important; }
+  .leaks--v14 .leak { aspect-ratio: 433 / 700; }
+}
+/* Узкие телефоны (до 360): карточка выше, текст не наезжает на картинку */
+@media (max-width: 360px) {
+  .leaks--v14 .leak { aspect-ratio: 433 / 880; }
+  .leaks--v14 .leak__text { font-size: 14px; }
+}

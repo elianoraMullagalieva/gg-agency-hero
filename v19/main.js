@@ -3086,6 +3086,10 @@
       var gap = (ps.display.indexOf("flex") > -1 || ps.display.indexOf("grid") > -1) ? (parseFloat(ps.rowGap) || 0) : 0;
       // над лентой: прижимаем подсказку к карточкам, гасим лишний gap родителя
       it.hint.style.marginTop = "";
+      // v19: левый край подсказки — по заголовку блока
+      var sec = it.hint.closest("section"), head = sec && sec.querySelector("h2, h3");
+      it.hint.style.paddingLeft = "0px";
+      if (head) { var dx = head.getBoundingClientRect().left - it.hint.getBoundingClientRect().left; if (dx > 0) it.hint.style.setProperty("padding-left", dx + "px", "important"); }
       it.hint.style.marginBottom = gap > 10 ? (10 - gap) + "px" : "";
     });
   }
