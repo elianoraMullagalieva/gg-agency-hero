@@ -9160,3 +9160,39 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
   .leaks--v14 .leak { aspect-ratio: 433 / 880; }
   .leaks--v14 .leak__text { font-size: 14px; }
 }
+
+/* ============================================================
+   v19 · правки
+   ============================================================ */
+/* «Листайте вправо» чуть крупнее (текст S) */
+.swipe-hint, .swipe-hint--top { font-size: var(--fs-s) !important; gap: 0.5rem; }
+.swipe-hint__dot svg { width: 1.7rem !important; height: 1.7rem !important; }
+
+/* Видеоотзывы на телефоне: без въезда снизу — лента не прыгает
+   под пальцем при первом касании */
+@media (max-width: 720px) {
+  .reviews .vreview.rv, [data-stage] .reviews .vreview.rv, .reviews [data-stage] .vreview.rv { transform: none !important; translate: none !important; transition: opacity 0.4s ease !important; transition-delay: 0s !important; }
+}
+
+/* Основательница: подпись вплотную под фото */
+@media (max-width: 860px) {
+  .people__who { margin-top: 0.6rem !important; }
+  .people__who strong { display: block; margin-bottom: 0.1rem; }
+}
+
+/* Шкала заголовков на телефоне — заметные шаги:
+   H1 44 · H2 34 · H3 27 · H4 21 · H5 18 · текст 16 / 15 */
+@media (max-width: 720px) {
+  :root { --fs-h3: 1.6875rem; --fs-h4: 1.3125rem; }
+  .ccard__name, .staff__name, .ledger__name, .roles__name, .vreview__quote, .expert__name { font-size: 1.125rem !important; }
+}
+@media (max-width: 860px) {
+  .people__lead .people__quote { display: contents; }
+  .people__lead > .people__photo { order: 0; }
+  .people__quote > .people__who { order: 1; margin: 0.6rem 0 0 !important; }
+  .people__quote > *:not(.people__who) { order: 2; }
+  .people__quote > .people__eyebrow { margin-top: clamp(2rem, 8vw, 2.75rem); align-self: flex-start; }
+  .people__quote > .people__title { margin-top: var(--pill-gap); }
+  .people__quote > .people__cta { margin-top: 1.5rem; align-self: flex-start; }
+}
+@media (max-width: 860px) { .people__lead { gap: 0 !important; row-gap: 0 !important; } }

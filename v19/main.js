@@ -3085,7 +3085,8 @@
       var ps = getComputedStyle(it.hint.parentNode);
       var gap = (ps.display.indexOf("flex") > -1 || ps.display.indexOf("grid") > -1) ? (parseFloat(ps.rowGap) || 0) : 0;
       // над лентой: прижимаем подсказку к карточкам, гасим лишний gap родителя
-      it.hint.style.marginTop = "";
+      // воздух до «Листайте вправо» — на 10% больше отступа родителя
+      it.hint.style.marginTop = gap ? Math.round(gap * 0.1) + "px" : "0.5rem";
       // v19: левый край подсказки — по заголовку блока
       var sec = it.hint.closest("section"), head = sec && sec.querySelector("h2, h3");
       it.hint.style.paddingLeft = "0px";
