@@ -2817,29 +2817,42 @@
     });
   }
 
-  /* ---------- Лента скринов с инерцией ---------- */
+  /* ---------- Лента отзывов: медленно едет сама, не зависит от скролла.
+     Её можно тянуть мышью или пальцем — после отпускания плавно продолжает. */
   (function () {
     var box = document.querySelector(".shots");
     var tracks = box && box.querySelectorAll(".shots__track");
     if (!box || tracks.length < 2 || still) return;
-    var x = 0, speed = 0.6, target = 0.6, boost = 0, half = 0, lastY = window.scrollY, seen = false, raf = 0;
+    var x = 0, v = 0, AUTO = 0.35, half = 0, seen = false, raf = 0, drag = false, lx = 0, moved = 0, last = 0;
     function measure() { half = tracks[0].getBoundingClientRect().width; }
-    box.addEventListener("pointerenter", function () { target = 0.12; });
-    box.addEventListener("pointerleave", function () { target = 0.6; });
-    window.addEventListener("scroll", function () { boost += (window.scrollY - lastY) * 0.05; lastY = window.scrollY; go(); }, { passive: true });
-    function loop() {
+    function wrap() { if (half) { while (x <= -half) x += half; while (x > 0) x -= half; } }
+    function loop(now) {
       raf = 0;
       if (!seen) return;
       if (!half) measure();
-      speed += (target - speed) * 0.06;
-      boost *= 0.92;
-      x -= speed + boost;
-      if (half && x <= -half) x += half;
-      if (x > 0) x -= half;
+      var dt = last ? Math.min((now - last) / 16.7, 3) : 1; last = now;
+      if (!drag) { v += (AUTO - v) * 0.04 * dt; x -= v * dt; }
+      wrap();
       box.style.setProperty("--x", x.toFixed(2) + "px");
       raf = requestAnimationFrame(loop);
     }
-    function go() { if (!raf && seen) raf = requestAnimationFrame(loop); }
+    function go() { if (!raf && seen) { last = 0; raf = requestAnimationFrame(loop); } }
+    box.addEventListener("pointerdown", function (e) {
+      drag = true; lx = e.clientX; moved = 0; v = 0;
+      box.classList.add("is-drag");
+    });
+    window.addEventListener("pointermove", function (e) {
+      if (!drag) return;
+      var d = e.clientX - lx; lx = e.clientX; moved += Math.abs(d);
+      x += d; v = -d;
+      if (moved > 6 && e.pointerType === "mouse") e.preventDefault();
+    }, { passive: false });
+    window.addEventListener("pointerup", function () {
+      if (!drag) return; drag = false; box.classList.remove("is-drag");
+      v = Math.max(-25, Math.min(25, v));
+    });
+    // клик после перетаскивания не открывает отзыв
+    box.addEventListener("click", function (e) { if (moved > 6) { e.stopPropagation(); e.preventDefault(); } }, true);
     new IntersectionObserver(function (es) { seen = es[0].isIntersecting; go(); }, { rootMargin: "100px" }).observe(box);
     window.addEventListener("resize", measure);
   })();

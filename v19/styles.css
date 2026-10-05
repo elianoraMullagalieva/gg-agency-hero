@@ -9207,3 +9207,12 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
 .shotbox.is-open { opacity: 1; pointer-events: auto; }
 .shotbox img { max-width: min(100%, 52rem); max-height: 100%; border-radius: 14px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
 @media (max-width: 720px) { .shot { height: 13rem; } }
+
+/* Лента отзывов: крупнее на 12%, ниже от видео, тянется мышью */
+.reviews__shots { margin-top: calc(clamp(2.5rem, 2rem + 2vw, 4.5rem) * 1.25); }
+.shot { height: calc(clamp(15rem, 12rem + 9vw, 21rem) * 1.12); }
+@media (max-width: 720px) { .shot { height: 14.5rem; } }
+.shots { cursor: grab; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.shots.is-drag { cursor: grabbing; }
+.shots img { -webkit-user-drag: none; pointer-events: none; }
+.shot__btn { cursor: inherit; }
