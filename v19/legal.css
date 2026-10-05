@@ -1,0 +1,169 @@
+/* ============================================================
+   Юридические страницы: политика и два согласия.
+   Спокойный белый лист в строе сайта: те же шрифт, шкала,
+   пилюли и кнопка. Никакой анимации — это текст для чтения.
+   ============================================================ */
+.legal-body { background: #fff; color: #16120d; }
+.legal-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: clamp(1.25rem, 1rem + 1.0667vw, 2rem) var(--gutter);
+  border-bottom: 1px solid rgba(22, 18, 13, 0.12);
+}
+.legal-logo {
+  color: #16120d;
+  font-family: var(--font-logo);
+  font-size: var(--fs-m);
+  font-weight: 800;
+  text-decoration: none;
+}
+.legal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  color: #16120d;
+  font-size: var(--fs-s);
+  text-decoration: none;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.legal-back:hover { transform: translate3d(-3px, 0, 0); }
+
+.legal {
+  display: grid;
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+  gap: clamp(1.5rem, 0.8333rem + 2.8444vw, 4rem);
+  padding: var(--sec-pad) var(--gutter) var(--sec-pad-b);
+}
+.legal__aside { align-self: start; position: sticky; top: clamp(1.5rem, 4svh, 3rem); }
+.legal__pill {
+  display: inline-flex;
+  margin: 0 0 var(--pill-gap);
+  padding: 0.5em 1.1em;
+  border: 1px solid rgba(22, 18, 13, 0.22);
+  border-radius: 999px;
+  color: #6b655c;
+  font-size: clamp(0.75rem, 0.7292rem + 0.0926vw, 0.8125rem);
+  line-height: var(--lh-title);
+}
+.legal__title {
+  margin: 0;
+  font-family: var(--font-logo);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  line-height: var(--lh-head);
+  letter-spacing: var(--ls-head);
+  text-wrap: balance;
+}
+.legal__meta {
+  margin: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
+  font-size: var(--fs-s);
+  font-weight: 300;
+  line-height: var(--lh-text-m);
+  color: #6b655c;
+}
+.legal__toc {
+  display: grid;
+  gap: 0.55em;
+  margin: clamp(1.5rem, 1.0714rem + 1.8286vw, 3.375rem) 0 0;
+  padding: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) 0 0;
+  border-top: 1px solid rgba(22, 18, 13, 0.12);
+  list-style: none;
+  font-size: var(--fs-s);
+  font-weight: 300;
+  line-height: var(--lh-text-s);
+}
+.legal__toc a { color: #6b655c; text-decoration: none; transition: color 0.3s ease; }
+.legal__toc a:hover { color: #16120d; }
+
+.legal__text { max-width: 46rem; }
+.legal__text h2 {
+  margin: clamp(2rem, 1.4464rem + 2.3619vw, 4.3125rem) 0 clamp(0.875rem, 0.7321rem + 0.6095vw, 1.5rem);
+  padding-top: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  border-top: 1px solid rgba(22, 18, 13, 0.12);
+  font-family: var(--font-logo);
+  font-size: clamp(1.0625rem, 0.9554rem + 0.4571vw, 1.5rem);
+  font-weight: 600;
+  line-height: var(--lh-title);
+  letter-spacing: var(--ls-title);
+  scroll-margin-top: 2rem;
+}
+.legal__text > h2:first-child { margin-top: 0; padding-top: 0; border-top: 0; }
+.legal__text p,
+.legal__text li {
+  margin: 0 0 0.9em;
+  font-size: var(--fs-m);
+  font-weight: 300;
+  line-height: var(--lh-text-m);
+  color: #3a352e;
+  text-wrap: pretty;
+  overflow-wrap: anywhere;
+}
+.legal__text ul { margin: 0 0 0.9em; padding: 0; list-style: none; }
+.legal__text li { position: relative; margin-bottom: 0.45em; padding-left: 1.4em; }
+.legal__text li::before {
+  content: "";
+  position: absolute;
+  left: 0.2em; top: 0.68em;
+  width: 0.35em; height: 0.35em;
+  border-radius: 50%;
+  background: #16120d;
+}
+.legal__text b { font-weight: 500; color: #16120d; }
+.legal__text a { color: #16120d; text-decoration: none; border-bottom: 1px solid currentColor; }
+.legal__lead { font-size: var(--fs-m); }
+
+/* Поля бумажной формы: подпись слева, линия под заполнение справа */
+.legal__fields { margin: 0 0 0.9em; padding: 0; }
+.legal__fields div {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  align-items: end;
+  gap: 1rem;
+  padding: 0.85em 0;
+  border-bottom: 1px solid rgba(22, 18, 13, 0.12);
+}
+.legal__fields dt { margin: 0; font-size: var(--fs-s); font-weight: 400; color: #6b655c; line-height: var(--lh-text-s); }
+.legal__fields dd { margin: 0; height: 1px; align-self: end; background: rgba(22, 18, 13, 0.35); transform: translateY(-0.35em); }
+
+.legal__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem 2rem;
+  margin-top: clamp(2.5rem, 1.6667rem + 3.5556vw, 5.5rem);
+  padding-top: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem);
+  border-top: 1px solid rgba(22, 18, 13, 0.12);
+}
+.legal__others { display: grid; gap: 0.5em; margin: 0; padding: 0; list-style: none; font-size: var(--fs-s); }
+.legal__others a { color: #16120d; text-decoration: none; border-bottom: 1px solid rgba(22, 18, 13, 0.3); transition: border-color 0.3s ease; }
+.legal__others a:hover { border-color: #16120d; }
+.legal__others span { color: #6b655c; }
+
+.legal-bottom {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  padding: clamp(1rem, 0.8571rem + 0.6095vw, 1.625rem) var(--gutter);
+  border-top: 1px solid rgba(22, 18, 13, 0.12);
+  font-size: var(--fs-s);
+  font-weight: 300;
+  color: #6b655c;
+}
+.legal-bottom p { margin: 0; }
+
+@media (max-width: 900px) {
+  .legal { grid-template-columns: minmax(0, 1fr); }
+  .legal__aside { position: static; }
+  .legal__toc { display: none; }
+}
+@media (max-width: 560px) {
+  .legal__fields div { grid-template-columns: minmax(0, 1fr); gap: 1.4rem; }
+}
+@media print {
+  .legal-top, .legal__foot, .legal-bottom, .legal__toc { display: none; }
+  .legal { display: block; padding: 0; }
+}
