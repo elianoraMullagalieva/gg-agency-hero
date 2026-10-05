@@ -5,7 +5,6 @@
    Three.js подгружается только когда блок близко к экрану. */
 (function () {
   var host = document.querySelector("[data-path-crystal]");
-  if (!host) return;
   var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var started = false;
 
@@ -65,6 +64,10 @@
     + "tp*=exp(-dist*uAbsorption*(1.-uColor[ch])*.85);vec3 outg=refract(dir,-hn,ior);float f=fresnel(dot(dir,hn),ior);if(dot(outg,outg)>.001){result+=tp*(1.-f)*env(outg)[ch];tp*=f;}origin+=dir*dist;dir=reflect(dir,hn);origin+=dir*.001;if(tp<.005)break;}return result;}"
     + "void main(){vec3 n=normalize(vNormal),inc=normalize(vPosition-vEye);vec3 color=vec3(trace(inc,n,uIor-uDispersion*.035,0),trace(inc,n,uIor,1),trace(inc,n,uIor+uDispersion*.035,2));gl_FragColor=vec4(color,1.);\n"
     + "#include <tonemapping_fragment>\n#include <encodings_fragment>\n}";
+
+  // общие части для других кристаллов (роли команды)
+  window.GGCrystal = { load: load, geometry: geometry, environment: environment, VS: VS, FS: FS };
+  if (!host) return;
 
   function start() {
     if (started) return; started = true;
