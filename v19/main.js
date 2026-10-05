@@ -3086,12 +3086,21 @@
       var gap = (ps.display.indexOf("flex") > -1 || ps.display.indexOf("grid") > -1) ? (parseFloat(ps.rowGap) || 0) : 0;
       // над лентой: прижимаем подсказку к карточкам, гасим лишний gap родителя
       // воздух до «Листайте вправо» — на 10% больше отступа родителя
-      it.hint.style.marginTop = gap ? Math.round(gap * 0.1) + "px" : "0.5rem";
+      // одинаковые отступы везде: до подсказки 40px от текста над ней, до карточек 10px
+      it.hint.style.marginTop = "0px";
+      var sec2 = it.hint.closest("section"), above = 0;
+      if (sec2) [].forEach.call(sec2.querySelectorAll("h2, h3, p, .expert, .situation__head > *"), function (el) {
+        if (el === it.hint || el.contains(it.hint) || it.hint.contains(el) || !el.offsetHeight) return;
+        if (!(el.compareDocumentPosition(it.hint) & Node.DOCUMENT_POSITION_FOLLOWING)) return;
+        if (el.closest(".swipe-hint") || it.rail.contains(el)) return;
+        above = Math.max(above, el.getBoundingClientRect().bottom);
+      });
+      if (above) { var cur = it.hint.getBoundingClientRect().top - above; it.hint.style.marginTop = Math.round(40 - cur) + "px"; }
       // v19: левый край подсказки — по заголовку блока
       var sec = it.hint.closest("section"), head = sec && sec.querySelector("h2, h3");
       it.hint.style.paddingLeft = "0px";
       if (head) { var dx = head.getBoundingClientRect().left - it.hint.getBoundingClientRect().left; if (dx > 0) it.hint.style.setProperty("padding-left", dx + "px", "important"); }
-      it.hint.style.marginBottom = gap > 10 ? (10 - gap) + "px" : "";
+      it.hint.style.setProperty("margin-bottom", (13 - gap) + "px", "important");
     });
   }
   check();

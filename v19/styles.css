@@ -9196,3 +9196,4 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
   .people__quote > .people__cta { margin-top: 1.5rem; align-self: flex-start; }
 }
 @media (max-width: 860px) { .people__lead { gap: 0 !important; row-gap: 0 !important; } }
+.swipe-hint--top, .leaks--v14 .swipe-hint--top { margin-top: 0; }
