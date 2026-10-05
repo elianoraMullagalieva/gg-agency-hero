@@ -8667,3 +8667,35 @@ html.is-static .orb { height: auto !important; } html.is-static .orb__sticky { p
 .fit--ledger .fit__head { margin-bottom: clamp(1.8rem, 1.32rem + 2.04vw, 3.6rem); }
 .duo3__plate { aspect-ratio: 16 / 6; }
 .duo3__pill { opacity: 0.5; }
+
+/* Заголовок плашки — тот же стиль, что у названий в карусели (.orb__name):
+   ближайший из существующих, чуть меньше H3. Новый размер не заводим. */
+.duo3__title { font-size: clamp(1.625rem, 1.2rem + 1.6vw, 2.5rem); font-weight: 500; line-height: 1.06; }
+
+/* Номера пунктов в фигурных скобках и с воздухом до текста */
+.duo3__list li { grid-template-columns: 3.75rem minmax(0, 1fr); }
+.duo3__n::before { content: "{"; }
+.duo3__n::after  { content: "}"; }
+
+/* Лёгкая жизнь: фон плашки медленно плывёт, пункты появляются по очереди.
+   Плывёт только когда карточка в кадре (.is-in от наблюдателя). */
+.duo3__plate--img { background-size: 118% auto; background-position: 30% 40%; animation: duo3-drift 16s ease-in-out infinite alternate paused; }
+.fit.is-in .duo3__card .duo3__plate--img { animation-play-state: running; }
+.duo3__card--no .duo3__plate--img { animation-duration: 19s; animation-direction: alternate-reverse; }
+@keyframes duo3-drift { from { background-position: 18% 35%; } to { background-position: 82% 65%; } }
+
+.duo3__list li { opacity: 0; translate: 0 0.6rem; transition: opacity 0.6s ease, translate 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.fit.is-in .duo3__card .duo3__list li { opacity: 1; translate: 0 0; }
+.fit.is-in .duo3__card .duo3__list li:nth-child(1) { transition-delay: 0.35s; }
+.fit.is-in .duo3__card .duo3__list li:nth-child(2) { transition-delay: 0.47s; }
+.fit.is-in .duo3__card .duo3__list li:nth-child(3) { transition-delay: 0.59s; }
+.duo3__pill { transition: opacity 0.6s ease 0.25s; }
+.fit:not(.is-in) .duo3__pill { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .duo3__plate--img { animation: none; }
+  .duo3__list li { opacity: 1; translate: none; transition: none; }
+  .fit:not(.is-in) .duo3__pill { opacity: 0.5; }
+}
+html.is-static .duo3__list li { opacity: 1 !important; translate: none !important; }
+html.is-static .duo3__pill { opacity: 0.5 !important; }
