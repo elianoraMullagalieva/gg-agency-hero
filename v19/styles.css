@@ -9194,3 +9194,16 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
 }
 @media (max-width: 860px) { .people__lead { gap: 0 !important; row-gap: 0 !important; } }
 .swipe-hint--top, .leaks--v14 .swipe-hint--top { margin-top: 0; }
+
+/* ============================================================
+   Скрины отзывов: высота одна, ширина — по кадру. Касание
+   открывает отзыв целиком.
+   ============================================================ */
+.shot { flex: none; height: clamp(15rem, 12rem + 9vw, 21rem); }
+.shot__btn { display: block; height: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 12px; overflow: hidden; }
+.shot__img { display: block; height: 100%; width: auto; border-radius: 12px; }
+.shotbox { position: fixed; inset: 0; z-index: 9000; display: grid; place-items: center; padding: 1.25rem; background: rgba(3, 3, 3, 0.86);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; cursor: zoom-out; }
+.shotbox.is-open { opacity: 1; pointer-events: auto; }
+.shotbox img { max-width: min(100%, 52rem); max-height: 100%; border-radius: 14px; box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5); }
+@media (max-width: 720px) { .shot { height: 13rem; } }

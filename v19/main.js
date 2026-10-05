@@ -3389,3 +3389,24 @@
   }, { rootMargin: "0px 0px -12% 0px", threshold: 0.1 });
   cs.forEach(function (c) { io.observe(c); });
 })();
+
+/* Отзывы-скрины: касание открывает кадр целиком, второе касание или Esc закрывает.
+   Короткий сдвиг пальца — это листание ленты, а не открытие. */
+(function () {
+  var box = document.createElement("div");
+  box.className = "shotbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+  box.innerHTML = '<img alt="Отзыв клиента">';
+  document.body.appendChild(box);
+  var img = box.querySelector("img"), sx = 0, sy = 0;
+  function close() { box.classList.remove("is-open"); }
+  document.addEventListener("pointerdown", function (e) { sx = e.clientX; sy = e.clientY; }, true);
+  document.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest("[data-shot]");
+    if (!b) return;
+    if (Math.abs(e.clientX - sx) > 8 || Math.abs(e.clientY - sy) > 8) return;
+    img.src = b.getAttribute("data-shot");
+    box.classList.add("is-open");
+  });
+  box.addEventListener("click", close);
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+})();
