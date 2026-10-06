@@ -9231,3 +9231,9 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
 
 /* Номера разделов «(04)» в углу убраны — наезжали на подзаголовок */
 .reviews::after, .why::after, .cases::after, .start::after, .questions-section::after { content: none !important; }
+
+/* Размытие и затемнение низа подвала — только на телефоне */
+@media (min-width: 768px) {
+  .footer::after { content: none !important; }
+  .footer__docs a, .footer__legal { color: inherit; }
+}
