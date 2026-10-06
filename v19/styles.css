@@ -9228,3 +9228,6 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
   .people__cta-label { white-space: normal; text-align: center; line-height: 1.1; }
   .cases__note { overflow-wrap: anywhere; }
 }
+
+/* Номера разделов «(04)» в углу убраны — наезжали на подзаголовок */
+.reviews::after, .why::after, .cases::after, .start::after, .questions-section::after { content: none !important; }
