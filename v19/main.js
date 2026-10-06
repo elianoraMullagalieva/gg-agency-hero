@@ -2824,7 +2824,15 @@
     var tracks = box && box.querySelectorAll(".shots__track");
     if (!box || tracks.length < 2 || still) return;
     var x = 0, v = 0, AUTO = 0.35, half = 0, seen = false, raf = 0, drag = false, lx = 0, moved = 0, last = 0;
-    function measure() { half = tracks[0].getBoundingClientRect().width; }
+    // картинки ленты грузим, когда блок подходит к экрану, а ширину дорожки
+    // пересчитываем по мере загрузки — иначе шов давал дыру и лента «кончалась»
+    var imgs = [].slice.call(box.querySelectorAll("img[data-src]"));
+    new IntersectionObserver(function (es, o) {
+      if (!es[0].isIntersecting) return; o.disconnect();
+      imgs.forEach(function (i) { i.src = i.getAttribute("data-src"); i.removeAttribute("data-src"); });
+    }, { rootMargin: "1200px 0px" }).observe(box);
+    function measure() { half = tracks[0].getBoundingClientRect().width + parseFloat(getComputedStyle(box).columnGap || 0); }
+    if ("ResizeObserver" in window) new ResizeObserver(measure).observe(tracks[0]);
     function wrap() { if (half) { while (x <= -half) x += half; while (x > 0) x -= half; } }
     function loop(now) {
       raf = 0;
@@ -3422,4 +3430,12 @@
   });
   box.addEventListener("click", close);
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+})();
+
+/* Подстраховка: картинки ленты отзывов грузятся и без анимации (reduced motion, static) */
+(function () {
+  var box = document.querySelector(".shots"); if (!box) return;
+  function load() { [].forEach.call(box.querySelectorAll("img[data-src]"), function (i) { i.src = i.getAttribute("data-src"); i.removeAttribute("data-src"); }); }
+  if (!("IntersectionObserver" in window) || document.documentElement.classList.contains("is-static")) return load();
+  new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); load(); } }, { rootMargin: "1200px 0px" }).observe(box);
 })();
