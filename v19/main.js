@@ -3466,3 +3466,14 @@
   box.addEventListener("click", function (e) { if (e.target === box || e.target.closest(".vbox__close")) close(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && box.classList.contains("is-open")) close(); });
 })();
+
+/* Ленту видеоотзывов можно тянуть мышью; после перетаскивания клик не открывает видео */
+(function () {
+  var r = document.querySelector(".reviews__strip--rail"); if (!r) return;
+  var down = false, x0 = 0, s0 = 0, moved = 0;
+  r.addEventListener("pointerdown", function (e) { if (e.pointerType !== "mouse") return; down = true; x0 = e.clientX; s0 = r.scrollLeft; moved = 0; r.style.scrollSnapType = "none"; });
+  window.addEventListener("pointermove", function (e) { if (!down) return; var d = e.clientX - x0; moved = Math.abs(d); r.scrollLeft = s0 - d; });
+  window.addEventListener("pointerup", function () { if (!down) return; down = false; r.style.scrollSnapType = ""; });
+  r.addEventListener("click", function (e) { if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; } }, true);
+  r.addEventListener("dragstart", function (e) { e.preventDefault(); });
+})();

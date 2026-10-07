@@ -9254,3 +9254,17 @@ img.vreview__media { filter: none !important; }
 .vbox__parts button.on { background: #fff; color: #16120d; }
 .vbox__close { position: absolute; top: 1rem; right: 1rem; width: 2.75rem; height: 2.75rem; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
 .reviews__strip--3 .vreview__tag { background: rgba(10, 10, 10, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(255, 255, 255, 0.2); color: #fff; }
+
+/* Видеоотзывы: лента — 4 карточки в ряд, пятая выглядывает; листается */
+@media (min-width: 721px) {
+  .reviews__strip--rail { display: flex !important; gap: clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem); grid-template-columns: none !important;
+    margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) 3.5rem; overflow-x: auto; scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--gutter); scrollbar-width: none; overscroll-behavior-x: contain; }
+  .reviews__strip--rail::-webkit-scrollbar { display: none; }
+  .reviews__strip--rail > .vreview { flex: 0 0 calc((100vw - 2 * var(--gutter) - 3 * clamp(0.75rem, 0.6rem + 0.6vw, 1.25rem)) / 4.35); scroll-snap-align: start; }
+}
+@media (min-width: 721px) and (max-width: 1000px) {
+  .reviews__strip--rail > .vreview { flex-basis: calc((100vw - 2 * var(--gutter)) / 2.4); }
+}
+.reviews__strip--rail .vreview:nth-child(even) { margin-top: clamp(1.5rem, 1.0714rem + 1.8286vw, 3.375rem); }
+@media (hover: hover) { .reviews__strip--rail { cursor: grab; } .reviews__strip--rail img { -webkit-user-drag: none; user-select: none; } }
