@@ -21,7 +21,7 @@
 <link rel="preload" href="fonts/onest-latin.woff2" as="font" type="font/woff2" crossorigin />
 <link rel="stylesheet" href="fonts/onest.css" />
 
-<link rel="stylesheet" href="styles.min.css?v=19000101" />
+<link rel="stylesheet" href="styles.min.css?v=19000110" />
 <script>if (/[?&]static/.test(location.search)) document.documentElement.classList.add("is-static");
     if (/[?&]static/.test(location.search)) { var _mm = window.matchMedia; window.matchMedia = function (q) { if (/prefers-reduced-motion:\s*reduce/.test(q)) return { matches: true, media: q, onchange: null, addEventListener: function () {}, removeEventListener: function () {}, addListener: function () {}, removeListener: function () {}, dispatchEvent: function () { return false; } }; return _mm.call(window, q); }; }
 if (document.documentElement.classList.contains("is-static")) document.addEventListener("DOMContentLoaded", function () { document.querySelectorAll("img[loading=lazy]").forEach(function (i) { i.loading = "eager"; }); });</script>
@@ -366,7 +366,11 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
     </div>
 
     <ul class="leaks-rail" role="list">
-      <li class="leak leak--img leak--light leak--bottom" style="--i:0; --bg2:url(assets/leaks/leak-1-2x.webp); --bg4:url(assets/leaks/leak-1-4x.webp)">
+      <li class="leak leak--img leak--light leak--bottom leak--video" style="--i:0; --bg2:url(assets/leaks/leak-1-2x.webp); --bg4:url(assets/leaks/leak-1-4x.webp)">
+        <video class="leak__video" muted playsinline preload="metadata" poster="assets/leaks/chain-poster.webp" aria-hidden="true">
+          <source src="assets/leaks/chain.webm?v=2" type="video/webm" />
+          <source src="assets/leaks/chain.mp4?v=2" type="video/mp4" />
+        </video>
         <div class="leak__tags">
           <span class="card__num">01</span>
           <span class="card__tag">скорость</span>
@@ -1462,7 +1466,7 @@ if (document.documentElement.classList.contains("is-static")) document.addEventL
   <button class="cookie__ok" type="button" data-cookie-ok>Понятно</button>
 </div>
 <script>window.GG_FORM = { endpoint: /github\.io$|^localhost$|^127\./.test(location.hostname) ? "" : "gg-lead.php", site: "v19" };</script>
-<script src="main.min.js?v=19000101"></script>
+<script src="main.min.js?v=19000110"></script>
 <script src="leak-crystal.min.js?v=19000020" defer></script>
 <script src="orbit.min.js?v=19000020" defer></script>
 <script src="path-crystal.min.js?v=19000020" defer></script>

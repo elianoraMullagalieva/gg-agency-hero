@@ -3477,3 +3477,15 @@
   r.addEventListener("click", function (e) { if (moved > 6) { e.stopPropagation(); e.preventDefault(); moved = 0; } }, true);
   r.addEventListener("dragstart", function (e) { e.preventDefault(); });
 })();
+
+/* Видео в карточке утечки: играет один раз при появлении, без повтора, замирает на последнем кадре */
+(function () {
+  var v = document.querySelector(".leak__video"); if (!v) return;
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) { v.addEventListener("loadedmetadata", function () { v.currentTime = v.duration - 0.05; }); v.load(); return; }
+  var done = false;
+  new IntersectionObserver(function (es, o) {
+    if (!es[0].isIntersecting || done) return;
+    done = true; o.disconnect();
+    v.preload = "auto"; var p = v.play(); if (p && p.catch) p.catch(function () {});
+  }, { threshold: 0.6 }).observe(v.closest(".leak") || v);
+})();
