@@ -9237,3 +9237,20 @@ html.is-static .fan__card { opacity: 1 !important; translate: none !important; }
   .footer::after { content: none !important; }
   .footer__docs a, .footer__legal { color: inherit; }
 }
+
+/* Видеоотзывы: три карточки с превью из Kinescope, плеер в окне */
+@media (min-width: 1001px) { .reviews__strip--3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
+@media (min-width: 721px) and (max-width: 1000px) { .reviews__strip--3 { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
+.reviews__strip--3 .vreview:nth-child(even) { margin-top: clamp(1.5rem, 1.0714rem + 1.8286vw, 3.375rem); }
+.vreview__frame[data-video] { cursor: pointer; }
+img.vreview__media { filter: none !important; }
+.vbox { position: fixed; inset: 0; z-index: 9100; display: grid; place-items: center; padding: 1rem; background: rgba(3, 3, 3, 0.9);
+  -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.vbox.is-open { opacity: 1; pointer-events: auto; }
+.vbox__win { position: relative; width: min(92vw, calc(82svh * var(--ar))); aspect-ratio: var(--ar); max-height: 82svh; border-radius: 14px; overflow: hidden; background: #000; }
+.vbox__win iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.vbox__parts { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.9rem; }
+.vbox__parts button { padding: 0.5em 1em; border: 1px solid rgba(255, 255, 255, 0.3); border-radius: 999px; background: none; color: #fff; font-size: var(--fs-pill); cursor: pointer; }
+.vbox__parts button.on { background: #fff; color: #16120d; }
+.vbox__close { position: absolute; top: 1rem; right: 1rem; width: 2.75rem; height: 2.75rem; border-radius: 50%; border: 0; background: rgba(255, 255, 255, 0.12); color: #fff; font-size: 1.5rem; line-height: 1; cursor: pointer; }
+.reviews__strip--3 .vreview__tag { background: rgba(10, 10, 10, 0.55); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border-color: rgba(255, 255, 255, 0.2); color: #fff; }

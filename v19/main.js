@@ -3439,3 +3439,30 @@
   if (!("IntersectionObserver" in window) || document.documentElement.classList.contains("is-static")) return load();
   new IntersectionObserver(function (es, o) { if (es[0].isIntersecting) { o.disconnect(); load(); } }, { rootMargin: "1200px 0px" }).observe(box);
 })();
+
+/* Видеоотзывы: Kinescope в окне. Несколько частей — переключатель «Часть 1 / 2 / 3». */
+(function () {
+  var box = document.createElement("div");
+  box.className = "vbox"; box.setAttribute("role", "dialog"); box.setAttribute("aria-modal", "true");
+  box.innerHTML = '<button class="vbox__close" type="button" aria-label="Закрыть">×</button><div><div class="vbox__win"></div><div class="vbox__parts"></div></div>';
+  document.body.appendChild(box);
+  var win = box.querySelector(".vbox__win"), parts = box.querySelector(".vbox__parts");
+  function play(id) {
+    win.innerHTML = '<iframe src="https://kinescope.io/embed/' + id + '?autoplay=1" allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowfullscreen></iframe>';
+    [].forEach.call(parts.children, function (b) { b.classList.toggle("on", b.dataset.id === id); });
+  }
+  function close() { box.classList.remove("is-open"); win.innerHTML = ""; }
+  document.addEventListener("click", function (e) {
+    var f = e.target.closest && e.target.closest("[data-video]");
+    if (!f) return;
+    e.preventDefault();
+    var ids = f.getAttribute("data-video").split(",");
+    box.style.setProperty("--ar", f.getAttribute("data-ratio").replace("/", " / "));
+    parts.innerHTML = ids.length > 1 ? ids.map(function (id, i) { return '<button type="button" data-id="' + id + '">Часть ' + (i + 1) + "</button>"; }).join("") : "";
+    play(ids[0]);
+    box.classList.add("is-open");
+  });
+  parts.addEventListener("click", function (e) { var b = e.target.closest("button"); if (b) play(b.dataset.id); });
+  box.addEventListener("click", function (e) { if (e.target === box || e.target.closest(".vbox__close")) close(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && box.classList.contains("is-open")) close(); });
+})();
