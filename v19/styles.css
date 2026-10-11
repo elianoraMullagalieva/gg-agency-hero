@@ -9273,3 +9273,37 @@ img.vreview__media { filter: none !important; }
 .leak--video { position: relative; overflow: hidden; background-image: none !important; background-color: #f4f4f4; }
 .leak__video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; z-index: 0; pointer-events: none; }
 .leak--video .leak__tags, .leak--video .leak__copy { position: relative; z-index: 1; }
+
+/* ============================================================
+   Ещё 25 кейсов: скрыты в <template>, рисуются по кнопке.
+   Компактные карточки в стиле основных, фильтр по формату.
+   ============================================================ */
+.cases__more { display: inline-flex; align-items: center; height: var(--btn-h); padding: 0 1.6em; border: 1px solid rgba(22, 18, 13, 0.25);
+  border-radius: 999px; background: none; color: #16120d; font-size: var(--fs-s); font-weight: 500; letter-spacing: var(--ls-btn); text-transform: uppercase; cursor: pointer; transition: background 0.3s, color 0.3s; }
+.cases__more:hover { background: #16120d; color: #fff; }
+.cases--ink .cases__more { border-color: rgba(255, 255, 255, 0.3); color: #fff; }
+.cases--ink .cases__more:hover { background: #fff; color: #16120d; }
+.mcases { margin-top: clamp(2rem, 1.5rem + 2vw, 3.5rem); }
+.mcases__filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.25rem; }
+.mcases__filter button { padding: 0.55em 1.05em; border: 1px solid rgba(22, 18, 13, 0.18); border-radius: 999px; background: none; color: #6b655c; font-size: var(--fs-pill); cursor: pointer; }
+.mcases__filter button.on { background: #16120d; border-color: #16120d; color: #fff; }
+.mcases__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(0.6rem, 0.5rem + 0.4vw, 1rem); margin: 0; padding: 0; list-style: none; }
+.mcase { display: flex; flex-direction: column; gap: 0.75rem; padding: clamp(1rem, 0.85rem + 0.6vw, 1.5rem); border-radius: var(--radius); background: #f5f5f5; color: #16120d;
+  animation: mcaseIn 0.5s var(--ease-out) both; }
+.mcase[hidden] { display: none; }
+@keyframes mcaseIn { from { opacity: 0; transform: translateY(0.75rem); } }
+.mcase__head { display: flex; gap: 0.75rem; align-items: center; }
+.mcase__ava { flex: none; display: grid; place-items: center; width: 2.75rem; height: 2.75rem; border-radius: 50%; background: #e8e8e8; box-shadow: 0 0 0 1px rgba(172, 12, 15, 0.35); font-size: 0.875rem; font-weight: 500; }
+.mcase__tag { margin: 0 0 0.15rem; font-size: var(--fs-pill); color: #8d8880; }
+.mcase__name { margin: 0; font-size: 1.125rem; font-weight: 500; line-height: 1.14; letter-spacing: var(--ls-title); }
+.mcase__niche { margin: 0; font-size: var(--fs-pill); line-height: 1.35; color: #8d8880; }
+.mcase__ms { display: grid; grid-template-columns: repeat(auto-fit, minmax(7rem, 1fr)); gap: 0.4rem; }
+.mcase__m { padding: 0.7rem 0.8rem; border-radius: calc(var(--radius) - 0.35rem); background: #fff; }
+.mcase__m b { display: block; font-size: 1.375rem; font-weight: 400; line-height: 1.05; letter-spacing: var(--ls-head); }
+.mcase__m span { display: block; margin-top: 0.3rem; font-size: 0.75rem; line-height: 1.3; color: #6b655c; }
+.mcase__text { margin: 0; font-size: var(--fs-s); line-height: 1.45; font-weight: 300; color: #6b655c; }
+@media (max-width: 1200px) { .mcases__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 900px) { .mcases__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) { .mcases__grid { grid-template-columns: minmax(0, 1fr); } }
+/* На телефоне кнопка показывает и спрятанные там основные кейсы 5–6 */
+.cases.is-all .ccard:nth-child(n+5) { display: flex !important; }

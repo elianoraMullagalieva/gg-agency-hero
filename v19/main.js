@@ -3489,3 +3489,25 @@
     v.preload = "auto"; var p = v.play(); if (p && p.catch) p.catch(function () {});
   }, { threshold: 0.6 }).observe(v.closest(".leak") || v);
 })();
+
+/* «Показать ещё 25 кейсов»: карточки лежат в <template> и рисуются только по кнопке */
+(function () {
+  var btn = document.querySelector(".cases__more"), box = document.getElementById("more-cases"), tpl = document.getElementById("more-cases-tpl");
+  if (!btn || !box || !tpl) return;
+  var grid = box.querySelector(".mcases__grid"), filled = false;
+  btn.addEventListener("click", function () {
+    var open = box.hidden;
+    if (open && !filled) { grid.appendChild(tpl.content.cloneNode(true)); filled = true; }
+    box.hidden = !open;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.innerHTML = open ? "Свернуть" : "Показать ещё 25&nbsp;кейсов";
+    var sec = btn.closest(".cases"); if (sec) sec.classList.toggle("is-all", open);
+    if (!open) box.scrollIntoView ? sec.scrollIntoView({ block: "start" }) : null;
+  });
+  box.querySelector(".mcases__filter").addEventListener("click", function (e) {
+    var b = e.target.closest("button"); if (!b) return;
+    [].forEach.call(this.children, function (x) { x.classList.toggle("on", x === b); });
+    var f = b.dataset.f;
+    [].forEach.call(grid.children, function (c) { c.hidden = f !== "all" && c.dataset.grp !== f; });
+  });
+})();
